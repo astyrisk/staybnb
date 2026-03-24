@@ -19,7 +19,7 @@ public class LoginPage {
     private By registerLink = By.xpath("//div[@class='auth-link']/a[text()='Register']");
 
     private By inlineErrorMessages = By.cssSelector(".error, .field-error, .auth-error");
-    private By globalErrorMessage = By.cssSelector(".alert, .alert-danger, .toast-message");
+    private By globalErrorMessage = By.cssSelector(".alert, .alert-danger, .toast-message, .auth-error");
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;

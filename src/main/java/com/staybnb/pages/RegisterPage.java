@@ -25,8 +25,8 @@ public class RegisterPage {
     private By loginLink = By.xpath("//div[@class='auth-link']/a[text()='Log in']");
 
     // Note: These classes are assumptions. Inspect the DOM when an error is visible to confirm.
-    private By inlineErrorMessages = By.cssSelector(".error, .field-error");
-    private By globalErrorMessage = By.cssSelector(".alert, .alert-danger, .toast-message");
+    private By inlineErrorMessages = By.cssSelector(".error, .field-error, .auth-error");
+    private By globalErrorMessage = By.cssSelector(".alert, .alert-danger, .toast-message, .auth-error");
 
     public RegisterPage(WebDriver driver) {
         this.driver = driver;

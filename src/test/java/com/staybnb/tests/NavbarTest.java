@@ -1,0 +1,145 @@
+package com.staybnb.tests;
+
+import com.staybnb.pages.LoginPage;
+import com.staybnb.pages.Navbar;
+import com.staybnb.pages.PropertyDetailsPage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class NavbarTest extends BaseTest {
+    private Navbar navbar;
+    private LoginPage loginPage;
+    private PropertyDetailsPage propertyPage;
+    private final String BASE_URL = "https://qa-playground.nixdev.co/t/automation-adel";
+    private final String PROPERTY_URL = BASE_URL + "/properties/202";
+
+    @BeforeEach
+    public void setup() {
+        navbar = new Navbar(driver);
+        loginPage = new LoginPage(driver);
+        propertyPage = new PropertyDetailsPage(driver);
+    }
+
+    private void login() {
+        loginPage.navigateTo();
+        loginPage.login("heko@gmail.com", "heko0109");
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlToBe(BASE_URL));
+    }
+
+    // --- Authenticated User Tests ---
+
+    @Test
+    public void testNavbarAuthenticatedUser() {
+        login();
+        driver.get(PROPERTY_URL);
+
+        assertTrue(navbar.isLogoDisplayed(), "Logo should be displayed");
+        assertTrue(navbar.getLogoHref().contains("/t/automation-adel"), "Logo should link to home");
+        assertTrue(navbar.isUserAvatarDisplayed(), "User avatar should be displayed for logged-in user");
+        assertFalse(navbar.isLoginLinkDisplayed(), "Login link should not be displayed for logged-in user");
+    }
+
+    @Test
+    public void testAvatarDropdownItems() {
+        login();
+        driver.get(PROPERTY_URL);
+        navbar.openUserMenu();
+
+        assertTrue(navbar.isProfileLinkDisplayed(), "Profile link should be in dropdown");
+        assertTrue(navbar.isLogoutButtonDisplayed(), "Logout button should be in dropdown");
+    }
+
+    @Test
+    public void testClickProfileInDropdown() {
+        login();
+        driver.get(PROPERTY_URL);
+        navbar.clickProfile();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlContains("/profile"));
+        assertTrue(driver.getCurrentUrl().contains("/profile"), "Should navigate to profile page");
+    }
+
+    @Test
+    public void testClickLogoutInDropdown() {
+        login();
+        driver.get(PROPERTY_URL);
+        navbar.clickLogout();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlToBe(BASE_URL));
+        assertEquals(BASE_URL, driver.getCurrentUrl(), "Should redirect to home page after logout");
+        assertTrue(navbar.isLoginLinkDisplayed(), "Should show login link after logout");
+    }
+
+    @Test
+    public void testMobileLayoutAuthenticated() {
+        login();
+        driver.get(PROPERTY_URL);
+        navbar.setMobileLayout();
+
+        assertTrue(navbar.isHamburgerMenuDisplayed(), "Hamburger menu should be displayed on mobile");
+        // Depending on implementation, the avatar might be hidden or inside hamburger.
+        // The requirement says "hamburger menu replaces right section controls".
+        assertFalse(navbar.isUserAvatarDisplayed(), "User avatar should be hidden or replaced by hamburger menu");
+        
+        navbar.setDesktopLayout();
+    }
+
+    // --- Visitor Tests ---
+
+    @Test
+    public void testNavbarVisitor() {
+        driver.get(PROPERTY_URL);
+
+        assertTrue(navbar.isLogoDisplayed(), "Logo should be displayed");
+        assertTrue(navbar.isLoginLinkDisplayed(), "Login link should be displayed for visitor");
+        assertTrue(navbar.isRegisterLinkDisplayed(), "Register link should be displayed for visitor");
+        assertFalse(navbar.isUserAvatarDisplayed(), "User avatar should not be displayed for visitor");
+    }
+
+    @Test
+    public void testClickLoginLink() {
+        driver.get(PROPERTY_URL);
+        navbar.clickLogin();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlContains("/login"));
+        assertTrue(driver.getCurrentUrl().endsWith("/login"), "Should navigate to login page");
+    }
+
+    @Test
+    public void testClickRegisterLink() {
+        driver.get(PROPERTY_URL);
+        navbar.clickRegister();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlContains("/register"));
+        assertTrue(driver.getCurrentUrl().endsWith("/register"), "Should navigate to register page");
+    }
+
+    @Test
+    public void testVisitorNavbarExclusions() {
+        driver.get(PROPERTY_URL);
+        
+        assertFalse(navbar.isUserAvatarDisplayed(), "Visitor should not see user avatar");
+        assertFalse(navbar.isDropdownDisplayed(), "Visitor should not see user dropdown");
+    }
+
+    @Test
+    public void testMobileLayoutVisitor() {
+        driver.get(PROPERTY_URL);
+        navbar.setMobileLayout();
+
+        assertTrue(navbar.isHamburgerMenuDisplayed(), "Hamburger menu should be displayed on mobile");
+        assertFalse(navbar.isLoginLinkDisplayed(), "Login link should be hidden behind hamburger menu");
+        
+        navbar.setDesktopLayout();
+    }
+}
