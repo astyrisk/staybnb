@@ -1,6 +1,7 @@
 package com.staybnb.tests;
 
 import com.staybnb.pages.LoginPage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,11 +21,11 @@ public class LoginTest extends BaseTest {
     @Test
     public void testSuccessfulLogin() {
         loginPage.navigateTo();
-        loginPage.login("heko@gmail.com", "heko0109");
+        loginPage.login(Constants.VALID_EMAIL, Constants.VALID_PASSWORD);
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlToBe("https://qa-playground.nixdev.co/t/automation-adel"));
-        assertEquals("https://qa-playground.nixdev.co/t/automation-adel", driver.getCurrentUrl());
+        wait.until(ExpectedConditions.urlToBe(Constants.HOME_URL));
+        assertEquals(Constants.HOME_URL, driver.getCurrentUrl());
 
         String jwt = loginPage.getStaybnbToken();
         assertNotNull(jwt, "JWT token was not retrieved after successful login.");
@@ -33,7 +34,7 @@ public class LoginTest extends BaseTest {
     @Test
     public void testInvalidCredentials() {
         loginPage.navigateTo();
-        loginPage.login("wronguser@gmail.com", "WrongPassword123!");
+        loginPage.login(Constants.INVALID_EMAIL, Constants.INVALID_PASSWORD);
 
         String errorText = loginPage.getGlobalErrorMessageText();
         assertTrue(errorText.toLowerCase().contains("invalid") || errorText.toLowerCase().contains("unauthorized"),

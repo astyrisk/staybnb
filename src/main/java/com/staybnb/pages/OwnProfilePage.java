@@ -6,10 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
+import com.staybnb.utils.Constants;
 
 public class OwnProfilePage {
     private WebDriver driver;
-    private final String PAGE_URL = "https://qa-playground.nixdev.co/t/automation-adel/profile";
+    private final String PAGE_URL = Constants.PROFILE_URL;
 
     // --- Locators based on provided HTML ---
     private By profileAvatar = By.className("profile-avatar");

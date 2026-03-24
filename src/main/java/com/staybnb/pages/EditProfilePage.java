@@ -7,10 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import com.staybnb.utils.Constants;
 
 public class EditProfilePage {
     private WebDriver driver;
-    private final String PAGE_URL = "https://qa-playground.nixdev.co/t/automation-adel/profile/edit";
+    private final String PAGE_URL = Constants.EDIT_PROFILE_URL;
 
     private By firstNameField = By.id("firstName");
     private By lastNameField = By.id("lastName");

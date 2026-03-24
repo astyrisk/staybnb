@@ -5,10 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import com.staybnb.utils.Constants;
 
 public class OtherProfilePage {
     private WebDriver driver;
-    private final String BASE_URL = "https://qa-playground.nixdev.co/t/automation-adel/users/";
+    private final String BASE_URL = Constants.OTHER_PROFILE_BASE_URL;
 
     private By profileAvatar = By.className("profile-avatar");
     private By profileName = By.className("profile-name");

@@ -8,11 +8,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import com.staybnb.utils.Constants;
 
 public class PropertyListingPage {
     private WebDriver driver;
     private WebDriverWait wait;
-    private final String BASE_URL = "https://qa-playground.nixdev.co";
+    private final String BASE_URL = Constants.DOMAIN;
 
     // Locators
     private By propertyGrid = By.className("property-grid");
@@ -35,7 +36,7 @@ public class PropertyListingPage {
     }
 
     public void navigateTo(String slug) {
-        driver.get(BASE_URL + "/t/" + slug + "/properties");
+        driver.get(Constants.BASE_URL + "/properties");
     }
 
     public List<WebElement> getPropertyCards() {

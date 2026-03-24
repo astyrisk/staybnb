@@ -1,6 +1,7 @@
 package com.staybnb.tests;
 
 import com.staybnb.pages.PropertyListingPage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PropertyListingTest extends BaseTest {
     private PropertyListingPage propertyListingPage;
-    private final String SLUG = "automation-adel";
+    private final String SLUG = Constants.SLUG;
 
     @BeforeEach
     public void setup() {
@@ -73,15 +74,15 @@ public class PropertyListingTest extends BaseTest {
     @Test
     public void testResponsiveGridLayout() {
         // Desktop: 3 columns (based on requirement)
-        driver.manage().window().setSize(new Dimension(1200, 800));
+        driver.manage().window().setSize(new Dimension(Constants.DESKTOP_WIDTH, Constants.DEFAULT_HEIGHT));
         assertEquals(3, propertyListingPage.getGridColumnCount(), "Grid should have 3 columns on desktop.");
 
         // Tablet: 2 columns
-        driver.manage().window().setSize(new Dimension(768, 1024));
+        driver.manage().window().setSize(new Dimension(Constants.TABLET_WIDTH, Constants.DEFAULT_HEIGHT));
         assertEquals(2, propertyListingPage.getGridColumnCount(), "Grid should have 2 columns on tablet.");
 
         // Mobile: 1 column
-        driver.manage().window().setSize(new Dimension(375, 667));
+        driver.manage().window().setSize(new Dimension(Constants.MOBILE_WIDTH, Constants.DEFAULT_HEIGHT));
         assertEquals(1, propertyListingPage.getGridColumnCount(), "Grid should have 1 column on mobile.");
     }
 

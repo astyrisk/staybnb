@@ -2,6 +2,7 @@ package com.staybnb.tests;
 
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LogoutTest extends BaseTest {
     private LoginPage loginPage;
     private LogoutPage logoutPage;
-    private final String DASHBOARD_URL = "https://qa-playground.nixdev.co/t/automation-adel";
+    private final String DASHBOARD_URL = Constants.HOME_URL;
 
     @BeforeEach
     public void setup() {
@@ -23,7 +24,7 @@ public class LogoutTest extends BaseTest {
 
     private void loginAsValidUser() {
         loginPage.navigateTo();
-        loginPage.login("heko@gmail.com", "heko0109");
+        loginPage.login(Constants.VALID_EMAIL, Constants.VALID_PASSWORD);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlToBe(DASHBOARD_URL));
     }

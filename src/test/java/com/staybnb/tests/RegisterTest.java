@@ -1,6 +1,7 @@
 package com.staybnb.tests;
 
 import com.staybnb.pages.RegisterPage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,18 +22,18 @@ public class RegisterTest extends BaseTest {
     public void testSuccessfulRegistration() {
         String uniqueEmail = "testuser_" + System.currentTimeMillis() + "@gmail.com";
         registerPage.navigateTo();
-        registerPage.fillCompleteRegistration("Test", "User", uniqueEmail, "password123");
+        registerPage.fillCompleteRegistration(Constants.TEST_USER_FIRST_NAME, Constants.TEST_USER_LAST_NAME, uniqueEmail, Constants.DEFAULT_PASSWORD);
         registerPage.clickRegister();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlToBe("https://qa-playground.nixdev.co/t/automation-adel"));
-        assertEquals("https://qa-playground.nixdev.co/t/automation-adel", driver.getCurrentUrl());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.MEDIUM_WAIT));
+        wait.until(ExpectedConditions.urlToBe(Constants.HOME_URL));
+        assertEquals(Constants.HOME_URL, driver.getCurrentUrl());
     }
 
     @Test
     public void testRegistrationWithExistingEmail() {
         registerPage.navigateTo();
-        registerPage.fillCompleteRegistration("Existing", "User", "heko@gmail.com", "password123");
+        registerPage.fillCompleteRegistration("Existing", "User", Constants.VALID_EMAIL, Constants.DEFAULT_PASSWORD);
         registerPage.clickRegister();
 
         String error = registerPage.getGlobalErrorMessageText();

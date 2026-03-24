@@ -7,10 +7,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
+import com.staybnb.utils.Constants;
 
 public class HomePage {
     private WebDriver driver;
-    private final String PAGE_URL = "https://qa-playground.nixdev.co/t/automation-adel";
+    private final String PAGE_URL = Constants.HOME_URL;
 
     private By heroSection = By.className("home-hero");
     private By heroHeadline = By.cssSelector(".home-hero-content h1");

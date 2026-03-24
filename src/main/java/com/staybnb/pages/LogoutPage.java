@@ -7,10 +7,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
+import com.staybnb.utils.Constants;
 
 public class LogoutPage {
     private WebDriver driver;
-    private final String DASHBOARD_URL = "https://qa-playground.nixdev.co/t/automation-adel";
+    private final String DASHBOARD_URL = Constants.HOME_URL;
 
     // --- Locators based on provided HTML ---
     private By userMenuButton = By.className("navbar-user-btn");

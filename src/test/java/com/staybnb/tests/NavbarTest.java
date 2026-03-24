@@ -3,6 +3,7 @@ package com.staybnb.tests;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.Navbar;
 import com.staybnb.pages.PropertyDetailsPage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,8 +16,8 @@ public class NavbarTest extends BaseTest {
     private Navbar navbar;
     private LoginPage loginPage;
     private PropertyDetailsPage propertyPage;
-    private final String BASE_URL = "https://qa-playground.nixdev.co/t/automation-adel";
-    private final String PROPERTY_URL = BASE_URL + "/properties/202";
+    private final String BASE_URL = Constants.HOME_URL;
+    private final String PROPERTY_URL = Constants.PROPERTY_DETAILS_BASE_URL + "202";
 
     @BeforeEach
     public void setup() {
@@ -27,7 +28,7 @@ public class NavbarTest extends BaseTest {
 
     private void login() {
         loginPage.navigateTo();
-        loginPage.login("heko@gmail.com", "heko0109");
+        loginPage.login(Constants.VALID_EMAIL, Constants.VALID_PASSWORD);
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.urlToBe(BASE_URL));
     }
@@ -40,7 +41,7 @@ public class NavbarTest extends BaseTest {
         driver.get(PROPERTY_URL);
 
         assertTrue(navbar.isLogoDisplayed(), "Logo should be displayed");
-        assertTrue(navbar.getLogoHref().contains("/t/automation-adel"), "Logo should link to home");
+        assertTrue(navbar.getLogoHref().contains("/t/" + Constants.SLUG), "Logo should link to home");
         assertTrue(navbar.isUserAvatarDisplayed(), "User avatar should be displayed for logged-in user");
         assertFalse(navbar.isLoginLinkDisplayed(), "Login link should not be displayed for logged-in user");
     }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import com.staybnb.utils.Constants;
 
 import java.time.Duration;
 
@@ -17,7 +18,7 @@ public class EditProfileTest extends BaseTest {
     private LoginPage loginPage;
     private OwnProfilePage ownProfilePage;
     private EditProfilePage editProfilePage;
-    private final String SLUG = "automation-adel";
+    private final String SLUG = Constants.SLUG;
 
     @BeforeEach
     public void setup() {
@@ -28,7 +29,7 @@ public class EditProfileTest extends BaseTest {
 
     private void loginAsValidUser() {
         loginPage.navigateTo();
-        loginPage.login("heko@gmail.com", "heko0109");
+        loginPage.login(Constants.VALID_EMAIL, Constants.VALID_PASSWORD);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("/t/" + SLUG));
     }

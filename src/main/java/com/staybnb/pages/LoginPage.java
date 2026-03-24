@@ -1,5 +1,6 @@
 package com.staybnb.pages;
 
+import com.staybnb.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class LoginPage {
     private WebDriver driver;
-    private final String PAGE_URL = "https://qa-playground.nixdev.co/t/automation-adel/login";
+    private final String PAGE_URL = Constants.LOGIN_URL;
 
     private By emailField = By.id("email");
     private By passwordField = By.id("password");

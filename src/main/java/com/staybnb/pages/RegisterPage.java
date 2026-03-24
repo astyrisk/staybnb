@@ -1,5 +1,6 @@
 package com.staybnb.pages;
 
+import com.staybnb.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class RegisterPage {
     private WebDriver driver;
-    private final String PAGE_URL = "https://qa-playground.nixdev.co/t/automation-adel/register";
+    private final String PAGE_URL = Constants.REGISTER_URL;
 
     // --- Locators based on provided HTML ---
     private By firstNameField = By.id("firstName");

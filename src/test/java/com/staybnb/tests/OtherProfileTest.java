@@ -2,6 +2,7 @@ package com.staybnb.tests;
 
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptExecutor;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OtherProfileTest extends BaseTest {
     private LoginPage loginPage;
     private OtherProfilePage otherProfilePage;
-    private final String SLUG = "automation-adel";
+    private final String SLUG = Constants.SLUG;
 
     @BeforeEach
     public void setup() {
@@ -25,15 +26,15 @@ public class OtherProfileTest extends BaseTest {
 
     private void loginAsValidUser() {
         loginPage.navigateTo();
-        loginPage.login("heko@gmail.com", "heko0109");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlToBe("https://qa-playground.nixdev.co/t/" + SLUG));
+        loginPage.login(Constants.VALID_EMAIL, Constants.VALID_PASSWORD);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.MEDIUM_WAIT));
+        wait.until(ExpectedConditions.urlToBe(Constants.HOME_URL));
     }
 
     @Test
     public void testViewOtherUserProfilePublicInfo() {
         // Test case 5.1 & 5.4 (Accessible when not logged in)
-        String userId = "101";
+        String userId = Constants.USER_ID_101;
         otherProfilePage.navigateTo(userId);
 
         assertTrue(otherProfilePage.isAvatarDisplayed(), "Avatar should be displayed.");
@@ -50,7 +51,7 @@ public class OtherProfileTest extends BaseTest {
     @Test
     public void testOtherUserProfileNoPrivateInfo() {
         // Test case 5.2 (Should NOT include email or phone)
-        String userId = "102";
+        String userId = Constants.USER_ID_102;
         otherProfilePage.navigateTo(userId);
 
         assertFalse(otherProfilePage.isPhoneSectionVisible(), "Phone number should not be visible on other's profile.");
@@ -64,7 +65,7 @@ public class OtherProfileTest extends BaseTest {
     @Test
     public void testNonExistentUserProfile() {
         // Test case 5.3 (404 error)
-        String nonExistentId = "999999";
+        String nonExistentId = Constants.NON_EXISTENT_ID;
         otherProfilePage.navigateTo(nonExistentId);
         
         assertTrue(otherProfilePage.is404Displayed(), "Page should indicate a 404 error for non-existent user.");
@@ -73,8 +74,8 @@ public class OtherProfileTest extends BaseTest {
     @Test
     public void testApiViewOtherUserNoPrivateData() {
         // Verify API data masking
-        String userId = "101";
-        driver.get("https://qa-playground.nixdev.co/t/" + SLUG);
+        String userId = Constants.USER_ID_101;
+        driver.get(Constants.BASE_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         Object response = js.executeAsyncScript(

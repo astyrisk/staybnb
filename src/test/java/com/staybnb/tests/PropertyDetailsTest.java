@@ -1,6 +1,7 @@
 package com.staybnb.tests;
 
 import com.staybnb.pages.PropertyDetailsPage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PropertyDetailsTest extends BaseTest {
     private PropertyDetailsPage propertyDetailsPage;
-    private final String PROPERTY_ID = "202";
+    private final String PROPERTY_ID = Constants.DEFAULT_PROPERTY_ID;
 
     @BeforeEach
     public void setup() {
@@ -107,7 +108,7 @@ public class PropertyDetailsTest extends BaseTest {
 
     @Test
     public void testNonExistentPropertyReturns404() {
-        String nonExistentId = "999999";
+        String nonExistentId = Constants.NON_EXISTENT_ID;
         propertyDetailsPage.navigateTo(nonExistentId);
 
         // Requirement: returns a 404 error with code PROPERTY_NOT_FOUND
@@ -115,8 +116,8 @@ public class PropertyDetailsTest extends BaseTest {
         
         // Also check if the code is present in the source or error message
         String pageSource = driver.getPageSource();
-        assertTrue(pageSource.contains("PROPERTY_NOT_FOUND") || propertyDetailsPage.getErrorMessage().contains("PROPERTY_NOT_FOUND"), 
-            "Error should contain code 'PROPERTY_NOT_FOUND'.");
+        assertTrue(pageSource.contains(Constants.PROPERTY_NOT_FOUND_CODE) || propertyDetailsPage.getErrorMessage().contains(Constants.PROPERTY_NOT_FOUND_CODE), 
+            "Error should contain code '" + Constants.PROPERTY_NOT_FOUND_CODE + "'.");
     }
 
     @Test
@@ -160,7 +161,7 @@ public class PropertyDetailsTest extends BaseTest {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
         
         // Resize to mobile
-        driver.manage().window().setSize(new org.openqa.selenium.Dimension(375, 812));
+        driver.manage().window().setSize(new org.openqa.selenium.Dimension(Constants.MOBILE_WIDTH, Constants.DEFAULT_HEIGHT));
         
         // Requirement: images displayed as a horizontal carousel with swipe support.
         // assertTrue(propertyDetailsPage.isGalleryCarouselDisplayed(), "Gallery carousel should be displayed on mobile.");

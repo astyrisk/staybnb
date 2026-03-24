@@ -2,6 +2,7 @@ package com.staybnb.tests;
 
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OwnProfileTest extends BaseTest {
     private LoginPage loginPage;
     private OwnProfilePage ownProfilePage;
-    private final String SLUG = "automation-adel";
-    private final String EDIT_PROFILE_URL = "https://qa-playground.nixdev.co/t/" + SLUG + "/profile/edit";
+    private final String SLUG = Constants.SLUG;
+    private final String EDIT_PROFILE_URL = Constants.EDIT_PROFILE_URL;
 
     @BeforeEach
     public void setup() {
@@ -26,9 +27,9 @@ public class OwnProfileTest extends BaseTest {
 
     private void loginAsValidUser() {
         loginPage.navigateTo();
-        loginPage.login("heko@gmail.com", "heko0109");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlToBe("https://qa-playground.nixdev.co/t/automation-adel"));
+        loginPage.login(Constants.VALID_EMAIL, Constants.VALID_PASSWORD);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.MEDIUM_WAIT));
+        wait.until(ExpectedConditions.urlToBe(Constants.HOME_URL));
     }
 
     @Test
@@ -50,7 +51,7 @@ public class OwnProfileTest extends BaseTest {
         assertTrue(ownProfilePage.isEditProfileButtonVisible(), "Edit Profile button should be visible.");
 
         ownProfilePage.clickEditProfile();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.MEDIUM_WAIT));
         wait.until(ExpectedConditions.urlToBe(EDIT_PROFILE_URL));
         assertEquals(EDIT_PROFILE_URL, driver.getCurrentUrl(), "Should navigate to the edit profile page.");
     }
