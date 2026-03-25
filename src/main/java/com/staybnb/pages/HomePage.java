@@ -7,17 +7,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.TestConfig;
 
 public class HomePage {
     private WebDriver driver;
-    private final String PAGE_URL = Constants.HOME_URL;
+    private final String PAGE_URL = TestConfig.BASE_URL;
 
     private By heroSection = By.className("home-hero");
     private By heroHeadline = By.cssSelector(".home-hero-content h1");
     // These might be missing from snippet but are required for tests
     private By categoryBar = By.className("categories-bar");
-    private By categoryChips = By.className("category-chip");
     private By categoryIcons = By.className("category-icon");
     private By propertyGrid = By.className("property-grid");
     private By propertyCards = By.className("property-card");
@@ -36,6 +35,10 @@ public class HomePage {
 
     public void navigateTo() {
         driver.get(PAGE_URL);
+    }
+
+    public void navigateTo(String url) {
+        driver.get(url);
     }
 
     public boolean isHeroSectionDisplayed() {

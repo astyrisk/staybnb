@@ -1,34 +1,37 @@
+// Jenkinsfile - NO DEFAULT VALUES AT ALL
 pipeline {
     agent any
-
-    tools {
-        maven 'Maven 3.9.6' // Ensure this name matches your Jenkins Global Tool Configuration
-        jdk 'JDK 21'        // Ensure this name matches your Jenkins Global Tool Configuration
+    
+    parameters {
+        string(
+            name: 'TEST_BASE_URL',
+            description: 'Base URL for tests (e.g., https://qa.example.com)'
+        )
     }
-
+    
     stages {
-        stage('Checkout') {
+        stage('Run Tests') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Build & Test') {
-            steps {
-                // Use 'bat' for Windows or 'sh' for Linux/macOS
-                bat 'mvn -B clean test'
+                withCredentials([
+                    string(credentialsId: 'staybnb-test-user', variable: 'TEST_USER'),
+                    string(credentialsId: 'staybnb-test-password', variable: 'TEST_PASSWORD')
+                ]) {
+                    // Use 'bat' for Windows or 'sh' for Linux/macOS
+                    // Since the current Jenkinsfile uses 'bat', I'll use 'bat' here too.
+                    bat """
+                        mvn clean test ^
+                          -DTEST_BASE_URL=${params.TEST_BASE_URL} ^
+                          -DTEST_USER=%TEST_USER% ^
+                          -DTEST_PASSWORD=%TEST_PASSWORD%
+                    """
+                }
             }
         }
     }
-
+    
     post {
         always {
-            // Archive JUnit test results
-            junit '**/target/surefire-reports/*.xml'
-        }
-        failure {
-            // Archive screenshots if the build fails
-            archiveArtifacts artifacts: 'target/screenshots/**', allowEmptyArchive: true
+            junit 'target/surefire-reports/*.xml'
         }
     }
 }

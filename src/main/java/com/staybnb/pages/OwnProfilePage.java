@@ -6,11 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.TestConfig;
 
 public class OwnProfilePage {
     private WebDriver driver;
-    private final String PAGE_URL = Constants.PROFILE_URL;
+    private final String PAGE_URL = TestConfig.BASE_URL + "/profile";
 
     // --- Locators based on provided HTML ---
     private By profileAvatar = By.className("profile-avatar");
@@ -27,6 +27,10 @@ public class OwnProfilePage {
 
     public void navigateTo() {
         driver.get(PAGE_URL);
+    }
+
+    public void navigateTo(String url) {
+        driver.get(url);
     }
 
     public boolean isAvatarDisplayed() {

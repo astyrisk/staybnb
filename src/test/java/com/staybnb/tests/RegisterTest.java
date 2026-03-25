@@ -1,12 +1,12 @@
 package com.staybnb.tests;
 
+import com.staybnb.config.TestConfig;
 import com.staybnb.pages.RegisterPage;
 import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,19 +21,19 @@ public class RegisterTest extends BaseTest {
     @Test
     public void testSuccessfulRegistration() {
         String uniqueEmail = "testuser_" + System.currentTimeMillis() + "@gmail.com";
-        registerPage.navigateTo();
+        registerPage.navigateTo(TestConfig.BASE_URL + "/register");
         registerPage.fillCompleteRegistration(Constants.TEST_USER_FIRST_NAME, Constants.TEST_USER_LAST_NAME, uniqueEmail, Constants.DEFAULT_PASSWORD);
         registerPage.clickRegister();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.MEDIUM_WAIT));
-        wait.until(ExpectedConditions.urlToBe(Constants.HOME_URL));
-        assertEquals(Constants.HOME_URL, driver.getCurrentUrl());
+        WebDriverWait wait = getWait(Constants.MEDIUM_WAIT);
+        wait.until(ExpectedConditions.urlToBe(TestConfig.BASE_URL));
+        assertEquals(TestConfig.BASE_URL, driver.getCurrentUrl());
     }
 
     @Test
     public void testRegistrationWithExistingEmail() {
-        registerPage.navigateTo();
-        registerPage.fillCompleteRegistration("Existing", "User", Constants.VALID_EMAIL, Constants.DEFAULT_PASSWORD);
+        registerPage.navigateTo(TestConfig.BASE_URL + "/register");
+        registerPage.fillCompleteRegistration("Existing", "User", TestConfig.TEST_USERNAME, Constants.DEFAULT_PASSWORD);
         registerPage.clickRegister();
 
         String error = registerPage.getGlobalErrorMessageText();
@@ -43,7 +43,7 @@ public class RegisterTest extends BaseTest {
 
     @Test
     public void testRegistrationBlankFields() {
-        registerPage.navigateTo();
+        registerPage.navigateTo(TestConfig.BASE_URL + "/register");
         registerPage.clickRegister();
 
         assertTrue(registerPage.isInlineErrorDisplayed("required"));

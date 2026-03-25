@@ -8,12 +8,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.TestConfig;
 
 public class PropertyDetailsPage {
     private WebDriver driver;
     private WebDriverWait wait;
-    private final String BASE_URL = Constants.PROPERTY_DETAILS_BASE_URL;
+    private final String BASE_URL = TestConfig.BASE_URL + "/properties/";
 
     // Locators
     private By detailTitle = By.className("detail-title");

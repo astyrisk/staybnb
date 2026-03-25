@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.utils.Constants;
+import com.staybnb.config.TestConfig;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LoginPage {
     private WebDriver driver;
-    private final String PAGE_URL = Constants.LOGIN_URL;
+    private final String PAGE_URL = TestConfig.BASE_URL + "/login";
 
     private By emailField = By.id("email");
     private By passwordField = By.id("password");
@@ -28,6 +28,10 @@ public class LoginPage {
 
     public void navigateTo() {
         driver.get(PAGE_URL);
+    }
+
+    public void navigateTo(String url) {
+        driver.get(url);
     }
 
     public void enterEmail(String email) {

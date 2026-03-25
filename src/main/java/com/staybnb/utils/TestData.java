@@ -4,8 +4,8 @@ public class TestData {
     
     // Own Profile Test Data
     public static class OwnProfile {
-        public static final String FULL_NAME = "HekoUpdated NekoUpdated";
-        public static final String PHONE = "+201556638077";
+        public static final String FULL_NAME = "HekoAPI NekoAPI";
+        public static final String PHONE = "+1234567890";
         public static final String BIO = "Default bio"; // Bio might vary, but this is the current one in tests
     }
 

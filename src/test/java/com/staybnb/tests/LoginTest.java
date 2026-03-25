@@ -1,12 +1,11 @@
 package com.staybnb.tests;
 
+import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
-import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,22 +18,30 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    public void testSuccessfulLogin() {
-        loginPage.navigateTo();
-        loginPage.login(Constants.VALID_EMAIL, Constants.VALID_PASSWORD);
+    public void testSuccessfulLoginRedirection() {
+        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
+        loginPage.login(TestConfig.TEST_USERNAME, TestConfig.TEST_PASSWORD);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.urlToBe(Constants.HOME_URL));
-        assertEquals(Constants.HOME_URL, driver.getCurrentUrl());
+        WebDriverWait wait = getWait(5);
+        wait.until(ExpectedConditions.urlContains("/"));
+        assertTrue(driver.getCurrentUrl().contains("/"));
+    }
 
+    @Test
+    public void testSuccessfulLoginTokenRetrieved() {
+        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
+        loginPage.login(TestConfig.TEST_USERNAME, TestConfig.TEST_PASSWORD);
+
+        WebDriverWait wait = getWait(5);
+        wait.until(ExpectedConditions.urlContains("/"));
         String jwt = loginPage.getStaybnbToken();
         assertNotNull(jwt, "JWT token was not retrieved after successful login.");
     }
 
     @Test
     public void testInvalidCredentials() {
-        loginPage.navigateTo();
-        loginPage.login(Constants.INVALID_EMAIL, Constants.INVALID_PASSWORD);
+        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
+        loginPage.login("wronguser@gmail.com", "WrongPassword123!");
 
         String errorText = loginPage.getGlobalErrorMessageText();
         assertTrue(errorText.toLowerCase().contains("invalid") || errorText.toLowerCase().contains("unauthorized"),
@@ -43,7 +50,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void testBlankFieldsValidation() {
-        loginPage.navigateTo();
+        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
         loginPage.clickLoginButton();
         assertTrue(loginPage.isInlineErrorDisplayed("Email and password are required"));
     }

@@ -7,11 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.TestConfig;
 
 public class EditProfilePage {
     private WebDriver driver;
-    private final String PAGE_URL = Constants.EDIT_PROFILE_URL;
+    private final String PAGE_URL = TestConfig.BASE_URL + "/profile/edit";
 
     private By firstNameField = By.id("firstName");
     private By lastNameField = By.id("lastName");
@@ -28,6 +28,10 @@ public class EditProfilePage {
 
     public void navigateTo() {
         driver.get(PAGE_URL);
+    }
+
+    public void navigateTo(String url) {
+        driver.get(url);
     }
 
     public void enterFirstName(String firstName) {

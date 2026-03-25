@@ -1,5 +1,6 @@
 package com.staybnb.tests;
 
+import com.staybnb.config.TestConfig;
 import com.staybnb.pages.HomePage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,27 +16,39 @@ public class HomeTest extends BaseTest {
     @BeforeEach
     public void setup() {
         homePage = new HomePage(driver);
-        homePage.navigateTo();
+        homePage.navigateTo(TestConfig.BASE_URL);
     }
 
     @Test
-    public void testHeroSection() {
+    public void testHeroSectionIsDisplayed() {
         assertTrue(homePage.isHeroSectionDisplayed(), "Hero section should be visible.");
+    }
+
+    @Test
+    public void testHeroSectionHeadlineText() {
         assertEquals("Find your next stay", homePage.getHeroHeadlineText(), "Hero headline text should match.");
+    }
+
+    @Test
+    public void testHeroSectionHasBackgroundImage() {
         String backgroundImage = homePage.getHeroBackgroundImage();
         assertTrue(backgroundImage != null && !backgroundImage.isEmpty() && !backgroundImage.equals("none"),
                 "Hero section should have a background image.");
     }
 
     @Test
-    public void testCategoryBar() {
+    public void testCategoryBarIsDisplayed() {
         assertTrue(homePage.isCategoryBarDisplayed(), "Horizontal, scrollable category bar should be visible.");
+    }
+
+    @Test
+    public void testCategoryBarContainsIcons() {
         List<WebElement> categories = homePage.getCategoryIcons();
         assertFalse(categories.isEmpty(), "Category bar should contain icons.");
     }
 
     @Test
-    public void testFeaturedPropertiesGrid() {
+    public void testFeaturedPropertiesGridCount() {
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
         List<WebElement> cards = homePage.getPropertyCards();
         int cardCount = cards.size();
@@ -43,33 +56,36 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
-    public void testPropertyCardDetails() {
+    public void testPropertyCardsArePresent() {
         List<WebElement> cards = homePage.getPropertyCards();
         assertFalse(cards.isEmpty(), "Property cards should be present.");
-
-        for (WebElement card : cards) {
-            assertTrue(homePage.isCardDetailsComplete(card), "Each property card should display all details: image, title, location, price.");
-        }
     }
 
     @Test
-    //NOTE mobile: 1 column, 2 Tablet, 3 Desktop
-    public void testGridResponsiveness() {
+    public void testPropertyCardsDetailsAreComplete() {
+        List<WebElement> cards = homePage.getPropertyCards();
+        assertTrue(cards.stream().allMatch(card -> homePage.isCardDetailsComplete(card)), 
+            "Each property card should display all details: image, title, location, price.");
+    }
+
+    @Test
+    public void testGridColumnsDesktopWide() {
         driver.manage().window().setSize(new Dimension(1920, 1080));
         homePage.waitForGridColumns(4);
         assertEquals(4, homePage.getGridColumnCount(), "Grid should have 4 columns on desktop.");
+    }
 
+    @Test
+    public void testGridColumnsDesktopSmall() {
         driver.manage().window().setSize(new Dimension(1025, 1080));
         homePage.waitForGridColumns(3);
         assertEquals(3, homePage.getGridColumnCount(), "Grid should have 3 columns on desktop.");
+    }
 
+    @Test
+    public void testGridColumnsTablet() {
         driver.manage().window().setSize(new Dimension(770, 1024));
         homePage.waitForGridColumns(2);
         assertEquals(2, homePage.getGridColumnCount(), "Grid should have 2 columns on tablet.");
-
-        //TODO not working without resizing the window
-//        driver.manage().window().setSize(new Dimension(360, 812));
-//        homePage.waitForGridColumns(1);
-//        assertEquals(1, homePage.getGridColumnCount(), "Grid should have 1 column on mobile.");
     }
 }

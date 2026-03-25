@@ -7,11 +7,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.TestConfig;
 
 public class LogoutPage {
     private WebDriver driver;
-    private final String DASHBOARD_URL = Constants.HOME_URL;
+    private final String DASHBOARD_URL = TestConfig.BASE_URL;
 
     // --- Locators based on provided HTML ---
     private By userMenuButton = By.className("navbar-user-btn");

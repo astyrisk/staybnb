@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.utils.Constants;
+import com.staybnb.config.TestConfig;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RegisterPage {
     private WebDriver driver;
-    private final String PAGE_URL = Constants.REGISTER_URL;
+    private final String PAGE_URL = TestConfig.BASE_URL + "/register";
 
     // --- Locators based on provided HTML ---
     private By firstNameField = By.id("firstName");
@@ -35,6 +35,10 @@ public class RegisterPage {
 
     public void navigateTo() {
         driver.get(PAGE_URL);
+    }
+
+    public void navigateTo(String url) {
+        driver.get(url);
     }
 
     public void enterFirstName(String firstName) {
