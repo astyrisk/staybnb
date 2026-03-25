@@ -3,6 +3,7 @@ package com.staybnb.tests;
 import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
+import com.staybnb.utils.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.JavascriptExecutor;
@@ -39,11 +40,11 @@ public class EditProfileTest extends BaseTest {
         loginAsValidUser();
         editProfilePage.navigateTo();
 
-        String newFirstName = "HekoUpdated";
-        String newLastName = "NekoUpdated";
-        String newPhone = "+201556638077";
-        String newBio = "Updated bio for testing persistence.";
-        String newAvatarUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCHo3CkaH0oRY3MvrEN0xgn-x_Lsn3Lm3lVQ&s";
+        String newFirstName = TestData.EditProfile.NEW_FIRST_NAME;
+        String newLastName = TestData.EditProfile.NEW_LAST_NAME;
+        String newPhone = TestData.EditProfile.NEW_PHONE;
+        String newBio = TestData.EditProfile.NEW_BIO;
+        String newAvatarUrl = TestData.EditProfile.NEW_AVATAR_URL;
 
         editProfilePage.enterFirstName(newFirstName);
         editProfilePage.enterLastName(newLastName);
@@ -56,14 +57,9 @@ public class EditProfileTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("/profile"));
 
-        System.out.println(ownProfilePage.getFullName());
-        System.out.println(ownProfilePage.getPhone());
-        System.out.println(ownProfilePage.getBio());
-
         assertEquals(newFirstName + " " + newLastName, ownProfilePage.getFullName(), "Full name should be updated.");
         assertEquals(newPhone, ownProfilePage.getPhone(), "Phone should be updated.");
         assertEquals(newBio, ownProfilePage.getBio(), "Bio should be updated.");
-//        assertEquals(newFirstName.substring(0, 1).toUpperCase(), ownProfilePage.getAvatarStyle().contains("profile-avatar") ? "" : "Check avatar initial if text", "Avatar initial might change.");
     }
 
     @Test
@@ -75,14 +71,14 @@ public class EditProfileTest extends BaseTest {
         editProfilePage.clearField("firstName");
         editProfilePage.clickSaveChanges();
         assertTrue(editProfilePage.isValidationErrorDisplayed(), "Validation error should be displayed for empty first name.");
-        assertEquals("First name is required", editProfilePage.getFieldError("firstName"), "Error message should match.");
+        assertEquals(TestData.EditProfile.ERROR_FIRST_NAME_REQUIRED, editProfilePage.getFieldError("firstName"), "Error message should match.");
 
         // Restore first name, delete last name and try to save
         editProfilePage.enterFirstName("heko");
         editProfilePage.clearField("lastName");
         editProfilePage.clickSaveChanges();
         assertTrue(editProfilePage.isValidationErrorDisplayed(), "Validation error should be displayed for empty last name.");
-        assertEquals("Last name is required", editProfilePage.getFieldError("lastName"), "Error message should match.");
+        assertEquals(TestData.EditProfile.ERROR_LAST_NAME_REQUIRED, editProfilePage.getFieldError("lastName"), "Error message should match.");
     }
 
     @Test
@@ -102,6 +98,7 @@ public class EditProfileTest extends BaseTest {
         assertEquals(originalFirstName, editProfilePage.getFirstNameValue(), "Changes should not be saved after cancellation.");
     }
 
+    //FIX should screenshot if it fails?
     @Test
     public void testEditProfileUnauthorizedAccess() {
         // Access edit profile without logging in
@@ -116,7 +113,8 @@ public class EditProfileTest extends BaseTest {
         assertNotNull(token, "Auth token should be present in localStorage.");
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String updatePayload = "{\"firstName\": \"HekoAPI\", \"lastName\": \"NekoAPI\", \"phone\": \"+1234567890\", \"bio\": \"API Bio\", \"avatarUrl\": \"\"}";
+        String updatePayload = String.format("{\"firstName\": \"%s\", \"lastName\": \"%s\", \"phone\": \"%s\", \"bio\": \"%s\", \"avatarUrl\": \"\"}", 
+            TestData.EditProfile.API_FIRST_NAME, TestData.EditProfile.API_LAST_NAME, TestData.EditProfile.API_PHONE, TestData.EditProfile.API_BIO);
 
         Object response = js.executeAsyncScript(
             "var callback = arguments[arguments.length - 1];" +
@@ -134,6 +132,6 @@ public class EditProfileTest extends BaseTest {
 
         String jsonResponse = (String) response;
         assertNotNull(jsonResponse, "API response should not be null.");
-        assertTrue(jsonResponse.contains("\"firstName\":\"HekoAPI\""), "API should return the updated user object.");
+        assertTrue(jsonResponse.contains("\"firstName\":\"" + TestData.EditProfile.API_FIRST_NAME + "\""), "API should return the updated user object.");
     }
 }

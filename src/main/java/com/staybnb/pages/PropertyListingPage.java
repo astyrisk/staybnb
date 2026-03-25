@@ -81,8 +81,14 @@ public class PropertyListingPage {
     public int getGridColumnCount() {
         WebElement grid = driver.findElement(propertyGrid);
         String gridTemplate = grid.getCssValue("grid-template-columns");
+        System.out.println("DEBUG: grid-template-columns = " + gridTemplate);
         if (gridTemplate == null || gridTemplate.isEmpty() || gridTemplate.equals("none")) return 1;
         return gridTemplate.split(" ").length;
+    }
+
+    public void waitForGridColumns(int expectedCount) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(driver -> getGridColumnCount() == expectedCount);
     }
 
     public boolean areControlsEmpty() {

@@ -3,6 +3,7 @@ package com.staybnb.tests;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.utils.Constants;
+import com.staybnb.utils.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,10 +39,10 @@ public class OwnProfileTest extends BaseTest {
         ownProfilePage.navigateTo();
 
         assertTrue(ownProfilePage.isAvatarDisplayed(), "Avatar should be displayed.");
-        assertEquals("heko neko", ownProfilePage.getFullName(), "Full name should match.");
+        assertEquals(TestData.OwnProfile.FULL_NAME, ownProfilePage.getFullName(), "Full name should match.");
         assertTrue(ownProfilePage.getProfileMeta().contains("Member since"), "Profile meta should contain 'Member since'.");
         assertFalse(ownProfilePage.getBio().isEmpty(), "Bio should not be empty.");
-        assertEquals("+201556638077", ownProfilePage.getPhone(), "Phone number should match.");
+        assertEquals(TestData.OwnProfile.PHONE, ownProfilePage.getPhone(), "Phone number should match.");
     }
 
     @Test

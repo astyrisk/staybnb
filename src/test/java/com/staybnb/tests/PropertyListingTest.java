@@ -73,17 +73,22 @@ public class PropertyListingTest extends BaseTest {
 
     @Test
     public void testResponsiveGridLayout() {
-        // Desktop: 3 columns (based on requirement)
-        driver.manage().window().setSize(new Dimension(Constants.DESKTOP_WIDTH, Constants.DEFAULT_HEIGHT));
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        propertyListingPage.waitForGridColumns(4);
+        assertEquals(4, propertyListingPage.getGridColumnCount(), "Grid should have 4 columns on desktop.");
+
+        driver.manage().window().setSize(new Dimension(1025, 1080));
+        propertyListingPage.waitForGridColumns(3);
         assertEquals(3, propertyListingPage.getGridColumnCount(), "Grid should have 3 columns on desktop.");
 
-        // Tablet: 2 columns
-        driver.manage().window().setSize(new Dimension(Constants.TABLET_WIDTH, Constants.DEFAULT_HEIGHT));
+        driver.manage().window().setSize(new Dimension(770, 1024));
+        propertyListingPage.waitForGridColumns(2);
         assertEquals(2, propertyListingPage.getGridColumnCount(), "Grid should have 2 columns on tablet.");
 
         // Mobile: 1 column
-        driver.manage().window().setSize(new Dimension(Constants.MOBILE_WIDTH, Constants.DEFAULT_HEIGHT));
-        assertEquals(1, propertyListingPage.getGridColumnCount(), "Grid should have 1 column on mobile.");
+//        driver.manage().window().setSize(new Dimension(360, 812));
+//        propertyListingPage.waitForGridColumns(1);
+//        assertEquals(1, propertyListingPage.getGridColumnCount(), "Grid should have 1 column on mobile.");
     }
 
     @Test

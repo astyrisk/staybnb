@@ -16,7 +16,8 @@ public class HomePage {
     private By heroSection = By.className("home-hero");
     private By heroHeadline = By.cssSelector(".home-hero-content h1");
     // These might be missing from snippet but are required for tests
-    private By categoryBar = By.className("category-bar");
+    private By categoryBar = By.className("categories-bar");
+    private By categoryChips = By.className("category-chip");
     private By categoryIcons = By.className("category-icon");
     private By propertyGrid = By.className("property-grid");
     private By propertyCards = By.className("property-card");
