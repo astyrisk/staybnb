@@ -123,11 +123,7 @@ public class PropertyDetailsTest extends BaseTest {
     public void testNonExistentPropertyReturns404() {
         String nonExistentId = Constants.NON_EXISTENT_ID;
         propertyDetailsPage.navigateTo(nonExistentId);
-
-        // Verify the expected HTML structure for "Property not found"
-        String expectedHtmlSnippet = "<main style=\"flex: 1 1 0%;\"><div class=\"detail-page\"><div class=\"auth-error\">Property not found</div></div></main>";
-        assertTrue(driver.getPageSource().contains(expectedHtmlSnippet), 
-            "Page should contain the expected HTML structure for 'Property not found'.");
+        assertTrue(propertyDetailsPage.isPropertyNotFoundDisplayed());
     }
 
     @Test

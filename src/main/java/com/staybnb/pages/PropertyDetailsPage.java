@@ -123,7 +123,7 @@ public class PropertyDetailsPage {
     public boolean isPropertyNotFoundDisplayed() {
         try {
             WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(authError));
-            return error.getText().toLowerCase().contains("not found");
+            return error.getText().toLowerCase().contains("property not found");
         } catch (Exception e) {
             return false;
         }

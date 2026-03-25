@@ -27,7 +27,8 @@ public class BaseTest {
     public void commonSetup() {
         if (driver == null) {
             ChromeOptions options = new ChromeOptions();
-            if ("true".equals(System.getenv("GITHUB_ACTIONS"))) {
+            boolean isHeadless = "true".equals(System.getenv("GITHUB_ACTIONS")) || "true".equals(System.getProperty("headless"));
+            if (isHeadless) {
                 options.addArguments("--headless=new");
                 options.addArguments("--disable-gpu");
                 options.addArguments("--no-sandbox");
