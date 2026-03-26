@@ -18,7 +18,7 @@ pipeline {
                 ]) {
                     // Use 'bat' for Windows or 'sh' for Linux/macOS
                     // Since the current Jenkinsfile uses 'bat', I'll use 'bat' here too.
-                    bat """
+                    sh """
                         mvn clean test ^
                           -DTEST_BASE_URL=${params.TEST_BASE_URL} ^
                           -DTEST_USER=%TEST_USER% ^
