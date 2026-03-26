@@ -24,6 +24,7 @@ pipeline {
                 ]) {
                     sh """
                         mvn clean test \\
+                          -Dheadless=true \\
                           -DTEST_BASE_URL="${params.TEST_BASE_URL}" \\
                           -DTEST_USER="\$TEST_USER" \\
                           -DTEST_PASSWORD="\$TEST_PASSWORD"
