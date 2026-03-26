@@ -1,6 +1,12 @@
+
 // Jenkinsfile
 pipeline {
     agent any
+
+    // Tell Jenkins to load the Maven tool we just configured
+    tools {
+        maven 'maven3'
+    }
 
     parameters {
         string(
@@ -12,13 +18,6 @@ pipeline {
 
     stages {
         stage('Run Tests') {
-            // Spin up a container that has Java 21, Maven, and Chrome pre-installed
-            agent {
-                docker {
-                    image 'markhobson/maven-chrome:jdk-21'
-                    reuseNode true
-                }
-            }
             steps {
                 withCredentials([
                     string(credentialsId: 'staybnb-test-user', variable: 'TEST_USER'),
