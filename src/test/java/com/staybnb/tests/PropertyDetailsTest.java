@@ -1,14 +1,13 @@
 package com.staybnb.tests;
 
-import com.staybnb.config.TestConfig;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.utils.Constants;
+import com.staybnb.utils.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,145 +18,114 @@ public class PropertyDetailsTest extends BaseTest {
     @BeforeEach
     public void setup() {
         propertyDetailsPage = new PropertyDetailsPage(driver);
-    }
-
-    private void navigateToProperty() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.load(PROPERTY_ID);
     }
 
     @Test
     public void testPropertyTitle() {
-        navigateToProperty();
-        assertEquals("Ski Chalet in Zermatt", propertyDetailsPage.getTitle(), "Property title should match.");
+        assertEquals("Ski Chalet in Zermatt", propertyDetailsPage.getTitle(), ErrorMessages.PROPERTY_TITLE_SHOULD_MATCH);
     }
 
     @Test
     public void testPropertyLocation() {
-        navigateToProperty();
-        assertEquals("Zermatt, Switzerland", propertyDetailsPage.getLocation(), "Property location should match.");
-    }
-
-    private List<String> getPropertySpecTexts() {
-        navigateToProperty();
-        return propertyDetailsPage.getSpecs().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        assertEquals("Zermatt, Switzerland", propertyDetailsPage.getLocation(), ErrorMessages.PROPERTY_LOCATION_SHOULD_MATCH);
     }
 
     @Test
     public void testPropertyGuestCapacity() {
-        assertTrue(getPropertySpecTexts().contains("10 guests"), "Should display number of guests.");
+        assertTrue(propertyDetailsPage.getSpecTexts().contains("10 guests"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_GUESTS);
     }
 
     @Test
     public void testPropertyBedroomCount() {
-        assertTrue(getPropertySpecTexts().contains("5 bedrooms"), "Should display number of bedrooms.");
+        assertTrue(propertyDetailsPage.getSpecTexts().contains("5 bedrooms"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BEDROOMS);
     }
 
     @Test
     public void testPropertyBedCount() {
-        assertTrue(getPropertySpecTexts().contains("7 beds"), "Should display number of beds.");
+        assertTrue(propertyDetailsPage.getSpecTexts().contains("7 beds"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BEDS);
     }
 
     @Test
     public void testPropertyBathroomCount() {
-        assertTrue(getPropertySpecTexts().contains("3 bathrooms"), "Should display number of bathrooms.");
+        assertTrue(propertyDetailsPage.getSpecTexts().contains("3 bathrooms"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BATHROOMS);
     }
 
     @Test
     public void testDescriptionNotEmpty() {
-        navigateToProperty();
-        assertFalse(propertyDetailsPage.getDescription().isEmpty(), "Description should not be empty.");
+        assertFalse(propertyDetailsPage.getDescription().isEmpty(), ErrorMessages.DESCRIPTION_SHOULD_NOT_BE_EMPTY);
     }
 
     @Test
     public void testHostAvatarDisplayed() {
-        navigateToProperty();
-        assertTrue(propertyDetailsPage.isHostAvatarDisplayed(), "Host avatar should be displayed.");
+        assertTrue(propertyDetailsPage.isHostAvatarDisplayed(), ErrorMessages.HOST_AVATAR_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testHostNamePrefix() {
-        navigateToProperty();
-        assertTrue(propertyDetailsPage.getHostName().contains("Hosted by"), "Host name should include 'Hosted by'.");
+        assertTrue(propertyDetailsPage.getHostName().contains("Hosted by"), ErrorMessages.HOST_NAME_SHOULD_INCLUDE_HOSTED_BY);
     }
 
     @Test
     public void testHostNameValue() {
-        navigateToProperty();
-        assertTrue(propertyDetailsPage.getHostName().contains("John D."), "Host name should match 'John D.'.");
+        assertTrue(propertyDetailsPage.getHostName().contains("John D."), ErrorMessages.HOST_NAME_SHOULD_MATCH_JOHN_D);
     }
 
     @Test
     public void testHostMemberSincePrefix() {
-        navigateToProperty();
-        assertTrue(propertyDetailsPage.getHostSince().contains("Member since"), "Host member since date should be displayed.");
+        assertTrue(propertyDetailsPage.getHostSince().contains("Member since"), ErrorMessages.HOST_MEMBER_SINCE_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testHostMemberSinceValue() {
-        navigateToProperty();
-        assertTrue(propertyDetailsPage.getHostSince().contains("March 2026"), "Host member since date should match 'March 2026'.");
+        assertTrue(propertyDetailsPage.getHostSince().contains("March 2026"), ErrorMessages.HOST_MEMBER_SINCE_SHOULD_MATCH_MARCH_2026);
     }
 
     @Test
     public void testAmenitiesCount() {
-        navigateToProperty();
-        assertEquals(9, propertyDetailsPage.getAmenities().size(), "There should be 9 amenities.");
-    }
-
-    private List<String> getAmenityTexts() {
-        navigateToProperty();
-        return propertyDetailsPage.getAmenities().stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        assertEquals(9, propertyDetailsPage.getAmenities().size(), ErrorMessages.THERE_SHOULD_BE_9_AMENITIES);
     }
 
     @Test
     public void testWiFiAmenityPresent() {
-        assertTrue(getAmenityTexts().stream().anyMatch(t -> t.contains("WiFi")), "WiFi should be listed.");
+        assertTrue(propertyDetailsPage.getAmenityTexts().stream().anyMatch(t -> t.contains("WiFi")), ErrorMessages.WIFI_SHOULD_BE_LISTED);
     }
 
     @Test
     public void testSkiAccessAmenityPresent() {
-        assertTrue(getAmenityTexts().stream().anyMatch(t -> t.contains("Ski Access")), "Ski Access should be listed.");
+        assertTrue(propertyDetailsPage.getAmenityTexts().stream().anyMatch(t -> t.contains("Ski Access")), ErrorMessages.SKI_ACCESS_SHOULD_BE_LISTED);
     }
 
     @Test
     public void testPriceIsPositive() {
-        navigateToProperty();
         String numericPrice = propertyDetailsPage.getPrice().replaceAll("[^0-9]", "");
-        assertTrue(Integer.parseInt(numericPrice) > 0, "Price should be a positive number.");
+        assertTrue(Integer.parseInt(numericPrice) > 0, ErrorMessages.PRICE_SHOULD_BE_A_POSITIVE_NUMBER);
     }
 
     @Test
     public void testNonExistentPropertyReturns404() {
-        propertyDetailsPage.navigateTo(Constants.NON_EXISTENT_ID);
+        propertyDetailsPage.load(Constants.NON_EXISTENT_ID);
         assertTrue(propertyDetailsPage.isPropertyNotFoundDisplayed());
     }
 
     @Test
     public void testAbsenceOfBookingWidget() {
-        navigateToProperty();
-        assertFalse(propertyDetailsPage.isBookingWidgetPresent(), "Booking widget should be absent.");
+        assertFalse(propertyDetailsPage.isBookingWidgetPresent(), ErrorMessages.BOOKING_WIDGET_SHOULD_BE_ABSENT);
     }
 
     @Test
     public void testAbsenceOfReviewsSection() {
-        navigateToProperty();
-        assertFalse(propertyDetailsPage.isReviewsSectionPresent(), "Reviews section should be absent.");
+        assertFalse(propertyDetailsPage.isReviewsSectionPresent(), ErrorMessages.REVIEWS_SECTION_SHOULD_BE_ABSENT);
     }
 
     @Test
     public void testImageGalleryHasImages() {
-        navigateToProperty();
-        assertTrue(propertyDetailsPage.getGalleryImages().size() >= 1, "There should be at least one image.");
+        assertTrue(propertyDetailsPage.getGalleryImages().size() >= 1, ErrorMessages.THERE_SHOULD_BE_AT_LEAST_ONE_IMAGE);
     }
 
     @Test
     public void testFirstImageAltText() {
-        navigateToProperty();
         List<WebElement> images = propertyDetailsPage.getGalleryImages();
-        assertEquals("Living Room", images.get(0).getAttribute("alt"), "First image should be 'Living Room'.");
+        assertEquals("Living Room", images.get(0).getAttribute("alt"), ErrorMessages.FIRST_IMAGE_SHOULD_BE_LIVING_ROOM);
     }
 }

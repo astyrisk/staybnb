@@ -1,94 +1,117 @@
 package com.staybnb.pages;
 
+import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
-import com.staybnb.config.TestConfig;
+import com.staybnb.utils.Constants;
 
-public class EditProfilePage {
-    private WebDriver driver;
-    private final String PAGE_URL = TestConfig.BASE_URL + "/profile/edit";
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
-    private By firstNameField = By.id("firstName");
-    private By lastNameField = By.id("lastName");
-    private By phoneField = By.id("phone");
-    private By bioField = By.id("bio");
-    private By avatarUrlField = By.id("avatarUrl");
-    private By saveChangesButton = By.xpath("//button[text()='Save Changes']");
-    private By cancelButton = By.xpath("//button[text()='Cancel']");
-    private By validationError = By.cssSelector(".error, .field-error, .auth-error");
+public class EditProfilePage extends BasePage {
+    private static final String PAGE_URL = Constants.EDIT_PROFILE_URL;
+    private static final String UPDATE_PROFILE_API_JS_RESOURCE = "com/staybnb/scripts/updateMyProfileApi.js";
+
+    private By firstNameField = Locators.EditProfile.FIRST_NAME_FIELD;
+    private By lastNameField = Locators.EditProfile.LAST_NAME_FIELD;
+    private By phoneField = Locators.EditProfile.PHONE_FIELD;
+    private By bioField = Locators.EditProfile.BIO_FIELD;
+    private By avatarUrlField = Locators.EditProfile.AVATAR_URL_FIELD;
+    private By saveChangesButton = Locators.EditProfile.SAVE_CHANGES_BUTTON;
+    private By cancelButton = Locators.EditProfile.CANCEL_BUTTON;
+    private By validationError = Locators.EditProfile.VALIDATION_ERROR;
 
     public EditProfilePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+    }
+
+    public void load() {
+        super.navigateTo(PAGE_URL);
+        waitForEditProfileToLoad();
     }
 
     public void navigateTo() {
-        driver.get(PAGE_URL);
-    }
-
-    public void navigateTo(String url) {
-        driver.get(url);
+        load();
     }
 
     public void enterFirstName(String firstName) {
-        WebElement el = driver.findElement(firstNameField);
-        el.clear();
-        el.sendKeys(firstName);
+        type(firstNameField, firstName);
     }
 
     public void enterLastName(String lastName) {
-        WebElement el = driver.findElement(lastNameField);
-        el.clear();
-        el.sendKeys(lastName);
+        type(lastNameField, lastName);
     }
 
     public void enterPhone(String phone) {
-        WebElement el = driver.findElement(phoneField);
-        el.clear();
-        el.sendKeys(phone);
+        type(phoneField, phone);
     }
 
     public void enterBio(String bio) {
-        WebElement el = driver.findElement(bioField);
-        el.clear();
-        el.sendKeys(bio);
+        type(bioField, bio);
     }
 
     public void enterAvatarUrl(String avatarUrl) {
-        WebElement el = driver.findElement(avatarUrlField);
-        el.clear();
-        el.sendKeys(avatarUrl);
+        type(avatarUrlField, avatarUrl);
+    }
+
+    public void updateProfile(String firstName, String lastName, String phone, String bio, String avatarUrl) {
+        load();
+        enterFirstName(firstName);
+        enterLastName(lastName);
+        enterPhone(phone);
+        enterBio(bio);
+        enterAvatarUrl(avatarUrl);
+        clickSaveChanges();
+        waitForUrlContains("/profile");
+    }
+
+    public void submitWithEmptyFirstName() {
+        load();
+        clearField("firstName");
+        clickSaveChanges();
+    }
+
+    public void submitWithEmptyLastName(String firstName) {
+        load();
+        enterFirstName(firstName);
+        clearField("lastName");
+        clickSaveChanges();
+    }
+
+    public String attemptFirstNameChangeThenCancel(String newFirstName) {
+        load();
+        String originalFirstName = getFirstNameValue();
+        enterFirstName(newFirstName);
+        clickCancel();
+        waitForUrlContains("/profile");
+        load();
+        return originalFirstName;
     }
 
     public void clearField(String fieldId) {
-        WebElement el = driver.findElement(By.id(fieldId));
+        WebElement el = waitForElementVisible(By.id(fieldId));
         el.sendKeys(Keys.CONTROL + "a");
         el.sendKeys(Keys.BACK_SPACE);
     }
 
     public void clickSaveChanges() {
-        driver.findElement(saveChangesButton).click();
+        waitForElementClickable(saveChangesButton).click();
     }
 
     public void clickCancel() {
-        driver.findElement(cancelButton).click();
+        waitForElementClickable(cancelButton).click();
     }
 
     public boolean isValidationErrorDisplayed() {
-        try {
-            return driver.findElement(validationError).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(validationError);
     }
 
     public String getFieldError(String fieldId) {
         try {
-            // Find the span with class field-error that is a sibling or child of the group containing the input
             return driver.findElement(By.xpath("//input[@id='" + fieldId + "']/following-sibling::span[@class='field-error']")).getText();
         } catch (Exception e) {
             return "";
@@ -100,10 +123,37 @@ public class EditProfilePage {
     }
 
     public String getFirstNameValue() {
-        return driver.findElement(firstNameField).getAttribute("value");
+        return waitForElementVisible(firstNameField).getAttribute("value");
     }
 
     public String getLastNameValue() {
-        return driver.findElement(lastNameField).getAttribute("value");
+        return waitForElementVisible(lastNameField).getAttribute("value");
+    }
+
+    public String updateMyProfileViaApi(String updatePayloadJson) {
+        driver.get(Constants.HOME_URL);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String script = loadJavascriptResource(UPDATE_PROFILE_API_JS_RESOURCE);
+        Object response = js.executeAsyncScript(script, Constants.SLUG, updatePayloadJson);
+        return (String) response;
+    }
+
+    private void waitForEditProfileToLoad() {
+        wait.until(d ->
+                d.findElements(firstNameField).size() > 0 ||
+                d.getPageSource().contains("401") ||
+                d.getPageSource().contains("Unauthorized")
+        );
+    }
+
+    private String loadJavascriptResource(String resourcePath) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
+            }
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
+        }
     }
 }

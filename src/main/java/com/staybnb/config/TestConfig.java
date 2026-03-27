@@ -6,8 +6,10 @@ public class TestConfig {
     private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     public static final String BASE_URL = getProperty("TEST_BASE_URL");
-    public static final String TEST_USERNAME = getProperty("TEST_USER");
+    public static final String TEST_USER_EMAIL = getProperty("TEST_USER_EMAIL");
     public static final String TEST_PASSWORD = getProperty("TEST_PASSWORD");
+    public static final String TEST_FIRST_NAME = getProperty("TEST_FIRST_NAME");
+    public static final String TEST_LAST_NAME = getProperty("TEST_LAST_NAME");
 
     private static String getProperty(String key) {
         // 1. Check System Property (set via -D flag or Jenkins)

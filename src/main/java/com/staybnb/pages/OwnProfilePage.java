@@ -1,81 +1,113 @@
 package com.staybnb.pages;
 
+import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import java.time.Duration;
-import com.staybnb.config.TestConfig;
+import com.staybnb.utils.Constants;
 
-public class OwnProfilePage {
-    private WebDriver driver;
-    private final String PAGE_URL = TestConfig.BASE_URL + "/profile";
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
-    // --- Locators based on provided HTML ---
-    private By profileAvatar = By.className("profile-avatar");
-    private By profileName = By.className("profile-name");
-    private By profileMeta = By.className("profile-meta");
-    private By bioText = By.xpath("//h2[text()='About']/following-sibling::p");
-    private By phoneText = By.xpath("//h2[text()='Phone']/following-sibling::p");
-    private By emailText = By.xpath("//h2[text()='Email']/following-sibling::p");
-    private By editProfileButton = By.xpath("//div[@class='profile-actions']/a[contains(text(), 'Edit Profile')]");
+public class OwnProfilePage extends BasePage {
+    private static final String PAGE_URL = Constants.PROFILE_URL;
+    private static final String AUTH_ME_API_JS_RESOURCE = "com/staybnb/scripts/getAuthMeApi.js";
+    private static final String AUTH_ME_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/getAuthMeStatusApi.js";
+
+    private By profileAvatar = Locators.OwnProfile.PROFILE_AVATAR;
+    private By profileName = Locators.OwnProfile.PROFILE_NAME;
+    private By profileMeta = Locators.OwnProfile.PROFILE_META;
+    private By editProfileButton = Locators.OwnProfile.EDIT_PROFILE_BUTTON;
 
     public OwnProfilePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+    }
+
+    public void load() {
+        navigateTo(PAGE_URL);
+        waitForProfileToLoad();
     }
 
     public void navigateTo() {
-        driver.get(PAGE_URL);
-    }
-
-    public void navigateTo(String url) {
-        driver.get(url);
+        load();
     }
 
     public boolean isAvatarDisplayed() {
-        return driver.findElement(profileAvatar).isDisplayed();
+        return isDisplayed(profileAvatar);
     }
 
     public String getAvatarStyle() {
-        return driver.findElement(profileAvatar).getAttribute("class"); // Usually for checking large/circular via CSS classes
+        return driver.findElement(profileAvatar).getAttribute("class");
     }
 
     public String getFullName() {
-        return driver.findElement(profileName).getText();
+        return waitForElementVisible(profileName).getText();
     }
 
     public String getProfileMeta() {
-        return driver.findElement(profileMeta).getText();
+        return waitForElementVisible(profileMeta).getText();
     }
 
     public String getBio() {
-        return driver.findElement(profileBioLocator()).getText();
-    }
-
-    private By profileBioLocator() {
-        // Bio is under 'About' section
-        return By.xpath("//div[h2='About']/p");
+        return waitForElementVisible(Locators.OwnProfile.BIO_TEXT).getText();
     }
 
     public String getPhone() {
-        return driver.findElement(By.xpath("//div[h2='Phone']/p")).getText();
+        return waitForElementVisible(Locators.OwnProfile.PHONE_TEXT).getText();
     }
 
     public String getEmail() {
-        return driver.findElement(By.xpath("//div[h2='Email']/p")).getText();
+        return waitForElementVisible(Locators.OwnProfile.EMAIL_TEXT).getText();
     }
 
     public void clickEditProfile() {
-        driver.findElement(editProfileButton).click();
+        click(editProfileButton);
     }
 
     public boolean isEditProfileButtonVisible() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(editProfileButton)).isDisplayed();
-        } catch (Exception e) {
-            return false;
+        return isDisplayed(editProfileButton);
+    }
+
+    public String getAuthMeApiResponse() {
+        // Ensure we're on the app origin so the relative `/api/...` endpoint resolves correctly.
+        driver.get(Constants.HOME_URL);
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String script = loadJavascriptResource(AUTH_ME_API_JS_RESOURCE);
+        Object response = js.executeAsyncScript(script, Constants.SLUG);
+        return (String) response;
+    }
+
+    public long getAuthMeApiStatusLoggedOut() {
+        driver.get(Constants.HOME_URL);
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String script = loadJavascriptResource(AUTH_ME_STATUS_API_JS_RESOURCE);
+        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG);
+        if (responseStatus instanceof Number n) {
+            return n.longValue();
+        }
+        throw new RuntimeException("Unexpected auth/me status response type: " +
+                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
+    }
+
+    private void waitForProfileToLoad() {
+        wait.until(d ->
+                d.findElements(profileAvatar).size() > 0 ||
+                d.findElements(profileName).size() > 0 ||
+                d.findElements(profileMeta).size() > 0
+        );
+    }
+
+    private String loadJavascriptResource(String resourcePath) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
+            }
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
         }
     }
 }

@@ -1,121 +1,109 @@
 package com.staybnb.tests;
 
 import com.staybnb.config.TestConfig;
+import com.staybnb.utils.ErrorMessages;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.Navbar;
 import com.staybnb.pages.PropertyDetailsPage;
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class NavbarTest extends BaseTest {
-    private static final Logger log = LoggerFactory.getLogger(NavbarTest.class);
     private Navbar navbar;
     private LoginPage loginPage;
-    private PropertyDetailsPage propertyPage;
-    private final String BASE_URL = TestConfig.BASE_URL;
-    private final String PROPERTY_URL = TestConfig.BASE_URL + "/properties/202";
+    private PropertyDetailsPage propertyDetailsPage;
+
+    private static final String PROPERTY_ID = Constants.DEFAULT_PROPERTY_ID;
 
     @BeforeEach
     public void setup() {
         navbar = new Navbar(driver);
         loginPage = new LoginPage(driver);
-        propertyPage = new PropertyDetailsPage(driver);
-    }
-
-    private void login() {
-        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
-        loginPage.login(TestConfig.TEST_USERNAME, TestConfig.TEST_PASSWORD);
-        getWait(5).until(ExpectedConditions.urlContains("/"));
+        propertyDetailsPage = new PropertyDetailsPage(driver);
+        loginPage.load();
     }
 
     // --- Authenticated User Tests ---
 
     @Test
     public void testNavbarLogoDisplayedAuthenticated() {
-        login();
-        driver.get(PROPERTY_URL);
-
-        assertTrue(navbar.isLogoDisplayed(), "Logo should be displayed");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertTrue(navbar.isLogoDisplayed(), ErrorMessages.NAVBAR_LOGO_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testNavbarUserAvatarDisplayedAuthenticated() {
-        login();
-        driver.get(PROPERTY_URL);
-        assertTrue(navbar.isUserAvatarDisplayed(), "User avatar should be displayed for logged-in user");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertTrue(navbar.isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_BE_DISPLAYED_FOR_AUTHENTICATED_USER);
     }
 
     @Test
     public void testNavbarLoginLinkNotDisplayedAuthenticated() {
-        login();
-        driver.get(PROPERTY_URL);
-        assertFalse(navbar.isLoginLinkDisplayed(), "Login link should not be displayed for logged-in user");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertFalse(navbar.isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_NOT_BE_DISPLAYED_FOR_AUTHENTICATED_USER);
     }
 
     @Test
     public void testNavbarProfileLinkDisplayedInDropdown() {
-        login();
-        driver.get(PROPERTY_URL);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
         navbar.openUserMenu();
-        assertTrue(navbar.isProfileLinkDisplayed(), "Profile link should be in dropdown");
+        assertTrue(navbar.isProfileLinkDisplayed(), ErrorMessages.NAVBAR_PROFILE_LINK_SHOULD_BE_IN_DROPDOWN);
     }
 
     @Test
     public void testNavbarLogoutButtonDisplayedInDropdown() {
-        login();
-        driver.get(PROPERTY_URL);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
         navbar.openUserMenu();
-        assertTrue(navbar.isLogoutButtonDisplayed(), "Logout button should be in dropdown");
+        assertTrue(navbar.isLogoutButtonDisplayed(), ErrorMessages.NAVBAR_LOGOUT_BUTTON_SHOULD_BE_IN_DROPDOWN);
     }
 
     @Test
     public void testClickProfileInDropdown() {
-        login();
-        driver.get(PROPERTY_URL);
-        navbar.clickProfile();
-        getWait(5).until(ExpectedConditions.urlContains("/profile"));
-        assertTrue(driver.getCurrentUrl().contains("/profile"), "Should navigate to profile page");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
+        navbar.clickProfileAndWaitForRedirect();
+        assertTrue(driver.getCurrentUrl().contains(Constants.PROFILE_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_PROFILE_PAGE);
     }
 
     @Test
     public void testClickLogoutInDropdownRedirection() {
-        login();
-        driver.get(PROPERTY_URL);
-        navbar.clickLogout();
-        getWait(5).until(ExpectedConditions.urlContains("/"));
-        assertTrue(driver.getCurrentUrl().contains("/"), "Should redirect to login page after logout");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
+        navbar.clickLogoutAndWaitForRedirectToHome();
+        assertTrue(driver.getCurrentUrl().contains(Constants.HOME_URL), ErrorMessages.NAVBAR_SHOULD_REDIRECT_TO_HOME_AFTER_LOGOUT);
     }
 
     @Test
     public void testClickLogoutInDropdownLoginLinkVisibility() {
-        login();
-        driver.get(PROPERTY_URL);
-        navbar.clickLogout();
-        getWait(5).until(ExpectedConditions.urlContains("/"));
-        assertTrue(navbar.isLoginLinkDisplayed(), "Should show login link after logout");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
+        navbar.clickLogoutAndWaitForRedirectToHome();
+        assertTrue(navbar.isLoginLinkDisplayed(), ErrorMessages.NAVBAR_SHOULD_SHOW_LOGIN_LINK_AFTER_LOGOUT);
     }
 
     @Test
     public void testNavbarHamburgerMenuDisplayedOnMobileAuthenticated() {
-        login();
-        driver.get(PROPERTY_URL);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
         navbar.setMobileLayout();
-        assertTrue(navbar.isHamburgerMenuDisplayed(), "Hamburger menu should be displayed on mobile");
+        assertTrue(navbar.isHamburgerMenuDisplayed(), ErrorMessages.NAVBAR_HAMBURGER_MENU_SHOULD_BE_DISPLAYED_ON_MOBILE);
         navbar.setDesktopLayout();
     }
 
     @Test
     public void testNavbarUserAvatarDisplayedOnMobileAuthenticated() {
-        login();
-        driver.get(PROPERTY_URL);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        propertyDetailsPage.load(PROPERTY_ID);
         navbar.setMobileLayout();
-        assertTrue(navbar.isUserAvatarDisplayed(), "User avatar should still be visible on mobile as part of the menu button");
+        assertTrue(navbar.isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_BE_VISIBLE_ON_MOBILE_MENU_BUTTON);
         navbar.setDesktopLayout();
     }
 
@@ -123,69 +111,67 @@ public class NavbarTest extends BaseTest {
 
     @Test
     public void testNavbarLogoDisplayedVisitor() {
-        driver.get(PROPERTY_URL);
-        assertTrue(navbar.isLogoDisplayed(), "Logo should be displayed");
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertTrue(navbar.isLogoDisplayed(), ErrorMessages.NAVBAR_LOGO_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testNavbarLoginLinkDisplayedVisitor() {
-        driver.get(PROPERTY_URL);
-        assertTrue(navbar.isLoginLinkDisplayed(), "Login link should be displayed for visitor");
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertTrue(navbar.isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR);
     }
 
     @Test
     public void testNavbarRegisterLinkDisplayedVisitor() {
-        driver.get(PROPERTY_URL);
-        assertTrue(navbar.isRegisterLinkDisplayed(), "Register link should be displayed for visitor");
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertTrue(navbar.isRegisterLinkDisplayed(), ErrorMessages.NAVBAR_REGISTER_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR);
     }
 
     @Test
     public void testNavbarUserAvatarNotDisplayedVisitor() {
-        driver.get(PROPERTY_URL);
-        assertFalse(navbar.isUserAvatarDisplayed(), "User avatar should not be displayed for visitor");
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertFalse(navbar.isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_NOT_BE_DISPLAYED_FOR_VISITOR);
     }
 
     @Test
     public void testClickLoginLink() {
-        driver.get(PROPERTY_URL);
-        navbar.clickLogin();
-        getWait(5).until(ExpectedConditions.urlContains("/login"));
-        assertTrue(driver.getCurrentUrl().endsWith("/login"), "Should navigate to login page");
+        propertyDetailsPage.load(PROPERTY_ID);
+        navbar.clickLoginAndWaitForRedirect();
+        assertTrue(driver.getCurrentUrl().contains(Constants.LOGIN_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_LOGIN_PAGE);
     }
 
     @Test
     public void testClickRegisterLink() {
-        driver.get(PROPERTY_URL);
-        navbar.clickRegister();
-        getWait(5).until(ExpectedConditions.urlContains("/register"));
-        assertTrue(driver.getCurrentUrl().endsWith("/register"), "Should navigate to register page");
+        propertyDetailsPage.load(PROPERTY_ID);
+        navbar.clickRegisterAndWaitForRedirect();
+        assertTrue(driver.getCurrentUrl().contains(Constants.REGISTER_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_REGISTER_PAGE);
     }
 
     @Test
     public void testNavbarUserAvatarNotDisplayedExclusion() {
-        driver.get(PROPERTY_URL);
-        assertFalse(navbar.isUserAvatarDisplayed(), "Visitor should not see user avatar");
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertFalse(navbar.isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_NOT_BE_DISPLAYED_FOR_VISITOR);
     }
 
     @Test
     public void testNavbarDropdownNotDisplayedVisitor() {
-        driver.get(PROPERTY_URL);
-        assertFalse(navbar.isDropdownDisplayed(), "Visitor should not see user dropdown");
+        propertyDetailsPage.load(PROPERTY_ID);
+        assertFalse(navbar.isDropdownDisplayed(), ErrorMessages.NAVBAR_SHOULD_NOT_DISPLAY_DROPDOWN_FOR_VISITOR);
     }
 
     @Test
     public void testNavbarHamburgerMenuNotDisplayedOnMobileVisitor() {
-        driver.get(PROPERTY_URL);
+        propertyDetailsPage.load(PROPERTY_ID);
         navbar.setMobileLayout();
-        assertFalse(navbar.isHamburgerMenuDisplayed(), "Hamburger menu should NOT be displayed for visitors on mobile");
+        assertFalse(navbar.isHamburgerMenuDisplayed(), ErrorMessages.NAVBAR_HAMBURGER_MENU_SHOULD_NOT_BE_DISPLAYED_ON_MOBILE_VISITOR);
         navbar.setDesktopLayout();
     }
 
     @Test
     public void testNavbarLoginLinkDisplayedOnMobileVisitor() {
-        driver.get(PROPERTY_URL);
+        propertyDetailsPage.load(PROPERTY_ID);
         navbar.setMobileLayout();
-        assertTrue(navbar.isLoginLinkDisplayed(), "Login link should be visible for visitors on mobile");
+        assertTrue(navbar.isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_BE_VISIBLE_ON_MOBILE_VISITOR);
         navbar.setDesktopLayout();
     }
 }

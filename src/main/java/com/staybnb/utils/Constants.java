@@ -1,6 +1,8 @@
 package com.staybnb.utils;
 
-public class Constants {
+public final class Constants {
+    private Constants() {}
+
     // Base URLs
     public static final String SLUG = "automation-adel";
     public static final String BASE_URL = "https://qa-playground.nixdev.co/t/" + SLUG;
@@ -12,20 +14,15 @@ public class Constants {
     public static final String HOME_URL = BASE_URL;
     public static final String PROFILE_URL = BASE_URL + "/profile";
     public static final String EDIT_PROFILE_URL = BASE_URL + "/profile/edit";
+    public static final String PROPERTY_LISTING_URL = BASE_URL + "/properties";
     public static final String PROPERTY_DETAILS_BASE_URL = BASE_URL + "/properties/";
     public static final String OTHER_PROFILE_BASE_URL = BASE_URL + "/users/";
-
-    // Valid Credentials
-    public static final String VALID_EMAIL = "tezo@gmail.com";
-    public static final String VALID_PASSWORD = "tezo0105";
 
     // Invalid Credentials
     public static final String INVALID_EMAIL = "wronguser@gmail.com";
     public static final String INVALID_PASSWORD = "WrongPassword123!";
     
     // Test Data
-    public static final String TEST_USER_FIRST_NAME = "Test";
-    public static final String TEST_USER_LAST_NAME = "User";
     public static final String DEFAULT_PASSWORD = "password123";
 
     // Common IDs
@@ -45,6 +42,34 @@ public class Constants {
     public static final int MOBILE_WIDTH = 375;
     public static final int DEFAULT_HEIGHT = 800;
 
+    // Test viewport dimensions (explicit sizes used in UI tests)
+    public static final int WIDE_DESKTOP_WIDTH = 1920;
+    public static final int WIDE_DESKTOP_HEIGHT = 1080;
+    public static final int MEDIUM_DESKTOP_WIDTH = 1025;
+    public static final int MEDIUM_DESKTOP_HEIGHT = 1080;
+    public static final int TABLET_TEST_WIDTH = 770;
+    public static final int TABLET_TEST_HEIGHT = 1024;
+
     // Error Messages & Codes
     public static final String PROPERTY_NOT_FOUND_CODE = "PROPERTY_NOT_FOUND";
+
+    // Own Profile Test Data
+    public static final class OwnProfile {
+        public static final String FULL_NAME = "HekoAPI NekoAPI";
+        public static final String PHONE = "+1234567890";
+    }
+
+    // Edit Profile Test Data
+    public static final class EditProfile {
+        public static final String NEW_FIRST_NAME = "HekoUpdated";
+        public static final String NEW_LAST_NAME = "NekoUpdated";
+        public static final String NEW_PHONE = "+201556638077";
+        public static final String NEW_BIO = "Updated bio for testing persistence.";
+        public static final String NEW_AVATAR_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCHo3CkaH0oRY3MvrEN0xgn-x_Lsn3Lm3lVQ&s";
+
+        public static final String API_FIRST_NAME = "HekoAPI";
+        public static final String API_LAST_NAME = "NekoAPI";
+        public static final String API_PHONE = "+1234567890";
+        public static final String API_BIO = "API Bio";
+    }
 }

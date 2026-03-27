@@ -3,10 +3,9 @@ package com.staybnb.tests;
 import com.staybnb.config.TestConfig;
 import com.staybnb.pages.RegisterPage;
 import com.staybnb.utils.Constants;
+import com.staybnb.utils.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,36 +15,40 @@ public class RegisterTest extends BaseTest {
     @BeforeEach
     public void setup() {
         registerPage = new RegisterPage(driver);
+        registerPage.load();
     }
 
     @Test
     public void testSuccessfulRegistration() {
         String uniqueEmail = "testuser_" + System.currentTimeMillis() + "@gmail.com";
-        registerPage.navigateTo(TestConfig.BASE_URL + "/register");
-        registerPage.fillCompleteRegistration(Constants.TEST_USER_FIRST_NAME, Constants.TEST_USER_LAST_NAME, uniqueEmail, Constants.DEFAULT_PASSWORD);
-        registerPage.clickRegister();
 
-        WebDriverWait wait = getWait(Constants.MEDIUM_WAIT);
-        wait.until(ExpectedConditions.urlToBe(TestConfig.BASE_URL));
-        assertEquals(TestConfig.BASE_URL, driver.getCurrentUrl());
+        registerPage.registerAndWaitForUrl(
+                TestConfig.TEST_FIRST_NAME,
+                TestConfig.TEST_LAST_NAME,
+                uniqueEmail,
+                TestConfig.TEST_PASSWORD,
+                Constants.HOME_URL
+        );
+        assertEquals(Constants.HOME_URL, driver.getCurrentUrl());
     }
 
     @Test
     public void testRegistrationWithExistingEmail() {
-        registerPage.navigateTo(TestConfig.BASE_URL + "/register");
-        registerPage.fillCompleteRegistration("Existing", "User", TestConfig.TEST_USERNAME, Constants.DEFAULT_PASSWORD);
-        registerPage.clickRegister();
+        registerPage.submitRegistration(
+                TestConfig.TEST_FIRST_NAME,
+                TestConfig.TEST_LAST_NAME,
+                TestConfig.TEST_USER_EMAIL,
+                TestConfig.TEST_PASSWORD
+        );
 
         String error = registerPage.getGlobalErrorMessageText();
         assertTrue(error.toLowerCase().contains("exists") || error.toLowerCase().contains("already"), 
-                "Expected 'email already exists' error message.");
+                ErrorMessages.EXPECTED_EMAIL_ALREADY_EXISTS);
     }
 
     @Test
     public void testRegistrationBlankFields() {
-        registerPage.navigateTo(TestConfig.BASE_URL + "/register");
         registerPage.clickRegister();
-
-        assertTrue(registerPage.isInlineErrorDisplayed("required"));
+        assertTrue(registerPage.isInlineErrorDisplayed(ErrorMessages.REQUIRED));
     }
 }

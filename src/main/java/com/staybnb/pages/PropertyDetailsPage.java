@@ -1,115 +1,106 @@
 package com.staybnb.pages;
 
+import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 import java.util.List;
-import com.staybnb.config.TestConfig;
+import java.util.stream.Collectors;
+import com.staybnb.utils.Constants;
 
-public class PropertyDetailsPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
-    private final String BASE_URL = TestConfig.BASE_URL + "/properties/";
+public class PropertyDetailsPage extends BasePage {
+    private final String BASE_URL = Constants.PROPERTY_DETAILS_BASE_URL;
 
-    // Locators
-    private By detailTitle = By.className("detail-title");
-    private By detailLocation = By.className("detail-location");
-    private By detailType = By.className("detail-category"); // Assuming this based on requirements
-    private By detailSpecs = By.cssSelector(".detail-main .detail-specs span");
-    private By detailDescription = By.className("detail-description");
-    private By showMoreBtn = By.className("detail-description-toggle"); 
-    private By hostAvatar = By.className("detail-host-avatar");
-    private By hostName = By.className("detail-host-name");
-    private By hostSince = By.className("detail-host-since");
-    private By amenityItems = By.className("detail-amenity");
-    private By showAllAmenitiesBtn = By.className("detail-amenities-show-all");
-    private By priceAmount = By.className("detail-price-amount");
-    private By authError = By.className("auth-error");
-    private By bookingWidget = By.className("detail-booking-widget");
-    private By reviewsSection = By.className("detail-reviews");
+    private By detailTitle = Locators.PropertyDetails.DETAIL_TITLE;
+    private By detailLocation = Locators.PropertyDetails.DETAIL_LOCATION;
+    private By detailType = Locators.PropertyDetails.DETAIL_TYPE;
+    private By detailSpecs = Locators.PropertyDetails.DETAIL_SPECS;
+    private By detailDescription = Locators.PropertyDetails.DETAIL_DESCRIPTION;
+    private By showMoreBtn = Locators.PropertyDetails.SHOW_MORE_BUTTON;
+    private By hostAvatar = Locators.PropertyDetails.HOST_AVATAR;
+    private By hostName = Locators.PropertyDetails.HOST_NAME;
+    private By hostSince = Locators.PropertyDetails.HOST_SINCE;
+    private By amenityItems = Locators.PropertyDetails.AMENITY_ITEMS;
+    private By showAllAmenitiesBtn = Locators.PropertyDetails.SHOW_ALL_AMENITIES_BUTTON;
+    private By priceAmount = Locators.PropertyDetails.PRICE_AMOUNT;
+    private By authError = Locators.PropertyDetails.AUTH_ERROR;
+    private By bookingWidget = Locators.PropertyDetails.BOOKING_WIDGET;
+    private By reviewsSection = Locators.PropertyDetails.REVIEWS_SECTION;
 
-    // Gallery Locators
-    private By galleryContainer = By.className("detail-gallery");
-    private By galleryImages = By.cssSelector(".detail-gallery img");
-    private By showAllPhotosBtn = By.className("show-all-photos-btn"); // Assuming
-    private By galleryModal = By.className("gallery-modal"); // Assuming
-    private By galleryCarousel = By.className("detail-gallery-carousel"); // Assuming for mobile
+    private By galleryImages = Locators.PropertyDetails.GALLERY_IMAGES;
+    private By showAllPhotosBtn = Locators.PropertyDetails.SHOW_ALL_PHOTOS_BUTTON;
+    private By galleryModal = Locators.PropertyDetails.GALLERY_MODAL;
+    private By galleryCarousel = Locators.PropertyDetails.GALLERY_CAROUSEL;
 
     public PropertyDetailsPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        super(driver);
+    }
+
+    public void load(String propertyId) {
+        // Use BasePage navigation to avoid infinite recursion.
+        super.navigateTo(BASE_URL + propertyId);
+        waitForDetailsToLoad();
     }
 
     public void navigateTo(String propertyId) {
-        driver.get(BASE_URL + propertyId);
+        super.navigateTo(BASE_URL + propertyId);
+        waitForDetailsToLoad();
     }
 
     public String getTitle() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(detailTitle)).getText();
+        return waitForElementVisible(detailTitle).getText();
     }
 
     public String getLocation() {
-        return driver.findElement(detailLocation).getText();
+        return waitForElementVisible(detailLocation).getText();
     }
 
     public String getType() {
         try {
-            return driver.findElement(detailType).getText();
+            return getText(detailType);
         } catch (Exception e) {
             return "";
         }
     }
 
     public List<WebElement> getSpecs() {
-        return driver.findElements(detailSpecs);
+        return waitForElementsPresent(detailSpecs);
     }
 
     public String getDescription() {
-        return driver.findElement(detailDescription).getText();
+        return waitForElementVisible(detailDescription).getText();
     }
 
     public boolean isShowMoreButtonDisplayed() {
-        try {
-            return driver.findElement(showMoreBtn).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(showMoreBtn);
     }
 
     public void clickShowMore() {
-        driver.findElement(showMoreBtn).click();
+        click(showMoreBtn);
     }
 
     public boolean isHostAvatarDisplayed() {
-        return driver.findElement(hostAvatar).isDisplayed();
+        return isDisplayed(hostAvatar);
     }
 
     public String getHostName() {
-        return driver.findElement(hostName).getText();
+        return waitForElementVisible(hostName).getText();
     }
 
     public String getHostSince() {
-        return driver.findElement(hostSince).getText();
+        return waitForElementVisible(hostSince).getText();
     }
 
     public List<WebElement> getAmenities() {
-        return driver.findElements(amenityItems);
+        return waitForElementsPresent(amenityItems);
     }
 
     public boolean isShowAllAmenitiesButtonDisplayed() {
-        try {
-            return driver.findElement(showAllAmenitiesBtn).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(showAllAmenitiesBtn);
     }
 
     public String getPrice() {
-        return driver.findElement(priceAmount).getText();
+        return waitForElementVisible(priceAmount).getText();
     }
 
     public boolean isBookingWidgetPresent() {
@@ -122,7 +113,7 @@ public class PropertyDetailsPage {
 
     public boolean isPropertyNotFoundDisplayed() {
         try {
-            WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(authError));
+            WebElement error = waitForElementVisible(authError);
             return error.getText().toLowerCase().contains("property not found");
         } catch (Exception e) {
             return false;
@@ -131,34 +122,44 @@ public class PropertyDetailsPage {
 
     public String getErrorMessage() {
         try {
-            return driver.findElement(authError).getText();
+            return getText(authError);
         } catch (Exception e) {
             return "";
         }
     }
 
-    // Gallery Methods
     public List<WebElement> getGalleryImages() {
-        return driver.findElements(galleryImages);
+        return waitForElementsPresent(galleryImages);
     }
 
     public void clickShowAllPhotos() {
-        driver.findElement(showAllPhotosBtn).click();
+        click(showAllPhotosBtn);
     }
 
     public boolean isGalleryModalDisplayed() {
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(galleryModal)).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(galleryModal);
     }
 
     public boolean isGalleryCarouselDisplayed() {
-        try {
-            return driver.findElement(galleryCarousel).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(galleryCarousel);
+    }
+
+    public List<String> getSpecTexts() {
+        return getSpecs().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAmenityTexts() {
+        return getAmenities().stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
+
+    private void waitForDetailsToLoad() {
+        wait.until(d ->
+                d.findElements(detailTitle).size() > 0 ||
+                d.findElements(authError).size() > 0
+        );
     }
 }

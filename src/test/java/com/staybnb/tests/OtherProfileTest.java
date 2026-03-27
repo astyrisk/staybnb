@@ -4,151 +4,142 @@ import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
 import com.staybnb.utils.Constants;
+import com.staybnb.utils.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OtherProfileTest extends BaseTest {
     private LoginPage loginPage;
     private OtherProfilePage otherProfilePage;
-    private final String SLUG = Constants.SLUG;
 
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
+        loginPage.load();
         otherProfilePage = new OtherProfilePage(driver);
-    }
-
-    private void loginAsValidUser() {
-        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
-        loginPage.login(TestConfig.TEST_USERNAME, TestConfig.TEST_PASSWORD);
-        WebDriverWait wait = getWait(Constants.MEDIUM_WAIT);
-        wait.until(ExpectedConditions.urlToBe(TestConfig.BASE_URL));
-    }
-
-    private void navigateToOtherUser(String userId) {
-        otherProfilePage.navigateToUrl(TestConfig.BASE_URL + "/users/" + userId);
     }
 
     @Test
     public void testOtherUserProfileAvatarDisplayed() {
-        navigateToOtherUser(Constants.USER_ID_101);
-        assertTrue(otherProfilePage.isAvatarDisplayed(), "Avatar should be displayed.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        assertTrue(otherProfilePage.isAvatarDisplayed(), ErrorMessages.AVATAR_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testOtherUserProfileAvatarText() {
-        navigateToOtherUser(Constants.USER_ID_101);
-        assertEquals("B", otherProfilePage.getAvatarText(), "Avatar should contain user's first initial.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        assertEquals("B", otherProfilePage.getAvatarText(), ErrorMessages.AVATAR_SHOULD_CONTAIN_USERS_FIRST_INITIAL);
     }
 
     @Test
     public void testOtherUserProfileName() {
-        navigateToOtherUser(Constants.USER_ID_101);
-        assertEquals("Bob J.", otherProfilePage.getProfileName(), "Profile name should show first name and last initial.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        assertEquals("Bob J.", otherProfilePage.getProfileName(), ErrorMessages.PROFILE_NAME_SHOULD_SHOW_FIRST_NAME_AND_LAST_INITIAL);
     }
 
     @Test
     public void testOtherUserProfileMetaContainsRole() {
-        navigateToOtherUser(Constants.USER_ID_101);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_101);
         String meta = otherProfilePage.getProfileMeta();
-        assertTrue(meta.contains("Guest") || meta.contains("Host"), "Meta should contain user role.");
+        assertTrue(meta.contains("Guest") || meta.contains("Host"), ErrorMessages.META_SHOULD_CONTAIN_USER_ROLE);
     }
 
     @Test
     public void testOtherUserProfileMetaContainsMemberSince() {
-        navigateToOtherUser(Constants.USER_ID_101);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_101);
         String meta = otherProfilePage.getProfileMeta();
-        assertTrue(meta.contains("Member since"), "Meta should contain 'Member since'.");
+        assertTrue(meta.contains("Member since"), ErrorMessages.META_SHOULD_CONTAIN_MEMBER_SINCE);
     }
 
     @Test
     public void testOtherUserProfileBio() {
-        navigateToOtherUser(Constants.USER_ID_101);
-        assertEquals("Adventure seeker and foodie.", otherProfilePage.getBio(), "Bio should match.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        assertEquals("Adventure seeker and foodie.", otherProfilePage.getBio(), ErrorMessages.BIO_SHOULD_MATCH);
     }
 
     @Test
     public void testOtherUserProfilePhoneNotVisible() {
-        navigateToOtherUser(Constants.USER_ID_102);
-        assertFalse(otherProfilePage.isPhoneSectionVisible(), "Phone number should not be visible on other's profile.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_102);
+        assertFalse(otherProfilePage.isPhoneSectionVisible(), ErrorMessages.PHONE_NUMBER_SHOULD_NOT_BE_VISIBLE_ON_OTHERS_PROFILE);
     }
 
     @Test
     public void testOtherUserProfileEmailNotVisible() {
-        navigateToOtherUser(Constants.USER_ID_102);
-        assertFalse(otherProfilePage.isEmailSectionVisible(), "Email should not be visible on other's profile.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_102);
+        assertFalse(otherProfilePage.isEmailSectionVisible(), ErrorMessages.EMAIL_SHOULD_NOT_BE_VISIBLE_ON_OTHERS_PROFILE);
     }
 
     @Test
     public void testOtherUserProfileNameMasked() {
-        navigateToOtherUser(Constants.USER_ID_102);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.USER_ID_102);
         String name = otherProfilePage.getProfileName();
-        assertTrue(name.matches("^[A-Za-z]+ [A-Z]\\.$"), "Profile name should only show first name and last initial.");
+        assertTrue(name.matches("^[A-Za-z]+ [A-Z]\\.$"), ErrorMessages.PROFILE_NAME_SHOULD_ONLY_SHOW_FIRST_NAME_AND_LAST_INITIAL);
     }
 
     @Test
     public void testNonExistentUserProfile() {
-        navigateToOtherUser(Constants.NON_EXISTENT_ID);
-        assertTrue(otherProfilePage.is404Displayed(), "Page should indicate a 404 error for non-existent user.");
-    }
-
-    private String getOtherUserApiResponse(String userId) {
-        driver.get(TestConfig.BASE_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        Object response = js.executeAsyncScript(
-            "var callback = arguments[arguments.length - 1];" +
-            "fetch('/api/t/" + SLUG + "/users/" + userId + "')" +
-            ".then(res => res.json())" +
-            ".then(data => callback(JSON.stringify(data)))" +
-            ".catch(err => callback(err.message));"
-        );
-        return (String) response;
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        otherProfilePage.navigateTo(Constants.NON_EXISTENT_ID);
+        assertTrue(otherProfilePage.is404Displayed(), ErrorMessages.PAGE_SHOULD_INDICATE_404_FOR_NON_EXISTENT_USER);
     }
 
     @Test
     public void testApiViewOtherUserResponseNotNull() {
-        String jsonResponse = getOtherUserApiResponse(Constants.USER_ID_101);
-        assertNotNull(jsonResponse, "API response should not be null.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        assertNotNull(jsonResponse, ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL);
     }
 
     @Test
     public void testApiViewOtherUserContainsFirstName() {
-        String jsonResponse = getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"firstName\""), "Response should contain 'firstName'.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        assertTrue(jsonResponse.contains("\"firstName\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_FIRST_NAME);
     }
 
     @Test
     public void testApiViewOtherUserContainsLastName() {
-        String jsonResponse = getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"lastName\""), "Response should contain 'lastName'.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        assertTrue(jsonResponse.contains("\"lastName\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_LAST_NAME);
     }
 
     @Test
     public void testApiViewOtherUserContainsBio() {
-        String jsonResponse = getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"bio\""), "Response should contain 'bio'.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        assertTrue(jsonResponse.contains("\"bio\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_BIO);
     }
 
     @Test
     public void testApiViewOtherUserContainsIsHost() {
-        String jsonResponse = getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"isHost\""), "Response should contain 'isHost'.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        assertTrue(jsonResponse.contains("\"isHost\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_IS_HOST);
     }
 
     @Test
     public void testApiViewOtherUserDoesNotContainEmail() {
-        String jsonResponse = getOtherUserApiResponse(Constants.USER_ID_101);
-        assertFalse(jsonResponse.contains("\"email\""), "Response should NOT contain 'email'.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        assertFalse(jsonResponse.contains("\"email\""), ErrorMessages.RESPONSE_SHOULD_NOT_CONTAIN_EMAIL);
     }
 
     @Test
     public void testApiViewOtherUserDoesNotContainPhone() {
-        String jsonResponse = getOtherUserApiResponse(Constants.USER_ID_101);
-        assertFalse(jsonResponse.contains("\"phone\""), "Response should NOT contain 'phone'.");
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        assertFalse(jsonResponse.contains("\"phone\""), ErrorMessages.RESPONSE_SHOULD_NOT_CONTAIN_PHONE);
     }
 }

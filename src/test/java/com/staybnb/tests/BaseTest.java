@@ -1,5 +1,6 @@
 package com.staybnb.tests;
 
+import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
@@ -10,6 +11,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
@@ -38,7 +40,7 @@ public class BaseTest {
                 options.addArguments("--disable-dev-shm-usage");
             }
             driver = new ChromeDriver(options);
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Constants.MEDIUM_WAIT));
             driver.manage().window().maximize();
         }
     }
@@ -53,6 +55,23 @@ public class BaseTest {
 
     protected WebDriverWait getWait(int seconds) {
         return new WebDriverWait(driver, Duration.ofSeconds(seconds));
+    }
+
+    protected void waitForUrlContains(String text) {
+        getWait(Constants.MEDIUM_WAIT).until(ExpectedConditions.urlContains(text));
+    }
+
+    protected void waitForUrlToBe(String url) {
+        getWait(Constants.MEDIUM_WAIT).until(ExpectedConditions.urlToBe(url));
+    }
+
+    protected boolean isUrlContains(String text) {
+        try {
+            waitForUrlContains(text);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @RegisterExtension

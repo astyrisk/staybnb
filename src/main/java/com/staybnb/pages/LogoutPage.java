@@ -1,40 +1,28 @@
 package com.staybnb.pages;
 
+import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import java.time.Duration;
-import com.staybnb.config.TestConfig;
+import com.staybnb.utils.Constants;
 
-public class LogoutPage {
-    private WebDriver driver;
-    private final String DASHBOARD_URL = TestConfig.BASE_URL;
-
-    // --- Locators based on provided HTML ---
-    private By userMenuButton = By.className("navbar-user-btn");
-    private By logoutButton = By.xpath("//div[@class='navbar-dropdown']//button[text()='Log out']");
+public class LogoutPage extends BasePage {
+    private final By userMenuButton = Locators.Logout.USER_MENU_BUTTON;
+    private final By logoutButton = Locators.Logout.LOGOUT_BUTTON;
 
     public LogoutPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public void navigateToDashboard() {
-        driver.get(DASHBOARD_URL);
+    public void load() {
+        navigateTo(Constants.HOME_URL);
     }
 
     public void openUserMenu() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement menu = wait.until(ExpectedConditions.elementToBeClickable(userMenuButton));
-        menu.click();
+        waitForElementClickable(userMenuButton).click();
     }
 
     public void clickLogout() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement logoutBtn = wait.until(ExpectedConditions.elementToBeClickable(logoutButton));
-        logoutBtn.click();
+        waitForElementClickable(logoutButton).click();
     }
 
     public void logout() {
@@ -42,12 +30,13 @@ public class LogoutPage {
         clickLogout();
     }
 
-    public String getStaybnbToken() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        try {
-            return (String) js.executeScript("return window.localStorage.getItem('staybnb_token');");
-        } catch (Exception e) {
-            return null;
-        }
+    public void logoutAndWaitForRedirectToHome() {
+        logout();
+        waitForUrlToBe(Constants.HOME_URL);
+    }
+
+    public void logoutAndWaitForTokenCleared() {
+        logout();
+        wait.until(d -> getStaybnbToken() == null);
     }
 }

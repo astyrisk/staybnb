@@ -1,11 +1,11 @@
 package com.staybnb.tests;
 
 import com.staybnb.config.TestConfig;
+import com.staybnb.utils.Constants;
+import com.staybnb.utils.ErrorMessages;
 import com.staybnb.pages.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,43 +15,33 @@ public class LoginTest extends BaseTest {
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
+        loginPage.load();
     }
 
     @Test
     public void testSuccessfulLoginRedirection() {
-        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
-        loginPage.login(TestConfig.TEST_USERNAME, TestConfig.TEST_PASSWORD);
-
-        WebDriverWait wait = getWait(5);
-        wait.until(ExpectedConditions.urlContains("/"));
-        assertTrue(driver.getCurrentUrl().contains("/"));
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        assertTrue(driver.getCurrentUrl().contains(Constants.HOME_URL));
     }
 
     @Test
     public void testSuccessfulLoginTokenRetrieved() {
-        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
-        loginPage.login(TestConfig.TEST_USERNAME, TestConfig.TEST_PASSWORD);
-
-        WebDriverWait wait = getWait(5);
-        wait.until(ExpectedConditions.urlContains("/"));
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
         String jwt = loginPage.getStaybnbToken();
-        assertNotNull(jwt, "JWT token was not retrieved after successful login.");
+        assertNotNull(jwt, ErrorMessages.JWT_TOKEN_NOT_RETRIEVED);
     }
 
     @Test
     public void testInvalidCredentials() {
-        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
-        loginPage.login("wronguser@gmail.com", "WrongPassword123!");
-
+        loginPage.login(Constants.INVALID_EMAIL, Constants.INVALID_PASSWORD);
         String errorText = loginPage.getGlobalErrorMessageText();
         assertTrue(errorText.toLowerCase().contains("invalid") || errorText.toLowerCase().contains("unauthorized"),
-                "Expected an 'invalid credentials' or 'unauthorized' error message.");
+                ErrorMessages.EXPECTED_INVALID_CREDENTIALS_OR_UNAUTHORIZED);
     }
 
     @Test
     public void testBlankFieldsValidation() {
-        loginPage.navigateTo(TestConfig.BASE_URL + "/login");
         loginPage.clickLoginButton();
-        assertTrue(loginPage.isInlineErrorDisplayed("Email and password are required"));
+        assertTrue(loginPage.isInlineErrorDisplayed(ErrorMessages.EMAIL_AND_PASSWORD_REQUIRED));
     }
 }

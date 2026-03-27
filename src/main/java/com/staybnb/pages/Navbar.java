@@ -1,130 +1,112 @@
 package com.staybnb.pages;
 
+import com.staybnb.locators.Locators;
+import com.staybnb.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 
-public class Navbar {
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class Navbar extends BasePage {
+    private final By navbarLogo = Locators.Navbar.NAVBAR_LOGO;
+    private final By userMenuButton = Locators.Navbar.USER_MENU_BUTTON;
+    private final By userAvatar = Locators.Navbar.USER_AVATAR;
+    private final By hamburgerMenu = Locators.Navbar.HAMBURGER_MENU;
 
-    // --- Locators ---
-    private By navbarLogo = By.className("navbar-logo");
-    private By navbarRight = By.className("navbar-right");
-    private By userMenuButton = By.className("navbar-user-btn");
-    private By userAvatar = By.className("navbar-avatar");
-    private By hamburgerMenu = By.className("navbar-hamburger");
-    
-    // Auth links (Visitor)
-    private By loginLink = By.xpath("//div[@class='navbar-auth-links']//a[text()='Log in']");
-    private By registerLink = By.xpath("//div[@class='navbar-auth-links']//a[text()='Sign up']");
-    
-    // Dropdown (Authenticated)
-    private By dropdownMenu = By.className("navbar-dropdown");
-    private By profileLink = By.xpath("//div[@class='navbar-dropdown']//a[contains(@href, '/profile')]");
-    private By logoutButton = By.xpath("//div[@class='navbar-dropdown']//button[text()='Log out']");
+    private final By loginLink = Locators.Navbar.LOGIN_LINK;
+    private final By registerLink = Locators.Navbar.REGISTER_LINK;
+
+    private final By dropdownMenu = Locators.Navbar.DROPDOWN_MENU;
+    private final By profileLink = Locators.Navbar.PROFILE_LINK;
+    private final By logoutButton = Locators.Navbar.LOGOUT_BUTTON;
 
     public Navbar(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        super(driver);
     }
 
     public boolean isLogoDisplayed() {
-        return driver.findElement(navbarLogo).isDisplayed();
+        return isDisplayed(navbarLogo);
     }
 
     public void clickLogo() {
-        driver.findElement(navbarLogo).click();
+        waitForElementClickable(navbarLogo).click();
     }
 
     public String getLogoHref() {
-        return driver.findElement(navbarLogo).getAttribute("href");
+        return waitForElementVisible(navbarLogo).getAttribute("href");
     }
 
     public boolean isUserAvatarDisplayed() {
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(userAvatar)).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(userAvatar);
     }
 
     public boolean isLoginLinkDisplayed() {
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(loginLink)).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(loginLink);
     }
 
     public boolean isRegisterLinkDisplayed() {
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(registerLink)).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(registerLink);
     }
 
     public void clickLogin() {
-        wait.until(ExpectedConditions.elementToBeClickable(loginLink)).click();
+        waitForElementClickable(loginLink).click();
     }
 
     public void clickRegister() {
-        wait.until(ExpectedConditions.elementToBeClickable(registerLink)).click();
+        waitForElementClickable(registerLink).click();
     }
 
     public void openUserMenu() {
-        wait.until(ExpectedConditions.elementToBeClickable(userMenuButton)).click();
+        waitForElementClickable(userMenuButton).click();
     }
 
     public boolean isDropdownDisplayed() {
-        try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(dropdownMenu)).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(dropdownMenu);
     }
 
     public boolean isProfileLinkDisplayed() {
-        try {
-            return driver.findElement(profileLink).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(profileLink);
     }
 
     public boolean isLogoutButtonDisplayed() {
-        try {
-            return driver.findElement(logoutButton).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(logoutButton);
     }
 
     public void clickProfile() {
         openUserMenu();
-        wait.until(ExpectedConditions.elementToBeClickable(profileLink)).click();
+        waitForElementClickable(profileLink).click();
     }
 
     public void clickLogout() {
         openUserMenu();
-        wait.until(ExpectedConditions.elementToBeClickable(logoutButton)).click();
+        waitForElementClickable(logoutButton).click();
+    }
+
+    public void clickProfileAndWaitForRedirect() {
+        clickProfile();
+        waitForUrlContains(Constants.PROFILE_URL);
+    }
+
+    public void clickLogoutAndWaitForRedirectToHome() {
+        clickLogout();
+        waitForUrlToBe(Constants.HOME_URL);
+    }
+
+    public void clickLoginAndWaitForRedirect() {
+        clickLogin();
+        waitForUrlContains(Constants.LOGIN_URL);
+    }
+
+    public void clickRegisterAndWaitForRedirect() {
+        clickRegister();
+        waitForUrlContains(Constants.REGISTER_URL);
     }
 
     public boolean isHamburgerMenuDisplayed() {
-        try {
-            return driver.findElement(hamburgerMenu).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(hamburgerMenu);
     }
 
     public void setMobileLayout() {
-        driver.manage().window().setSize(new Dimension(375, 812)); // iPhone 12 Pro size
+        driver.manage().window().setSize(new Dimension(Constants.MOBILE_WIDTH, 812));
     }
 
     public void setDesktopLayout() {

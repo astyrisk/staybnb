@@ -1,13 +1,12 @@
 package com.staybnb.tests;
 
-import com.staybnb.config.TestConfig;
+import com.staybnb.utils.Constants;
+import com.staybnb.utils.ErrorMessages;
 import com.staybnb.pages.PropertyListingPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,38 +16,38 @@ public class PropertyListingTest extends BaseTest {
     @BeforeEach
     public void setup() {
         propertyListingPage = new PropertyListingPage(driver);
-        propertyListingPage.navigateTo();
+        propertyListingPage.load();
     }
 
     @Test
     public void testPropertyListingHasCards() {
-        assertFalse(propertyListingPage.getPropertyCards().isEmpty(), "Property listing page should display property cards.");
+        assertFalse(propertyListingPage.getPropertyCards().isEmpty(), ErrorMessages.PROPERTY_LISTING_SHOULD_DISPLAY_PROPERTY_CARDS);
     }
 
     @Test
     public void testFirstPropertyCardHasImage() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
-        assertTrue(propertyListingPage.hasImage(card), "Property card should have an image.");
+        assertTrue(propertyListingPage.hasImage(card), ErrorMessages.PROPERTY_CARD_SHOULD_HAVE_AN_IMAGE);
     }
 
     @Test
     public void testFirstPropertyCardHasTitle() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
-        assertFalse(propertyListingPage.getTitle(card).isEmpty(), "Property card should have a title.");
+        assertFalse(propertyListingPage.getTitle(card).isEmpty(), ErrorMessages.PROPERTY_CARD_SHOULD_HAVE_A_TITLE);
     }
 
     @Test
     public void testFirstPropertyCardLocationFormat() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
         String location = propertyListingPage.getLocation(card);
-        assertTrue(location.contains(","), "Location should display city and country separated by comma.");
+        assertTrue(location.contains(","), ErrorMessages.LOCATION_SHOULD_BE_CITY_AND_COUNTRY_SEPARATED_BY_COMMA);
     }
 
     @Test
     public void testFirstPropertyCardPriceFormat() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
         String price = propertyListingPage.getPrice(card);
-        assertTrue(price.contains("/ night"), "Price should contain '/ night'.");
+        assertTrue(price.contains("/ night"), ErrorMessages.PRICE_SHOULD_CONTAIN_PER_NIGHT);
     }
 
     @Test
@@ -57,38 +56,38 @@ public class PropertyListingTest extends BaseTest {
         String expectedHref = propertyListingPage.getCardHref(firstCard);
         propertyListingPage.clickPropertyCard(firstCard);
         String currentUrl = driver.getCurrentUrl();
-        assertTrue(currentUrl.endsWith(expectedHref) || expectedHref.contains(currentUrl.replace(TestConfig.BASE_URL, "")),
-                "Should navigate to the property detail page.");
+        assertTrue(currentUrl.endsWith(expectedHref) || expectedHref.contains(currentUrl.replace(Constants.BASE_URL, "")),
+                ErrorMessages.SHOULD_NAVIGATE_TO_PROPERTY_DETAIL_PAGE);
     }
 
     @Test
     public void testGridColumnsOnDesktopLarge() {
-        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.manage().window().setSize(new Dimension(Constants.WIDE_DESKTOP_WIDTH, Constants.WIDE_DESKTOP_HEIGHT));
         propertyListingPage.waitForGridColumns(4);
-        assertEquals(4, propertyListingPage.getGridColumnCount(), "Grid should have 4 columns on large desktop.");
+        assertEquals(4, propertyListingPage.getGridColumnCount(), ErrorMessages.LISTING_GRID_SHOULD_HAVE_4_COLUMNS_ON_LARGE_DESKTOP);
     }
 
     @Test
     public void testGridColumnsOnDesktopMedium() {
-        driver.manage().window().setSize(new Dimension(1025, 1080));
+        driver.manage().window().setSize(new Dimension(Constants.MEDIUM_DESKTOP_WIDTH, Constants.MEDIUM_DESKTOP_HEIGHT));
         propertyListingPage.waitForGridColumns(3);
-        assertEquals(3, propertyListingPage.getGridColumnCount(), "Grid should have 3 columns on medium desktop.");
+        assertEquals(3, propertyListingPage.getGridColumnCount(), ErrorMessages.LISTING_GRID_SHOULD_HAVE_3_COLUMNS_ON_MEDIUM_DESKTOP);
     }
 
     @Test
     public void testGridColumnsOnTablet() {
-        driver.manage().window().setSize(new Dimension(770, 1024));
+        driver.manage().window().setSize(new Dimension(Constants.TABLET_TEST_WIDTH, Constants.TABLET_TEST_HEIGHT));
         propertyListingPage.waitForGridColumns(2);
-        assertEquals(2, propertyListingPage.getGridColumnCount(), "Grid should have 2 columns on tablet.");
+        assertEquals(2, propertyListingPage.getGridColumnCount(), ErrorMessages.LISTING_GRID_SHOULD_HAVE_2_COLUMNS_ON_TABLET);
     }
 
     @Test
     public void testAbsenceOfFilters() {
-        assertTrue(propertyListingPage.areControlsEmpty(), "Property list controls should be empty.");
+        assertTrue(propertyListingPage.areControlsEmpty(), ErrorMessages.PROPERTY_LIST_CONTROLS_SHOULD_BE_EMPTY);
     }
 
     @Test
     public void testAbsenceOfSearchAndSort() {
-        assertFalse(propertyListingPage.hasSearchOrFilters(), "There should be no search or filters.");
+        assertFalse(propertyListingPage.hasSearchOrFilters(), ErrorMessages.THERE_SHOULD_BE_NO_SEARCH_OR_FILTERS);
     }
 }

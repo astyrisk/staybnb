@@ -1,73 +1,63 @@
 package com.staybnb.pages;
 
+import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
 import java.util.List;
-import com.staybnb.config.TestConfig;
+import com.staybnb.utils.Constants;
 
-public class HomePage {
-    private WebDriver driver;
-    private final String PAGE_URL = TestConfig.BASE_URL;
+public class HomePage extends BasePage {
+    private final String PAGE_URL = Constants.HOME_URL;
 
-    private By heroSection = By.className("home-hero");
-    private By heroHeadline = By.cssSelector(".home-hero-content h1");
-    // These might be missing from snippet but are required for tests
-    private By categoryBar = By.className("categories-bar");
-    private By categoryIcons = By.className("category-icon");
-    private By propertyGrid = By.className("property-grid");
-    private By propertyCards = By.className("property-card");
+    private By heroSection = Locators.Home.HERO_SECTION;
+    private By heroHeadline = Locators.Home.HERO_HEADLINE;
+    private By categoryBar = Locators.Home.CATEGORY_BAR;
+    private By categoryIcons = Locators.Home.CATEGORY_ICONS;
+    private By propertyGrid = Locators.Home.PROPERTY_GRID;
+    private By propertyCards = Locators.Home.PROPERTY_CARDS;
 
-    // Card details
-    private By cardImage = By.cssSelector(".property-card-image img");
-    private By cardTitle = By.className("property-card-title");
-    private By cardLocation = By.className("property-card-location");
-    private By cardPrice = By.className("property-card-price");
-    // This is missing from the snippet but required
-    private By cardRating = By.className("property-card-rating");
+    private By cardImage = Locators.Home.CARD_IMAGE;
+    private By cardTitle = Locators.Home.CARD_TITLE;
+    private By cardLocation = Locators.Home.CARD_LOCATION;
+    private By cardPrice = Locators.Home.CARD_PRICE;
 
     public HomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+    }
+
+    public void load() {
+        navigateTo(PAGE_URL);
+        waitForHomeToLoad();
     }
 
     public void navigateTo() {
-        driver.get(PAGE_URL);
-    }
-
-    public void navigateTo(String url) {
-        driver.get(url);
+        load();
     }
 
     public boolean isHeroSectionDisplayed() {
-        return driver.findElement(heroSection).isDisplayed();
+        return isDisplayed(heroSection);
     }
 
     public String getHeroHeadlineText() {
-        return driver.findElement(heroHeadline).getText();
+        return waitForElementVisible(heroHeadline).getText();
     }
 
     public String getHeroBackgroundImage() {
-        return driver.findElement(heroSection).getCssValue("background-image");
+        return waitForElementVisible(heroSection).getCssValue("background-image");
     }
 
     public boolean isCategoryBarDisplayed() {
-        try {
-            return driver.findElement(categoryBar).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        return isDisplayed(categoryBar);
     }
 
     public List<WebElement> getCategoryIcons() {
-        return driver.findElements(categoryIcons);
+        return waitForElementsPresent(categoryIcons);
     }
 
     public List<WebElement> getPropertyCards() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(propertyCards));
+        return waitForElementsPresent(propertyCards);
     }
 
     public boolean isCardDetailsComplete(WebElement card) {
@@ -76,8 +66,6 @@ public class HomePage {
             boolean hasTitle = !card.findElement(cardTitle).getText().isEmpty();
             boolean hasLocation = !card.findElement(cardLocation).getText().isEmpty();
             boolean hasPrice = card.findElement(cardPrice).getText().contains("/ night");
-//            boolean hasRating = !card.findElements(cardRating).isEmpty() && card.findElement(cardRating).isDisplayed();
-
             return hasImage && hasTitle && hasLocation && hasPrice ;
         } catch (Exception e) {
             return false;
@@ -92,7 +80,19 @@ public class HomePage {
     }
 
     public void waitForGridColumns(int expectedCount) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> getGridColumnCount() == expectedCount);
+    }
+
+    public void scrollFeaturedPropertiesIntoView() {
+        // keeps JS out of tests
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
+        waitForElementsPresent(propertyCards);
+    }
+
+    private void waitForHomeToLoad() {
+        wait.until(d ->
+                d.findElements(heroSection).size() > 0 ||
+                d.findElements(propertyGrid).size() > 0
+        );
     }
 }
