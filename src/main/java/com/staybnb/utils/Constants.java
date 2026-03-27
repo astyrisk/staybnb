@@ -14,6 +14,8 @@ public final class Constants {
     public static final String HOME_URL = BASE_URL;
     public static final String PROFILE_URL = BASE_URL + "/profile";
     public static final String EDIT_PROFILE_URL = BASE_URL + "/profile/edit";
+    public static final String HOSTING_URL = BASE_URL + "/hosting";
+    public static final String HOSTING_CREATE_URL = BASE_URL + "/hosting/create";
     public static final String PROPERTY_LISTING_URL = BASE_URL + "/properties";
     public static final String PROPERTY_DETAILS_BASE_URL = BASE_URL + "/properties/";
     public static final String OTHER_PROFILE_BASE_URL = BASE_URL + "/users/";

@@ -15,6 +15,9 @@ public class Navbar extends BasePage {
     private final By loginLink = Locators.Navbar.LOGIN_LINK;
     private final By registerLink = Locators.Navbar.REGISTER_LINK;
 
+    private final By becomeAHost = Locators.Navbar.BECOME_A_HOST;
+    private final By myProperties = Locators.Navbar.MY_PROPERTIES;
+
     private final By dropdownMenu = Locators.Navbar.DROPDOWN_MENU;
     private final By profileLink = Locators.Navbar.PROFILE_LINK;
     private final By logoutButton = Locators.Navbar.LOGOUT_BUTTON;
@@ -45,6 +48,22 @@ public class Navbar extends BasePage {
 
     public boolean isRegisterLinkDisplayed() {
         return isDisplayed(registerLink);
+    }
+
+    public boolean isBecomeAHostDisplayed() {
+        return isDisplayed(becomeAHost);
+    }
+
+    public boolean isMyPropertiesDisplayed() {
+        return isDisplayed(myProperties);
+    }
+
+    public void clickBecomeAHost() {
+        waitForElementClickable(becomeAHost).click();
+    }
+
+    public void clickMyProperties() {
+        waitForElementClickable(myProperties).click();
     }
 
     public void clickLogin() {

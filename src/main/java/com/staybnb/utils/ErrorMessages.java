@@ -157,6 +157,22 @@ public final class ErrorMessages {
     public static final String API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =
             "API should return 401 when not logged in.";
 
+    // --- Become Host (hosting enablement) messages ---
+    public static final String NAVBAR_BECOME_HOST_SHOULD_BE_VISIBLE_FOR_GUEST_USER =
+            "Become a Host should be visible for a non-host authenticated user.";
+    public static final String NAVBAR_MY_PROPERTIES_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER =
+            "My Properties should not be visible for a non-host authenticated user.";
+    public static final String NAVBAR_MY_PROPERTIES_SHOULD_BE_VISIBLE_FOR_HOST_USER =
+            "My Properties should be visible for a host user.";
+    public static final String NAVBAR_BECOME_HOST_SHOULD_NOT_BE_VISIBLE_FOR_HOST_USER =
+            "Become a Host should not be visible for a host user.";
+    public static final String SHOULD_NAVIGATE_TO_HOSTING_PAGE =
+            "Should navigate to hosting page (/hosting).";
+    public static final String BECOME_HOST_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =
+            "Become-host API should return 401 when not logged in.";
+    public static final String BECOME_HOST_API_SHOULD_REFLECT_IS_HOST_TRUE =
+            "Become-host API should return user object reflecting isHost: true.";
+
     // --- Other Profile test messages ---
     public static final String AVATAR_SHOULD_CONTAIN_USERS_FIRST_INITIAL =
             "Avatar should contain user's first initial.";
@@ -218,5 +234,27 @@ public final class ErrorMessages {
             "Should navigate to login page";
     public static final String NAVBAR_SHOULD_NAVIGATE_TO_REGISTER_PAGE =
             "Should navigate to register page";
+
+    // --- Host Dashboard test messages ---
+    public static final String HOST_DASHBOARD_SHOULD_DISPLAY_PROPERTY_CARDS_FOR_HOST_WITH_PROPERTIES =
+            "Host dashboard should display property cards for a host with properties.";
+    public static final String HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS =
+            "Property card should display thumbnail, title, location, price, status, and rating data/placeholder.";
+    public static final String HOST_DASHBOARD_SUMMARY_SHOULD_INCLUDE_TOTAL_PROPERTIES_COUNT =
+            "Host dashboard summary should include total properties count.";
+    public static final String HOST_DASHBOARD_SHOULD_DISPLAY_CREATE_NEW_PROPERTY_BUTTON =
+            "Host dashboard should display a prominent Create New Property button.";
+    public static final String HOST_DASHBOARD_CREATE_NEW_PROPERTY_LINK_SHOULD_POINT_TO_CREATE_PAGE =
+            "Create New Property button should link to /hosting/create.";
+    public static final String HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS =
+            "Each property card should provide Edit, Delete, and Publish/Unpublish actions.";
+    public static final String HOST_DASHBOARD_EMPTY_STATE_SHOULD_BE_VISIBLE_FOR_HOST_WITH_NO_PROPERTIES =
+            "Host with no properties should see the expected empty state message.";
+    public static final String HOST_DASHBOARD_API_RESPONSE_SHOULD_INCLUDE_BOTH_PUBLISHED_AND_UNPUBLISHED_PROPERTIES =
+            "Hosting properties API response should include both published and unpublished host properties.";
+    public static final String HOST_DASHBOARD_API_SHOULD_RETURN_403_FOR_NON_HOST =
+            "Hosting properties API should return 403 for authenticated non-host users.";
+    public static final String HOST_DASHBOARD_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =
+            "Hosting properties API should return 401 when not logged in.";
 }
 

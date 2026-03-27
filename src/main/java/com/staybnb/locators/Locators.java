@@ -45,6 +45,11 @@ public final class Locators {
         public static final By LOGIN_LINK = By.xpath("//div[@class='navbar-auth-links']//a[text()='Log in']");
         public static final By REGISTER_LINK = By.xpath("//div[@class='navbar-auth-links']//a[text()='Sign up']");
 
+        // Host / Hosting
+        // In the UI, this can be either a <button> or <a>, but it consistently uses the same class.
+        public static final By BECOME_A_HOST = By.xpath("//*[contains(@class,'navbar-host-link') and normalize-space()='Become a Host']");
+        public static final By MY_PROPERTIES = By.xpath("//*[contains(@class,'navbar-host-link') and normalize-space()='My Properties']");
+
         public static final By DROPDOWN_MENU = By.className("navbar-dropdown");
         public static final By PROFILE_LINK = By.xpath("//div[@class='navbar-dropdown']//a[contains(@href, '/profile')]");
         public static final By LOGOUT_BUTTON = By.xpath("//div[@class='navbar-dropdown']//button[text()='Log out']");
@@ -115,6 +120,7 @@ public final class Locators {
         public static final By PROFILE_NAME = By.className("profile-name");
         public static final By PROFILE_META = By.className("profile-meta");
         public static final By EDIT_PROFILE_BUTTON = By.xpath("//div[@class='profile-actions']/a[contains(text(), 'Edit Profile')]");
+        public static final By BECOME_HOST_BUTTON = By.xpath("//div[@class='profile-actions']/a[normalize-space()='Become a Host']");
 
         public static final By BIO_TEXT = By.xpath("//div[h2='About']/p");
         public static final By PHONE_TEXT = By.xpath("//div[h2='Phone']/p");
@@ -151,6 +157,30 @@ public final class Locators {
 
         public static final By USER_MENU_BUTTON = By.className("navbar-user-btn");
         public static final By LOGOUT_BUTTON = By.xpath("//div[@class='navbar-dropdown']//button[text()='Log out']");
+    }
+
+    public static final class HostDashboard {
+        private HostDashboard() {}
+
+        public static final By CONTAINER = By.className("host-dashboard-container");
+        public static final By PAGE_TITLE = By.xpath("//div[contains(@class,'host-dashboard-header')]//h1[normalize-space()='My Properties']");
+        public static final By SUMMARY_SUBTITLE = By.className("host-dashboard-subtitle");
+        public static final By CREATE_NEW_PROPERTY_BUTTON = By.className("host-dashboard-create-btn");
+
+        public static final By PROPERTY_GRID = By.className("host-dashboard-grid");
+        public static final By PROPERTY_CARD = By.className("host-dashboard-card");
+        public static final By CARD_IMAGE = By.cssSelector(".host-dashboard-card-image img");
+        public static final By CARD_TITLE = By.cssSelector(".host-dashboard-card-content h3");
+        public static final By CARD_LOCATION = By.className("host-dashboard-card-location");
+        public static final By CARD_PRICE = By.className("host-dashboard-card-price");
+        public static final By CARD_STATUS = By.className("host-dashboard-card-status");
+        public static final By CARD_RATING = By.cssSelector(".host-dashboard-card-rating, [class*='rating']");
+
+        public static final By CARD_EDIT_BUTTON = By.xpath(".//a[contains(@class,'host-dashboard-card-btn') and normalize-space()='Edit']");
+        public static final By CARD_DELETE_BUTTON = By.xpath(".//button[contains(@class,'host-dashboard-card-btn') and normalize-space()='Delete']");
+        public static final By CARD_PUBLISH_TOGGLE = By.xpath(".//button[contains(@class,'host-dashboard-card-btn') and (normalize-space()='Publish' or normalize-space()='Unpublish')]");
+
+        public static final By EMPTY_STATE_MESSAGE = By.xpath("//*[contains(text(),\"You haven't listed any properties yet. Create your first listing!\")]");
     }
 }
 
