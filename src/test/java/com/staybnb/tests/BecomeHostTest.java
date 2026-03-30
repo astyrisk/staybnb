@@ -4,7 +4,6 @@ import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.Navbar;
 import com.staybnb.pages.OwnProfilePage;
-import com.staybnb.pages.RegisterPage;
 import com.staybnb.utils.Constants;
 import com.staybnb.utils.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,54 +12,39 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BecomeHostTest extends BaseTest {
-    private RegisterPage registerPage;
     private LoginPage loginPage;
     private Navbar navbar;
     private OwnProfilePage ownProfilePage;
 
     @BeforeEach
     public void setup() {
-        registerPage = new RegisterPage(driver);
         loginPage = new LoginPage(driver);
         navbar = new Navbar(driver);
         ownProfilePage = new OwnProfilePage(driver);
     }
 
-    private String registerNewUserAndLandOnHome() {
-        registerPage.load();
-        String uniqueEmail = "testhost_" + System.currentTimeMillis() + "@gmail.com";
-        registerPage.registerAndWaitForUrl(
-                TestConfig.TEST_FIRST_NAME,
-                TestConfig.TEST_LAST_NAME,
-                uniqueEmail,
-                TestConfig.TEST_PASSWORD,
-                Constants.HOME_URL
-        );
-        return uniqueEmail;
-    }
-
     @Test
     public void testNavbarShowsBecomeHostForNonHostUser() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         assertTrue(navbar.isBecomeAHostDisplayed(), ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_BE_VISIBLE_FOR_GUEST_USER);
     }
 
     @Test
     public void testNavbarDoesNotShowMyPropertiesForNonHostUser() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         assertFalse(navbar.isMyPropertiesDisplayed(), ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER);
     }
 
     @Test
     public void testBecomeHostFromNavbarRedirectsToHosting() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         navbar.clickBecomeAHost();
         assertTrue(isUrlContains(Constants.HOSTING_URL), ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE);
     }
 
     @Test
     public void testNavbarShowsMyPropertiesAfterBecomingHost() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         navbar.clickBecomeAHost();
         driver.get(Constants.HOME_URL);
         assertTrue(navbar.isMyPropertiesDisplayed(), ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_BE_VISIBLE_FOR_HOST_USER);
@@ -68,7 +52,7 @@ public class BecomeHostTest extends BaseTest {
 
     @Test
     public void testNavbarDoesNotShowBecomeHostAfterBecomingHost() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         navbar.clickBecomeAHost();
         driver.get(Constants.HOME_URL);
         assertFalse(navbar.isBecomeAHostDisplayed(), ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_NOT_BE_VISIBLE_FOR_HOST_USER);
@@ -76,7 +60,7 @@ public class BecomeHostTest extends BaseTest {
 
     @Test
     public void testMyPropertiesLinkNavigatesToHosting() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         navbar.clickBecomeAHost();
         driver.get(Constants.HOME_URL);
         navbar.clickMyProperties();
@@ -85,7 +69,7 @@ public class BecomeHostTest extends BaseTest {
 
     @Test
     public void testProfileShowsBecomeHostButtonForNonHostUser() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         ownProfilePage.load();
         assertTrue(ownProfilePage.isBecomeHostButtonVisible(),
                 "Become a Host button should be visible on profile page for non-host.");
@@ -93,7 +77,7 @@ public class BecomeHostTest extends BaseTest {
 
     @Test
     public void testBecomeHostFromProfileRedirectsToHosting() {
-        registerNewUserAndLandOnHome();
+        registerNewUserAndLandOnHome("testhost");
         ownProfilePage.load();
         ownProfilePage.clickBecomeHost();
         assertTrue(isUrlContains(Constants.HOSTING_URL), ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE);
@@ -107,11 +91,9 @@ public class BecomeHostTest extends BaseTest {
 
     @Test
     public void testBecomeHostApiResponseNotNull() {
-        String email = registerNewUserAndLandOnHome();
+        String email = registerNewUserAndLandOnHome("testhost");
 
-        // Defensive: ensure session is authenticated for the token-based API helper.
-        driver.get(Constants.LOGIN_URL);
-        loginPage.loginAndExpectSuccess(email, TestConfig.TEST_PASSWORD);
+        loginAsUserAndLandOnHome(loginPage, email, TestConfig.TEST_PASSWORD);
 
         String jsonResponse = ownProfilePage.becomeHostViaApi("{\"isHost\":true}");
         assertNotNull(jsonResponse, ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL);
@@ -119,10 +101,9 @@ public class BecomeHostTest extends BaseTest {
 
     @Test
     public void testBecomeHostApiResponseReflectsIsHostTrue() {
-        String email = registerNewUserAndLandOnHome();
+        String email = registerNewUserAndLandOnHome("testhost");
 
-        driver.get(Constants.LOGIN_URL);
-        loginPage.loginAndExpectSuccess(email, TestConfig.TEST_PASSWORD);
+        loginAsUserAndLandOnHome(loginPage, email, TestConfig.TEST_PASSWORD);
 
         String jsonResponse = ownProfilePage.becomeHostViaApi("{\"isHost\":true}");
         assertTrue(jsonResponse.contains("\"isHost\":true"), ErrorMessages.BECOME_HOST_API_SHOULD_REFLECT_IS_HOST_TRUE);

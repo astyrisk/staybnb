@@ -180,7 +180,46 @@ public final class Locators {
         public static final By CARD_DELETE_BUTTON = By.xpath(".//button[contains(@class,'host-dashboard-card-btn') and normalize-space()='Delete']");
         public static final By CARD_PUBLISH_TOGGLE = By.xpath(".//button[contains(@class,'host-dashboard-card-btn') and (normalize-space()='Publish' or normalize-space()='Unpublish')]");
 
-        public static final By EMPTY_STATE_MESSAGE = By.xpath("//*[contains(text(),\"You haven't listed any properties yet. Create your first listing!\")]");
+        // Empty-state DOM:
+        // <div class="host-dashboard-empty"> ... <h2>No properties yet</h2> <p>Start hosting by creating your first property listing</p> ...
+        public static final By EMPTY_STATE_MESSAGE = By.xpath("//div[contains(@class,'host-dashboard-empty')]//p[contains(normalize-space(),'Start hosting by creating your first property listing')]");
+    }
+
+    public static final class CreateProperty {
+        private CreateProperty() {}
+
+        public static final By CONTAINER = By.className("create-property-container");
+        public static final By PROGRESS_TEXT = By.className("create-property-progress-text");
+
+        public static final By NEXT_BUTTON = By.cssSelector(".create-property-btn.primary");
+        public static final By BACK_BUTTON = By.cssSelector(".create-property-btn.secondary");
+
+        public static final By STEP_1_PROPERTY_TYPE_SELECT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Property Type']]//select");
+        public static final By STEP_1_CATEGORY_SELECT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Category']]//select");
+        public static final By STEP_1_TITLE_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Title']]//input");
+        public static final By STEP_1_DESCRIPTION_TEXTAREA =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Description']]//textarea");
+
+        public static final By STEP_2_COUNTRY_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Country']]//input");
+        public static final By STEP_2_CITY_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='City']]//input");
+        public static final By STEP_2_ADDRESS_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(normalize-space(),'Address')]]//input");
+
+        public static final By STEP_3_MAX_GUESTS_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'max guests')]]//input");
+        public static final By STEP_3_BEDROOMS_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'bedrooms')]]//input");
+        public static final By STEP_3_BEDS_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='beds']]//input");
+        public static final By STEP_3_BATHROOMS_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'bathrooms')]]//input");
+
+        public static final By FIELD_ERRORS = By.cssSelector(".create-property-error, .error, .field-error, .auth-error");
     }
 }
 

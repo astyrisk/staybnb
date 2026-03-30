@@ -1,6 +1,5 @@
 package com.staybnb.tests;
 
-import com.staybnb.config.TestConfig;
 import com.staybnb.utils.Constants;
 import com.staybnb.utils.ErrorMessages;
 import com.staybnb.pages.LoginPage;
@@ -18,12 +17,11 @@ public class LogoutTest extends BaseTest {
     public void setup() {
         loginPage = new LoginPage(driver);
         logoutPage = new LogoutPage(driver);
-        loginPage.load();
     }
 
     @Test
     public void testLogoutRedirectionToHomepage() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         logoutPage.logoutAndWaitForRedirectToHome();
         assertTrue(driver.getCurrentUrl().contains(Constants.HOME_URL),
                 ErrorMessages.SHOULD_BE_REDIRECTED_TO_HOMEPAGE_AFTER_LOGOUT);
@@ -31,14 +29,14 @@ public class LogoutTest extends BaseTest {
 
     @Test
     public void testTokenPresentAfterLogin() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         String jwt = loginPage.getStaybnbToken();
         assertNotNull(jwt, ErrorMessages.JWT_TOKEN_SHOULD_EXIST_AFTER_LOGIN);
     }
 
     @Test
     public void testTokenRemovedAfterLogout() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         logoutPage.logoutAndWaitForTokenCleared();
         String jwt = loginPage.getStaybnbToken();
         assertNull(jwt, ErrorMessages.JWT_TOKEN_SHOULD_BE_REMOVED_AFTER_LOGOUT);

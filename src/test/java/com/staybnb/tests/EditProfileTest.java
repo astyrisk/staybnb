@@ -1,6 +1,5 @@
 package com.staybnb.tests;
 
-import com.staybnb.config.TestConfig;
 import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
@@ -19,13 +18,12 @@ public class EditProfileTest extends BaseTest {
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
-        loginPage.load();
         ownProfilePage = new OwnProfilePage(driver);
         editProfilePage = new EditProfilePage(driver);
     }
 
     private void performEditProfileUpdate(String firstName, String lastName, String phone, String bio, String avatarUrl) {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.updateProfile(firstName, lastName, phone, bio, avatarUrl);
         ownProfilePage.load();
     }
@@ -72,35 +70,35 @@ public class EditProfileTest extends BaseTest {
 
     @Test
     public void testEditProfileValidationErrorFirstNameRequired() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyFirstName();
         assertTrue(editProfilePage.isValidationErrorDisplayed(), "Validation error should be displayed for empty first name.");
     }
 
     @Test
     public void testEditProfileValidationErrorMessageFirstNameRequired() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyFirstName();
         assertEquals(ErrorMessages.FIRST_NAME_REQUIRED, editProfilePage.getFieldError("firstName"), "Error message should match.");
     }
 
     @Test
     public void testEditProfileValidationErrorLastNameRequired() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyLastName("heko");
         assertTrue(editProfilePage.isValidationErrorDisplayed(), "Validation error should be displayed for empty last name.");
     }
 
     @Test
     public void testEditProfileValidationErrorMessageLastNameRequired() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyLastName("heko");
         assertEquals(ErrorMessages.LAST_NAME_REQUIRED, editProfilePage.getFieldError("lastName"), "Error message should match.");
     }
 
     @Test
     public void testEditProfileCancel() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         String originalFirstName = editProfilePage.attemptFirstNameChangeThenCancel("CanceledName");
         assertEquals(originalFirstName, editProfilePage.getFirstNameValue(), "Changes should not be saved after cancellation.");
     }
@@ -113,14 +111,14 @@ public class EditProfileTest extends BaseTest {
 
     @Test
     public void testApiUpdateUserProfileTokenNotNull() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         String token = loginPage.getStaybnbToken();
         assertNotNull(token, ErrorMessages.AUTH_TOKEN_SHOULD_BE_PRESENT_IN_LOCAL_STORAGE);
     }
 
     @Test
     public void testApiUpdateUserProfileResponseNotNull() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",
                 Constants.EditProfile.API_FIRST_NAME, Constants.EditProfile.API_LAST_NAME, Constants.EditProfile.API_PHONE, Constants.EditProfile.API_BIO);
         String jsonResponse = editProfilePage.updateMyProfileViaApi(updatePayload);
@@ -129,7 +127,7 @@ public class EditProfileTest extends BaseTest {
 
     @Test
     public void testApiUpdateUserProfileResponseContainsUpdatedFirstName() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",
                 Constants.EditProfile.API_FIRST_NAME, Constants.EditProfile.API_LAST_NAME, Constants.EditProfile.API_PHONE, Constants.EditProfile.API_BIO);
         String jsonResponse = editProfilePage.updateMyProfileViaApi(updatePayload);

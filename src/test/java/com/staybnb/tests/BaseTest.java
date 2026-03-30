@@ -1,5 +1,8 @@
 package com.staybnb.tests;
 
+import com.staybnb.config.TestConfig;
+import com.staybnb.pages.LoginPage;
+import com.staybnb.pages.RegisterPage;
 import com.staybnb.utils.Constants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,6 +75,29 @@ public class BaseTest {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    protected String registerNewUserAndLandOnHome(String emailPrefix) {
+        RegisterPage registerPage = new RegisterPage(driver);
+        registerPage.load();
+        String uniqueEmail = emailPrefix + "_" + System.currentTimeMillis() + "@gmail.com";
+        registerPage.registerAndWaitForUrl(
+                TestConfig.TEST_FIRST_NAME,
+                TestConfig.TEST_LAST_NAME,
+                uniqueEmail,
+                TestConfig.TEST_PASSWORD,
+                Constants.HOME_URL
+        );
+        return uniqueEmail;
+    }
+
+    protected void loginAsTestUserAndLandOnHome(LoginPage loginPage) {
+        loginAsUserAndLandOnHome(loginPage, TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+    }
+
+    protected void loginAsUserAndLandOnHome(LoginPage loginPage, String email, String password) {
+        loginPage.load();
+        loginPage.loginAndExpectSuccess(email, password);
     }
 
     @RegisterExtension

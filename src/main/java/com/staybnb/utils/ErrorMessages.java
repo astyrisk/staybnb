@@ -256,5 +256,43 @@ public final class ErrorMessages {
             "Hosting properties API should return 403 for authenticated non-host users.";
     public static final String HOST_DASHBOARD_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =
             "Hosting properties API should return 401 when not logged in.";
+
+    // --- Create Property (Steps 1-3) test messages ---
+    public static final String CREATE_PROPERTY_STEP1_SHOULD_DISPLAY_BASICS_FIELDS =
+            "Step 1 should display property type, category, title, and description fields.";
+    public static final String CREATE_PROPERTY_STEP1_SHOULD_REQUIRE_TITLE =
+            "Step 1 should show inline validation when title is missing.";
+    public static final String CREATE_PROPERTY_STEP1_SHOULD_REQUIRE_DESCRIPTION =
+            "Step 1 should show inline validation when description is missing.";
+    public static final String CREATE_PROPERTY_STEP2_SHOULD_DISPLAY_LOCATION_FIELDS =
+            "Step 2 should display country, city, and optional address fields.";
+    public static final String CREATE_PROPERTY_STEP2_SHOULD_REQUIRE_COUNTRY =
+            "Step 2 should show inline validation when country is missing.";
+    public static final String CREATE_PROPERTY_STEP2_SHOULD_REQUIRE_CITY =
+            "Step 2 should show inline validation when city is missing.";
+    public static final String CREATE_PROPERTY_STEP3_SHOULD_DISPLAY_DETAILS_FIELDS =
+            "Step 3 should display max guests, bedrooms, beds, and bathrooms fields.";
+    public static final String CREATE_PROPERTY_MAX_GUESTS_MIN_SHOULD_BE_1 =
+            "Max guests input minimum should be 1.";
+    public static final String CREATE_PROPERTY_BEDROOMS_MIN_SHOULD_BE_0 =
+            "Bedrooms input minimum should be 0.";
+    public static final String CREATE_PROPERTY_BEDS_MIN_SHOULD_BE_1 =
+            "Beds input minimum should be 1.";
+    public static final String CREATE_PROPERTY_BATHROOMS_MIN_SHOULD_BE_0 =
+            "Bathrooms input minimum should be 0.";
+    public static final String CREATE_PROPERTY_BATHROOMS_STEP_SHOULD_BE_HALF =
+            "Bathrooms input should allow 0.5 increments.";
+    public static final String CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP1_TITLE =
+            "Back navigation should preserve Step 1 title.";
+    public static final String CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP1_DESCRIPTION =
+            "Back navigation should preserve Step 1 description.";
+    public static final String CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP2_COUNTRY =
+            "Back navigation should preserve Step 2 country.";
+    public static final String CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP2_CITY =
+            "Back navigation should preserve Step 2 city.";
+    public static final String CREATE_PROPERTY_PROGRESS_SHOULD_SHOW_STEP_1_OF_7 =
+            "Progress indicator should show Step 1 of 7 on create property page.";
+    public static final String CREATE_PROPERTY_SHOULD_BLOCK_NON_HOST_WITH_403 =
+            "Non-host should be blocked with a 403 error on create property page.";
 }
 

@@ -1,6 +1,5 @@
 package com.staybnb.tests;
 
-import com.staybnb.config.TestConfig;
 import com.staybnb.utils.Constants;
 import com.staybnb.utils.ErrorMessages;
 import com.staybnb.pages.LoginPage;
@@ -15,18 +14,17 @@ public class LoginTest extends BaseTest {
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
-        loginPage.load();
     }
 
     @Test
     public void testSuccessfulLoginRedirection() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         assertTrue(driver.getCurrentUrl().contains(Constants.HOME_URL));
     }
 
     @Test
     public void testSuccessfulLoginTokenRetrieved() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         String jwt = loginPage.getStaybnbToken();
         assertNotNull(jwt, ErrorMessages.JWT_TOKEN_NOT_RETRIEVED);
     }

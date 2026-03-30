@@ -1,6 +1,5 @@
 package com.staybnb.tests;
 
-import com.staybnb.config.TestConfig;
 import com.staybnb.utils.ErrorMessages;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.Navbar;
@@ -23,35 +22,34 @@ public class NavbarTest extends BaseTest {
         navbar = new Navbar(driver);
         loginPage = new LoginPage(driver);
         propertyDetailsPage = new PropertyDetailsPage(driver);
-        loginPage.load();
     }
 
     // --- Authenticated User Tests ---
 
     @Test
     public void testNavbarLogoDisplayedAuthenticated() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         assertTrue(navbar.isLogoDisplayed(), ErrorMessages.NAVBAR_LOGO_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testNavbarUserAvatarDisplayedAuthenticated() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         assertTrue(navbar.isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_BE_DISPLAYED_FOR_AUTHENTICATED_USER);
     }
 
     @Test
     public void testNavbarLoginLinkNotDisplayedAuthenticated() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         assertFalse(navbar.isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_NOT_BE_DISPLAYED_FOR_AUTHENTICATED_USER);
     }
 
     @Test
     public void testNavbarProfileLinkDisplayedInDropdown() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         navbar.openUserMenu();
         assertTrue(navbar.isProfileLinkDisplayed(), ErrorMessages.NAVBAR_PROFILE_LINK_SHOULD_BE_IN_DROPDOWN);
@@ -59,7 +57,7 @@ public class NavbarTest extends BaseTest {
 
     @Test
     public void testNavbarLogoutButtonDisplayedInDropdown() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         navbar.openUserMenu();
         assertTrue(navbar.isLogoutButtonDisplayed(), ErrorMessages.NAVBAR_LOGOUT_BUTTON_SHOULD_BE_IN_DROPDOWN);
@@ -67,7 +65,7 @@ public class NavbarTest extends BaseTest {
 
     @Test
     public void testClickProfileInDropdown() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         navbar.clickProfileAndWaitForRedirect();
         assertTrue(driver.getCurrentUrl().contains(Constants.PROFILE_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_PROFILE_PAGE);
@@ -75,7 +73,7 @@ public class NavbarTest extends BaseTest {
 
     @Test
     public void testClickLogoutInDropdownRedirection() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         navbar.clickLogoutAndWaitForRedirectToHome();
         assertTrue(driver.getCurrentUrl().contains(Constants.HOME_URL), ErrorMessages.NAVBAR_SHOULD_REDIRECT_TO_HOME_AFTER_LOGOUT);
@@ -83,7 +81,7 @@ public class NavbarTest extends BaseTest {
 
     @Test
     public void testClickLogoutInDropdownLoginLinkVisibility() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         navbar.clickLogoutAndWaitForRedirectToHome();
         assertTrue(navbar.isLoginLinkDisplayed(), ErrorMessages.NAVBAR_SHOULD_SHOW_LOGIN_LINK_AFTER_LOGOUT);
@@ -91,7 +89,7 @@ public class NavbarTest extends BaseTest {
 
     @Test
     public void testNavbarHamburgerMenuDisplayedOnMobileAuthenticated() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         navbar.setMobileLayout();
         assertTrue(navbar.isHamburgerMenuDisplayed(), ErrorMessages.NAVBAR_HAMBURGER_MENU_SHOULD_BE_DISPLAYED_ON_MOBILE);
@@ -100,7 +98,7 @@ public class NavbarTest extends BaseTest {
 
     @Test
     public void testNavbarUserAvatarDisplayedOnMobileAuthenticated() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.load(PROPERTY_ID);
         navbar.setMobileLayout();
         assertTrue(navbar.isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_BE_VISIBLE_ON_MOBILE_MENU_BUTTON);
