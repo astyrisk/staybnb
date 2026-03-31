@@ -254,6 +254,20 @@ public final class Locators {
                                 + " or contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'primary')]"
                 );
 
+        public static final By STEP_6_PRICING_TITLE =
+                By.xpath("//div[contains(@class,'create-property-step')]//h2[normalize-space()='Pricing']");
+        public static final By STEP_6_PRICE_INPUT =
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(normalize-space(),'Price per Night')]]//input[@type='number']");
+
+        public static final By STEP_7_REVIEW_TITLE =
+                By.xpath("//div[contains(@class,'create-property-step')]//h2[normalize-space()='Review & Submit']");
+        public static final By STEP_7_REVIEW_SECTIONS =
+                By.cssSelector(".create-property-review-section");
+        public static final By STEP_7_CREATE_PROPERTY_BUTTON =
+                By.xpath("//button[contains(@class,'create-property-btn') and contains(@class,'primary') and (normalize-space()='Create Property' or normalize-space()='Create Listing')]");
+        public static final By STEP_7_SUCCESS_MESSAGE =
+                By.cssSelector(".alert, .alert-success, .toast-success, .create-property-success");
+
         public static final By FIELD_ERRORS = By.cssSelector(".create-property-error, .error, .field-error, .auth-error");
     }
 }

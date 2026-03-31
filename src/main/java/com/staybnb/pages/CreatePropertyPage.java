@@ -4,16 +4,23 @@ import com.staybnb.locators.Locators;
 import com.staybnb.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 public class CreatePropertyPage extends BasePage {
     private static final String PAGE_URL = Constants.HOSTING_CREATE_URL;
+    private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
+    private static final String CREATE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyStatusApi.js";
 
     private final By container = Locators.CreateProperty.CONTAINER;
     private final By progressText = Locators.CreateProperty.PROGRESS_TEXT;
@@ -47,6 +54,12 @@ public class CreatePropertyPage extends BasePage {
     private final By step5ImageMoveUpButtons = Locators.CreateProperty.STEP_5_IMAGE_MOVE_UP_BUTTONS;
     private final By step5ImageMoveDownButtons = Locators.CreateProperty.STEP_5_IMAGE_MOVE_DOWN_BUTTONS;
     private final By step5ImageDeleteButtons = Locators.CreateProperty.STEP_5_IMAGE_DELETE_BUTTONS;
+    private final By step6PricingTitle = Locators.CreateProperty.STEP_6_PRICING_TITLE;
+    private final By step6PriceInput = Locators.CreateProperty.STEP_6_PRICE_INPUT;
+    private final By step7ReviewTitle = Locators.CreateProperty.STEP_7_REVIEW_TITLE;
+    private final By step7ReviewSections = Locators.CreateProperty.STEP_7_REVIEW_SECTIONS;
+    private final By step7CreatePropertyButton = Locators.CreateProperty.STEP_7_CREATE_PROPERTY_BUTTON;
+    private final By step7SuccessMessage = Locators.CreateProperty.STEP_7_SUCCESS_MESSAGE;
 
     public CreatePropertyPage(WebDriver driver) {
         super(driver);
@@ -214,6 +227,65 @@ public class CreatePropertyPage extends BasePage {
                 || hasInlineErrorContaining("Minimum 1 image required");
     }
 
+    public boolean isStep6PricingLoaded() {
+        return isDisplayed(step6PricingTitle) && isDisplayed(step6PriceInput);
+    }
+
+    public boolean step6PriceInputUsesUsdLabel() {
+        By priceUsdLabel = By.xpath(
+                "//div[contains(@class,'create-property-field')][.//input[@type='number']]//label[contains(normalize-space(),'Price per Night') and (contains(normalize-space(),'$') or contains(normalize-space(),'USD'))]"
+        );
+        return isDisplayed(priceUsdLabel);
+    }
+
+    public void enterPricePerNight(String price) {
+        type(step6PriceInput, price);
+    }
+
+    public boolean hasPriceGreaterThanZeroValidationMessage() {
+        return hasInlineErrorContaining("greater than 0")
+                || hasInlineErrorContaining("price is required")
+                || hasInlineErrorContaining("price must be");
+    }
+
+    public boolean isStep7ReviewLoaded() {
+        return isDisplayed(step7ReviewTitle)
+                && !driver.findElements(step7ReviewSections).isEmpty()
+                && isDisplayed(step7CreatePropertyButton);
+    }
+
+    public boolean reviewContainsAllStep1ToStep6Sections() {
+        String page = driver.getPageSource().toLowerCase();
+        return page.contains("type:")
+                && page.contains("category:")
+                && page.contains("title:")
+                && page.contains("description:")
+                && page.contains("location")
+                && page.contains("guests")
+                && page.contains("amenities")
+                && page.contains("images")
+                && page.contains("pricing");
+    }
+
+    public boolean reviewShowsDraftNote() {
+        return driver.getPageSource().toLowerCase().contains("draft");
+    }
+
+    public void clickCreateProperty() {
+        waitForElementClickable(step7CreatePropertyButton).click();
+    }
+
+    public boolean hasCreatePropertySuccessAlert() {
+        try {
+            Alert alert = wait.until(org.openqa.selenium.support.ui.ExpectedConditions.alertIsPresent());
+            String text = alert.getText() == null ? "" : alert.getText().toLowerCase();
+            alert.accept();
+            return text.contains("property created successfully!");
+        } catch (NoAlertPresentException | org.openqa.selenium.TimeoutException e) {
+            return false;
+        }
+    }
+
     public boolean hasInlineErrorContaining(String expectedText) {
         List<WebElement> errors = driver.findElements(fieldErrors);
         String expectedLower = expectedText.toLowerCase();
@@ -288,5 +360,60 @@ public class CreatePropertyPage extends BasePage {
 
     public boolean pageShows403Error() {
         return driver.getPageSource().contains("403");
+    }
+
+    public long createPropertyStatusViaApi(String payloadJson) {
+       System.out.println(payloadJson);
+
+//        driver.get(Constants.HOME_URL);
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String script = loadJavascriptResource(CREATE_PROPERTY_STATUS_API_JS_RESOURCE);
+        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG, payloadJsonToObject(js, payloadJson));
+        if (responseStatus instanceof Number n) {
+            return n.longValue();
+        }
+        throw new RuntimeException("Unexpected create-property status response type: " +
+                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
+    }
+
+    public String createPropertyViaApi(String payloadJson) {
+        driver.get(Constants.HOME_URL);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String script = loadJavascriptResource(CREATE_PROPERTY_API_JS_RESOURCE);
+        Object response = js.executeAsyncScript(script, Constants.SLUG, payloadJsonToObject(js, payloadJson));
+        return (String) response;
+    }
+
+    public String createPropertyErrorBodyViaApi(String payloadJson) {
+        String raw = createPropertyViaApi(payloadJson);
+        if (raw == null) {
+            return null;
+        }
+        try {
+            Object parsed = ((JavascriptExecutor) driver).executeScript("return JSON.parse(arguments[0]);", raw);
+            if (parsed instanceof java.util.Map<?, ?> map) {
+                Object body = map.get("body");
+                return body == null ? null : body.toString();
+            }
+            return raw;
+        } catch (Exception e) {
+            return raw;
+        }
+    }
+
+    private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {
+        return js.executeScript("return JSON.parse(arguments[0]);", payloadJson);
+    }
+
+    private String loadJavascriptResource(String resourcePath) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
+            }
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
+        }
     }
 }

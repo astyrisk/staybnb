@@ -45,6 +45,62 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.clickNext();
     }
 
+    private void goToStep6WithValidStep1ToStep5() {
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                "media/apts/Brasilia-01.jpeg",
+                "media/apts/Brasilia-02.jpg"
+        );
+        createPropertyPage.hasAtLeastNImagePreviews(2);
+        createPropertyPage.clickNext();
+    }
+
+    private String validCreatePropertyPayloadJson() {
+        long now = System.currentTimeMillis();
+        return "{"
+                + "\"propertyType\":\"ENTIRE_PLACE\","
+                + "\"categoryId\":71,"
+                + "\"title\":\"Automation API Listing\","
+                + "\"description\":\"Automation flow for create property wizard.\","
+                + "\"locationCountry\":\"Afghanistan\","
+                + "\"locationCity\":\"Kabul\","
+                + "\"locationAddress\":\"Street 1\","
+                + "\"maxGuests\":1,"
+                + "\"numBedrooms\":1,"
+                + "\"numBeds\":1,"
+                + "\"numBathrooms\":1,"
+                + "\"amenities\":[],"
+                + "\"images\":["
+                + "{\"url\":\"https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp\",\"caption\":\"\"},"
+                + "{\"url\":\"https://is1-2.housingcdn.com/012c1500/96c67b8d4f357e39da3ebbbca1bd60da/v0/medium.jpeg\",\"caption\":\"\"}"
+                + "],"
+                + "\"pricePerNight\":120"
+                + "}";
+    }
+
+    private String invalidCreatePropertyPayloadMissingTitleJson() {
+        long now = System.currentTimeMillis();
+        return "{"
+                + "\"propertyType\":\"ENTIRE_PLACE\","
+                + "\"categoryId\":71,"
+                + "\"title\":\"\","
+                + "\"description\":\"Automation flow for create property wizard.\","
+                + "\"locationCountry\":\"Afghanistan\","
+                + "\"locationCity\":\"Kabul\","
+                + "\"locationAddress\":\"Street 1\","
+                + "\"maxGuests\":1,"
+                + "\"numBedrooms\":1,"
+                + "\"numBeds\":1,"
+                + "\"numBathrooms\":1,"
+                + "\"amenities\":[],"
+                + "\"images\":["
+                + "{\"url\":\"https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp\",\"caption\":\"\"},"
+                + "{\"url\":\"https://is1-2.housingcdn.com/012c1500/96c67b8d4f357e39da3ebbbca1bd60da/v0/medium.jpeg\",\"caption\":\"\"}"
+                + "],"
+                + "\"pricePerNight\":120"
+                + "}";
+    }
+
     @Test
     public void testStep1ShowsBasicsFields() {
         loginAsExistingHostAndLoadCreatePage();
@@ -388,7 +444,138 @@ public class CreatePropertyTest extends BaseTest {
                 ErrorMessages.CREATE_PROPERTY_STEP5_BACK_AND_RETURN_SHOULD_PRESERVE_UPLOADED_IMAGES
         );
     }
+    /* STEP 6 */
+    @Test
+    public void testStep6ShowsPricePerNightInputInUsd() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep6WithValidStep1ToStep5();
+        assertTrue(
+                createPropertyPage.isStep6PricingLoaded() && createPropertyPage.step6PriceInputUsesUsdLabel(),
+                ErrorMessages.CREATE_PROPERTY_STEP6_SHOULD_DISPLAY_PRICE_INPUT_IN_USD
+        );
+    }
+
+    @Test
+    public void testStep6ShowsValidationWhenPriceIsZero() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep6WithValidStep1ToStep5();
+        createPropertyPage.enterPricePerNight("0");
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.hasPriceGreaterThanZeroValidationMessage(),
+                ErrorMessages.CREATE_PROPERTY_STEP6_SHOULD_REQUIRE_PRICE_GREATER_THAN_ZERO
+        );
+    }
+
+    @Test
+    public void testStep6NextWithValidPriceAdvancesToStep7Review() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep6WithValidStep1ToStep5();
+        createPropertyPage.enterPricePerNight("120");
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.isStep7ReviewLoaded(),
+                ErrorMessages.CREATE_PROPERTY_STEP6_NEXT_SHOULD_ADVANCE_TO_STEP7_REVIEW
+        );
+    }
+
+    /* STEP 7 */
+    @Test
+    public void testStep7ShowsSummaryOfInformationFromPreviousSteps() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep6WithValidStep1ToStep5();
+        createPropertyPage.enterPricePerNight("120");
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.reviewContainsAllStep1ToStep6Sections(),
+                ErrorMessages.CREATE_PROPERTY_STEP7_SHOULD_SUMMARIZE_ALL_PREVIOUS_STEPS
+        );
+    }
+
+    @Test
+    public void testStep7BackToStep6AndReturnToStep7Works() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep6WithValidStep1ToStep5();
+        createPropertyPage.enterPricePerNight("120");
+        createPropertyPage.clickNext();
+        createPropertyPage.clickBack();
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.isStep7ReviewLoaded(),
+                ErrorMessages.CREATE_PROPERTY_STEP7_BACK_AND_RETURN_SHOULD_WORK
+        );
+    }
+
+    @Test
+    public void testStep7CreatePropertyRedirectsToHostDashboard() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep6WithValidStep1ToStep5();
+        createPropertyPage.enterPricePerNight("120");
+        createPropertyPage.clickNext();
+        createPropertyPage.clickCreateProperty();
+        assertTrue(
+                isUrlContains("/hosting"),
+                ErrorMessages.CREATE_PROPERTY_STEP7_SUBMIT_SHOULD_REDIRECT_TO_HOST_DASHBOARD
+        );
+    }
+
+    @Test
+    public void testStep7CreatePropertyShowsSuccessMessage() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep6WithValidStep1ToStep5();
+
+        createPropertyPage.enterPricePerNight("120");
+        createPropertyPage.clickNext();
+        createPropertyPage.clickCreateProperty();
+
+        assertTrue(
+                createPropertyPage.hasCreatePropertySuccessAlert(),
+                ErrorMessages.CREATE_PROPERTY_STEP7_SUBMIT_SHOULD_SHOW_SUCCESS_MESSAGE
+        );
+    }
+
+    @Test
+    public void testCreatePropertyApiReturns201ForValidHostPayload() {
+        loginAsExistingHostAndLoadCreatePage();
+        long status = createPropertyPage.createPropertyStatusViaApi(validCreatePropertyPayloadJson());
+        assertEquals(
+                201L, status,
+                ErrorMessages.CREATE_PROPERTY_API_SHOULD_RETURN_201_FOR_VALID_HOST_PAYLOAD
+        );
+    }
+
+//    @Test
+//    public void testCreatePropertyApiCreatesDraftWithIsPublishedFalse() {
+//        loginAsExistingHostAndLoadCreatePage();
+//        String response = createPropertyPage.createPropertyViaApi(validCreatePropertyPayloadJson());
+//
+//
+//        System.out.println(response);
+//
+//        //Note: There is no way to find if is_published = false
+//        assertTrue(
+//                response != null && response.toLowerCase().contains("\"is_published\":false"),
+//                ErrorMessages.CREATE_PROPERTY_API_SHOULD_CREATE_DRAFT_IS_PUBLISHED_FALSE
+//        );
+//    }
+
+    @Test
+    public void testCreatePropertyApiReturns400WhenRequiredFieldMissing() {
+        loginAsExistingHostAndLoadCreatePage();
+        long status = createPropertyPage.createPropertyStatusViaApi(invalidCreatePropertyPayloadMissingTitleJson());
+        assertEquals(
+                400L, status,
+                ErrorMessages.CREATE_PROPERTY_API_SHOULD_RETURN_400_FOR_MISSING_REQUIRED_FIELDS
+        );
+    }
+
+    @Test
+    public void testCreatePropertyApiReturns403ForNonHost() {
+        registerNewUserAndLandOnHome("testcreateproperty");
+        long status = createPropertyPage.createPropertyStatusViaApi(validCreatePropertyPayloadJson());
+        assertEquals(
+                403L, status,
+                ErrorMessages.CREATE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_HOST
+        );
+    }
 }
-
-
-/* STEP 6 */

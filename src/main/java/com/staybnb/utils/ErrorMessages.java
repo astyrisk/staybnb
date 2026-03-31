@@ -320,5 +320,27 @@ public final class ErrorMessages {
             "Step 5 should block Next when fewer than one image is uploaded and show 'Minimum 1 image required'.";
     public static final String CREATE_PROPERTY_STEP5_BACK_AND_RETURN_SHOULD_PRESERVE_UPLOADED_IMAGES =
             "Uploaded images should be preserved when navigating back to Step 4 and returning to Step 5.";
+    public static final String CREATE_PROPERTY_STEP6_SHOULD_DISPLAY_PRICE_INPUT_IN_USD =
+            "Step 6 should display a price-per-night number input in USD.";
+    public static final String CREATE_PROPERTY_STEP6_SHOULD_REQUIRE_PRICE_GREATER_THAN_ZERO =
+            "Step 6 should show validation when price is zero or negative.";
+    public static final String CREATE_PROPERTY_STEP6_NEXT_SHOULD_ADVANCE_TO_STEP7_REVIEW =
+            "With valid pricing, Next should advance to Step 7 review.";
+    public static final String CREATE_PROPERTY_STEP7_SHOULD_SUMMARIZE_ALL_PREVIOUS_STEPS =
+            "Step 7 should summarize property type, category, title, description, location, capacity, amenities, images, and price.";
+    public static final String CREATE_PROPERTY_STEP7_BACK_AND_RETURN_SHOULD_WORK =
+            "From Step 7, Back should allow editing previous steps and returning to review.";
+    public static final String CREATE_PROPERTY_STEP7_SUBMIT_SHOULD_REDIRECT_TO_HOST_DASHBOARD =
+            "After creating property, user should be redirected to the host dashboard.";
+    public static final String CREATE_PROPERTY_STEP7_SUBMIT_SHOULD_SHOW_SUCCESS_MESSAGE =
+            "After successful creation, a success message should be visible.";
+    public static final String CREATE_PROPERTY_API_SHOULD_RETURN_201_FOR_VALID_HOST_PAYLOAD =
+            "Create property API should return 201 for a valid host payload.";
+    public static final String CREATE_PROPERTY_API_SHOULD_CREATE_DRAFT_IS_PUBLISHED_FALSE =
+            "Create property API response should indicate draft creation with is_published false.";
+    public static final String CREATE_PROPERTY_API_SHOULD_RETURN_400_FOR_MISSING_REQUIRED_FIELDS =
+            "Create property API should return 400 when required fields are missing.";
+    public static final String CREATE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_HOST =
+            "Create property API should return 403 for an authenticated non-host user.";
 }
 
