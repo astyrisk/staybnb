@@ -294,5 +294,31 @@ public final class ErrorMessages {
             "Progress indicator should show Step 1 of 7 on create property page.";
     public static final String CREATE_PROPERTY_SHOULD_BLOCK_NON_HOST_WITH_403 =
             "Non-host should be blocked with a 403 error on create property page.";
+    public static final String CREATE_PROPERTY_STEP4_SHOULD_DISPLAY_AMENITIES_GRID =
+            "Step 4 should display amenities title and a non-empty checkbox grid.";
+    public static final String CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_ESSENTIALS =
+            "Step 4 amenities should include an Essentials group.";
+    public static final String CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_FEATURES =
+            "Step 4 amenities should include a Features group.";
+    public static final String CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_SAFETY =
+            "Step 4 amenities should include a Safety group.";
+    public static final String CREATE_PROPERTY_STEP4_NEXT_SHOULD_ADVANCE_TO_STEP5_WITH_SELECTED_AMENITIES =
+            "After selecting amenities, Next should advance to Step 5.";
+    public static final String CREATE_PROPERTY_STEP4_NEXT_SHOULD_ALLOW_EMPTY_AMENITIES =
+            "Step 4 should allow proceeding to Step 5 with no amenities selected.";
+    public static final String CREATE_PROPERTY_STEP4_BACK_AND_RETURN_SHOULD_PRESERVE_AMENITIES =
+            "Amenity selection should be preserved when navigating back to Step 3 and returning to Step 4.";
+    public static final String CREATE_PROPERTY_STEP5_SHOULD_DISPLAY_UPLOAD_AREA_WITH_DRAG_DROP_AND_BROWSE =
+            "Step 5 should display an upload area supporting drag and drop or click-to-browse.";
+    public static final String CREATE_PROPERTY_STEP5_UPLOAD_SHOULD_DISPLAY_PREVIEW_THUMBNAILS =
+            "After upload completes, Step 5 should show preview thumbnails for uploaded images.";
+    public static final String CREATE_PROPERTY_STEP5_UPLOADED_IMAGE_SHOULD_SHOW_SORT_HANDLE_AND_DELETE =
+            "Each uploaded image should show both a sort handle and a delete button.";
+    public static final String CREATE_PROPERTY_STEP5_FIRST_IMAGE_SHOULD_BE_MARKED_PRIMARY_OR_COVER =
+            "When multiple images are uploaded, the first image should be marked as primary/cover.";
+    public static final String CREATE_PROPERTY_STEP5_NEXT_SHOULD_REQUIRE_MINIMUM_ONE_IMAGE =
+            "Step 5 should block Next when fewer than one image is uploaded and show 'Minimum 1 image required'.";
+    public static final String CREATE_PROPERTY_STEP5_BACK_AND_RETURN_SHOULD_PRESERVE_UPLOADED_IMAGES =
+            "Uploaded images should be preserved when navigating back to Step 4 and returning to Step 5.";
 }
 

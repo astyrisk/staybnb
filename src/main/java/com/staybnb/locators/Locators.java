@@ -219,6 +219,41 @@ public final class Locators {
         public static final By STEP_3_BATHROOMS_INPUT =
                 By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'bathrooms')]]//input");
 
+        public static final By STEP_4_AMENITIES_TITLE =
+                By.xpath("//div[contains(@class,'create-property-step')]//h2[normalize-space()='Amenities']");
+        public static final By STEP_4_AMENITIES_GRID =
+                By.className("create-property-amenities-grid");
+        public static final By STEP_4_AMENITY_CHECKBOXES =
+                By.cssSelector(".create-property-amenities-grid input[type='checkbox']");
+        public static final By STEP_4_AMENITY_ITEMS =
+                By.cssSelector(".create-property-amenity-item");
+        public static final By STEP_4_GROUP_HEADERS =
+                By.cssSelector(".create-property-amenities-group h3, .create-property-amenities-group-title");
+
+        public static final By STEP_5_PHOTOS_TITLE =
+                By.xpath("//div[contains(@class,'create-property-step')]//h2[normalize-space()='Photos']");
+        public static final By STEP_5_UPLOAD_DROPZONE =
+                By.cssSelector(".image-upload-dropzone");
+        public static final By STEP_5_UPLOAD_FILE_INPUT =
+                By.cssSelector(".image-upload-dropzone input[type='file']");
+        public static final By STEP_5_UPLOAD_TEXT =
+                By.cssSelector(".image-upload-text");
+        public static final By STEP_5_IMAGE_PREVIEWS =
+                By.cssSelector(
+                        ".image-preview-item, .image-upload-preview-item, .create-property-image-item, .uploaded-image-item"
+                );
+        public static final By STEP_5_IMAGE_MOVE_UP_BUTTONS =
+                By.cssSelector(".image-upload-preview-actions button[title='Move up']");
+        public static final By STEP_5_IMAGE_MOVE_DOWN_BUTTONS =
+                By.cssSelector(".image-upload-preview-actions button[title='Move down']");
+        public static final By STEP_5_IMAGE_DELETE_BUTTONS =
+                By.cssSelector(".image-upload-preview-actions button.delete, .image-upload-preview-actions button[title='Delete']");
+        public static final By STEP_5_PRIMARY_IMAGE_BADGE =
+                By.xpath(
+                        "//*[contains(@class,'image') and contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'cover')"
+                                + " or contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'primary')]"
+                );
+
         public static final By FIELD_ERRORS = By.cssSelector(".create-property-error, .error, .field-error, .auth-error");
     }
 }

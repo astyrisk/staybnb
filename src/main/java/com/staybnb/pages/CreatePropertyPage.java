@@ -3,10 +3,13 @@ package com.staybnb.pages;
 import com.staybnb.locators.Locators;
 import com.staybnb.utils.Constants;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 public class CreatePropertyPage extends BasePage {
@@ -31,6 +34,19 @@ public class CreatePropertyPage extends BasePage {
     private final By step3BedroomsInput = Locators.CreateProperty.STEP_3_BEDROOMS_INPUT;
     private final By step3BedsInput = Locators.CreateProperty.STEP_3_BEDS_INPUT;
     private final By step3BathroomsInput = Locators.CreateProperty.STEP_3_BATHROOMS_INPUT;
+    private final By step4AmenitiesTitle = Locators.CreateProperty.STEP_4_AMENITIES_TITLE;
+    private final By step4AmenitiesGrid = Locators.CreateProperty.STEP_4_AMENITIES_GRID;
+    private final By step4AmenityCheckboxes = Locators.CreateProperty.STEP_4_AMENITY_CHECKBOXES;
+    private final By step4AmenityItems = Locators.CreateProperty.STEP_4_AMENITY_ITEMS;
+    private final By step4GroupHeaders = Locators.CreateProperty.STEP_4_GROUP_HEADERS;
+    private final By step5PhotosTitle = Locators.CreateProperty.STEP_5_PHOTOS_TITLE;
+    private final By step5UploadDropzone = Locators.CreateProperty.STEP_5_UPLOAD_DROPZONE;
+    private final By step5UploadFileInput = Locators.CreateProperty.STEP_5_UPLOAD_FILE_INPUT;
+    private final By step5UploadText = Locators.CreateProperty.STEP_5_UPLOAD_TEXT;
+    private final By step5ImagePreviews = Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS;
+    private final By step5ImageMoveUpButtons = Locators.CreateProperty.STEP_5_IMAGE_MOVE_UP_BUTTONS;
+    private final By step5ImageMoveDownButtons = Locators.CreateProperty.STEP_5_IMAGE_MOVE_DOWN_BUTTONS;
+    private final By step5ImageDeleteButtons = Locators.CreateProperty.STEP_5_IMAGE_DELETE_BUTTONS;
 
     public CreatePropertyPage(WebDriver driver) {
         super(driver);
@@ -59,6 +75,29 @@ public class CreatePropertyPage extends BasePage {
                 && isDisplayed(step3BedroomsInput)
                 && isDisplayed(step3BedsInput)
                 && isDisplayed(step3BathroomsInput);
+    }
+
+    public boolean isStep4AmenitiesLoaded() {
+        return isDisplayed(step4AmenitiesTitle)
+                && isDisplayed(step4AmenitiesGrid)
+                && !driver.findElements(step4AmenityCheckboxes).isEmpty();
+    }
+
+    public boolean isStep5PhotosLoaded() {
+        return isDisplayed(step5PhotosTitle);
+    }
+
+    public boolean step5HasUploadAreaSupportingDropOrBrowse() {
+        String dropzoneText = waitForElementVisible(step5UploadDropzone).getText().toLowerCase();
+        String uploadText = waitForElementVisible(step5UploadText).getText().toLowerCase();
+
+        WebElement input = driver.findElement(step5UploadFileInput);
+        String accepts = input.getAttribute("accept");
+
+        return accepts != null
+                && accepts.contains("image/")
+                && (dropzoneText.contains("drag") || uploadText.contains("drag"))
+                && (dropzoneText.contains("browse") || uploadText.contains("browse"));
     }
 
     public String getProgressText() {
@@ -130,6 +169,51 @@ public class CreatePropertyPage extends BasePage {
         enterAddress("Street 1");
     }
 
+    public void uploadImagesFromProjectPath(String... relativePaths) {
+        WebElement fileInput = driver.findElement(step5UploadFileInput);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", fileInput);
+        String joinedAbsolutePaths = Arrays.stream(relativePaths)
+                .map(path -> new File(System.getProperty("user.dir"), path).getAbsolutePath())
+                .reduce((a, b) -> a + "\n" + b)
+                .orElse("");
+        fileInput.sendKeys(joinedAbsolutePaths);
+    }
+
+    public boolean hasAtLeastNImagePreviews(int minimumCount) {
+        waitForElementVisible(step5UploadDropzone);
+        return driver.findElements(step5ImagePreviews).size() >= minimumCount;
+    }
+
+    public boolean uploadedImagesShowSortHandleAndDelete() {
+        return !driver.findElements(step5ImageMoveUpButtons).isEmpty()
+                && !driver.findElements(step5ImageMoveDownButtons).isEmpty()
+                && !driver.findElements(step5ImageDeleteButtons).isEmpty();
+    }
+
+    public boolean firstUploadedImageIsMarkedPrimaryOrCover() {
+        List<WebElement> previewItems = driver.findElements(step5ImagePreviews);
+        if (previewItems.isEmpty()) {
+            return false;
+        }
+
+        WebElement firstItem = previewItems.get(0);
+        String firstItemText = firstItem.getText().toLowerCase();
+        if (firstItemText.contains("primary") || firstItemText.contains("cover")) {
+            return true;
+        }
+
+        List<WebElement> badges = firstItem.findElements(
+                By.xpath(".//*[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'primary')"
+                        + " or contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'cover')]")
+        );
+        return !badges.isEmpty();
+    }
+
+    public boolean hasMinimumImageRequiredValidationMessage() {
+        return hasInlineErrorContaining("At least one image is required")
+                || hasInlineErrorContaining("Minimum 1 image required");
+    }
+
     public boolean hasInlineErrorContaining(String expectedText) {
         List<WebElement> errors = driver.findElements(fieldErrors);
         String expectedLower = expectedText.toLowerCase();
@@ -170,6 +254,36 @@ public class CreatePropertyPage extends BasePage {
 
     public boolean bathroomsStepIsHalfIncrement() {
         return "0.5".equals(waitForElementVisible(step3BathroomsInput).getAttribute("step"));
+    }
+
+    public boolean hasAmenityGroupNamed(String groupName) {
+        String expected = groupName.toLowerCase();
+        List<WebElement> groups = driver.findElements(step4GroupHeaders);
+        return groups.stream().anyMatch(el -> el.getText().trim().toLowerCase().contains(expected));
+    }
+
+    public boolean hasAmenityItemContaining(String text) {
+        String expected = text.toLowerCase();
+        List<WebElement> items = driver.findElements(step4AmenityItems);
+        return items.stream().anyMatch(el -> el.getText().toLowerCase().contains(expected));
+    }
+
+    public void toggleAmenityByLabelContaining(String labelText) {
+        String normalized = labelText.toLowerCase();
+        By amenityCheckbox = By.xpath(
+                "//label[contains(@class,'create-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
+                        + normalized + "')]//input[@type='checkbox']"
+        );
+        waitForElementClickable(amenityCheckbox).click();
+    }
+
+    public boolean isAmenityCheckedByLabelContaining(String labelText) {
+        String normalized = labelText.toLowerCase();
+        By amenityCheckbox = By.xpath(
+                "//label[contains(@class,'create-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
+                        + normalized + "')]//input[@type='checkbox']"
+        );
+        return waitForElementVisible(amenityCheckbox).isSelected();
     }
 
     public boolean pageShows403Error() {

@@ -35,6 +35,16 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.clickNext();
     }
 
+    private void goToStep4WithValidStep1ToStep3() {
+        goToStep3WithValidStep1AndStep2();
+        createPropertyPage.clickNext();
+    }
+
+    private void goToStep5WithValidStep1ToStep4() {
+        goToStep4WithValidStep1ToStep3();
+        createPropertyPage.clickNext();
+    }
+
     @Test
     public void testStep1ShowsBasicsFields() {
         loginAsExistingHostAndLoadCreatePage();
@@ -223,4 +233,162 @@ public class CreatePropertyTest extends BaseTest {
                 ErrorMessages.CREATE_PROPERTY_SHOULD_BLOCK_NON_HOST_WITH_403
         );
     }
+
+    /* STEP 4 */
+    @Test
+    public void testStep4ShowsAmenitiesGridAfterCompletingStep3() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+        assertTrue(
+                createPropertyPage.isStep4AmenitiesLoaded(),
+                ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_DISPLAY_AMENITIES_GRID
+        );
+    }
+
+    @Test
+    public void testStep4AmenitiesGroupedByEssentials() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+        assertTrue(
+                createPropertyPage.hasAmenityGroupNamed("Essentials"),
+                ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_ESSENTIALS
+        );
+    }
+
+    @Test
+    public void testStep4AmenitiesGroupedByFeatures() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+        assertTrue(
+                createPropertyPage.hasAmenityGroupNamed("Features"),
+                ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_FEATURES
+        );
+    }
+
+    @Test
+    public void testStep4AmenitiesGroupedBySafety() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+        assertTrue(
+                createPropertyPage.hasAmenityGroupNamed("Safety"),
+                ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_SAFETY
+        );
+    }
+
+    @Test
+    public void testStep4SelectedAmenitiesAllowAdvancingToStep5() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+        createPropertyPage.toggleAmenityByLabelContaining("WiFi");
+        createPropertyPage.toggleAmenityByLabelContaining("TV");
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.isStep5PhotosLoaded(),
+                ErrorMessages.CREATE_PROPERTY_STEP4_NEXT_SHOULD_ADVANCE_TO_STEP5_WITH_SELECTED_AMENITIES
+        );
+    }
+
+    @Test
+    public void testStep4AllowsProceedingWithoutAmenitiesSelected() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.isStep5PhotosLoaded(),
+                ErrorMessages.CREATE_PROPERTY_STEP4_NEXT_SHOULD_ALLOW_EMPTY_AMENITIES
+        );
+    }
+
+    @Test
+    public void testStep4BackToStep3AndReturnPreservesAmenitySelection() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+        createPropertyPage.toggleAmenityByLabelContaining("WiFi");
+        createPropertyPage.clickBack();
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.isAmenityCheckedByLabelContaining("WiFi"),
+                ErrorMessages.CREATE_PROPERTY_STEP4_BACK_AND_RETURN_SHOULD_PRESERVE_AMENITIES
+        );
+    }
+
+    /* STEP 5 */
+    @Test
+    public void testStep5ShowsImageUploadAreaWithDragDropOrBrowse() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        assertTrue(
+                createPropertyPage.step5HasUploadAreaSupportingDropOrBrowse(),
+                ErrorMessages.CREATE_PROPERTY_STEP5_SHOULD_DISPLAY_UPLOAD_AREA_WITH_DRAG_DROP_AND_BROWSE
+        );
+    }
+
+    @Test
+    public void testStep5UploadingImagesShowsPreviewThumbnails() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                "media/apts/Brasilia-01.jpeg",
+                "media/apts/Brasilia-02.jpg"
+        );
+        assertTrue(
+                createPropertyPage.hasAtLeastNImagePreviews(2),
+                ErrorMessages.CREATE_PROPERTY_STEP5_UPLOAD_SHOULD_DISPLAY_PREVIEW_THUMBNAILS
+        );
+    }
+
+    @Test
+    public void testStep5UploadedImagesShowSortHandleAndDeleteButton() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath("media/apts/Brasilia-01.jpeg");
+        assertTrue(
+                createPropertyPage.uploadedImagesShowSortHandleAndDelete(),
+                ErrorMessages.CREATE_PROPERTY_STEP5_UPLOADED_IMAGE_SHOULD_SHOW_SORT_HANDLE_AND_DELETE
+        );
+    }
+
+    @Test
+    public void testStep5FirstUploadedImageIsMarkedAsPrimaryCover() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                "media/apts/Brasilia-01.jpeg",
+                "media/apts/Brasilia-02.jpg"
+        );
+        assertTrue(
+                createPropertyPage.firstUploadedImageIsMarkedPrimaryOrCover(),
+                ErrorMessages.CREATE_PROPERTY_STEP5_FIRST_IMAGE_SHOULD_BE_MARKED_PRIMARY_OR_COVER
+        );
+    }
+
+    @Test
+    public void testStep5CannotAdvanceWithoutAtLeastOneImage() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.hasMinimumImageRequiredValidationMessage(),
+                ErrorMessages.CREATE_PROPERTY_STEP5_NEXT_SHOULD_REQUIRE_MINIMUM_ONE_IMAGE
+        );
+    }
+
+    @Test
+    public void testStep5BackToStep4AndReturnPreservesUploadedImages() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                "media/apts/Brasilia-01.jpeg",
+                "media/apts/Brasilia-02.jpg"
+        );
+        createPropertyPage.clickBack();
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.hasAtLeastNImagePreviews(2),
+                ErrorMessages.CREATE_PROPERTY_STEP5_BACK_AND_RETURN_SHOULD_PRESERVE_UPLOADED_IMAGES
+        );
+    }
 }
+
+
+/* STEP 6 */
