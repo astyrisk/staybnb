@@ -2,7 +2,6 @@ package com.staybnb.tests;
 
 import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
-import com.staybnb.pages.Navbar;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
@@ -13,57 +12,55 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BecomeHostTest extends BaseTest {
     private LoginPage loginPage;
-    private Navbar navbar;
     private OwnProfilePage ownProfilePage;
 
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
-        navbar = new Navbar(driver);
         ownProfilePage = new OwnProfilePage(driver);
     }
 
     @Test
     public void testNavbarShowsBecomeHostForNonHostUser() {
         registerNewUserAndLandOnHome("testhost");
-        assertTrue(navbar.isBecomeAHostDisplayed(), ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_BE_VISIBLE_FOR_GUEST_USER);
+        assertTrue(ownProfilePage.navbar().isBecomeAHostDisplayed(), ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_BE_VISIBLE_FOR_GUEST_USER);
     }
 
     @Test
     public void testNavbarDoesNotShowMyPropertiesForNonHostUser() {
         registerNewUserAndLandOnHome("testhost");
-        assertFalse(navbar.isMyPropertiesDisplayed(), ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER);
+        assertFalse(ownProfilePage.navbar().isMyPropertiesDisplayed(), ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER);
     }
 
     @Test
     public void testBecomeHostFromNavbarRedirectsToHosting() {
         registerNewUserAndLandOnHome("testhost");
-        navbar.clickBecomeAHost();
+        ownProfilePage.navbar().clickBecomeAHost();
         assertTrue(isUrlContains(Constants.HOSTING_URL), ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE);
     }
 
     @Test
     public void testNavbarShowsMyPropertiesAfterBecomingHost() {
         registerNewUserAndLandOnHome("testhost");
-        navbar.clickBecomeAHost();
+        ownProfilePage.navbar().clickBecomeAHost();
         driver.get(Constants.HOME_URL);
-        assertTrue(navbar.isMyPropertiesDisplayed(), ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_BE_VISIBLE_FOR_HOST_USER);
+        assertTrue(ownProfilePage.navbar().isMyPropertiesDisplayed(), ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_BE_VISIBLE_FOR_HOST_USER);
     }
 
     @Test
     public void testNavbarDoesNotShowBecomeHostAfterBecomingHost() {
         registerNewUserAndLandOnHome("testhost");
-        navbar.clickBecomeAHost();
+        ownProfilePage.navbar().clickBecomeAHost();
         driver.get(Constants.HOME_URL);
-        assertFalse(navbar.isBecomeAHostDisplayed(), ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_NOT_BE_VISIBLE_FOR_HOST_USER);
+        assertFalse(ownProfilePage.navbar().isBecomeAHostDisplayed(), ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_NOT_BE_VISIBLE_FOR_HOST_USER);
     }
 
     @Test
     public void testMyPropertiesLinkNavigatesToHosting() {
         registerNewUserAndLandOnHome("testhost");
-        navbar.clickBecomeAHost();
+        ownProfilePage.navbar().clickBecomeAHost();
         driver.get(Constants.HOME_URL);
-        navbar.clickMyProperties();
+        ownProfilePage.navbar().clickMyProperties();
         assertTrue(isUrlContains(Constants.HOSTING_URL), ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE);
     }
 

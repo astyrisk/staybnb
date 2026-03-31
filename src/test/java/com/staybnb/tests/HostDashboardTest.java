@@ -2,7 +2,6 @@ package com.staybnb.tests;
 
 import com.staybnb.pages.HostDashboardPage;
 import com.staybnb.pages.LoginPage;
-import com.staybnb.pages.Navbar;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HostDashboardTest extends BaseTest {
     private LoginPage loginPage;
-    private Navbar navbar;
     private HostDashboardPage hostDashboardPage;
 
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
-        navbar = new Navbar(driver);
         hostDashboardPage = new HostDashboardPage(driver);
     }
 
@@ -163,7 +160,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     public void testHostDashboardEmptyStateVisibleForHostWithNoProperties() {
         registerNewUserAndLandOnHome("testhosting");
-        navbar.clickBecomeAHost();
+        hostDashboardPage.navbar().clickBecomeAHost();
         hostDashboardPage.navigateTo();
 
         assertTrue(

@@ -1,12 +1,12 @@
-package com.staybnb.pages;
+package com.staybnb.components;
 
-import com.staybnb.locators.Locators;
 import com.staybnb.config.Constants;
+import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 
-public class Navbar extends BasePage {
+public class Navbar extends BaseComponent {
     private final By navbarLogo = Locators.Navbar.NAVBAR_LOGO;
     private final By userMenuButton = Locators.Navbar.USER_MENU_BUTTON;
     private final By userAvatar = Locators.Navbar.USER_AVATAR;
