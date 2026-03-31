@@ -2,7 +2,8 @@ package com.staybnb.tests;
 
 import com.staybnb.pages.CreatePropertyPage;
 import com.staybnb.pages.LoginPage;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.assertions.ErrorMessages;
+import com.staybnb.data.MediaPaths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ public class CreatePropertyTest extends BaseTest {
 
     private void loginAsExistingHostAndLoadCreatePage() {
         loginAsTestUserAndLandOnHome(loginPage);
-        createPropertyPage.load();
+        createPropertyPage.navigateTo();
     }
 
     private void goToStep2WithValidStep1() {
@@ -48,8 +49,8 @@ public class CreatePropertyTest extends BaseTest {
     private void goToStep6WithValidStep1ToStep5() {
         goToStep5WithValidStep1ToStep4();
         createPropertyPage.uploadImagesFromProjectPath(
-                "media/apts/Brasilia-01.jpeg",
-                "media/apts/Brasilia-02.jpg"
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
         );
         createPropertyPage.hasAtLeastNImagePreviews(2);
         createPropertyPage.clickNext();
@@ -283,7 +284,7 @@ public class CreatePropertyTest extends BaseTest {
     @Test
     public void testNonHostAccessToCreatePropertyIsBlockedWith403() {
         registerNewUserAndLandOnHome("testcreate");
-        createPropertyPage.load();
+        createPropertyPage.navigateTo();
         assertTrue(
                 createPropertyPage.pageShows403Error(),
                 ErrorMessages.CREATE_PROPERTY_SHOULD_BLOCK_NON_HOST_WITH_403
@@ -384,8 +385,8 @@ public class CreatePropertyTest extends BaseTest {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
         createPropertyPage.uploadImagesFromProjectPath(
-                "media/apts/Brasilia-01.jpeg",
-                "media/apts/Brasilia-02.jpg"
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
         );
         assertTrue(
                 createPropertyPage.hasAtLeastNImagePreviews(2),
@@ -397,7 +398,7 @@ public class CreatePropertyTest extends BaseTest {
     public void testStep5UploadedImagesShowSortHandleAndDeleteButton() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
-        createPropertyPage.uploadImagesFromProjectPath("media/apts/Brasilia-01.jpeg");
+        createPropertyPage.uploadImagesFromProjectPath(MediaPaths.BRASILIA_APT_IMAGE_01);
         assertTrue(
                 createPropertyPage.uploadedImagesShowSortHandleAndDelete(),
                 ErrorMessages.CREATE_PROPERTY_STEP5_UPLOADED_IMAGE_SHOULD_SHOW_SORT_HANDLE_AND_DELETE
@@ -409,8 +410,8 @@ public class CreatePropertyTest extends BaseTest {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
         createPropertyPage.uploadImagesFromProjectPath(
-                "media/apts/Brasilia-01.jpeg",
-                "media/apts/Brasilia-02.jpg"
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
         );
         assertTrue(
                 createPropertyPage.firstUploadedImageIsMarkedPrimaryOrCover(),
@@ -434,8 +435,8 @@ public class CreatePropertyTest extends BaseTest {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
         createPropertyPage.uploadImagesFromProjectPath(
-                "media/apts/Brasilia-01.jpeg",
-                "media/apts/Brasilia-02.jpg"
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
         );
         createPropertyPage.clickBack();
         createPropertyPage.clickNext();

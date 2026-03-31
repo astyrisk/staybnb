@@ -4,7 +4,7 @@ import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,13 +27,9 @@ public class OwnProfilePage extends BasePage {
         super(driver);
     }
 
-    public void load() {
-        navigateTo(PAGE_URL);
-        waitForProfileToLoad();
-    }
-
     public void navigateTo() {
-        load();
+        super.navigateTo(PAGE_URL);
+        waitForProfileToLoad();
     }
 
     public boolean isAvatarDisplayed() {

@@ -2,8 +2,8 @@ package com.staybnb.tests;
 
 import com.staybnb.config.TestConfig;
 import com.staybnb.pages.RegisterPage;
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class RegisterTest extends BaseTest {
     @BeforeEach
     public void setup() {
         registerPage = new RegisterPage(driver);
-        registerPage.load();
+        registerPage.navigateTo();
     }
 
     @Test

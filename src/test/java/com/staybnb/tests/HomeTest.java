@@ -1,8 +1,8 @@
 package com.staybnb.tests;
 
 import com.staybnb.pages.HomePage;
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
@@ -16,7 +16,7 @@ public class HomeTest extends BaseTest {
     @BeforeEach
     public void setup() {
         homePage = new HomePage(driver);
-        homePage.load();
+        homePage.navigateTo();
     }
 
     @Test

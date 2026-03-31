@@ -1,7 +1,7 @@
 package com.staybnb.tests;
 
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.PropertyListingPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ public class PropertyListingTest extends BaseTest {
     @BeforeEach
     public void setup() {
         propertyListingPage = new PropertyListingPage(driver);
-        propertyListingPage.load();
+        propertyListingPage.navigateTo();
     }
 
     @Test

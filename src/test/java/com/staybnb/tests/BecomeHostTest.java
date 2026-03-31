@@ -4,8 +4,8 @@ import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.Navbar;
 import com.staybnb.pages.OwnProfilePage;
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -70,7 +70,7 @@ public class BecomeHostTest extends BaseTest {
     @Test
     public void testProfileShowsBecomeHostButtonForNonHostUser() {
         registerNewUserAndLandOnHome("testhost");
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         assertTrue(ownProfilePage.isBecomeHostButtonVisible(),
                 "Become a Host button should be visible on profile page for non-host.");
     }
@@ -78,7 +78,7 @@ public class BecomeHostTest extends BaseTest {
     @Test
     public void testBecomeHostFromProfileRedirectsToHosting() {
         registerNewUserAndLandOnHome("testhost");
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         ownProfilePage.clickBecomeHost();
         assertTrue(isUrlContains(Constants.HOSTING_URL), ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE);
     }

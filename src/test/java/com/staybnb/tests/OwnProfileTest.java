@@ -2,8 +2,8 @@ package com.staybnb.tests;
 
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,49 +22,49 @@ public class OwnProfileTest extends BaseTest {
     @Test
     public void testOwnProfileAvatarDisplayed() {
         loginAsTestUserAndLandOnHome(loginPage);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         assertTrue(ownProfilePage.isAvatarDisplayed(), ErrorMessages.AVATAR_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testOwnProfileFullName() {
         loginAsTestUserAndLandOnHome(loginPage);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         assertEquals(Constants.OwnProfile.FULL_NAME, ownProfilePage.getFullName(), ErrorMessages.FULL_NAME_SHOULD_MATCH);
     }
 
     @Test
     public void testOwnProfileMetaContainsMemberSince() {
         loginAsTestUserAndLandOnHome(loginPage);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         assertTrue(ownProfilePage.getProfileMeta().contains("Member since"), ErrorMessages.PROFILE_META_SHOULD_CONTAIN_MEMBER_SINCE);
     }
 
     @Test
     public void testOwnProfileBioNotEmpty() {
         loginAsTestUserAndLandOnHome(loginPage);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         assertFalse(ownProfilePage.getBio().isEmpty(), ErrorMessages.BIO_SHOULD_NOT_BE_EMPTY);
     }
 
     @Test
     public void testOwnProfilePhone() {
         loginAsTestUserAndLandOnHome(loginPage);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         assertEquals(Constants.OwnProfile.PHONE, ownProfilePage.getPhone(), ErrorMessages.PHONE_NUMBER_SHOULD_MATCH);
     }
 
     @Test
     public void testOwnProfileEditProfileButtonVisible() {
         loginAsTestUserAndLandOnHome(loginPage);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         assertTrue(ownProfilePage.isEditProfileButtonVisible(), ErrorMessages.EDIT_PROFILE_BUTTON_SHOULD_BE_VISIBLE);
     }
 
     @Test
     public void testOwnProfileEditProfileButtonNavigation() {
         loginAsTestUserAndLandOnHome(loginPage);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
         ownProfilePage.clickEditProfile();
         assertTrue(driver.getCurrentUrl().contains(Constants.EDIT_PROFILE_URL), ErrorMessages.SHOULD_NAVIGATE_TO_EDIT_PROFILE_PAGE);
     }

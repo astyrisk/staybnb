@@ -5,8 +5,8 @@ import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +25,7 @@ public class EditProfileTest extends BaseTest {
     private void performEditProfileUpdate(String firstName, String lastName, String phone, String bio, String avatarUrl) {
         loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.updateProfile(firstName, lastName, phone, bio, avatarUrl);
-        ownProfilePage.load();
+        ownProfilePage.navigateTo();
     }
 
     @Test
@@ -105,7 +105,7 @@ public class EditProfileTest extends BaseTest {
 
     @Test
     public void testEditProfileUnauthorizedAccess() {
-        editProfilePage.load();
+        editProfilePage.navigateTo();
         assertTrue(editProfilePage.is401Displayed(), "401 error should be displayed when accessing edit profile while not logged in.");
     }
 

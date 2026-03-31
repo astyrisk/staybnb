@@ -3,7 +3,7 @@ package com.staybnb.pages;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 
 public class LogoutPage extends BasePage {
     private final By userMenuButton = Locators.Logout.USER_MENU_BUTTON;
@@ -13,8 +13,8 @@ public class LogoutPage extends BasePage {
         super(driver);
     }
 
-    public void load() {
-        navigateTo(Constants.HOME_URL);
+    public void navigateTo() {
+        super.navigateTo(Constants.HOME_URL);
     }
 
     public void openUserMenu() {

@@ -21,12 +21,8 @@ public abstract class AuthPage extends BasePage {
 
     protected abstract String getPageUrl();
 
-    public void load() {
-        navigateTo(getPageUrl());
-    }
-
     public void navigateTo() {
-        load();
+        super.navigateTo(getPageUrl());
     }
 
     public void enterEmail(String email) {

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 
 public class PropertyDetailsPage extends BasePage {
     private final String BASE_URL = Constants.PROPERTY_DETAILS_BASE_URL;
@@ -34,12 +34,6 @@ public class PropertyDetailsPage extends BasePage {
 
     public PropertyDetailsPage(WebDriver driver) {
         super(driver);
-    }
-
-    public void load(String propertyId) {
-        // Use BasePage navigation to avoid infinite recursion.
-        super.navigateTo(BASE_URL + propertyId);
-        waitForDetailsToLoad();
     }
 
     public void navigateTo(String propertyId) {

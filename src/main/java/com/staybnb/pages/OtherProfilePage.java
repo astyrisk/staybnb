@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;

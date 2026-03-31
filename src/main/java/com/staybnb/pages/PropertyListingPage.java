@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.List;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 
 public class PropertyListingPage extends BasePage {
     private final String PAGE_URL = Constants.PROPERTY_LISTING_URL;
@@ -27,13 +27,9 @@ public class PropertyListingPage extends BasePage {
         super(driver);
     }
 
-    public void load() {
-        navigateTo(PAGE_URL);
-        waitForGridToLoad();
-    }
-
     public void navigateTo() {
-        load();
+        super.navigateTo(PAGE_URL);
+        waitForGridToLoad();
     }
 
     public List<WebElement> getPropertyCards() {

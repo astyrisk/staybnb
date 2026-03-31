@@ -1,8 +1,8 @@
 package com.staybnb.tests;
 
 import com.staybnb.pages.PropertyDetailsPage;
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
@@ -18,7 +18,7 @@ public class PropertyDetailsTest extends BaseTest {
     @BeforeEach
     public void setup() {
         propertyDetailsPage = new PropertyDetailsPage(driver);
-        propertyDetailsPage.load(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(PROPERTY_ID);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class PropertyDetailsTest extends BaseTest {
 
     @Test
     public void testNonExistentPropertyReturns404() {
-        propertyDetailsPage.load(Constants.NON_EXISTENT_ID);
+        propertyDetailsPage.navigateTo(Constants.NON_EXISTENT_ID);
         assertTrue(propertyDetailsPage.isPropertyNotFoundDisplayed());
     }
 

@@ -6,7 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.List;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 
 public class HomePage extends BasePage {
     private final String PAGE_URL = Constants.HOME_URL;
@@ -27,13 +27,9 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public void load() {
-        navigateTo(PAGE_URL);
-        waitForHomeToLoad();
-    }
-
     public void navigateTo() {
-        load();
+        super.navigateTo(PAGE_URL);
+        waitForHomeToLoad();
     }
 
     public boolean isHeroSectionDisplayed() {

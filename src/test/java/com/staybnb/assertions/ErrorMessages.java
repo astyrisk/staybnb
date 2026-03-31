@@ -1,4 +1,4 @@
-package com.staybnb.utils;
+package com.staybnb.assertions;
 
 public final class ErrorMessages {
     private ErrorMessages() {}
@@ -343,4 +343,3 @@ public final class ErrorMessages {
     public static final String CREATE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_HOST =
             "Create property API should return 403 for an authenticated non-host user.";
 }
-

@@ -1,29 +1,30 @@
-package com.staybnb.utils;
+package com.staybnb.data;
+
+import com.staybnb.config.AppConstants;
 
 public final class Constants {
     private Constants() {}
 
     // Base URLs
-    public static final String SLUG = "automation-adel";
-    public static final String BASE_URL = "https://qa-playground.nixdev.co/t/" + SLUG;
-    public static final String DOMAIN = "https://qa-playground.nixdev.co";
+    public static final String SLUG = AppConstants.SLUG;
+    public static final String BASE_URL = AppConstants.BASE_URL;
 
     // Page URLs
-    public static final String LOGIN_URL = BASE_URL + "/login";
-    public static final String REGISTER_URL = BASE_URL + "/register";
-    public static final String HOME_URL = BASE_URL;
-    public static final String PROFILE_URL = BASE_URL + "/profile";
-    public static final String EDIT_PROFILE_URL = BASE_URL + "/profile/edit";
-    public static final String HOSTING_URL = BASE_URL + "/hosting";
-    public static final String HOSTING_CREATE_URL = BASE_URL + "/hosting/create";
-    public static final String PROPERTY_LISTING_URL = BASE_URL + "/properties";
-    public static final String PROPERTY_DETAILS_BASE_URL = BASE_URL + "/properties/";
-    public static final String OTHER_PROFILE_BASE_URL = BASE_URL + "/users/";
+    public static final String LOGIN_URL = AppConstants.LOGIN_URL;
+    public static final String REGISTER_URL = AppConstants.REGISTER_URL;
+    public static final String HOME_URL = AppConstants.HOME_URL;
+    public static final String PROFILE_URL = AppConstants.PROFILE_URL;
+    public static final String EDIT_PROFILE_URL = AppConstants.EDIT_PROFILE_URL;
+    public static final String HOSTING_URL = AppConstants.HOSTING_URL;
+    public static final String HOSTING_CREATE_URL = AppConstants.HOSTING_CREATE_URL;
+    public static final String PROPERTY_LISTING_URL = AppConstants.PROPERTY_LISTING_URL;
+    public static final String PROPERTY_DETAILS_BASE_URL = AppConstants.PROPERTY_DETAILS_BASE_URL;
+    public static final String OTHER_PROFILE_BASE_URL = AppConstants.OTHER_PROFILE_BASE_URL;
 
     // Invalid Credentials
     public static final String INVALID_EMAIL = "wronguser@gmail.com";
     public static final String INVALID_PASSWORD = "WrongPassword123!";
-    
+
     // Test Data
     public static final String DEFAULT_PASSWORD = "password123";
 
@@ -34,14 +35,14 @@ public final class Constants {
     public static final String USER_ID_102 = "102";
 
     // Wait Durations
-    public static final int SHORT_WAIT = 5;
-    public static final int MEDIUM_WAIT = 10;
-    public static final int LONG_WAIT = 20;
+    public static final int SHORT_WAIT = AppConstants.SHORT_WAIT;
+    public static final int MEDIUM_WAIT = AppConstants.MEDIUM_WAIT;
+    public static final int LONG_WAIT = AppConstants.LONG_WAIT;
 
     // Responsive Dimensions
     public static final int DESKTOP_WIDTH = 1200;
     public static final int TABLET_WIDTH = 768;
-    public static final int MOBILE_WIDTH = 375;
+    public static final int MOBILE_WIDTH = AppConstants.MOBILE_WIDTH;
     public static final int DEFAULT_HEIGHT = 800;
 
     // Test viewport dimensions (explicit sizes used in UI tests)

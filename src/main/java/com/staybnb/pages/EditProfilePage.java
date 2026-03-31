@@ -6,7 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,13 +29,9 @@ public class EditProfilePage extends BasePage {
         super(driver);
     }
 
-    public void load() {
+    public void navigateTo() {
         super.navigateTo(PAGE_URL);
         waitForEditProfileToLoad();
-    }
-
-    public void navigateTo() {
-        load();
     }
 
     public void enterFirstName(String firstName) {
@@ -59,7 +55,7 @@ public class EditProfilePage extends BasePage {
     }
 
     public void updateProfile(String firstName, String lastName, String phone, String bio, String avatarUrl) {
-        load();
+        navigateTo();
         enterFirstName(firstName);
         enterLastName(lastName);
         enterPhone(phone);
@@ -70,25 +66,25 @@ public class EditProfilePage extends BasePage {
     }
 
     public void submitWithEmptyFirstName() {
-        load();
+        navigateTo();
         clearField("firstName");
         clickSaveChanges();
     }
 
     public void submitWithEmptyLastName(String firstName) {
-        load();
+        navigateTo();
         enterFirstName(firstName);
         clearField("lastName");
         clickSaveChanges();
     }
 
     public String attemptFirstNameChangeThenCancel(String newFirstName) {
-        load();
+        navigateTo();
         String originalFirstName = getFirstNameValue();
         enterFirstName(newFirstName);
         clickCancel();
         waitForUrlContains("/profile");
-        load();
+        navigateTo();
         return originalFirstName;
     }
 

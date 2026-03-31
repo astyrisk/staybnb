@@ -1,7 +1,7 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import com.staybnb.utils.Constants;
+import com.staybnb.config.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
@@ -65,8 +65,8 @@ public class CreatePropertyPage extends BasePage {
         super(driver);
     }
 
-    public void load() {
-        navigateTo(PAGE_URL);
+    public void navigateTo() {
+        super.navigateTo(PAGE_URL);
         waitForElementVisible(container);
     }
 

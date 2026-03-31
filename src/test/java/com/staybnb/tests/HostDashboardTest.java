@@ -3,8 +3,8 @@ package com.staybnb.tests;
 import com.staybnb.pages.HostDashboardPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.Navbar;
-import com.staybnb.utils.Constants;
-import com.staybnb.utils.ErrorMessages;
+import com.staybnb.data.Constants;
+import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
@@ -25,7 +25,7 @@ public class HostDashboardTest extends BaseTest {
 
     private WebElement getFirstPropertyCardForExistingHost() {
         loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.load();
+        hostDashboardPage.navigateTo();
         if (hostDashboardPage.getPropertyCards().isEmpty()) {
             throw new IllegalStateException("Host account has no properties to validate dashboard cards.");
         }
@@ -35,7 +35,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     public void testHostDashboardShowsPropertyCardsForHostWithProperties() {
         loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.load();
+        hostDashboardPage.navigateTo();
 
         assertFalse(
                 hostDashboardPage.getPropertyCards().isEmpty(),
@@ -101,7 +101,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     public void testHostDashboardShowsSummaryCount() {
         loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.load();
+        hostDashboardPage.navigateTo();
 
         String subtitle = hostDashboardPage.getSummarySubtitle().toLowerCase();
         assertTrue(
@@ -113,7 +113,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     public void testHostDashboardShowsCreateNewPropertyButton() {
         loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.load();
+        hostDashboardPage.navigateTo();
 
         assertTrue(
                 hostDashboardPage.isCreateNewPropertyButtonVisible(),
@@ -124,7 +124,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     public void testHostDashboardCreateNewPropertyButtonLinksToCreatePage() {
         loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.load();
+        hostDashboardPage.navigateTo();
 
         assertTrue(
                 hostDashboardPage.getCreateNewPropertyHref().endsWith("/hosting/create"),
@@ -164,7 +164,7 @@ public class HostDashboardTest extends BaseTest {
     public void testHostDashboardEmptyStateVisibleForHostWithNoProperties() {
         registerNewUserAndLandOnHome("testhosting");
         navbar.clickBecomeAHost();
-        hostDashboardPage.load();
+        hostDashboardPage.navigateTo();
 
         assertTrue(
                 hostDashboardPage.isEmptyStateVisible(),
