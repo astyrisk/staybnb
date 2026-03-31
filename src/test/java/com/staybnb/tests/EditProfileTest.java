@@ -5,8 +5,12 @@ import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,8 +32,9 @@ public class EditProfileTest extends BaseTest {
         ownProfilePage.navigateTo();
     }
 
-    @Test
-    public void testEditProfilePersistenceFullName() {
+    @ParameterizedTest(name = "Edit profile persistence: {0}")
+    @MethodSource("provideEditProfilePersistenceCases")
+    public void testEditProfilePersistence(String checkName) {
         performEditProfileUpdate(
                 Constants.EditProfile.NEW_FIRST_NAME,
                 Constants.EditProfile.NEW_LAST_NAME,
@@ -37,35 +42,24 @@ public class EditProfileTest extends BaseTest {
                 Constants.EditProfile.NEW_BIO,
                 Constants.EditProfile.NEW_AVATAR_URL
         );
-        assertEquals(
-                Constants.EditProfile.NEW_FIRST_NAME + " " + Constants.EditProfile.NEW_LAST_NAME,
-                ownProfilePage.getFullName(),
-                "Full name should be updated."
-        );
-    }
-
-    @Test
-    public void testEditProfilePersistencePhone() {
-        performEditProfileUpdate(
-                Constants.EditProfile.NEW_FIRST_NAME,
-                Constants.EditProfile.NEW_LAST_NAME,
-                Constants.EditProfile.NEW_PHONE,
-                Constants.EditProfile.NEW_BIO,
-                Constants.EditProfile.NEW_AVATAR_URL
-        );
-        assertEquals(Constants.EditProfile.NEW_PHONE, ownProfilePage.getPhone(), "Phone should be updated.");
-    }
-
-    @Test
-    public void testEditProfilePersistenceBio() {
-        performEditProfileUpdate(
-                Constants.EditProfile.NEW_FIRST_NAME,
-                Constants.EditProfile.NEW_LAST_NAME,
-                Constants.EditProfile.NEW_PHONE,
-                Constants.EditProfile.NEW_BIO,
-                Constants.EditProfile.NEW_AVATAR_URL
-        );
-        assertEquals(Constants.EditProfile.NEW_BIO, ownProfilePage.getBio(), "Bio should be updated.");
+        switch (checkName) {
+            case "full name" -> assertEquals(
+                    Constants.EditProfile.NEW_FIRST_NAME + " " + Constants.EditProfile.NEW_LAST_NAME,
+                    ownProfilePage.getFullName(),
+                    "Full name should be updated."
+            );
+            case "phone" -> assertEquals(
+                    Constants.EditProfile.NEW_PHONE,
+                    ownProfilePage.getPhone(),
+                    "Phone should be updated."
+            );
+            case "bio" -> assertEquals(
+                    Constants.EditProfile.NEW_BIO,
+                    ownProfilePage.getBio(),
+                    "Bio should be updated."
+            );
+            default -> throw new IllegalArgumentException("Unsupported case: " + checkName);
+        }
     }
 
     @Test
@@ -76,24 +70,35 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
-    public void testEditProfileValidationErrorMessageFirstNameRequired() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        editProfilePage.submitWithEmptyFirstName();
-        assertEquals(ErrorMessages.FIRST_NAME_REQUIRED, editProfilePage.getFieldError("firstName"), "Error message should match.");
-    }
-
-    @Test
     public void testEditProfileValidationErrorLastNameRequired() {
         loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyLastName("heko");
         assertTrue(editProfilePage.isValidationErrorDisplayed(), "Validation error should be displayed for empty last name.");
     }
 
-    @Test
-    public void testEditProfileValidationErrorMessageLastNameRequired() {
+    @ParameterizedTest(name = "Validation message for required {0}")
+    @MethodSource("provideRequiredFieldValidationCases")
+    public void testEditProfileValidationErrorMessages(String fieldName) {
         loginAsTestUserAndLandOnHome(loginPage);
-        editProfilePage.submitWithEmptyLastName("heko");
-        assertEquals(ErrorMessages.LAST_NAME_REQUIRED, editProfilePage.getFieldError("lastName"), "Error message should match.");
+        switch (fieldName) {
+            case "firstName" -> {
+                editProfilePage.submitWithEmptyFirstName();
+                assertEquals(
+                        ErrorMessages.FIRST_NAME_REQUIRED,
+                        editProfilePage.getFieldError("firstName"),
+                        "Error message should match."
+                );
+            }
+            case "lastName" -> {
+                editProfilePage.submitWithEmptyLastName("heko");
+                assertEquals(
+                        ErrorMessages.LAST_NAME_REQUIRED,
+                        editProfilePage.getFieldError("lastName"),
+                        "Error message should match."
+                );
+            }
+            default -> throw new IllegalArgumentException("Unsupported field: " + fieldName);
+        }
     }
 
     @Test
@@ -133,5 +138,20 @@ public class EditProfileTest extends BaseTest {
         String jsonResponse = editProfilePage.updateMyProfileViaApi(updatePayload);
         assertTrue(jsonResponse != null && jsonResponse.contains("\"firstName\":\"" + Constants.EditProfile.API_FIRST_NAME + "\""),
                 "API should return the updated user object.");
+    }
+
+    private static Stream<String> provideEditProfilePersistenceCases() {
+        return Stream.of(
+                "full name",
+                "phone",
+                "bio"
+        );
+    }
+
+    private static Stream<String> provideRequiredFieldValidationCases() {
+        return Stream.of(
+                "firstName",
+                "lastName"
+        );
     }
 }

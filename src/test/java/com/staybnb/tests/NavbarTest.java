@@ -6,6 +6,10 @@ import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.data.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,25 +27,26 @@ public class NavbarTest extends BaseTest {
 
     // --- Authenticated User Tests ---
 
-    @Test
-    public void testNavbarLogoDisplayedAuthenticated() {
+    @ParameterizedTest(name = "Authenticated navbar condition: {0}")
+    @MethodSource("provideAuthenticatedNavbarVisibilityCases")
+    public void testAuthenticatedNavbarVisibility(String checkName) {
         loginAsTestUserAndLandOnHome(loginPage);
         propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertTrue(propertyDetailsPage.navbar().isLogoDisplayed(), ErrorMessages.NAVBAR_LOGO_SHOULD_BE_DISPLAYED);
-    }
-
-    @Test
-    public void testNavbarUserAvatarDisplayedAuthenticated() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertTrue(propertyDetailsPage.navbar().isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_BE_DISPLAYED_FOR_AUTHENTICATED_USER);
-    }
-
-    @Test
-    public void testNavbarLoginLinkNotDisplayedAuthenticated() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertFalse(propertyDetailsPage.navbar().isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_NOT_BE_DISPLAYED_FOR_AUTHENTICATED_USER);
+        switch (checkName) {
+            case "logo displayed" -> assertTrue(
+                    propertyDetailsPage.navbar().isLogoDisplayed(),
+                    ErrorMessages.NAVBAR_LOGO_SHOULD_BE_DISPLAYED
+            );
+            case "user avatar displayed" -> assertTrue(
+                    propertyDetailsPage.navbar().isUserAvatarDisplayed(),
+                    ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_BE_DISPLAYED_FOR_AUTHENTICATED_USER
+            );
+            case "login link hidden" -> assertFalse(
+                    propertyDetailsPage.navbar().isLoginLinkDisplayed(),
+                    ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_NOT_BE_DISPLAYED_FOR_AUTHENTICATED_USER
+            );
+            default -> throw new IllegalArgumentException("Unsupported case: " + checkName);
+        }
     }
 
     @Test
@@ -104,28 +109,29 @@ public class NavbarTest extends BaseTest {
 
     // --- Visitor Tests ---
 
-    @Test
-    public void testNavbarLogoDisplayedVisitor() {
+    @ParameterizedTest(name = "Visitor navbar condition: {0}")
+    @MethodSource("provideVisitorNavbarVisibilityCases")
+    public void testVisitorNavbarVisibility(String checkName) {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertTrue(propertyDetailsPage.navbar().isLogoDisplayed(), ErrorMessages.NAVBAR_LOGO_SHOULD_BE_DISPLAYED);
-    }
-
-    @Test
-    public void testNavbarLoginLinkDisplayedVisitor() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertTrue(propertyDetailsPage.navbar().isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR);
-    }
-
-    @Test
-    public void testNavbarRegisterLinkDisplayedVisitor() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertTrue(propertyDetailsPage.navbar().isRegisterLinkDisplayed(), ErrorMessages.NAVBAR_REGISTER_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR);
-    }
-
-    @Test
-    public void testNavbarUserAvatarNotDisplayedVisitor() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertFalse(propertyDetailsPage.navbar().isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_NOT_BE_DISPLAYED_FOR_VISITOR);
+        switch (checkName) {
+            case "logo displayed" -> assertTrue(
+                    propertyDetailsPage.navbar().isLogoDisplayed(),
+                    ErrorMessages.NAVBAR_LOGO_SHOULD_BE_DISPLAYED
+            );
+            case "login link displayed" -> assertTrue(
+                    propertyDetailsPage.navbar().isLoginLinkDisplayed(),
+                    ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR
+            );
+            case "register link displayed" -> assertTrue(
+                    propertyDetailsPage.navbar().isRegisterLinkDisplayed(),
+                    ErrorMessages.NAVBAR_REGISTER_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR
+            );
+            case "user avatar hidden" -> assertFalse(
+                    propertyDetailsPage.navbar().isUserAvatarDisplayed(),
+                    ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_NOT_BE_DISPLAYED_FOR_VISITOR
+            );
+            default -> throw new IllegalArgumentException("Unsupported case: " + checkName);
+        }
     }
 
     @Test
@@ -140,12 +146,6 @@ public class NavbarTest extends BaseTest {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
         propertyDetailsPage.navbar().clickRegisterAndWaitForRedirect();
         assertTrue(driver.getCurrentUrl().contains(Constants.REGISTER_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_REGISTER_PAGE);
-    }
-
-    @Test
-    public void testNavbarUserAvatarNotDisplayedExclusion() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
-        assertFalse(propertyDetailsPage.navbar().isUserAvatarDisplayed(), ErrorMessages.NAVBAR_USER_AVATAR_SHOULD_NOT_BE_DISPLAYED_FOR_VISITOR);
     }
 
     @Test
@@ -168,5 +168,22 @@ public class NavbarTest extends BaseTest {
         propertyDetailsPage.navbar().setMobileLayout();
         assertTrue(propertyDetailsPage.navbar().isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_BE_VISIBLE_ON_MOBILE_VISITOR);
         propertyDetailsPage.navbar().setDesktopLayout();
+    }
+
+    private static Stream<String> provideAuthenticatedNavbarVisibilityCases() {
+        return Stream.of(
+                "logo displayed",
+                "user avatar displayed",
+                "login link hidden"
+        );
+    }
+
+    private static Stream<String> provideVisitorNavbarVisibilityCases() {
+        return Stream.of(
+                "logo displayed",
+                "login link displayed",
+                "register link displayed",
+                "user avatar hidden"
+        );
     }
 }

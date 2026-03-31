@@ -6,7 +6,11 @@ import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebElement;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,59 +44,24 @@ public class HostDashboardTest extends BaseTest {
         );
     }
 
-    @Test
-    public void testHostDashboardPropertyCardShowsThumbnail() {
+    @ParameterizedTest(name = "Property card shows {0}")
+    @MethodSource("providePropertyCardRequiredDetailsChecks")
+    public void testHostDashboardPropertyCardShowsRequiredDetails(String detailName) {
         WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertTrue(
-                hostDashboardPage.hasThumbnail(firstCard),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
-        );
-    }
+        boolean isDisplayed = switch (detailName) {
+            case "thumbnail" -> hostDashboardPage.hasThumbnail(firstCard);
+            case "title" -> !hostDashboardPage.getTitle(firstCard).isEmpty();
+            case "location" -> !hostDashboardPage.getLocation(firstCard).isEmpty();
+            case "price per night" -> hostDashboardPage.getPrice(firstCard).contains("/night");
+            case "published or draft status" -> {
+                String statusText = hostDashboardPage.getStatus(firstCard).trim();
+                yield statusText.equalsIgnoreCase("Published") || statusText.equalsIgnoreCase("Draft");
+            }
+            case "rating" -> hostDashboardPage.hasRating(firstCard);
+            default -> throw new IllegalArgumentException("Unsupported detail: " + detailName);
+        };
 
-    @Test
-    public void testHostDashboardPropertyCardShowsTitle() {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertFalse(
-                hostDashboardPage.getTitle(firstCard).isEmpty(),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
-        );
-    }
-
-    @Test
-    public void testHostDashboardPropertyCardShowsLocation() {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertFalse(
-                hostDashboardPage.getLocation(firstCard).isEmpty(),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
-        );
-    }
-
-    @Test
-    public void testHostDashboardPropertyCardShowsPricePerNight() {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertTrue(
-                hostDashboardPage.getPrice(firstCard).contains("/night"),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
-        );
-    }
-
-    @Test
-    public void testHostDashboardPropertyCardShowsPublishedOrDraftStatus() {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-        String statusText = hostDashboardPage.getStatus(firstCard).trim();
-        assertTrue(
-                statusText.equalsIgnoreCase("Published") || statusText.equalsIgnoreCase("Draft"),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
-        );
-    }
-
-    @Test
-    public void testHostDashboardPropertyCardShowsRating() {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertTrue(
-                hostDashboardPage.hasRating(firstCard),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
-        );
+        assertTrue(isDisplayed, ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS);
     }
 
     @Test
@@ -129,31 +98,18 @@ public class HostDashboardTest extends BaseTest {
         );
     }
 
-    @Test
-    public void testHostDashboardPropertyCardShowsEditAction() {
+    @ParameterizedTest(name = "Property card shows action {0}")
+    @MethodSource("providePropertyCardActionChecks")
+    public void testHostDashboardPropertyCardShowsActions(String actionName) {
         WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertTrue(
-                hostDashboardPage.hasEditAction(firstCard),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS
-        );
-    }
+        boolean hasAction = switch (actionName) {
+            case "edit" -> hostDashboardPage.hasEditAction(firstCard);
+            case "delete" -> hostDashboardPage.hasDeleteAction(firstCard);
+            case "publish toggle" -> hostDashboardPage.hasPublishToggleAction(firstCard);
+            default -> throw new IllegalArgumentException("Unsupported action: " + actionName);
+        };
 
-    @Test
-    public void testHostDashboardPropertyCardShowsDeleteAction() {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertTrue(
-                hostDashboardPage.hasDeleteAction(firstCard),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS
-        );
-    }
-
-    @Test
-    public void testHostDashboardPropertyCardShowsPublishToggleAction() {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-        assertTrue(
-                hostDashboardPage.hasPublishToggleAction(firstCard),
-                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS
-        );
+        assertTrue(hasAction, ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS);
     }
 
     //FIX
@@ -208,5 +164,24 @@ public class HostDashboardTest extends BaseTest {
     public void testHostingPropertiesApiReturns401WhenLoggedOut() {
         long status = hostDashboardPage.getHostingPropertiesStatusViaApi();
         assertEquals(401L, status, ErrorMessages.HOST_DASHBOARD_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN);
+    }
+
+    private static Stream<String> providePropertyCardRequiredDetailsChecks() {
+        return Stream.of(
+                "thumbnail",
+                "title",
+                "location",
+                "price per night",
+                "published or draft status",
+                "rating"
+        );
+    }
+
+    private static Stream<String> providePropertyCardActionChecks() {
+        return Stream.of(
+                "edit",
+                "delete",
+                "publish toggle"
+        );
     }
 }
