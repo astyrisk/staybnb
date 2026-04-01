@@ -270,5 +270,54 @@ public final class Locators {
 
         public static final By FIELD_ERRORS = By.cssSelector(".create-property-error, .error, .field-error, .auth-error");
     }
+
+    public static final class EditProperty {
+        private EditProperty() {}
+
+        public static final By CONTAINER = By.className("edit-property-container");
+        public static final By HEADER_TITLE = By.xpath("//div[contains(@class,'edit-property-header')]//h1[normalize-space()='Edit Property']");
+        public static final By DELETE_PROPERTY_BUTTON = By.className("edit-property-delete-btn");
+
+        public static final By SECTION_HEADERS = By.cssSelector(".edit-property-section h2");
+        public static final By SAVE_CHANGES_BUTTON = By.xpath("//button[contains(@class,'edit-property-btn') and contains(@class,'primary') and normalize-space()='Save Changes']");
+        public static final By FIELD_ERRORS = By.cssSelector(".edit-property-error, .error, .field-error, .auth-error");
+
+        public static final By PROPERTY_TYPE_SELECT =
+                By.xpath("//div[contains(@class,'edit-property-field')][.//label[normalize-space()='Property Type']]//select");
+        public static final By CATEGORY_SELECT =
+                By.xpath("//div[contains(@class,'edit-property-field')][.//label[normalize-space()='Category']]//select");
+        public static final By TITLE_INPUT =
+                By.xpath("//div[contains(@class,'edit-property-field')][.//label[normalize-space()='Title']]//input");
+        public static final By DESCRIPTION_TEXTAREA =
+                By.xpath("//div[contains(@class,'edit-property-field')][.//label[normalize-space()='Description']]//textarea");
+        public static final By COUNTRY_INPUT =
+                By.xpath("//div[contains(@class,'edit-property-field')][.//label[normalize-space()='Country']]//input");
+        public static final By CITY_INPUT =
+                By.xpath("//div[contains(@class,'edit-property-field')][.//label[normalize-space()='City']]//input");
+        public static final By PRICE_INPUT =
+                By.xpath("//div[contains(@class,'edit-property-field')][.//label[contains(normalize-space(),'Price per Night')]]//input[@type='number']");
+    }
+
+    public static final class DeleteProperty {
+        private DeleteProperty() {}
+
+        public static final By EDIT_PAGE_DELETE_BUTTON = By.className("edit-property-delete-btn");
+        public static final By DASHBOARD_DELETE_BUTTONS = By.cssSelector(".host-dashboard-card-actions .host-dashboard-card-btn.danger");
+
+        public static final By CONFIRMATION_MESSAGE = By.xpath(
+                "//*[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')," +
+                        "'are you sure? this cannot be undone')]"
+        );
+        public static final By CONFIRM_BUTTON = By.xpath(
+                "//button[contains(@class,'danger') and (normalize-space()='Delete' or normalize-space()='Confirm')]"
+                        + " | //button[normalize-space()='Delete' or normalize-space()='Confirm' or normalize-space()='Yes, Delete']"
+        );
+        public static final By CANCEL_BUTTON = By.xpath(
+                "//button[normalize-space()='Cancel' or normalize-space()='Keep' or normalize-space()='No']"
+        );
+
+        public static final By DASHBOARD_PROPERTY_TITLE =
+                By.cssSelector(".host-dashboard-card-content h3");
+    }
 }
 

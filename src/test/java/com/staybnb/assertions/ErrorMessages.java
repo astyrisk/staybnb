@@ -342,4 +342,60 @@ public final class ErrorMessages {
             "Create property API should return 400 when required fields are missing.";
     public static final String CREATE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_HOST =
             "Create property API should return 403 for an authenticated non-host user.";
+
+    // --- Edit Property test messages ---
+    public static final String EDIT_PROPERTY_PAGE_SHOULD_LOAD_WITH_PREPOPULATED_DATA =
+            "Edit property page should load and show pre-populated existing property data.";
+    public static final String EDIT_PROPERTY_PAGE_SHOULD_DISPLAY_ALL_SINGLE_PAGE_SECTIONS =
+            "Edit property page should display all expected sections on a single page.";
+    public static final String EDIT_PROPERTY_PAGE_SHOULD_NOT_USE_CREATE_WIZARD_PROGRESS =
+            "Edit property page should not show create-wizard progress or next/back flow.";
+    public static final String EDIT_PROPERTY_SAVE_SHOULD_RETURN_200_FOR_OWNER =
+            "Saving a valid update as property owner should return 200.";
+    public static final String EDIT_PROPERTY_REQUIRED_FIELD_SHOULD_SHOW_INLINE_VALIDATION =
+            "Clearing a required field should show inline validation and prevent successful save.";
+    public static final String EDIT_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_OWNER =
+            "Edit property API should return 403 for authenticated non-owner.";
+    public static final String EDIT_PROPERTY_API_SHOULD_RETURN_404_FOR_NON_EXISTENT_PROPERTY =
+            "Edit property API should return 404 for non-existent property id.";
+    public static final String EDIT_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT =
+            "Edit property API should return 401 when not logged in.";
+    public static final String EDIT_PROPERTY_PAGE_SHOULD_SHOW_DELETE_BUTTON =
+            "Edit property page should show Delete Property button at the bottom area.";
+
+    // --- Delete Property test messages ---
+    public static final String DELETE_PROPERTY_EDIT_PAGE_SHOULD_SHOW_CONFIRMATION_MODAL =
+            "Clicking Delete Property on edit page should show a confirmation modal with the expected warning message.";
+    public static final String DELETE_PROPERTY_DASHBOARD_SHOULD_SHOW_CONFIRMATION_MODAL =
+            "Clicking Delete on host dashboard should show a confirmation modal with the expected warning message.";
+    public static final String DELETE_PROPERTY_CANCEL_SHOULD_KEEP_PROPERTY_UNCHANGED =
+            "Canceling deletion should keep the property unchanged and still listed on host dashboard.";
+    public static final String DELETE_PROPERTY_CONFIRM_SHOULD_REMOVE_PROPERTY_FROM_DASHBOARD =
+            "Confirming deletion should remove the property from host dashboard listing.";
+    public static final String DELETE_PROPERTY_API_SHOULD_RETURN_200_FOR_OWNER =
+            "Delete property API should return 200 for the property owner.";
+    public static final String DELETE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_OWNER =
+            "Delete property API should return 403 for authenticated non-owner.";
+    public static final String DELETE_PROPERTY_API_SHOULD_RETURN_404_FOR_NON_EXISTENT_PROPERTY =
+            "Delete property API should return 404 for non-existent property id.";
+    public static final String DELETE_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT =
+            "Delete property API should return 401 when not logged in.";
+
+    // --- Publish / Unpublish Property test messages ---
+    public static final String PUBLISH_PROPERTY_DASHBOARD_TOGGLE_SHOULD_SET_STATUS_TO_PUBLISHED =
+            "Publish toggle from host dashboard should set property status badge to Published.";
+    public static final String UNPUBLISHED_PROPERTY_SHOULD_NOT_APPEAR_ON_LISTING_PAGE =
+            "Unpublished property should not appear in public property listing results.";
+    public static final String UNPUBLISHED_PROPERTY_SHOULD_STAY_ON_DASHBOARD_AS_DRAFT =
+            "Unpublished property should still appear on host dashboard with Draft status.";
+    public static final String PUBLISHED_PROPERTY_SHOULD_APPEAR_ON_LISTING_PAGE =
+            "Published property should appear in public property listing results.";
+    public static final String PUBLISH_PROPERTY_API_200_SHOULD_SET_IS_PUBLISHED_TRUE =
+            "Publishing a property as owner should return success and response should show isPublished true.";
+    public static final String PUBLISH_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_OWNER =
+            "Publish property API should return 403 for authenticated non-owner.";
+    public static final String PUBLISH_PROPERTY_API_SHOULD_RETURN_404_FOR_NON_EXISTENT_PROPERTY =
+            "Publish property API should return 404 for non-existent property id.";
+    public static final String PUBLISH_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT =
+            "Publish property API should return 401 when not logged in.";
 }

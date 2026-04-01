@@ -75,4 +75,21 @@ public final class Constants {
         public static final String API_PHONE = "+1234567890";
         public static final String API_BIO = "API Bio";
     }
+
+    public static final class EditProperty {
+        public static final String EDITABLE_PROPERTY_ID = "960";
+        public static final String NON_EXISTENT_PROPERTY_ID = "99999999";
+        public static final String UPDATED_TITLE = "Automation Listing Updated";
+    }
+
+    public static final class DeleteProperty {
+        public static final String EDITABLE_PROPERTY_ID = "960";
+        public static final String NON_EXISTENT_PROPERTY_ID = "99999999";
+        public static final String CONFIRMATION_MESSAGE = "Are you sure you want to delete";
+    }
+
+    public static final class PublishProperty {
+        public static final String OWNED_PROPERTY_ID = "960";
+        public static final String NON_EXISTENT_PROPERTY_ID = "99999999";
+    }
 }
