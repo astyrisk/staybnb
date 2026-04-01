@@ -431,6 +431,98 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    public void testStep5ReorderingImagesUpdatesPreviewOrder() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
+        );
+        createPropertyPage.hasAtLeastNImagePreviews(2);
+
+        String firstBefore = createPropertyPage.getImagePreviewSignatureAt(0);
+        String secondBefore = createPropertyPage.getImagePreviewSignatureAt(1);
+        createPropertyPage.moveImageDownAt(0);
+        createPropertyPage.waitForFirstPreviewSignatureToBe(secondBefore);
+
+        assertEquals(
+                secondBefore,
+                createPropertyPage.getImagePreviewSignatureAt(0),
+                ErrorMessages.CREATE_PROPERTY_STEP5_REORDER_SHOULD_UPDATE_SORT_ORDER
+        );
+    }
+
+    @Test
+    public void testStep5ReorderingChangesPrimaryCoverToNewFirstImage() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
+        );
+        createPropertyPage.hasAtLeastNImagePreviews(2);
+
+        createPropertyPage.moveImageDownAt(0);
+        assertTrue(
+                createPropertyPage.primaryBadgeIsOnPreviewIndex(0),
+                ErrorMessages.CREATE_PROPERTY_STEP5_REORDER_SHOULD_UPDATE_PRIMARY_COVER
+        );
+    }
+
+    @Test
+    public void testStep5DeleteRemovesImageFromList() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
+        );
+        createPropertyPage.hasAtLeastNImagePreviews(2);
+
+        createPropertyPage.deleteImageAt(1);
+        createPropertyPage.waitForPreviewCountToBe(1);
+        assertEquals(
+                1,
+                createPropertyPage.getUploadedImagePreviewCount(),
+                ErrorMessages.CREATE_PROPERTY_STEP5_DELETE_SHOULD_REMOVE_IMAGE
+        );
+    }
+
+    @Test
+    public void testStep5DeletingPrimaryPromotesNextImageAsPrimary() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_02
+        );
+        createPropertyPage.hasAtLeastNImagePreviews(2);
+
+        createPropertyPage.deleteImageAt(0);
+        createPropertyPage.waitForPreviewCountToBe(1);
+        assertTrue(
+                createPropertyPage.primaryBadgeIsOnPreviewIndex(0),
+                ErrorMessages.CREATE_PROPERTY_STEP5_DELETE_PRIMARY_SHOULD_PROMOTE_NEXT
+        );
+    }
+
+    @Test
+    public void testStep5DeletingOnlyImageWarnsMinimumOneRequired() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+        createPropertyPage.uploadImagesFromProjectPath(MediaPaths.BRASILIA_APT_IMAGE_01);
+        createPropertyPage.hasAtLeastNImagePreviews(1);
+
+        createPropertyPage.deleteImageAt(0);
+        createPropertyPage.waitForPreviewCountToBe(0);
+        createPropertyPage.clickNext();
+        assertTrue(
+                createPropertyPage.hasMinimumImageRequiredValidationMessage(),
+                ErrorMessages.CREATE_PROPERTY_STEP5_SHOULD_WARN_WHEN_DELETING_LAST_IMAGE
+        );
+    }
+
+    @Test
     public void testStep5BackToStep4AndReturnPreservesUploadedImages() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -443,6 +535,34 @@ public class CreatePropertyTest extends BaseTest {
         assertTrue(
                 createPropertyPage.hasAtLeastNImagePreviews(2),
                 ErrorMessages.CREATE_PROPERTY_STEP5_BACK_AND_RETURN_SHOULD_PRESERVE_UPLOADED_IMAGES
+        );
+    }
+
+    @Test
+    public void testStep5PreventsAddingMoreThanTenImages() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep5WithValidStep1ToStep4();
+
+        String[] tenImages = new String[] {
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01,
+                MediaPaths.BRASILIA_APT_IMAGE_01
+        };
+        createPropertyPage.uploadImagesFromProjectPath(tenImages);
+        createPropertyPage.hasAtLeastNImagePreviews(10);
+
+        createPropertyPage.uploadImagesFromProjectPath(MediaPaths.BRASILIA_APT_IMAGE_02);
+        assertEquals(
+                10,
+                createPropertyPage.getUploadedImagePreviewCount(),
+                ErrorMessages.IMAGE_UPLOAD_STEP5_SHOULD_ENFORCE_MAX_10_IMAGES
         );
     }
     /* STEP 6 */

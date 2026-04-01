@@ -57,6 +57,22 @@ public final class ErrorMessages {
     public static final String HOME_GRID_SHOULD_HAVE_2_COLUMNS_ON_TABLET =
             "Grid should have 2 columns on tablet.";
 
+    // --- Property Categories (Story 12) messages ---
+    public static final String CATEGORIES_BAR_SHOULD_BE_HORIZONTALLY_SCROLLABLE =
+            "Category bar should be horizontally scrollable.";
+    public static final String CATEGORIES_BAR_SHOULD_INCLUDE_EXPECTED_CATEGORY_CHIPS =
+            "Category bar should include the expected category chips (All, Apartment, House, Villa, etc.).";
+    public static final String SELECTING_CATEGORY_SHOULD_MARK_CHIP_ACTIVE =
+            "Selecting a category should mark the clicked chip as active.";
+    public static final String SELECTING_CATEGORY_SHOULD_FILTER_PROPERTIES =
+            "Selecting a category should filter the property grid to only matching properties.";
+    public static final String CATEGORIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON =
+            "GET /api/t/{slug}/categories should return a non-empty list where each item includes id, name, and icon fields.";
+    public static final String PROPERTY_DETAILS_SHOULD_SHOW_TYPE_AND_CATEGORY =
+            "Property detail page should display the category alongside the property type (e.g., 'Entire place · Apartment').";
+    public static final String CREATE_PROPERTY_CATEGORY_DROPDOWN_SHOULD_BE_POPULATED =
+            "Create property Step 1 should allow selecting a category from a dropdown populated with categories.";
+
     // --- Property Listing test messages ---
     public static final String PROPERTY_LISTING_SHOULD_DISPLAY_PROPERTY_CARDS =
             "Property listing page should display property cards.";
@@ -320,6 +336,16 @@ public final class ErrorMessages {
             "Step 5 should block Next when fewer than one image is uploaded and show 'Minimum 1 image required'.";
     public static final String CREATE_PROPERTY_STEP5_BACK_AND_RETURN_SHOULD_PRESERVE_UPLOADED_IMAGES =
             "Uploaded images should be preserved when navigating back to Step 4 and returning to Step 5.";
+    public static final String CREATE_PROPERTY_STEP5_REORDER_SHOULD_UPDATE_SORT_ORDER =
+            "Reordering images should update the preview order (sort_order) accordingly.";
+    public static final String CREATE_PROPERTY_STEP5_REORDER_SHOULD_UPDATE_PRIMARY_COVER =
+            "When the first image changes after reorder, the new first image should become the primary/cover image.";
+    public static final String CREATE_PROPERTY_STEP5_DELETE_SHOULD_REMOVE_IMAGE =
+            "Deleting an image should remove it from the uploaded images list.";
+    public static final String CREATE_PROPERTY_STEP5_DELETE_PRIMARY_SHOULD_PROMOTE_NEXT =
+            "Deleting the primary image should promote the next image as the new primary/cover.";
+    public static final String CREATE_PROPERTY_STEP5_SHOULD_WARN_WHEN_DELETING_LAST_IMAGE =
+            "When only one image exists, deleting it during create flow should warn that at least 1 image is required.";
     public static final String CREATE_PROPERTY_STEP6_SHOULD_DISPLAY_PRICE_INPUT_IN_USD =
             "Step 6 should display a price-per-night number input in USD.";
     public static final String CREATE_PROPERTY_STEP6_SHOULD_REQUIRE_PRICE_GREATER_THAN_ZERO =
@@ -398,4 +424,16 @@ public final class ErrorMessages {
             "Publish property API should return 404 for non-existent property id.";
     public static final String PUBLISH_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT =
             "Publish property API should return 401 when not logged in.";
+
+    // --- Image Upload (API + UI) messages ---
+    public static final String IMAGE_UPLOAD_API_SHOULD_RETURN_200_AND_INCLUDE_URL =
+            "Uploading a supported image format should return 200 and the response should include a url field pointing to /uploads/t/{slug}/...";
+    public static final String IMAGE_UPLOAD_API_SHOULD_RETURN_400_FOR_UNSUPPORTED_FILE_TYPE =
+            "Uploading an unsupported image type should return 400.";
+    public static final String IMAGE_UPLOAD_API_SHOULD_RETURN_400_WHEN_NO_FILE_ATTACHED =
+            "Image upload API should return 400 when no file is attached.";
+    public static final String IMAGE_UPLOAD_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =
+            "Image upload API should return 401 when not logged in.";
+    public static final String IMAGE_UPLOAD_STEP5_SHOULD_ENFORCE_MAX_10_IMAGES =
+            "Create property Step 5 should prevent adding more than 10 images.";
 }

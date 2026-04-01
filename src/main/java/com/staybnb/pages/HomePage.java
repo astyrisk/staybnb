@@ -6,6 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.List;
+import java.util.Optional;
 import com.staybnb.config.Constants;
 
 public class HomePage extends BasePage {
@@ -14,7 +15,10 @@ public class HomePage extends BasePage {
     private By heroSection = Locators.Home.HERO_SECTION;
     private By heroHeadline = Locators.Home.HERO_HEADLINE;
     private By categoryBar = Locators.Home.CATEGORY_BAR;
+    private By categoryChips = Locators.Home.CATEGORY_CHIPS;
+    private By activeCategoryChip = Locators.Home.ACTIVE_CATEGORY_CHIP;
     private By categoryIcons = Locators.Home.CATEGORY_ICONS;
+    private By propertiesCount = Locators.Home.PROPERTIES_COUNT;
     private By propertyGrid = Locators.Home.PROPERTY_GRID;
     private By propertyCards = Locators.Home.PROPERTY_CARDS;
 
@@ -48,8 +52,69 @@ public class HomePage extends BasePage {
         return isDisplayed(categoryBar);
     }
 
+    public List<WebElement> getCategoryChips() {
+        return waitForElementsPresent(categoryChips);
+    }
+
+    public boolean hasCategoryChipNamed(String categoryName) {
+        String expected = categoryName == null ? "" : categoryName.trim();
+        if (expected.isEmpty()) {
+            return false;
+        }
+        return getCategoryChips().stream().anyMatch(el -> expected.equalsIgnoreCase(el.getText().trim()));
+    }
+
+    public void clickCategoryByName(String categoryName) {
+        String expected = categoryName == null ? "" : categoryName.trim();
+        if (expected.isEmpty()) {
+            throw new IllegalArgumentException("Category name must not be blank");
+        }
+        By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][normalize-space()='" + expected + "']");
+        waitForElementClickable(chip).click();
+        waitForActiveCategoryToBe(expected);
+    }
+
+    public String getActiveCategoryName() {
+        return Optional.ofNullable(waitForElementVisible(activeCategoryChip).getText())
+                .orElse("")
+                .trim();
+    }
+
+    public void waitForActiveCategoryToBe(String expectedCategoryName) {
+        String expected = expectedCategoryName == null ? "" : expectedCategoryName.trim();
+        wait.until(d -> expected.equalsIgnoreCase(getActiveCategoryName()));
+    }
+
     public List<WebElement> getCategoryIcons() {
         return waitForElementsPresent(categoryIcons);
+    }
+
+    public boolean isCategoryBarHorizontallyScrollable() {
+        WebElement bar = waitForElementVisible(categoryBar);
+        Object result = ((JavascriptExecutor) driver).executeScript(
+                "var el=arguments[0];" +
+                        "var style=window.getComputedStyle(el);" +
+                        "var overflowX=style ? style.overflowX : '';" +
+                        "return { scrollable: (el.scrollWidth>el.clientWidth), overflowX: overflowX };",
+                bar
+        );
+        if (result instanceof java.util.Map<?, ?> map) {
+            Object scrollable = map.get("scrollable");
+            Object overflowX = map.get("overflowX");
+            boolean canScroll = Boolean.TRUE.equals(scrollable);
+            String ox = overflowX == null ? "" : overflowX.toString().toLowerCase();
+            return canScroll && (ox.contains("auto") || ox.contains("scroll"));
+        }
+        return false;
+    }
+
+    public String getPropertiesCountText() {
+        return waitForElementVisible(propertiesCount).getText().trim();
+    }
+
+    public void waitForPropertiesCountToContain(String expectedText) {
+        String expected = expectedText == null ? "" : expectedText.trim();
+        wait.until(d -> getPropertiesCountText().contains(expected));
     }
 
     public List<WebElement> getPropertyCards() {

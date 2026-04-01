@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class CreatePropertyPage extends BasePage {
     private static final String PAGE_URL = Constants.HOSTING_CREATE_URL;
@@ -133,6 +134,11 @@ public class CreatePropertyPage extends BasePage {
         new Select(waitForElementVisible(step1CategorySelect)).selectByIndex(index);
     }
 
+    public int getCategoryDropdownOptionCount() {
+        Select select = new Select(waitForElementVisible(step1CategorySelect));
+        return select.getOptions().size();
+    }
+
     public void enterTitle(String title) {
         type(step1TitleInput, title);
     }
@@ -197,10 +203,95 @@ public class CreatePropertyPage extends BasePage {
         return driver.findElements(step5ImagePreviews).size() >= minimumCount;
     }
 
+    public int getUploadedImagePreviewCount() {
+        waitForElementVisible(step5UploadDropzone);
+        return driver.findElements(step5ImagePreviews).size();
+    }
+
     public boolean uploadedImagesShowSortHandleAndDelete() {
         return !driver.findElements(step5ImageMoveUpButtons).isEmpty()
                 && !driver.findElements(step5ImageMoveDownButtons).isEmpty()
                 && !driver.findElements(step5ImageDeleteButtons).isEmpty();
+    }
+
+    private List<WebElement> getStep5PreviewItems() {
+        waitForElementVisible(step5UploadDropzone);
+        return driver.findElements(step5ImagePreviews);
+    }
+
+    private String previewSignature(WebElement previewItem) {
+        try {
+            WebElement img = previewItem.findElement(By.cssSelector("img"));
+            String src = img.getAttribute("src");
+            if (src != null && !src.trim().isEmpty()) {
+                return src.trim();
+            }
+        } catch (Exception ignored) {
+        }
+        String text = previewItem.getText();
+        return text == null ? "" : text.trim();
+    }
+
+    public String getImagePreviewSignatureAt(int index) {
+        List<WebElement> items = getStep5PreviewItems();
+        if (index < 0 || index >= items.size()) {
+            throw new IllegalArgumentException("Invalid preview index: " + index + " (count=" + items.size() + ")");
+        }
+        return previewSignature(items.get(index));
+    }
+
+    public void moveImageDownAt(int index) {
+        List<WebElement> buttons = waitForElementsPresent(step5ImageMoveDownButtons);
+        if (index < 0 || index >= buttons.size()) {
+            throw new IllegalArgumentException("Invalid move-down index: " + index + " (count=" + buttons.size() + ")");
+        }
+        buttons.get(index).click();
+    }
+
+    public void moveImageUpAt(int index) {
+        List<WebElement> buttons = waitForElementsPresent(step5ImageMoveUpButtons);
+        if (index < 0 || index >= buttons.size()) {
+            throw new IllegalArgumentException("Invalid move-up index: " + index + " (count=" + buttons.size() + ")");
+        }
+        buttons.get(index).click();
+    }
+
+    public void deleteImageAt(int index) {
+        List<WebElement> buttons = waitForElementsPresent(step5ImageDeleteButtons);
+        if (index < 0 || index >= buttons.size()) {
+            throw new IllegalArgumentException("Invalid delete index: " + index + " (count=" + buttons.size() + ")");
+        }
+        buttons.get(index).click();
+    }
+
+    public void waitForFirstPreviewSignatureToBe(String expectedSignature) {
+        wait.until(d -> {
+            List<WebElement> items = d.findElements(step5ImagePreviews);
+            if (items.isEmpty()) {
+                return expectedSignature == null || expectedSignature.isBlank();
+            }
+            return previewSignature(items.get(0)).equals(expectedSignature);
+        });
+    }
+
+    public void waitForPreviewCountToBe(int expectedCount) {
+        wait.until(d -> d.findElements(step5ImagePreviews).size() == expectedCount);
+    }
+
+    public boolean primaryBadgeIsOnPreviewIndex(int index) {
+        List<WebElement> items = getStep5PreviewItems();
+        if (index < 0 || index >= items.size()) {
+            return false;
+        }
+        WebElement preview = items.get(index);
+        String previewText = Optional.ofNullable(preview.getText()).orElse("").toLowerCase();
+        if (previewText.contains("primary") || previewText.contains("cover")) {
+            return true;
+        }
+        return !preview.findElements(
+                By.xpath(".//*[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'primary')"
+                        + " or contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'cover')]")
+        ).isEmpty();
     }
 
     public boolean firstUploadedImageIsMarkedPrimaryOrCover() {

@@ -61,7 +61,10 @@ public final class Locators {
         public static final By HERO_SECTION = By.className("home-hero");
         public static final By HERO_HEADLINE = By.cssSelector(".home-hero-content h1");
         public static final By CATEGORY_BAR = By.className("categories-bar");
+        public static final By CATEGORY_CHIPS = By.cssSelector(".categories-bar .category-chip");
+        public static final By ACTIVE_CATEGORY_CHIP = By.cssSelector(".categories-bar .category-chip.active");
         public static final By CATEGORY_ICONS = By.className("category-icon");
+        public static final By PROPERTIES_COUNT = By.className("properties-count");
         public static final By PROPERTY_GRID = By.className("property-grid");
         public static final By PROPERTY_CARDS = By.className("property-card");
 
