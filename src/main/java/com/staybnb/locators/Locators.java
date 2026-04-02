@@ -103,6 +103,7 @@ public final class Locators {
         public static final By HOST_AVATAR = By.className("detail-host-avatar");
         public static final By HOST_NAME = By.className("detail-host-name");
         public static final By HOST_SINCE = By.className("detail-host-since");
+        public static final By AMENITIES_SECTION = By.className("detail-amenities");
         public static final By AMENITY_ITEMS = By.className("detail-amenity");
         public static final By SHOW_ALL_AMENITIES_BUTTON = By.className("detail-amenities-show-all");
         public static final By PRICE_AMOUNT = By.className("detail-price-amount");
@@ -299,6 +300,10 @@ public final class Locators {
                 By.xpath("//div[contains(@class,'edit-property-field')][.//label[normalize-space()='City']]//input");
         public static final By PRICE_INPUT =
                 By.xpath("//div[contains(@class,'edit-property-field')][.//label[contains(normalize-space(),'Price per Night')]]//input[@type='number']");
+
+        public static final By AMENITY_GRID = By.className("edit-property-amenities-grid");
+        public static final By AMENITY_CHECKBOXES = By.cssSelector(".edit-property-amenities-grid input[type='checkbox']");
+        public static final By AMENITY_ITEMS = By.cssSelector(".edit-property-amenity-item");
     }
 
     public static final class DeleteProperty {

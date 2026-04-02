@@ -5,3 +5,8 @@
 3- Given I am not a host, when I try to access /t/{slug}/hosting/create, then I am blocked with a 403 error
 
 4- Given I view the amenities grid, when I inspect the layout, then amenities are grouped by type: Essentials, Features, and Safety
+
+
+
+
+12 - Given I am on the home page (/t/{slug}/), when I view the category bar, then I see a horizontal scrollable row of category icons (Apartment, House, Villa, Cabin, Loft, Studio, etc.)

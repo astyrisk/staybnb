@@ -31,6 +31,10 @@ public final class Constants {
     // Common IDs
     public static final String DEFAULT_PROPERTY_ID = "202";
     public static final String NON_EXISTENT_ID = "999999";
+    // Property with 1–8 amenities (for Story 14 AC4). Must be published and accessible.
+    public static final String PROPERTY_WITH_FEW_AMENITIES_ID = "960";
+    // Property with 0 amenities (for Story 14 AC5).
+    public static final String PROPERTY_WITH_NO_AMENITIES_ID = "959";
     public static final String USER_ID_101 = "101";
     public static final String USER_ID_102 = "102";
 

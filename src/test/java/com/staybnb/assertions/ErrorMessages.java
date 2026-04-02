@@ -436,4 +436,24 @@ public final class ErrorMessages {
             "Image upload API should return 401 when not logged in.";
     public static final String IMAGE_UPLOAD_STEP5_SHOULD_ENFORCE_MAX_10_IMAGES =
             "Create property Step 5 should prevent adding more than 10 images.";
+
+    // --- Property Amenity Display (Story 14) messages ---
+    public static final String AMENITY_ITEMS_SHOULD_DISPLAY_ICON_AND_LABEL =
+            "Each amenity item on the property detail page should display both an icon and a text label.";
+    public static final String SHOW_ALL_AMENITIES_BUTTON_SHOULD_APPEAR_FOR_MORE_THAN_EIGHT_AMENITIES =
+            "A 'Show all N amenities' button should appear when the property has more than 8 amenities.";
+    public static final String ALL_AMENITIES_SHOULD_BE_VISIBLE_WITHOUT_MODAL_FOR_FEW_AMENITIES =
+            "All amenities should be directly visible without a 'Show all' button when the property has 8 or fewer amenities.";
+    public static final String AMENITIES_SECTION_SHOULD_BE_HIDDEN_FOR_PROPERTY_WITH_NO_AMENITIES =
+            "The amenities section should be hidden when the property has no amenities.";
+
+    // --- Property Amenities (Story 13) messages ---
+    public static final String AMENITIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON =
+            "GET /api/t/{slug}/amenities should return a non-empty list where each item includes id, name, and icon fields.";
+    public static final String EDIT_PROPERTY_AMENITIES_SECTION_SHOULD_SHOW_CHECKBOX_GRID =
+            "Edit property amenities section should display a non-empty checkbox grid.";
+    public static final String EDIT_PROPERTY_SHOULD_PRE_CHECK_PREVIOUSLY_SELECTED_AMENITIES =
+            "Edit property amenities section should pre-check amenities previously associated with the property.";
+    public static final String DESELECTING_AMENITY_AND_SAVING_SHOULD_REMOVE_IT_FROM_PROPERTY =
+            "After deselecting an amenity and saving, reloading the edit page should show that amenity is no longer checked.";
 }

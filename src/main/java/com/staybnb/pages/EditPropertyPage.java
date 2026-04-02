@@ -7,6 +7,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -104,6 +105,14 @@ public class EditPropertyPage extends BasePage {
         waitForElementClickable(saveChangesButton).click();
     }
 
+    public void clickSaveChangesAndDismissAlert() {
+        waitForElementClickable(saveChangesButton).click();
+        try {
+            wait.until(ExpectedConditions.alertIsPresent()).accept();
+        } catch (Exception ignored) {
+        }
+    }
+
     public boolean hasInlineErrorContaining(String expectedText) {
         String expected = expectedText.toLowerCase();
         List<WebElement> errors = driver.findElements(fieldErrors);
@@ -112,6 +121,34 @@ public class EditPropertyPage extends BasePage {
 
     public boolean isDeletePropertyButtonVisible() {
         return isDisplayed(deletePropertyButton);
+    }
+
+    public boolean isAmenitiesGridDisplayed() {
+        return isDisplayed(Locators.EditProperty.AMENITY_GRID)
+                && !driver.findElements(Locators.EditProperty.AMENITY_CHECKBOXES).isEmpty();
+    }
+
+    public boolean hasAnyAmenityChecked() {
+        List<WebElement> checkboxes = driver.findElements(Locators.EditProperty.AMENITY_CHECKBOXES);
+        return checkboxes.stream().anyMatch(WebElement::isSelected);
+    }
+
+    public boolean isAmenityCheckedByLabelContaining(String labelText) {
+        String normalized = labelText.toLowerCase();
+        By checkbox = By.xpath(
+                "//label[contains(@class,'edit-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
+                        + normalized + "')]//input[@type='checkbox']"
+        );
+        return waitForElementVisible(checkbox).isSelected();
+    }
+
+    public void toggleAmenityByLabelContaining(String labelText) {
+        String normalized = labelText.toLowerCase();
+        By checkbox = By.xpath(
+                "//label[contains(@class,'edit-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
+                        + normalized + "')]//input[@type='checkbox']"
+        );
+        waitForElementClickable(checkbox).click();
     }
 
     public long updatePropertyStatusViaApi(String propertyId, String payloadJson) {

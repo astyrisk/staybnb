@@ -150,6 +150,25 @@ public class PropertyDetailsPage extends BasePage {
                 .collect(Collectors.toList());
     }
 
+    public int getDisplayedAmenityCount() {
+        return driver.findElements(amenityItems).size();
+    }
+
+    public boolean isAmenitiesSectionPresent() {
+        return !driver.findElements(Locators.PropertyDetails.AMENITIES_SECTION).isEmpty();
+    }
+
+    public boolean amenitiesHaveIconAndLabel() {
+        List<WebElement> items = driver.findElements(amenityItems);
+        if (items.isEmpty()) return false;
+        return items.stream().allMatch(item -> {
+            List<WebElement> spans = item.findElements(By.tagName("span"));
+            return spans.size() >= 2
+                    && !spans.get(0).getText().isBlank()
+                    && !spans.get(1).getText().isBlank();
+        });
+    }
+
     private void waitForDetailsToLoad() {
         wait.until(d ->
                 d.findElements(detailTitle).size() > 0 ||

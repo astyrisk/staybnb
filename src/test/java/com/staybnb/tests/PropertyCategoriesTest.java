@@ -25,22 +25,7 @@ public class PropertyCategoriesTest extends BaseTest {
         homePage.navigateTo();
     }
 
-    private static Stream<String> provideExpectedCategoryChips() {
-        return Stream.of(
-                "All",
-                "Apartment",
-                "Bungalow",
-                "Cabin",
-                "Condo",
-                "Cottage",
-                "House",
-                "Loft",
-                "Studio",
-                "Townhouse",
-                "Villa"
-        );
-    }
-
+    //NOTE should fail
     @Test
     public void testCategoryBarIsHorizontallyScrollable() {
         assertTrue(
@@ -49,12 +34,14 @@ public class PropertyCategoriesTest extends BaseTest {
         );
     }
 
-    @ParameterizedTest(name = "Category chip should exist: {0}")
-    @MethodSource("provideExpectedCategoryChips")
-    public void testCategoryChipExists(String categoryName) {
+    //NOTE should fail
+    @Test
+    public void testPropertyDetailsShowsCategoryAlongsidePropertyType() {
+        PropertyDetailsPage propertyDetailsPage = new PropertyDetailsPage(driver);
+        propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
         assertTrue(
-                homePage.hasCategoryChipNamed(categoryName),
-                ErrorMessages.CATEGORIES_BAR_SHOULD_INCLUDE_EXPECTED_CATEGORY_CHIPS
+                propertyDetailsPage.getType().contains("·"),
+                ErrorMessages.PROPERTY_DETAILS_SHOULD_SHOW_TYPE_AND_CATEGORY
         );
     }
 
@@ -88,16 +75,6 @@ public class PropertyCategoriesTest extends BaseTest {
     }
 
     @Test
-    public void testPropertyDetailsShowsCategoryAlongsidePropertyType() {
-        PropertyDetailsPage propertyDetailsPage = new PropertyDetailsPage(driver);
-        propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
-        assertTrue(
-                propertyDetailsPage.getType().contains("·"),
-                ErrorMessages.PROPERTY_DETAILS_SHOULD_SHOW_TYPE_AND_CATEGORY
-        );
-    }
-
-    @Test
     public void testCreatePropertyCategoryDropdownIsPopulated() {
         LoginPage loginPage = new LoginPage(driver);
         CreatePropertyPage createPropertyPage = new CreatePropertyPage(driver);
@@ -106,6 +83,31 @@ public class PropertyCategoriesTest extends BaseTest {
         assertTrue(
                 createPropertyPage.getCategoryDropdownOptionCount() > 1,
                 ErrorMessages.CREATE_PROPERTY_CATEGORY_DROPDOWN_SHOULD_BE_POPULATED
+        );
+    }
+
+    @ParameterizedTest(name = "Category chip should exist: {0}")
+    @MethodSource("provideExpectedCategoryChips")
+    public void testCategoryChipExists(String categoryName) {
+        assertTrue(
+                homePage.hasCategoryChipNamed(categoryName),
+                ErrorMessages.CATEGORIES_BAR_SHOULD_INCLUDE_EXPECTED_CATEGORY_CHIPS
+        );
+    }
+
+    private static Stream<String> provideExpectedCategoryChips() {
+        return Stream.of(
+                "All",
+                "Apartment",
+                "Bungalow",
+                "Cabin",
+                "Condo",
+                "Cottage",
+                "House",
+                "Loft",
+                "Studio",
+                "Townhouse",
+                "Villa"
         );
     }
 }

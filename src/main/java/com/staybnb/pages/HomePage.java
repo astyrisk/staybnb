@@ -5,6 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import com.staybnb.config.Constants;
@@ -26,6 +29,8 @@ public class HomePage extends BasePage {
     private By cardTitle = Locators.Home.CARD_TITLE;
     private By cardLocation = Locators.Home.CARD_LOCATION;
     private By cardPrice = Locators.Home.CARD_PRICE;
+
+    private static final String GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE = "com/staybnb/scripts/getElementDirectText.js";
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -61,7 +66,8 @@ public class HomePage extends BasePage {
         if (expected.isEmpty()) {
             return false;
         }
-        return getCategoryChips().stream().anyMatch(el -> expected.equalsIgnoreCase(el.getText().trim()));
+        By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][text()[normalize-space()='" + expected + "']]");
+        return !driver.findElements(chip).isEmpty();
     }
 
     public void clickCategoryByName(String categoryName) {
@@ -69,15 +75,17 @@ public class HomePage extends BasePage {
         if (expected.isEmpty()) {
             throw new IllegalArgumentException("Category name must not be blank");
         }
-        By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][normalize-space()='" + expected + "']");
+        By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][text()[normalize-space()='" + expected + "']]");
+
         waitForElementClickable(chip).click();
         waitForActiveCategoryToBe(expected);
     }
 
     public String getActiveCategoryName() {
-        return Optional.ofNullable(waitForElementVisible(activeCategoryChip).getText())
-                .orElse("")
-                .trim();
+        WebElement chip = waitForElementVisible(activeCategoryChip);
+        String script = loadJavascriptResource(GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE);
+        Object result = ((JavascriptExecutor) driver).executeScript(script, chip);
+        return Optional.ofNullable(result).map(Object::toString).orElse("").trim();
     }
 
     public void waitForActiveCategoryToBe(String expectedCategoryName) {
@@ -148,6 +156,17 @@ public class HomePage extends BasePage {
         // keeps JS out of tests
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
         waitForElementsPresent(propertyCards);
+    }
+
+    private String loadJavascriptResource(String resourcePath) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
+            }
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
+        }
     }
 
     private void waitForHomeToLoad() {
