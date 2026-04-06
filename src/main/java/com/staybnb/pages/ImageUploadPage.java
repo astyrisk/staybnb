@@ -40,6 +40,12 @@ public class ImageUploadPage extends BasePage {
                 (responseStatus == null ? "null" : responseStatus.getClass().getName()));
     }
 
+    public boolean isUploadResponseContainsUrl(String response) {
+        String normalized = response == null ? "" : response.replaceAll("\\s+", "").toLowerCase();
+        String expectedPathPrefix = ("/uploads/t/" + Constants.SLUG + "/").toLowerCase();
+        return normalized.contains("\"url\"") && normalized.contains(expectedPathPrefix);
+    }
+
     public String uploadImageViaApi(String base64, String fileName, String mimeType) {
         driver.get(Constants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;

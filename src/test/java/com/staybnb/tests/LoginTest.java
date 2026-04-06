@@ -19,27 +19,40 @@ public class LoginTest extends BaseTest {
     @Test
     public void testSuccessfulLoginRedirection() {
         loginAsTestUserAndLandOnHome(loginPage);
-        assertTrue(driver.getCurrentUrl().contains(Constants.HOME_URL));
+
+        assertTrue(
+                driver.getCurrentUrl().contains(Constants.HOME_URL)
+        );
     }
 
     @Test
     public void testSuccessfulLoginTokenRetrieved() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jwt = loginPage.getStaybnbToken();
-        assertNotNull(jwt, ErrorMessages.JWT_TOKEN_NOT_RETRIEVED);
+
+        assertNotNull(
+                jwt,
+                ErrorMessages.JWT_TOKEN_NOT_RETRIEVED
+        );
     }
 
     @Test
     public void testInvalidCredentials() {
         loginPage.login(Constants.INVALID_EMAIL, Constants.INVALID_PASSWORD);
         String errorText = loginPage.getGlobalErrorMessageText();
-        assertTrue(errorText.toLowerCase().contains("invalid") || errorText.toLowerCase().contains("unauthorized"),
-                ErrorMessages.EXPECTED_INVALID_CREDENTIALS_OR_UNAUTHORIZED);
+
+        assertTrue(
+                errorText.toLowerCase().contains("invalid") || errorText.toLowerCase().contains("unauthorized"),
+                ErrorMessages.EXPECTED_INVALID_CREDENTIALS_OR_UNAUTHORIZED
+        );
     }
 
     @Test
     public void testBlankFieldsValidation() {
         loginPage.clickLoginButton();
-        assertTrue(loginPage.isInlineErrorDisplayed(ErrorMessages.EMAIL_AND_PASSWORD_REQUIRED));
+
+        assertTrue(
+                loginPage.isInlineErrorDisplayed(ErrorMessages.EMAIL_AND_PASSWORD_REQUIRED)
+        );
     }
 }

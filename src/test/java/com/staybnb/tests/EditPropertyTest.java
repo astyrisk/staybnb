@@ -2,6 +2,7 @@ package com.staybnb.tests;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.Constants;
+import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.EditPropertyPage;
 import com.staybnb.pages.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,22 +29,22 @@ public class EditPropertyTest extends BaseTest {
         editPropertyPage.navigateTo(Constants.EditProperty.EDITABLE_PROPERTY_ID);
     }
 
-    private String validEditPayloadJson() {
-        return "{"
-                + "\"title\":\"" + Constants.EditProperty.UPDATED_TITLE + "\","
-                + "\"description\":\"Automation flow for edit property.\","
-                + "\"locationCity\":\"Kabul\","
-                + "\"locationCountry\":\"Afghanistan\","
-                + "\"pricePerNight\":120"
-                + "}";
+    private long updateEditablePropertyStatus() {
+        return editPropertyPage.updatePropertyStatusViaApi(
+                Constants.EditProperty.EDITABLE_PROPERTY_ID,
+                PropertyPayloads.validEditPayloadJson()
+        );
     }
 
     @Test
     public void testEditPropertyPageLoadsWithPrePopulatedData() {
         loginAsHostAndOpenEditPage();
-        assertTrue(
-                editPropertyPage.isEditPageLoaded() && editPropertyPage.hasPrePopulatedCoreFields(),
-                ErrorMessages.EDIT_PROPERTY_PAGE_SHOULD_LOAD_WITH_PREPOPULATED_DATA
+
+        assertAll(
+                () -> assertTrue(editPropertyPage.isEditPageLoaded(),
+                        ErrorMessages.EDIT_PROPERTY_PAGE_CONTAINER_AND_CONTROLS_SHOULD_BE_VISIBLE),
+                () -> assertTrue(editPropertyPage.hasPrePopulatedCoreFields(),
+                        ErrorMessages.EDIT_PROPERTY_PAGE_CORE_FIELDS_SHOULD_BE_PREPOPULATED)
         );
     }
 
@@ -51,6 +52,7 @@ public class EditPropertyTest extends BaseTest {
     @MethodSource("provideEditPageSections")
     public void testEditPropertyPageShowsAllSectionsSinglePage(String sectionHeader) {
         loginAsHostAndOpenEditPage();
+
         assertTrue(
                 editPropertyPage.hasSectionHeader(sectionHeader),
                 ErrorMessages.EDIT_PROPERTY_PAGE_SHOULD_DISPLAY_ALL_SINGLE_PAGE_SECTIONS
@@ -62,20 +64,24 @@ public class EditPropertyTest extends BaseTest {
     public void testEditPropertyPageDoesNotUseCreateWizardFlow() {
         loginAsHostAndOpenEditPage();
         editPropertyPage.waitForSectionsToBeVisible();
-        assertTrue(
-                editPropertyPage.hasAllMainSectionsVisible() && !editPropertyPage.hasCreateWizardProgressOrNavigation(),
-                ErrorMessages.EDIT_PROPERTY_PAGE_SHOULD_NOT_USE_CREATE_WIZARD_PROGRESS
+
+        assertAll(
+                () -> assertTrue(editPropertyPage.hasAllMainSectionsVisible(),
+                        ErrorMessages.EDIT_PROPERTY_PAGE_SHOULD_DISPLAY_ALL_SECTIONS),
+                () -> assertFalse(editPropertyPage.hasCreateWizardProgressOrNavigation(),
+                        ErrorMessages.EDIT_PROPERTY_PAGE_SHOULD_NOT_SHOW_WIZARD_NAVIGATION)
         );
     }
 
     @Test
     public void testEditPropertySaveReturns200ForOwner() {
         loginAsHostAndOpenEditPage();
-        long status = editPropertyPage.updatePropertyStatusViaApi(
-                Constants.EditProperty.EDITABLE_PROPERTY_ID,
-                validEditPayloadJson()
+
+        assertEquals(
+                200L,
+                updateEditablePropertyStatus(),
+                ErrorMessages.EDIT_PROPERTY_SAVE_SHOULD_RETURN_200_FOR_OWNER
         );
-        assertEquals(200L, status, ErrorMessages.EDIT_PROPERTY_SAVE_SHOULD_RETURN_200_FOR_OWNER);
     }
 
     @ParameterizedTest(name = "Required field validation: {0}")
@@ -84,6 +90,7 @@ public class EditPropertyTest extends BaseTest {
         loginAsHostAndOpenEditPage();
         editPropertyPage.clearRequiredField(requiredField);
         editPropertyPage.clickSaveChanges();
+
         assertTrue(
                 editPropertyPage.hasInlineErrorContaining(requiredField),
                 ErrorMessages.EDIT_PROPERTY_REQUIRED_FIELD_SHOULD_SHOW_INLINE_VALIDATION
@@ -93,11 +100,12 @@ public class EditPropertyTest extends BaseTest {
     @Test
     public void testEditPropertyApiReturns403ForNonOwner() {
         registerNewUserAndLandOnHome("testeditproperty");
-        long status = editPropertyPage.updatePropertyStatusViaApi(
-                Constants.EditProperty.EDITABLE_PROPERTY_ID,
-                validEditPayloadJson()
+
+        assertEquals(
+                403L,
+                updateEditablePropertyStatus(),
+                ErrorMessages.EDIT_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_OWNER
         );
-        assertEquals(403L, status, ErrorMessages.EDIT_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_OWNER);
     }
 
     @Test
@@ -105,24 +113,33 @@ public class EditPropertyTest extends BaseTest {
         loginAsTestUserAndLandOnHome(loginPage);
         long status = editPropertyPage.updatePropertyStatusViaApi(
                 Constants.EditProperty.NON_EXISTENT_PROPERTY_ID,
-                validEditPayloadJson()
+                PropertyPayloads.validEditPayloadJson()
         );
-        assertEquals(404L, status, ErrorMessages.EDIT_PROPERTY_API_SHOULD_RETURN_404_FOR_NON_EXISTENT_PROPERTY);
+
+        assertEquals(
+                404L,
+                status,
+                ErrorMessages.EDIT_PROPERTY_API_SHOULD_RETURN_404_FOR_NON_EXISTENT_PROPERTY
+        );
     }
 
     @Test
     public void testEditPropertyApiReturns401WhenLoggedOut() {
-        long status = editPropertyPage.updatePropertyStatusViaApi(
-                Constants.EditProperty.EDITABLE_PROPERTY_ID,
-                validEditPayloadJson()
+        assertEquals(
+                401L,
+                updateEditablePropertyStatus(),
+                ErrorMessages.EDIT_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT
         );
-        assertEquals(401L, status, ErrorMessages.EDIT_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT);
     }
 
     @Test
     public void testEditPropertyPageShowsDeletePropertyButton() {
         loginAsHostAndOpenEditPage();
-        assertTrue(editPropertyPage.isDeletePropertyButtonVisible(), ErrorMessages.EDIT_PROPERTY_PAGE_SHOULD_SHOW_DELETE_BUTTON);
+
+        assertTrue(
+                editPropertyPage.isDeletePropertyButtonVisible(),
+                ErrorMessages.EDIT_PROPERTY_PAGE_SHOULD_SHOW_DELETE_BUTTON
+        );
     }
 
     private static Stream<String> provideEditPageSections() {

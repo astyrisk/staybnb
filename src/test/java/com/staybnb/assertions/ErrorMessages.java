@@ -188,6 +188,8 @@ public final class ErrorMessages {
             "Become-host API should return 401 when not logged in.";
     public static final String BECOME_HOST_API_SHOULD_REFLECT_IS_HOST_TRUE =
             "Become-host API should return user object reflecting isHost: true.";
+    public static final String BECOME_HOST_BUTTON_SHOULD_BE_VISIBLE_ON_PROFILE_PAGE =
+            "Become a Host button should be visible on profile page for non-host.";
 
     // --- Other Profile test messages ---
     public static final String AVATAR_SHOULD_CONTAIN_USERS_FIRST_INITIAL =
@@ -212,6 +214,10 @@ public final class ErrorMessages {
             "Response should NOT contain 'email'.";
     public static final String RESPONSE_SHOULD_NOT_CONTAIN_PHONE =
             "Response should NOT contain 'phone'.";
+    public static final String RESPONSE_SHOULD_CONTAIN_EXPECTED_FIELD =
+            "API response should contain the expected field.";
+    public static final String RESPONSE_SHOULD_NOT_CONTAIN_EXCLUDED_FIELD =
+            "API response should not contain the excluded field.";
 
     // --- Navbar test messages ---
     public static final String NAVBAR_LOGO_SHOULD_BE_DISPLAYED =
@@ -250,6 +256,10 @@ public final class ErrorMessages {
             "Should navigate to login page";
     public static final String NAVBAR_SHOULD_NAVIGATE_TO_REGISTER_PAGE =
             "Should navigate to register page";
+    public static final String NAVBAR_AUTHENTICATED_CHECK_CONDITION_SHOULD_BE_MET =
+            "The authenticated navbar check condition should be met.";
+    public static final String NAVBAR_VISITOR_CHECK_CONDITION_SHOULD_BE_MET =
+            "The visitor navbar check condition should be met.";
 
     // --- Host Dashboard test messages ---
     public static final String HOST_DASHBOARD_SHOULD_DISPLAY_PROPERTY_CARDS_FOR_HOST_WITH_PROPERTIES =
@@ -286,6 +296,8 @@ public final class ErrorMessages {
             "Step 2 should show inline validation when country is missing.";
     public static final String CREATE_PROPERTY_STEP2_SHOULD_REQUIRE_CITY =
             "Step 2 should show inline validation when city is missing.";
+    public static final String CREATE_PROPERTY_STEP2_REQUIRED_FIELD_SHOULD_SHOW_VALIDATION =
+            "Step 2 should show inline validation when a required field is missing.";
     public static final String CREATE_PROPERTY_STEP3_SHOULD_DISPLAY_DETAILS_FIELDS =
             "Step 3 should display max guests, bedrooms, beds, and bathrooms fields.";
     public static final String CREATE_PROPERTY_MAX_GUESTS_MIN_SHOULD_BE_1 =
@@ -348,6 +360,10 @@ public final class ErrorMessages {
             "When only one image exists, deleting it during create flow should warn that at least 1 image is required.";
     public static final String CREATE_PROPERTY_STEP6_SHOULD_DISPLAY_PRICE_INPUT_IN_USD =
             "Step 6 should display a price-per-night number input in USD.";
+    public static final String CREATE_PROPERTY_STEP6_PRICING_SECTION_SHOULD_LOAD =
+            "Step 6 pricing section should load.";
+    public static final String CREATE_PROPERTY_STEP6_PRICE_INPUT_SHOULD_USE_USD_LABEL =
+            "Step 6 price input should use USD label.";
     public static final String CREATE_PROPERTY_STEP6_SHOULD_REQUIRE_PRICE_GREATER_THAN_ZERO =
             "Step 6 should show validation when price is zero or negative.";
     public static final String CREATE_PROPERTY_STEP6_NEXT_SHOULD_ADVANCE_TO_STEP7_REVIEW =
@@ -372,10 +388,18 @@ public final class ErrorMessages {
     // --- Edit Property test messages ---
     public static final String EDIT_PROPERTY_PAGE_SHOULD_LOAD_WITH_PREPOPULATED_DATA =
             "Edit property page should load and show pre-populated existing property data.";
+    public static final String EDIT_PROPERTY_PAGE_CONTAINER_AND_CONTROLS_SHOULD_BE_VISIBLE =
+            "Edit property page container, header and save button should be visible.";
+    public static final String EDIT_PROPERTY_PAGE_CORE_FIELDS_SHOULD_BE_PREPOPULATED =
+            "Edit property page core fields (title, description, location, price, type, category) should be pre-populated.";
     public static final String EDIT_PROPERTY_PAGE_SHOULD_DISPLAY_ALL_SINGLE_PAGE_SECTIONS =
             "Edit property page should display all expected sections on a single page.";
     public static final String EDIT_PROPERTY_PAGE_SHOULD_NOT_USE_CREATE_WIZARD_PROGRESS =
             "Edit property page should not show create-wizard progress or next/back flow.";
+    public static final String EDIT_PROPERTY_PAGE_SHOULD_DISPLAY_ALL_SECTIONS =
+            "Edit property page should display all main sections on a single page.";
+    public static final String EDIT_PROPERTY_PAGE_SHOULD_NOT_SHOW_WIZARD_NAVIGATION =
+            "Edit property page should not show create-wizard progress or next/back navigation.";
     public static final String EDIT_PROPERTY_SAVE_SHOULD_RETURN_200_FOR_OWNER =
             "Saving a valid update as property owner should return 200.";
     public static final String EDIT_PROPERTY_REQUIRED_FIELD_SHOULD_SHOW_INLINE_VALIDATION =

@@ -84,6 +84,42 @@ public class HostDashboardPage extends BasePage {
         return !card.findElements(Locators.HostDashboard.CARD_PUBLISH_TOGGLE).isEmpty();
     }
 
+    public boolean isDetailDisplayed(WebElement card, String detailName) {
+        return switch (detailName) {
+            case "thumbnail" -> hasThumbnail(card);
+            case "title" -> !getTitle(card).isEmpty();
+            case "location" -> !getLocation(card).isEmpty();
+            case "price per night" -> getPrice(card).contains("/night");
+            case "published or draft status" -> {
+                String statusText = getStatus(card).trim();
+                yield statusText.equalsIgnoreCase("Published") || statusText.equalsIgnoreCase("Draft");
+            }
+            case "rating" -> hasRating(card);
+            default -> throw new IllegalArgumentException("Unsupported detail: " + detailName);
+        };
+    }
+
+    public boolean hasCardAction(WebElement card, String actionName) {
+        return switch (actionName) {
+            case "edit" -> hasEditAction(card);
+            case "delete" -> hasDeleteAction(card);
+            case "publish toggle" -> hasPublishToggleAction(card);
+            default -> throw new IllegalArgumentException("Unsupported action: " + actionName);
+        };
+    }
+
+    public boolean hasPublishedAndUnpublishedProperties() {
+        String response = getHostingPropertiesViaApi();
+        String normalized = response.replaceAll("\\s+", "").toLowerCase();
+        boolean hasPublished = normalized.contains("\"published\":true")
+                || normalized.contains("\"ispublished\":true")
+                || normalized.contains("\"status\":\"published\"");
+        boolean hasUnpublished = normalized.contains("\"published\":false")
+                || normalized.contains("\"ispublished\":false")
+                || normalized.contains("\"status\":\"draft\"");
+        return hasPublished && hasUnpublished;
+    }
+
     public boolean isEmptyStateVisible() {
         return isDisplayed(emptyStateMessage);
     }

@@ -1,5 +1,6 @@
 package com.staybnb.tests;
 
+import com.staybnb.config.DriverFactory;
 import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.RegisterPage;
@@ -12,8 +13,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -25,6 +24,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class BaseTest {
     protected WebDriver driver;
@@ -32,28 +32,14 @@ public class BaseTest {
     @BeforeEach
     public void commonSetup() {
         if (driver == null) {
-            ChromeOptions options = new ChromeOptions();
-            boolean isHeadless = "true".equals(System.getenv("GITHUB_ACTIONS")) || 
-                                 System.getenv("JENKINS_URL") != null ||
-                                 "true".equals(System.getProperty("headless"));
-            if (isHeadless) {
-                options.addArguments("--headless=new");
-                options.addArguments("--disable-gpu");
-                options.addArguments("--no-sandbox");
-                options.addArguments("--disable-dev-shm-usage");
-            }
-            driver = new ChromeDriver(options);
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Constants.MEDIUM_WAIT));
-            driver.manage().window().maximize();
+            driver = DriverFactory.createDriver();
         }
     }
 
     @AfterEach
     public void commonTeardown() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
+        DriverFactory.quitDriver();
+        driver = null;
     }
 
     protected WebDriverWait getWait(int seconds) {
@@ -80,7 +66,7 @@ public class BaseTest {
     protected String registerNewUserAndLandOnHome(String emailPrefix) {
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.navigateTo();
-        String uniqueEmail = emailPrefix + "_" + System.currentTimeMillis() + "@gmail.com";
+        String uniqueEmail = emailPrefix + "_" + UUID.randomUUID().toString().replace("-", "") + "@gmail.com";
         registerPage.registerAndWaitForUrl(
                 TestConfig.TEST_FIRST_NAME,
                 TestConfig.TEST_LAST_NAME,

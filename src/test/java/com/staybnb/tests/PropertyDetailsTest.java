@@ -99,12 +99,14 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     public void testPriceIsPositive() {
         String numericPrice = propertyDetailsPage.getPrice().replaceAll("[^0-9]", "");
+
         assertTrue(Integer.parseInt(numericPrice) > 0, ErrorMessages.PRICE_SHOULD_BE_A_POSITIVE_NUMBER);
     }
 
     @Test
     public void testNonExistentPropertyReturns404() {
         propertyDetailsPage.navigateTo(Constants.NON_EXISTENT_ID);
+
         assertTrue(propertyDetailsPage.isPropertyNotFoundDisplayed());
     }
 
@@ -126,6 +128,7 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     public void testFirstImageAltText() {
         List<WebElement> images = propertyDetailsPage.getGalleryImages();
+
         assertEquals("Living Room", images.get(0).getAttribute("alt"), ErrorMessages.FIRST_IMAGE_SHOULD_BE_LIVING_ROOM);
     }
 }

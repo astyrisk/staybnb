@@ -42,6 +42,7 @@ public class EditProfileTest extends BaseTest {
                 Constants.EditProfile.NEW_BIO,
                 Constants.EditProfile.NEW_AVATAR_URL
         );
+
         switch (checkName) {
             case "full name" -> assertEquals(
                     Constants.EditProfile.NEW_FIRST_NAME + " " + Constants.EditProfile.NEW_LAST_NAME,
@@ -66,14 +67,22 @@ public class EditProfileTest extends BaseTest {
     public void testEditProfileValidationErrorFirstNameRequired() {
         loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyFirstName();
-        assertTrue(editProfilePage.isValidationErrorDisplayed(), "Validation error should be displayed for empty first name.");
+
+        assertTrue(
+                editProfilePage.isValidationErrorDisplayed(),
+                "Validation error should be displayed for empty first name."
+        );
     }
 
     @Test
     public void testEditProfileValidationErrorLastNameRequired() {
         loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyLastName("heko");
-        assertTrue(editProfilePage.isValidationErrorDisplayed(), "Validation error should be displayed for empty last name.");
+
+        assertTrue(
+                editProfilePage.isValidationErrorDisplayed(),
+                "Validation error should be displayed for empty last name."
+        );
     }
 
     @ParameterizedTest(name = "Validation message for required {0}")
@@ -83,6 +92,7 @@ public class EditProfileTest extends BaseTest {
         switch (fieldName) {
             case "firstName" -> {
                 editProfilePage.submitWithEmptyFirstName();
+
                 assertEquals(
                         ErrorMessages.FIRST_NAME_REQUIRED,
                         editProfilePage.getFieldError("firstName"),
@@ -91,6 +101,7 @@ public class EditProfileTest extends BaseTest {
             }
             case "lastName" -> {
                 editProfilePage.submitWithEmptyLastName("heko");
+
                 assertEquals(
                         ErrorMessages.LAST_NAME_REQUIRED,
                         editProfilePage.getFieldError("lastName"),
@@ -105,20 +116,33 @@ public class EditProfileTest extends BaseTest {
     public void testEditProfileCancel() {
         loginAsTestUserAndLandOnHome(loginPage);
         String originalFirstName = editProfilePage.attemptFirstNameChangeThenCancel("CanceledName");
-        assertEquals(originalFirstName, editProfilePage.getFirstNameValue(), "Changes should not be saved after cancellation.");
+
+        assertEquals(
+                originalFirstName,
+                editProfilePage.getFirstNameValue(),
+                "Changes should not be saved after cancellation."
+        );
     }
 
     @Test
     public void testEditProfileUnauthorizedAccess() {
         editProfilePage.navigateTo();
-        assertTrue(editProfilePage.is401Displayed(), "401 error should be displayed when accessing edit profile while not logged in.");
+
+        assertTrue(
+                editProfilePage.is401Displayed(),
+                "401 error should be displayed when accessing edit profile while not logged in."
+        );
     }
 
     @Test
     public void testApiUpdateUserProfileTokenNotNull() {
         loginAsTestUserAndLandOnHome(loginPage);
         String token = loginPage.getStaybnbToken();
-        assertNotNull(token, ErrorMessages.AUTH_TOKEN_SHOULD_BE_PRESENT_IN_LOCAL_STORAGE);
+
+        assertNotNull(
+                token,
+                ErrorMessages.AUTH_TOKEN_SHOULD_BE_PRESENT_IN_LOCAL_STORAGE
+        );
     }
 
     @Test
@@ -127,7 +151,11 @@ public class EditProfileTest extends BaseTest {
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",
                 Constants.EditProfile.API_FIRST_NAME, Constants.EditProfile.API_LAST_NAME, Constants.EditProfile.API_PHONE, Constants.EditProfile.API_BIO);
         String jsonResponse = editProfilePage.updateMyProfileViaApi(updatePayload);
-        assertNotNull(jsonResponse, ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL);
+
+        assertNotNull(
+                jsonResponse,
+                ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL
+        );
     }
 
     @Test
@@ -136,8 +164,11 @@ public class EditProfileTest extends BaseTest {
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",
                 Constants.EditProfile.API_FIRST_NAME, Constants.EditProfile.API_LAST_NAME, Constants.EditProfile.API_PHONE, Constants.EditProfile.API_BIO);
         String jsonResponse = editProfilePage.updateMyProfileViaApi(updatePayload);
-        assertTrue(jsonResponse != null && jsonResponse.contains("\"firstName\":\"" + Constants.EditProfile.API_FIRST_NAME + "\""),
-                "API should return the updated user object.");
+
+        assertTrue(
+                jsonResponse != null && jsonResponse.contains("\"firstName\":\"" + Constants.EditProfile.API_FIRST_NAME + "\""),
+                "API should return the updated user object."
+        );
     }
 
     private static Stream<String> provideEditProfilePersistenceCases() {

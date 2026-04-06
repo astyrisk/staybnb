@@ -6,6 +6,10 @@ import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,68 +23,69 @@ public class OtherProfileTest extends BaseTest {
         otherProfilePage = new OtherProfilePage(driver);
     }
 
-    @Test
-    public void testOtherUserProfileAvatarDisplayed() {
+    private void loginAndNavigateToUser101() {
         loginAsTestUserAndLandOnHome(loginPage);
         otherProfilePage.navigateTo(Constants.USER_ID_101);
+    }
+
+    private void loginAndNavigateToUser102() {
+        loginAsTestUserAndLandOnHome(loginPage);
+        otherProfilePage.navigateTo(Constants.USER_ID_102);
+    }
+
+    @Test
+    public void testOtherUserProfileAvatarDisplayed() {
+        loginAndNavigateToUser101();
         assertTrue(otherProfilePage.isAvatarDisplayed(), ErrorMessages.AVATAR_SHOULD_BE_DISPLAYED);
     }
 
     @Test
     public void testOtherUserProfileAvatarText() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        loginAndNavigateToUser101();
         assertEquals("B", otherProfilePage.getAvatarText(), ErrorMessages.AVATAR_SHOULD_CONTAIN_USERS_FIRST_INITIAL);
     }
 
     @Test
     public void testOtherUserProfileName() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        loginAndNavigateToUser101();
         assertEquals("Bob J.", otherProfilePage.getProfileName(), ErrorMessages.PROFILE_NAME_SHOULD_SHOW_FIRST_NAME_AND_LAST_INITIAL);
     }
 
     @Test
     public void testOtherUserProfileMetaContainsRole() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        loginAndNavigateToUser101();
         String meta = otherProfilePage.getProfileMeta();
         assertTrue(meta.contains("Guest") || meta.contains("Host"), ErrorMessages.META_SHOULD_CONTAIN_USER_ROLE);
     }
 
     @Test
     public void testOtherUserProfileMetaContainsMemberSince() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        loginAndNavigateToUser101();
         String meta = otherProfilePage.getProfileMeta();
         assertTrue(meta.contains("Member since"), ErrorMessages.META_SHOULD_CONTAIN_MEMBER_SINCE);
     }
 
     @Test
     public void testOtherUserProfileBio() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        loginAndNavigateToUser101();
         assertEquals("Adventure seeker and foodie.", otherProfilePage.getBio(), ErrorMessages.BIO_SHOULD_MATCH);
     }
 
     @Test
     public void testOtherUserProfilePhoneNotVisible() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_102);
+        loginAndNavigateToUser102();
         assertFalse(otherProfilePage.isPhoneSectionVisible(), ErrorMessages.PHONE_NUMBER_SHOULD_NOT_BE_VISIBLE_ON_OTHERS_PROFILE);
     }
 
     @Test
     public void testOtherUserProfileEmailNotVisible() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_102);
+        loginAndNavigateToUser102();
         assertFalse(otherProfilePage.isEmailSectionVisible(), ErrorMessages.EMAIL_SHOULD_NOT_BE_VISIBLE_ON_OTHERS_PROFILE);
     }
 
     @Test
     public void testOtherUserProfileNameMasked() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        otherProfilePage.navigateTo(Constants.USER_ID_102);
+        loginAndNavigateToUser102();
         String name = otherProfilePage.getProfileName();
         assertTrue(name.matches("^[A-Za-z]+ [A-Z]\\.$"), ErrorMessages.PROFILE_NAME_SHOULD_ONLY_SHOW_FIRST_NAME_AND_LAST_INITIAL);
     }
@@ -99,45 +104,35 @@ public class OtherProfileTest extends BaseTest {
         assertNotNull(jsonResponse, ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL);
     }
 
-    @Test
-    public void testApiViewOtherUserContainsFirstName() {
+    @ParameterizedTest(name = "API response contains field: {0}")
+    @MethodSource("provideExpectedApiFields")
+    public void testApiViewOtherUserContainsField(String field) {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"firstName\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_FIRST_NAME);
+
+        assertTrue(
+                jsonResponse.contains("\"" + field + "\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_EXPECTED_FIELD
+        );
     }
 
-    @Test
-    public void testApiViewOtherUserContainsLastName() {
+    @ParameterizedTest(name = "API response excludes field: {0}")
+    @MethodSource("provideExcludedApiFields")
+    public void testApiViewOtherUserDoesNotContainField(String field) {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"lastName\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_LAST_NAME);
+
+        assertFalse(
+                jsonResponse.contains("\"" + field + "\""),
+                ErrorMessages.RESPONSE_SHOULD_NOT_CONTAIN_EXCLUDED_FIELD
+        );
     }
 
-    @Test
-    public void testApiViewOtherUserContainsBio() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"bio\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_BIO);
+    private static Stream<String> provideExpectedApiFields() {
+        return Stream.of("firstName", "lastName", "bio", "isHost");
     }
 
-    @Test
-    public void testApiViewOtherUserContainsIsHost() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
-        assertTrue(jsonResponse.contains("\"isHost\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_IS_HOST);
-    }
-
-    @Test
-    public void testApiViewOtherUserDoesNotContainEmail() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
-        assertFalse(jsonResponse.contains("\"email\""), ErrorMessages.RESPONSE_SHOULD_NOT_CONTAIN_EMAIL);
-    }
-
-    @Test
-    public void testApiViewOtherUserDoesNotContainPhone() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
-        assertFalse(jsonResponse.contains("\"phone\""), ErrorMessages.RESPONSE_SHOULD_NOT_CONTAIN_PHONE);
+    private static Stream<String> provideExcludedApiFields() {
+        return Stream.of("email", "phone");
     }
 }

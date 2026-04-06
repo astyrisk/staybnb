@@ -29,7 +29,10 @@ public class RegisterTest extends BaseTest {
                 TestConfig.TEST_PASSWORD,
                 Constants.HOME_URL
         );
-        assertEquals(Constants.HOME_URL, driver.getCurrentUrl());
+
+        assertEquals(
+                Constants.HOME_URL, driver.getCurrentUrl()
+        );
     }
 
     @Test
@@ -42,13 +45,19 @@ public class RegisterTest extends BaseTest {
         );
 
         String error = registerPage.getGlobalErrorMessageText();
-        assertTrue(error.toLowerCase().contains("exists") || error.toLowerCase().contains("already"), 
-                ErrorMessages.EXPECTED_EMAIL_ALREADY_EXISTS);
+
+        assertTrue(
+                error.toLowerCase().contains("exists") || error.toLowerCase().contains("already"),
+                ErrorMessages.EXPECTED_EMAIL_ALREADY_EXISTS
+        );
     }
 
     @Test
     public void testRegistrationBlankFields() {
         registerPage.clickRegister();
-        assertTrue(registerPage.isInlineErrorDisplayed(ErrorMessages.REQUIRED));
+
+        assertTrue(
+                registerPage.isInlineErrorDisplayed(ErrorMessages.REQUIRED)
+        );
     }
 }

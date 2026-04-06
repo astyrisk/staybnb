@@ -23,15 +23,22 @@ public class LogoutTest extends BaseTest {
     public void testLogoutRedirectionToHomepage() {
         loginAsTestUserAndLandOnHome(loginPage);
         logoutPage.logoutAndWaitForRedirectToHome();
-        assertTrue(driver.getCurrentUrl().contains(Constants.HOME_URL),
-                ErrorMessages.SHOULD_BE_REDIRECTED_TO_HOMEPAGE_AFTER_LOGOUT);
+
+        assertTrue(
+                driver.getCurrentUrl().contains(Constants.HOME_URL),
+                ErrorMessages.SHOULD_BE_REDIRECTED_TO_HOMEPAGE_AFTER_LOGOUT
+        );
     }
 
     @Test
     public void testTokenPresentAfterLogin() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jwt = loginPage.getStaybnbToken();
-        assertNotNull(jwt, ErrorMessages.JWT_TOKEN_SHOULD_EXIST_AFTER_LOGIN);
+
+        assertNotNull(
+                jwt,
+                ErrorMessages.JWT_TOKEN_SHOULD_EXIST_AFTER_LOGIN
+        );
     }
 
     @Test
@@ -39,6 +46,10 @@ public class LogoutTest extends BaseTest {
         loginAsTestUserAndLandOnHome(loginPage);
         logoutPage.logoutAndWaitForTokenCleared();
         String jwt = loginPage.getStaybnbToken();
-        assertNull(jwt, ErrorMessages.JWT_TOKEN_SHOULD_BE_REMOVED_AFTER_LOGOUT);
+
+        assertNull(
+                jwt,
+                ErrorMessages.JWT_TOKEN_SHOULD_BE_REMOVED_AFTER_LOGOUT
+        );
     }
 }

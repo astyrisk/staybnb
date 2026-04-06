@@ -4,11 +4,15 @@ import com.staybnb.pages.CreatePropertyPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.MediaPaths;
+import com.staybnb.data.PropertyPayloads;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CreatePropertyTest extends BaseTest {
     private LoginPage loginPage;
@@ -41,6 +45,27 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.clickNext();
     }
 
+    private void loginAndGoToStep3() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep3WithValidStep1AndStep2();
+    }
+
+    private void loginAndGoToStep4() {
+        loginAsExistingHostAndLoadCreatePage();
+        goToStep4WithValidStep1ToStep3();
+    }
+
+    private void goToStep2AndBack() {
+        createPropertyPage.fillValidStep1();
+        createPropertyPage.clickNext();
+        createPropertyPage.clickBack();
+    }
+
+    private void loginAndGoToStep3ThenBack() {
+        loginAndGoToStep3();
+        createPropertyPage.clickBack();
+    }
+
     private void goToStep5WithValidStep1ToStep4() {
         goToStep4WithValidStep1ToStep3();
         createPropertyPage.clickNext();
@@ -56,57 +81,13 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.clickNext();
     }
 
-    private String validCreatePropertyPayloadJson() {
-        long now = System.currentTimeMillis();
-        return "{"
-                + "\"propertyType\":\"ENTIRE_PLACE\","
-                + "\"categoryId\":71,"
-                + "\"title\":\"Automation API Listing\","
-                + "\"description\":\"Automation flow for create property wizard.\","
-                + "\"locationCountry\":\"Afghanistan\","
-                + "\"locationCity\":\"Kabul\","
-                + "\"locationAddress\":\"Street 1\","
-                + "\"maxGuests\":1,"
-                + "\"numBedrooms\":1,"
-                + "\"numBeds\":1,"
-                + "\"numBathrooms\":1,"
-                + "\"amenities\":[],"
-                + "\"images\":["
-                + "{\"url\":\"https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp\",\"caption\":\"\"},"
-                + "{\"url\":\"https://is1-2.housingcdn.com/012c1500/96c67b8d4f357e39da3ebbbca1bd60da/v0/medium.jpeg\",\"caption\":\"\"}"
-                + "],"
-                + "\"pricePerNight\":120"
-                + "}";
-    }
-
-    private String invalidCreatePropertyPayloadMissingTitleJson() {
-        long now = System.currentTimeMillis();
-        return "{"
-                + "\"propertyType\":\"ENTIRE_PLACE\","
-                + "\"categoryId\":71,"
-                + "\"title\":\"\","
-                + "\"description\":\"Automation flow for create property wizard.\","
-                + "\"locationCountry\":\"Afghanistan\","
-                + "\"locationCity\":\"Kabul\","
-                + "\"locationAddress\":\"Street 1\","
-                + "\"maxGuests\":1,"
-                + "\"numBedrooms\":1,"
-                + "\"numBeds\":1,"
-                + "\"numBathrooms\":1,"
-                + "\"amenities\":[],"
-                + "\"images\":["
-                + "{\"url\":\"https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp\",\"caption\":\"\"},"
-                + "{\"url\":\"https://is1-2.housingcdn.com/012c1500/96c67b8d4f357e39da3ebbbca1bd60da/v0/medium.jpeg\",\"caption\":\"\"}"
-                + "],"
-                + "\"pricePerNight\":120"
-                + "}";
-    }
-
     @Test
     public void testStep1ShowsBasicsFields() {
         loginAsExistingHostAndLoadCreatePage();
+
         assertTrue(
-                createPropertyPage.isStep1BasicsLoaded(), ErrorMessages.CREATE_PROPERTY_STEP1_SHOULD_DISPLAY_BASICS_FIELDS
+                createPropertyPage.isStep1BasicsLoaded(),
+                ErrorMessages.CREATE_PROPERTY_STEP1_SHOULD_DISPLAY_BASICS_FIELDS
         );
     }
 
@@ -115,6 +96,7 @@ public class CreatePropertyTest extends BaseTest {
         loginAsExistingHostAndLoadCreatePage();
         createPropertyPage.clearTitle();
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.hasInlineErrorContaining("title"),
                 ErrorMessages.CREATE_PROPERTY_STEP1_SHOULD_REQUIRE_TITLE
@@ -126,6 +108,7 @@ public class CreatePropertyTest extends BaseTest {
         loginAsExistingHostAndLoadCreatePage();
         createPropertyPage.clearDescription();
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.hasInlineErrorContaining("description"),
                 ErrorMessages.CREATE_PROPERTY_STEP1_SHOULD_REQUIRE_DESCRIPTION
@@ -136,40 +119,31 @@ public class CreatePropertyTest extends BaseTest {
     public void testStep2ShowsLocationFieldsAfterCompletingStep1() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep2WithValidStep1();
+
         assertTrue(
                 createPropertyPage.isStep2LocationLoaded(),
                 ErrorMessages.CREATE_PROPERTY_STEP2_SHOULD_DISPLAY_LOCATION_FIELDS
         );
     }
 
-    @Test
-    public void testStep2ShowsValidationForMissingCountry() {
+    @ParameterizedTest(name = "Step 2 validation for missing {0}")
+    @MethodSource("provideStep2RequiredFields")
+    public void testStep2ShowsValidationForMissingField(String fieldName) {
         loginAsExistingHostAndLoadCreatePage();
         goToStep2WithValidStep1();
-        createPropertyPage.clearCountry();
+        createPropertyPage.clearStep2RequiredField(fieldName);
         createPropertyPage.clickNext();
-        assertTrue(
-                createPropertyPage.hasInlineErrorContaining("country"),
-                ErrorMessages.CREATE_PROPERTY_STEP2_SHOULD_REQUIRE_COUNTRY
-        );
-    }
 
-    @Test
-    public void testStep2ShowsValidationForMissingCity() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep2WithValidStep1();
-        createPropertyPage.clearCity();
-        createPropertyPage.clickNext();
         assertTrue(
-                createPropertyPage.hasInlineErrorContaining("city"),
-                ErrorMessages.CREATE_PROPERTY_STEP2_SHOULD_REQUIRE_CITY
+                createPropertyPage.hasInlineErrorContaining(fieldName),
+                ErrorMessages.CREATE_PROPERTY_STEP2_REQUIRED_FIELD_SHOULD_SHOW_VALIDATION
         );
     }
 
     @Test
     public void testStep3ShowsDetailsFieldsAfterCompletingStep2() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
+        loginAndGoToStep3();
+
         assertTrue(
                 createPropertyPage.isStep3DetailsLoaded(),
                 ErrorMessages.CREATE_PROPERTY_STEP3_SHOULD_DISPLAY_DETAILS_FIELDS
@@ -178,8 +152,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep3MaxGuestsMinimumIsOne() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
+        loginAndGoToStep3();
+
         assertTrue(
                 createPropertyPage.maxGuestsMinIsOne(),
                 ErrorMessages.CREATE_PROPERTY_MAX_GUESTS_MIN_SHOULD_BE_1
@@ -188,8 +162,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep3BedroomsMinimumIsZero() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
+        loginAndGoToStep3();
+
         assertTrue(
                 createPropertyPage.bedroomsMinIsZero(),
                 ErrorMessages.CREATE_PROPERTY_BEDROOMS_MIN_SHOULD_BE_0
@@ -198,8 +172,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep3BedsMinimumIsOne() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
+        loginAndGoToStep3();
+
         assertTrue(
                 createPropertyPage.bedsMinIsOne(),
                 ErrorMessages.CREATE_PROPERTY_BEDS_MIN_SHOULD_BE_1
@@ -208,8 +182,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep3BathroomsMinimumIsZero() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
+        loginAndGoToStep3();
+
         assertTrue(
                 createPropertyPage.bathroomsMinIsZero(),
                 ErrorMessages.CREATE_PROPERTY_BATHROOMS_MIN_SHOULD_BE_0
@@ -218,8 +192,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep3BathroomsAllowsHalfIncrements() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
+        loginAndGoToStep3();
+
         assertTrue(
                 createPropertyPage.bathroomsStepIsHalfIncrement(),
                 ErrorMessages.CREATE_PROPERTY_BATHROOMS_STEP_SHOULD_BE_HALF
@@ -229,9 +203,8 @@ public class CreatePropertyTest extends BaseTest {
     @Test
     public void testBackFromStep2PreservesStep1Title() {
         loginAsExistingHostAndLoadCreatePage();
-        createPropertyPage.fillValidStep1();
-        createPropertyPage.clickNext();
-        createPropertyPage.clickBack();
+        goToStep2AndBack();
+
         assertTrue(
                 createPropertyPage.isStep1TitleValuePreserved("Automation Listing"),
                 ErrorMessages.CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP1_TITLE
@@ -241,9 +214,8 @@ public class CreatePropertyTest extends BaseTest {
     @Test
     public void testBackFromStep2PreservesStep1Description() {
         loginAsExistingHostAndLoadCreatePage();
-        createPropertyPage.fillValidStep1();
-        createPropertyPage.clickNext();
-        createPropertyPage.clickBack();
+        goToStep2AndBack();
+
         assertTrue(
                 createPropertyPage.isStep1DescriptionValuePreserved("Automation flow for create property wizard."),
                 ErrorMessages.CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP1_DESCRIPTION
@@ -252,9 +224,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testBackFromStep3PreservesStep2Country() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
-        createPropertyPage.clickBack();
+        loginAndGoToStep3ThenBack();
+
         assertTrue(
                 createPropertyPage.isStep2CountryValuePreserved("Afghanistan"),
                 ErrorMessages.CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP2_COUNTRY
@@ -263,9 +234,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testBackFromStep3PreservesStep2City() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep3WithValidStep1AndStep2();
-        createPropertyPage.clickBack();
+        loginAndGoToStep3ThenBack();
+
         assertTrue(
                 createPropertyPage.isStep2CityValuePreserved("Kabul"),
                 ErrorMessages.CREATE_PROPERTY_BACK_SHOULD_PRESERVE_STEP2_CITY
@@ -275,6 +245,7 @@ public class CreatePropertyTest extends BaseTest {
     @Test
     public void testProgressIndicatorShowsStep1Of7() {
         loginAsExistingHostAndLoadCreatePage();
+
         assertEquals(
                 "Step 1 of 7", createPropertyPage.getProgressText(),
                 ErrorMessages.CREATE_PROPERTY_PROGRESS_SHOULD_SHOW_STEP_1_OF_7
@@ -285,6 +256,7 @@ public class CreatePropertyTest extends BaseTest {
     public void testNonHostAccessToCreatePropertyIsBlockedWith403() {
         registerNewUserAndLandOnHome("testcreate");
         createPropertyPage.navigateTo();
+
         assertTrue(
                 createPropertyPage.pageShows403Error(),
                 ErrorMessages.CREATE_PROPERTY_SHOULD_BLOCK_NON_HOST_WITH_403
@@ -294,8 +266,8 @@ public class CreatePropertyTest extends BaseTest {
     /* STEP 4 */
     @Test
     public void testStep4ShowsAmenitiesGridAfterCompletingStep3() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep4WithValidStep1ToStep3();
+        loginAndGoToStep4();
+
         assertTrue(
                 createPropertyPage.isStep4AmenitiesLoaded(),
                 ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_DISPLAY_AMENITIES_GRID
@@ -304,8 +276,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep4AmenitiesGroupedByEssentials() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep4WithValidStep1ToStep3();
+        loginAndGoToStep4();
+
         assertTrue(
                 createPropertyPage.hasAmenityGroupNamed("Essentials"),
                 ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_ESSENTIALS
@@ -314,8 +286,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep4AmenitiesGroupedByFeatures() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep4WithValidStep1ToStep3();
+        loginAndGoToStep4();
+
         assertTrue(
                 createPropertyPage.hasAmenityGroupNamed("Features"),
                 ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_FEATURES
@@ -324,8 +296,8 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep4AmenitiesGroupedBySafety() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep4WithValidStep1ToStep3();
+        loginAndGoToStep4();
+
         assertTrue(
                 createPropertyPage.hasAmenityGroupNamed("Safety"),
                 ErrorMessages.CREATE_PROPERTY_STEP4_SHOULD_GROUP_AMENITIES_BY_SAFETY
@@ -334,11 +306,11 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep4SelectedAmenitiesAllowAdvancingToStep5() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep4WithValidStep1ToStep3();
+        loginAndGoToStep4();
         createPropertyPage.toggleAmenityByLabelContaining("WiFi");
         createPropertyPage.toggleAmenityByLabelContaining("TV");
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.isStep5PhotosLoaded(),
                 ErrorMessages.CREATE_PROPERTY_STEP4_NEXT_SHOULD_ADVANCE_TO_STEP5_WITH_SELECTED_AMENITIES
@@ -347,9 +319,9 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep4AllowsProceedingWithoutAmenitiesSelected() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep4WithValidStep1ToStep3();
+        loginAndGoToStep4();
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.isStep5PhotosLoaded(),
                 ErrorMessages.CREATE_PROPERTY_STEP4_NEXT_SHOULD_ALLOW_EMPTY_AMENITIES
@@ -358,11 +330,11 @@ public class CreatePropertyTest extends BaseTest {
 
     @Test
     public void testStep4BackToStep3AndReturnPreservesAmenitySelection() {
-        loginAsExistingHostAndLoadCreatePage();
-        goToStep4WithValidStep1ToStep3();
+        loginAndGoToStep4();
         createPropertyPage.toggleAmenityByLabelContaining("WiFi");
         createPropertyPage.clickBack();
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.isAmenityCheckedByLabelContaining("WiFi"),
                 ErrorMessages.CREATE_PROPERTY_STEP4_BACK_AND_RETURN_SHOULD_PRESERVE_AMENITIES
@@ -374,6 +346,7 @@ public class CreatePropertyTest extends BaseTest {
     public void testStep5ShowsImageUploadAreaWithDragDropOrBrowse() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
+
         assertTrue(
                 createPropertyPage.step5HasUploadAreaSupportingDropOrBrowse(),
                 ErrorMessages.CREATE_PROPERTY_STEP5_SHOULD_DISPLAY_UPLOAD_AREA_WITH_DRAG_DROP_AND_BROWSE
@@ -388,6 +361,7 @@ public class CreatePropertyTest extends BaseTest {
                 MediaPaths.BRASILIA_APT_IMAGE_01,
                 MediaPaths.BRASILIA_APT_IMAGE_02
         );
+
         assertTrue(
                 createPropertyPage.hasAtLeastNImagePreviews(2),
                 ErrorMessages.CREATE_PROPERTY_STEP5_UPLOAD_SHOULD_DISPLAY_PREVIEW_THUMBNAILS
@@ -399,6 +373,7 @@ public class CreatePropertyTest extends BaseTest {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
         createPropertyPage.uploadImagesFromProjectPath(MediaPaths.BRASILIA_APT_IMAGE_01);
+
         assertTrue(
                 createPropertyPage.uploadedImagesShowSortHandleAndDelete(),
                 ErrorMessages.CREATE_PROPERTY_STEP5_UPLOADED_IMAGE_SHOULD_SHOW_SORT_HANDLE_AND_DELETE
@@ -413,6 +388,7 @@ public class CreatePropertyTest extends BaseTest {
                 MediaPaths.BRASILIA_APT_IMAGE_01,
                 MediaPaths.BRASILIA_APT_IMAGE_02
         );
+
         assertTrue(
                 createPropertyPage.firstUploadedImageIsMarkedPrimaryOrCover(),
                 ErrorMessages.CREATE_PROPERTY_STEP5_FIRST_IMAGE_SHOULD_BE_MARKED_PRIMARY_OR_COVER
@@ -424,6 +400,7 @@ public class CreatePropertyTest extends BaseTest {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.hasMinimumImageRequiredValidationMessage(),
                 ErrorMessages.CREATE_PROPERTY_STEP5_NEXT_SHOULD_REQUIRE_MINIMUM_ONE_IMAGE
@@ -434,6 +411,7 @@ public class CreatePropertyTest extends BaseTest {
     public void testStep5ReorderingImagesUpdatesPreviewOrder() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
+
         createPropertyPage.uploadImagesFromProjectPath(
                 MediaPaths.BRASILIA_APT_IMAGE_01,
                 MediaPaths.BRASILIA_APT_IMAGE_02
@@ -463,6 +441,7 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.hasAtLeastNImagePreviews(2);
 
         createPropertyPage.moveImageDownAt(0);
+
         assertTrue(
                 createPropertyPage.primaryBadgeIsOnPreviewIndex(0),
                 ErrorMessages.CREATE_PROPERTY_STEP5_REORDER_SHOULD_UPDATE_PRIMARY_COVER
@@ -481,6 +460,7 @@ public class CreatePropertyTest extends BaseTest {
 
         createPropertyPage.deleteImageAt(1);
         createPropertyPage.waitForPreviewCountToBe(1);
+
         assertEquals(
                 1,
                 createPropertyPage.getUploadedImagePreviewCount(),
@@ -500,6 +480,7 @@ public class CreatePropertyTest extends BaseTest {
 
         createPropertyPage.deleteImageAt(0);
         createPropertyPage.waitForPreviewCountToBe(1);
+
         assertTrue(
                 createPropertyPage.primaryBadgeIsOnPreviewIndex(0),
                 ErrorMessages.CREATE_PROPERTY_STEP5_DELETE_PRIMARY_SHOULD_PROMOTE_NEXT
@@ -516,6 +497,7 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.deleteImageAt(0);
         createPropertyPage.waitForPreviewCountToBe(0);
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.hasMinimumImageRequiredValidationMessage(),
                 ErrorMessages.CREATE_PROPERTY_STEP5_SHOULD_WARN_WHEN_DELETING_LAST_IMAGE
@@ -532,6 +514,7 @@ public class CreatePropertyTest extends BaseTest {
         );
         createPropertyPage.clickBack();
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.hasAtLeastNImagePreviews(2),
                 ErrorMessages.CREATE_PROPERTY_STEP5_BACK_AND_RETURN_SHOULD_PRESERVE_UPLOADED_IMAGES
@@ -559,6 +542,7 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.hasAtLeastNImagePreviews(10);
 
         createPropertyPage.uploadImagesFromProjectPath(MediaPaths.BRASILIA_APT_IMAGE_02);
+
         assertEquals(
                 10,
                 createPropertyPage.getUploadedImagePreviewCount(),
@@ -570,9 +554,12 @@ public class CreatePropertyTest extends BaseTest {
     public void testStep6ShowsPricePerNightInputInUsd() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
-        assertTrue(
-                createPropertyPage.isStep6PricingLoaded() && createPropertyPage.step6PriceInputUsesUsdLabel(),
-                ErrorMessages.CREATE_PROPERTY_STEP6_SHOULD_DISPLAY_PRICE_INPUT_IN_USD
+
+        assertAll(
+                () -> assertTrue(createPropertyPage.isStep6PricingLoaded(),
+                        ErrorMessages.CREATE_PROPERTY_STEP6_PRICING_SECTION_SHOULD_LOAD),
+                () -> assertTrue(createPropertyPage.step6PriceInputUsesUsdLabel(),
+                        ErrorMessages.CREATE_PROPERTY_STEP6_PRICE_INPUT_SHOULD_USE_USD_LABEL)
         );
     }
 
@@ -582,6 +569,7 @@ public class CreatePropertyTest extends BaseTest {
         goToStep6WithValidStep1ToStep5();
         createPropertyPage.enterPricePerNight("0");
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.hasPriceGreaterThanZeroValidationMessage(),
                 ErrorMessages.CREATE_PROPERTY_STEP6_SHOULD_REQUIRE_PRICE_GREATER_THAN_ZERO
@@ -594,6 +582,7 @@ public class CreatePropertyTest extends BaseTest {
         goToStep6WithValidStep1ToStep5();
         createPropertyPage.enterPricePerNight("120");
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.isStep7ReviewLoaded(),
                 ErrorMessages.CREATE_PROPERTY_STEP6_NEXT_SHOULD_ADVANCE_TO_STEP7_REVIEW
@@ -607,6 +596,7 @@ public class CreatePropertyTest extends BaseTest {
         goToStep6WithValidStep1ToStep5();
         createPropertyPage.enterPricePerNight("120");
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.reviewContainsAllStep1ToStep6Sections(),
                 ErrorMessages.CREATE_PROPERTY_STEP7_SHOULD_SUMMARIZE_ALL_PREVIOUS_STEPS
@@ -621,6 +611,7 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.clickNext();
         createPropertyPage.clickBack();
         createPropertyPage.clickNext();
+
         assertTrue(
                 createPropertyPage.isStep7ReviewLoaded(),
                 ErrorMessages.CREATE_PROPERTY_STEP7_BACK_AND_RETURN_SHOULD_WORK
@@ -634,6 +625,7 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.enterPricePerNight("120");
         createPropertyPage.clickNext();
         createPropertyPage.clickCreateProperty();
+
         assertTrue(
                 isUrlContains("/hosting"),
                 ErrorMessages.CREATE_PROPERTY_STEP7_SUBMIT_SHOULD_REDIRECT_TO_HOST_DASHBOARD
@@ -658,34 +650,34 @@ public class CreatePropertyTest extends BaseTest {
     @Test
     public void testCreatePropertyApiReturns201ForValidHostPayload() {
         loginAsExistingHostAndLoadCreatePage();
-        long status = createPropertyPage.createPropertyStatusViaApi(validCreatePropertyPayloadJson());
+        long status = createPropertyPage.createPropertyStatusViaApi(PropertyPayloads.validCreatePropertyPayloadJson());
+
         assertEquals(
                 201L, status,
                 ErrorMessages.CREATE_PROPERTY_API_SHOULD_RETURN_201_FOR_VALID_HOST_PAYLOAD
         );
     }
 
-//    @Test
-//    public void testCreatePropertyApiCreatesDraftWithIsPublishedFalse() {
-//        loginAsExistingHostAndLoadCreatePage();
-//        String response = createPropertyPage.createPropertyViaApi(validCreatePropertyPayloadJson());
-//
-//
-//        System.out.println(response);
-//
-//        //Note: There is no way to find if is_published = false
-//        assertTrue(
-//                response != null && response.toLowerCase().contains("\"is_published\":false"),
-//                ErrorMessages.CREATE_PROPERTY_API_SHOULD_CREATE_DRAFT_IS_PUBLISHED_FALSE
-//        );
-//    }
+    @Test
+    public void testCreatePropertyApiCreatesDraftWithIsPublishedFalse() {
+        loginAsExistingHostAndLoadCreatePage();
+        String response = createPropertyPage.createPropertyViaApi(PropertyPayloads.validCreatePropertyPayloadJson());
+
+        //Note: There is no way to find if is_published = false
+        assertTrue(
+                response != null && response.toLowerCase().contains("\"is_published\":false"),
+                ErrorMessages.CREATE_PROPERTY_API_SHOULD_CREATE_DRAFT_IS_PUBLISHED_FALSE
+        );
+    }
 
     @Test
     public void testCreatePropertyApiReturns400WhenRequiredFieldMissing() {
         loginAsExistingHostAndLoadCreatePage();
-        long status = createPropertyPage.createPropertyStatusViaApi(invalidCreatePropertyPayloadMissingTitleJson());
+        long status = createPropertyPage.createPropertyStatusViaApi(PropertyPayloads.invalidCreatePropertyPayloadMissingTitleJson());
+
         assertEquals(
-                400L, status,
+                400L,
+                status,
                 ErrorMessages.CREATE_PROPERTY_API_SHOULD_RETURN_400_FOR_MISSING_REQUIRED_FIELDS
         );
     }
@@ -693,10 +685,16 @@ public class CreatePropertyTest extends BaseTest {
     @Test
     public void testCreatePropertyApiReturns403ForNonHost() {
         registerNewUserAndLandOnHome("testcreateproperty");
-        long status = createPropertyPage.createPropertyStatusViaApi(validCreatePropertyPayloadJson());
+        long status = createPropertyPage.createPropertyStatusViaApi(PropertyPayloads.validCreatePropertyPayloadJson());
+
         assertEquals(
-                403L, status,
+                403L,
+                status,
                 ErrorMessages.CREATE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_HOST
         );
+    }
+
+    private static Stream<String> provideStep2RequiredFields() {
+        return Stream.of("country", "city");
     }
 }

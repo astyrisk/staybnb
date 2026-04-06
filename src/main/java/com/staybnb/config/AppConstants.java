@@ -17,11 +17,11 @@ public final class AppConstants {
     public static final String PROPERTY_DETAILS_BASE_URL = BASE_URL + "/properties/";
     public static final String OTHER_PROFILE_BASE_URL = BASE_URL + "/users/";
 
-    public static final int SHORT_WAIT = 5;
-    public static final int MEDIUM_WAIT = 10;
-    public static final int LONG_WAIT = 20;
+    public static final int SHORT_WAIT  = ConfigProperties.getInt("short.wait.seconds",  5);
+    public static final int MEDIUM_WAIT = ConfigProperties.getInt("medium.wait.seconds", 10);
+    public static final int LONG_WAIT   = ConfigProperties.getInt("long.wait.seconds",   20);
 
-    public static final int MOBILE_WIDTH = 375;
+    public static final int MOBILE_WIDTH = ConfigProperties.getInt("mobile.width", 375);
 
     private static String resolveSlug(String baseUrl) {
         if (baseUrl == null) {

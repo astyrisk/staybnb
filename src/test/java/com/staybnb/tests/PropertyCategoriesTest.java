@@ -28,6 +28,7 @@ public class PropertyCategoriesTest extends BaseTest {
     //NOTE should fail
     @Test
     public void testCategoryBarIsHorizontallyScrollable() {
+
         assertTrue(
                 homePage.isCategoryBarHorizontallyScrollable(),
                 ErrorMessages.CATEGORIES_BAR_SHOULD_BE_HORIZONTALLY_SCROLLABLE
@@ -39,6 +40,7 @@ public class PropertyCategoriesTest extends BaseTest {
     public void testPropertyDetailsShowsCategoryAlongsidePropertyType() {
         PropertyDetailsPage propertyDetailsPage = new PropertyDetailsPage(driver);
         propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
+
         assertTrue(
                 propertyDetailsPage.getType().contains("·"),
                 ErrorMessages.PROPERTY_DETAILS_SHOULD_SHOW_TYPE_AND_CATEGORY
@@ -48,6 +50,7 @@ public class PropertyCategoriesTest extends BaseTest {
     @Test
     public void testSelectingCategoryMarksChipAsActive() {
         homePage.clickCategoryByName("Bungalow");
+
         assertEquals(
                 "Bungalow",
                 homePage.getActiveCategoryName(),
@@ -59,6 +62,7 @@ public class PropertyCategoriesTest extends BaseTest {
     public void testSelectingCategoryFiltersPropertyGrid() {
         homePage.clickCategoryByName("Bungalow");
         homePage.waitForPropertiesCountToContain("Showing 1 of 1");
+
         assertTrue(
                 homePage.getPropertiesCountText().contains("Showing 1 of 1"),
                 ErrorMessages.SELECTING_CATEGORY_SHOULD_FILTER_PROPERTIES
@@ -68,6 +72,7 @@ public class PropertyCategoriesTest extends BaseTest {
     @Test
     public void testCategoriesApiReturnsListWithIdNameAndIcon() {
         CategoriesApiPage categoriesApiPage = new CategoriesApiPage(driver);
+
         assertTrue(
                 categoriesApiPage.categoriesResponseHasRequiredFieldsViaApi(),
                 ErrorMessages.CATEGORIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON
@@ -80,6 +85,7 @@ public class PropertyCategoriesTest extends BaseTest {
         CreatePropertyPage createPropertyPage = new CreatePropertyPage(driver);
         loginAsTestUserAndLandOnHome(loginPage);
         createPropertyPage.navigateTo();
+
         assertTrue(
                 createPropertyPage.getCategoryDropdownOptionCount() > 1,
                 ErrorMessages.CREATE_PROPERTY_CATEGORY_DROPDOWN_SHOULD_BE_POPULATED
@@ -89,6 +95,7 @@ public class PropertyCategoriesTest extends BaseTest {
     @ParameterizedTest(name = "Category chip should exist: {0}")
     @MethodSource("provideExpectedCategoryChips")
     public void testCategoryChipExists(String categoryName) {
+
         assertTrue(
                 homePage.hasCategoryChipNamed(categoryName),
                 ErrorMessages.CATEGORIES_BAR_SHOULD_INCLUDE_EXPECTED_CATEGORY_CHIPS

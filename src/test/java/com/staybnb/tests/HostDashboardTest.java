@@ -24,9 +24,13 @@ public class HostDashboardTest extends BaseTest {
         hostDashboardPage = new HostDashboardPage(driver);
     }
 
-    private WebElement getFirstPropertyCardForExistingHost() {
+    private void loginAndNavigateToDashboard() {
         loginAsTestUserAndLandOnHome(loginPage);
         hostDashboardPage.navigateTo();
+    }
+
+    private WebElement getFirstPropertyCardForExistingHost() {
+        loginAndNavigateToDashboard();
         if (hostDashboardPage.getPropertyCards().isEmpty()) {
             throw new IllegalStateException("Host account has no properties to validate dashboard cards.");
         }
@@ -35,8 +39,7 @@ public class HostDashboardTest extends BaseTest {
 
     @Test
     public void testHostDashboardShowsPropertyCardsForHostWithProperties() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.navigateTo();
+        loginAndNavigateToDashboard();
 
         assertFalse(
                 hostDashboardPage.getPropertyCards().isEmpty(),
@@ -48,28 +51,18 @@ public class HostDashboardTest extends BaseTest {
     @MethodSource("providePropertyCardRequiredDetailsChecks")
     public void testHostDashboardPropertyCardShowsRequiredDetails(String detailName) {
         WebElement firstCard = getFirstPropertyCardForExistingHost();
-        boolean isDisplayed = switch (detailName) {
-            case "thumbnail" -> hostDashboardPage.hasThumbnail(firstCard);
-            case "title" -> !hostDashboardPage.getTitle(firstCard).isEmpty();
-            case "location" -> !hostDashboardPage.getLocation(firstCard).isEmpty();
-            case "price per night" -> hostDashboardPage.getPrice(firstCard).contains("/night");
-            case "published or draft status" -> {
-                String statusText = hostDashboardPage.getStatus(firstCard).trim();
-                yield statusText.equalsIgnoreCase("Published") || statusText.equalsIgnoreCase("Draft");
-            }
-            case "rating" -> hostDashboardPage.hasRating(firstCard);
-            default -> throw new IllegalArgumentException("Unsupported detail: " + detailName);
-        };
 
-        assertTrue(isDisplayed, ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS);
+        assertTrue(
+                hostDashboardPage.isDetailDisplayed(firstCard, detailName),
+                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
+        );
     }
 
     @Test
     public void testHostDashboardShowsSummaryCount() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.navigateTo();
-
+        loginAndNavigateToDashboard();
         String subtitle = hostDashboardPage.getSummarySubtitle().toLowerCase();
+
         assertTrue(
                 subtitle.matches(".*\\d+\\s+properties?.*"),
                 ErrorMessages.HOST_DASHBOARD_SUMMARY_SHOULD_INCLUDE_TOTAL_PROPERTIES_COUNT
@@ -78,8 +71,7 @@ public class HostDashboardTest extends BaseTest {
 
     @Test
     public void testHostDashboardShowsCreateNewPropertyButton() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.navigateTo();
+        loginAndNavigateToDashboard();
 
         assertTrue(
                 hostDashboardPage.isCreateNewPropertyButtonVisible(),
@@ -89,8 +81,7 @@ public class HostDashboardTest extends BaseTest {
 
     @Test
     public void testHostDashboardCreateNewPropertyButtonLinksToCreatePage() {
-        loginAsTestUserAndLandOnHome(loginPage);
-        hostDashboardPage.navigateTo();
+        loginAndNavigateToDashboard();
 
         assertTrue(
                 hostDashboardPage.getCreateNewPropertyHref().endsWith("/hosting/create"),
@@ -102,14 +93,11 @@ public class HostDashboardTest extends BaseTest {
     @MethodSource("providePropertyCardActionChecks")
     public void testHostDashboardPropertyCardShowsActions(String actionName) {
         WebElement firstCard = getFirstPropertyCardForExistingHost();
-        boolean hasAction = switch (actionName) {
-            case "edit" -> hostDashboardPage.hasEditAction(firstCard);
-            case "delete" -> hostDashboardPage.hasDeleteAction(firstCard);
-            case "publish toggle" -> hostDashboardPage.hasPublishToggleAction(firstCard);
-            default -> throw new IllegalArgumentException("Unsupported action: " + actionName);
-        };
 
-        assertTrue(hasAction, ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS);
+        assertTrue(
+                hostDashboardPage.hasCardAction(firstCard, actionName),
+                ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS
+        );
     }
 
     //FIX
@@ -128,26 +116,20 @@ public class HostDashboardTest extends BaseTest {
     @Test
     public void testHostingPropertiesApiResponseNotNullForHost() {
         loginAsTestUserAndLandOnHome(loginPage);
-
         String response = hostDashboardPage.getHostingPropertiesViaApi();
-        assertNotNull(response, ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL);
+
+        assertNotNull(
+                response,
+                ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL
+        );
     }
 
     @Test
     public void testHostingPropertiesApiIncludesPublishedAndUnpublishedForHost() {
         loginAsTestUserAndLandOnHome(loginPage);
 
-        String response = hostDashboardPage.getHostingPropertiesViaApi();
-        String normalized = response.replaceAll("\\s+", "").toLowerCase();
-        boolean hasPublished = normalized.contains("\"published\":true")
-                || normalized.contains("\"ispublished\":true")
-                || normalized.contains("\"status\":\"published\"");
-        boolean hasUnpublished = normalized.contains("\"published\":false")
-                || normalized.contains("\"ispublished\":false")
-                || normalized.contains("\"status\":\"draft\"");
-
         assertTrue(
-                hasPublished && hasUnpublished,
+                hostDashboardPage.hasPublishedAndUnpublishedProperties(),
                 ErrorMessages.HOST_DASHBOARD_API_RESPONSE_SHOULD_INCLUDE_BOTH_PUBLISHED_AND_UNPUBLISHED_PROPERTIES
         );
     }
@@ -157,13 +139,21 @@ public class HostDashboardTest extends BaseTest {
         registerNewUserAndLandOnHome("testhosting");
 
         long status = hostDashboardPage.getHostingPropertiesStatusViaApi();
-        assertEquals(403L, status, ErrorMessages.HOST_DASHBOARD_API_SHOULD_RETURN_403_FOR_NON_HOST);
+        assertEquals(
+                403L,
+                status,
+                ErrorMessages.HOST_DASHBOARD_API_SHOULD_RETURN_403_FOR_NON_HOST
+        );
     }
 
     @Test
     public void testHostingPropertiesApiReturns401WhenLoggedOut() {
         long status = hostDashboardPage.getHostingPropertiesStatusViaApi();
-        assertEquals(401L, status, ErrorMessages.HOST_DASHBOARD_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN);
+        assertEquals(
+                401L,
+                status,
+                ErrorMessages.HOST_DASHBOARD_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN
+        );
     }
 
     private static Stream<String> providePropertyCardRequiredDetailsChecks() {

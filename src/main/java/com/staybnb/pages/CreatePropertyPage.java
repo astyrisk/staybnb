@@ -167,6 +167,14 @@ public class CreatePropertyPage extends BasePage {
         type(step2CityInput, "");
     }
 
+    public void clearStep2RequiredField(String fieldName) {
+        switch (fieldName) {
+            case "country" -> clearCountry();
+            case "city" -> clearCity();
+            default -> throw new IllegalArgumentException("Unsupported step 2 required field: " + fieldName);
+        }
+    }
+
     public void enterCity(String city) {
         type(step2CityInput, city);
     }

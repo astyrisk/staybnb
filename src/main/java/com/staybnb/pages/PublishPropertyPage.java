@@ -138,6 +138,11 @@ public class PublishPropertyPage extends BasePage {
         }
     }
 
+    public boolean isPublishSuccessfulResponse(String response) {
+        String normalized = response == null ? "" : response.replaceAll("\\s+", "").toLowerCase();
+        return normalized.contains("\"message\":\"propertypublishedsuccessfully\"");
+    }
+
     public void waitForPropertyStatusToChangeToPublished(String propertyTitle) {
         wait.until(d -> {
             try {

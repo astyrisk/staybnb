@@ -124,6 +124,25 @@ public class Navbar extends BaseComponent {
         return isDisplayed(hamburgerMenu);
     }
 
+    public boolean isAuthenticatedNavbarCheckMet(String checkName) {
+        return switch (checkName) {
+            case "logo displayed" -> isLogoDisplayed();
+            case "user avatar displayed" -> isUserAvatarDisplayed();
+            case "login link hidden" -> !isLoginLinkDisplayed();
+            default -> throw new IllegalArgumentException("Unsupported authenticated navbar check: " + checkName);
+        };
+    }
+
+    public boolean isVisitorNavbarCheckMet(String checkName) {
+        return switch (checkName) {
+            case "logo displayed" -> isLogoDisplayed();
+            case "login link displayed" -> isLoginLinkDisplayed();
+            case "register link displayed" -> isRegisterLinkDisplayed();
+            case "user avatar hidden" -> !isUserAvatarDisplayed();
+            default -> throw new IllegalArgumentException("Unsupported visitor navbar check: " + checkName);
+        };
+    }
+
     public void setMobileLayout() {
         driver.manage().window().setSize(new Dimension(Constants.MOBILE_WIDTH, 812));
     }

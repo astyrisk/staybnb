@@ -2,6 +2,7 @@ package com.staybnb.tests;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.Constants;
+import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
 import com.staybnb.pages.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,29 +21,8 @@ public class DeletePropertyTest extends BaseTest {
         deletePropertyPage = new DeletePropertyPage(driver);
     }
 
-    private String validCreatePropertyPayloadJson(String uniqueTitle) {
-        return "{"
-                + "\"propertyType\":\"ENTIRE_PLACE\","
-                + "\"categoryId\":71,"
-                + "\"title\":\"" + uniqueTitle + "\","
-                + "\"description\":\"Automation flow for delete property.\","
-                + "\"locationCountry\":\"Afghanistan\","
-                + "\"locationCity\":\"Kabul\","
-                + "\"locationAddress\":\"Street 1\","
-                + "\"maxGuests\":1,"
-                + "\"numBedrooms\":1,"
-                + "\"numBeds\":1,"
-                + "\"numBathrooms\":1,"
-                + "\"amenities\":[],"
-                + "\"images\":["
-                + "{\"url\":\"https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp\",\"caption\":\"\"}"
-                + "],"
-                + "\"pricePerNight\":120"
-                + "}";
-    }
-
     private String createPropertyAndReturnId(String uniqueTitle) {
-        String response = deletePropertyPage.createPropertyViaApi(validCreatePropertyPayloadJson(uniqueTitle));
+        String response = deletePropertyPage.createPropertyViaApi(PropertyPayloads.validCreatePropertyPayloadJson(uniqueTitle));
         return deletePropertyPage.extractCreatedPropertyId(response);
     }
 
@@ -51,6 +31,7 @@ public class DeletePropertyTest extends BaseTest {
         loginAsTestUserAndLandOnHome(loginPage);
         deletePropertyPage.navigateToEditPage(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
         deletePropertyPage.clickDeleteOnEditPage();
+
         assertTrue(
                 deletePropertyPage.hasDeleteConfirmationMessage(Constants.DeleteProperty.CONFIRMATION_MESSAGE),
                 ErrorMessages.DELETE_PROPERTY_EDIT_PAGE_SHOULD_SHOW_CONFIRMATION_MODAL
@@ -62,6 +43,7 @@ public class DeletePropertyTest extends BaseTest {
         loginAsTestUserAndLandOnHome(loginPage);
         deletePropertyPage.navigateToHostingDashboard();
         deletePropertyPage.clickFirstDashboardDelete();
+
         assertTrue(
                 deletePropertyPage.hasDeleteConfirmationMessage(Constants.DeleteProperty.CONFIRMATION_MESSAGE),
                 ErrorMessages.DELETE_PROPERTY_DASHBOARD_SHOULD_SHOW_CONFIRMATION_MODAL
@@ -76,6 +58,7 @@ public class DeletePropertyTest extends BaseTest {
         deletePropertyPage.navigateToHostingDashboard();
         deletePropertyPage.clickDeleteOnDashboardForTitle(uniqueTitle);
         deletePropertyPage.cancelDeletion();
+
         assertTrue(
                 deletePropertyPage.isPropertyListedOnDashboard(uniqueTitle),
                 ErrorMessages.DELETE_PROPERTY_CANCEL_SHOULD_KEEP_PROPERTY_UNCHANGED
@@ -90,6 +73,7 @@ public class DeletePropertyTest extends BaseTest {
         deletePropertyPage.navigateToHostingDashboard();
         deletePropertyPage.clickDeleteOnDashboardForTitle(uniqueTitle);
         deletePropertyPage.confirmDeletion();
+
         assertTrue(
                 !deletePropertyPage.isPropertyListedOnDashboard(uniqueTitle),
                 ErrorMessages.DELETE_PROPERTY_CONFIRM_SHOULD_REMOVE_PROPERTY_FROM_DASHBOARD
@@ -102,26 +86,45 @@ public class DeletePropertyTest extends BaseTest {
         String uniqueTitle = "Automation Delete API " + System.currentTimeMillis();
         String propertyId = createPropertyAndReturnId(uniqueTitle);
         long status = deletePropertyPage.deletePropertyStatusViaApi(propertyId);
-        assertEquals(200L, status, ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_200_FOR_OWNER);
+
+        assertEquals(200L,
+                status,
+                ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_200_FOR_OWNER
+        );
     }
 
     @Test
     public void testDeletePropertyApiReturns403ForNonOwner() {
         registerNewUserAndLandOnHome("testdeleteproperty");
         long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
-        assertEquals(403L, status, ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_OWNER);
+
+        assertEquals(
+                403L,
+                status,
+                ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_OWNER
+        );
     }
 
     @Test
     public void testDeletePropertyApiReturns404ForNonExistentPropertyId() {
         loginAsTestUserAndLandOnHome(loginPage);
         long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.NON_EXISTENT_PROPERTY_ID);
-        assertEquals(404L, status, ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_404_FOR_NON_EXISTENT_PROPERTY);
+
+        assertEquals(
+                404L,
+                status,
+                ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_404_FOR_NON_EXISTENT_PROPERTY
+        );
     }
 
     @Test
     public void testDeletePropertyApiReturns401WhenLoggedOut() {
         long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
-        assertEquals(401L, status, ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT);
+
+        assertEquals(
+                401L,
+                status,
+                ErrorMessages.DELETE_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT
+        );
     }
 }
