@@ -5,7 +5,11 @@ import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +18,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Host Management")
+@Feature("Become a Host")
+@Tag("regression")
 public class BecomeHostTest extends BaseTest {
     private LoginPage loginPage;
     private OwnProfilePage ownProfilePage;
@@ -25,6 +32,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Navbar shows 'Become a Host' link for a non-host user")
     public void testNavbarShowsBecomeHostForNonHostUser() {
         registerNewUserAndLandOnHome("testhost");
 
@@ -35,6 +43,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Navbar does not show 'My Properties' for a non-host user")
     public void testNavbarDoesNotShowMyPropertiesForNonHostUser() {
         registerNewUserAndLandOnHome("testhost");
 
@@ -51,6 +60,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Navbar shows 'My Properties' after becoming a host")
     public void testNavbarShowsMyPropertiesAfterBecomingHost() {
         becomeHostAsNewUser();
 
@@ -61,6 +71,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Navbar does not show 'Become a Host' after becoming a host")
     public void testNavbarDoesNotShowBecomeHostAfterBecomingHost() {
         becomeHostAsNewUser();
 
@@ -71,6 +82,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("'My Properties' link navigates to hosting dashboard")
     public void testMyPropertiesLinkNavigatesToHosting() {
         becomeHostAsNewUser();
         ownProfilePage.navbar().clickMyProperties();
@@ -82,6 +94,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Profile page shows 'Become a Host' button for non-host user")
     public void testProfileShowsBecomeHostButtonForNonHostUser() {
         registerNewUserAndLandOnHome("testhost");
         ownProfilePage.navigateTo();
@@ -112,6 +125,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Become host API returns 401 when not logged in")
     public void testBecomeHostApiReturns401WhenLoggedOut() {
         long status = ownProfilePage.becomeHostStatusLoggedOut();
 
@@ -123,6 +137,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Become host API response is not null")
     public void testBecomeHostApiResponseNotNull() {
         String email = registerNewUserAndLandOnHome("testhost");
         loginAsUserAndLandOnHome(loginPage, email, TestConfig.TEST_PASSWORD);
@@ -135,6 +150,7 @@ public class BecomeHostTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Become host API response reflects isHost true")
     public void testBecomeHostApiResponseReflectsIsHostTrue() {
         String email = registerNewUserAndLandOnHome("testhost");
         loginAsUserAndLandOnHome(loginPage, email, TestConfig.TEST_PASSWORD);
@@ -153,4 +169,3 @@ public class BecomeHostTest extends BaseTest {
         );
     }
 }
-

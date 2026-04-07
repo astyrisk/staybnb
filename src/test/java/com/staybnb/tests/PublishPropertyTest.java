@@ -5,11 +5,18 @@ import com.staybnb.data.Constants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PublishPropertyPage;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Property Management")
+@Feature("Publish Property")
+@Tag("regression")
 public class PublishPropertyTest extends BaseTest {
     private LoginPage loginPage;
     private PublishPropertyPage publishPropertyPage;
@@ -26,6 +33,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Publish toggle from dashboard changes property status to Published")
     public void testPublishToggleFromDashboardChangesStatusToPublished() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Publish Toggle " + System.currentTimeMillis();
@@ -42,6 +50,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Unpublished property does not appear on the public listing page")
     public void testUnpublishedPropertyDoesNotAppearOnPublicListingPage() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Draft Hidden " + System.currentTimeMillis();
@@ -56,6 +65,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Unpublished property still appears on the host dashboard as a draft")
     public void testUnpublishedPropertyStillAppearsOnHostDashboardAsDraft() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Draft Dashboard " + System.currentTimeMillis();
@@ -70,6 +80,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Published property appears on the public listing page")
     public void testPublishedPropertyAppearsOnPublicListingPage() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Published Visible " + System.currentTimeMillis();
@@ -85,6 +96,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Publish property API returns 200 and sets isPublished to true for owner")
     public void testPublishPropertyApiReturns200AndIsPublishedTrueForOwner() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Publish API " + System.currentTimeMillis();
@@ -99,6 +111,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Publish property API returns 403 for a non-owner user")
     public void testPublishPropertyApiReturns403ForNonOwner() {
         registerNewUserAndLandOnHome("testpublishproperty");
         long status = publishPropertyPage.updatePublishPropertyStatusViaApi(Constants.PublishProperty.OWNED_PROPERTY_ID, true);
@@ -111,6 +124,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Publish property API returns 404 for a non-existent property ID")
     public void testPublishPropertyApiReturns404ForNonExistentPropertyId() {
         loginAsTestUserAndLandOnHome(loginPage);
         long status = publishPropertyPage.updatePublishPropertyStatusViaApi(Constants.PublishProperty.NON_EXISTENT_PROPERTY_ID, true);
@@ -123,6 +137,7 @@ public class PublishPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Publish property API returns 401 when not logged in")
     public void testPublishPropertyApiReturns401WhenLoggedOut() {
         long status = publishPropertyPage.updatePublishPropertyStatusViaApi(Constants.PublishProperty.OWNED_PROPERTY_ID, true);
 

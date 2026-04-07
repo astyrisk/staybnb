@@ -2,6 +2,8 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import com.staybnb.config.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CreatePropertyPage extends BasePage {
+    private static final Logger log = LogManager.getLogger(CreatePropertyPage.class);
     private static final String PAGE_URL = Constants.HOSTING_CREATE_URL;
     private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
     private static final String CREATE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyStatusApi.js";
@@ -462,7 +465,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public long createPropertyStatusViaApi(String payloadJson) {
-       System.out.println(payloadJson);
+        log.debug("createPropertyStatusViaApi payload: {}", payloadJson);
 
 //        driver.get(Constants.HOME_URL);
 

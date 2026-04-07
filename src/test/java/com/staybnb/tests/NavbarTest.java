@@ -4,7 +4,11 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.data.Constants;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,6 +17,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Navigation")
+@Feature("Navbar")
+@Tag("regression")
 public class NavbarTest extends BaseTest {
     private LoginPage loginPage;
     private PropertyDetailsPage propertyDetailsPage;
@@ -44,6 +51,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Authenticated: Profile link is displayed in user dropdown")
     public void testNavbarProfileLinkDisplayedInDropdown() {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().openUserMenu();
@@ -52,6 +60,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Authenticated: Logout button is displayed in user dropdown")
     public void testNavbarLogoutButtonDisplayedInDropdown() {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().openUserMenu();
@@ -60,6 +69,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Clicking profile link in dropdown navigates to profile page")
     public void testClickProfileInDropdown() {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().clickProfileAndWaitForRedirect();
@@ -68,6 +78,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Clicking logout in dropdown redirects to home page")
     public void testClickLogoutInDropdownRedirection() {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().clickLogoutAndWaitForRedirectToHome();
@@ -76,6 +87,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("After logout, login link is visible in navbar")
     public void testClickLogoutInDropdownLoginLinkVisibility() {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().clickLogoutAndWaitForRedirectToHome();
@@ -84,6 +96,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Mobile: Hamburger menu is displayed when authenticated")
     public void testNavbarHamburgerMenuDisplayedOnMobileAuthenticated() {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().setMobileLayout();
@@ -93,6 +106,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Mobile: User avatar is visible in menu button when authenticated")
     public void testNavbarUserAvatarDisplayedOnMobileAuthenticated() {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().setMobileLayout();
@@ -115,6 +129,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Visitor: Clicking login link navigates to login page")
     public void testClickLoginLink() {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
         propertyDetailsPage.navbar().clickLoginAndWaitForRedirect();
@@ -123,6 +138,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Visitor: Clicking register link navigates to register page")
     public void testClickRegisterLink() {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
         propertyDetailsPage.navbar().clickRegisterAndWaitForRedirect();
@@ -131,6 +147,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Visitor: User dropdown is not displayed")
     public void testNavbarDropdownNotDisplayedVisitor() {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
 
@@ -138,6 +155,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Mobile Visitor: Hamburger menu is not displayed")
     public void testNavbarHamburgerMenuNotDisplayedOnMobileVisitor() {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
         propertyDetailsPage.navbar().setMobileLayout();
@@ -147,6 +165,7 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Mobile Visitor: Login link is visible in navbar")
     public void testNavbarLoginLinkDisplayedOnMobileVisitor() {
         propertyDetailsPage.navigateTo(PROPERTY_ID);
         propertyDetailsPage.navbar().setMobileLayout();

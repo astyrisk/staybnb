@@ -5,7 +5,11 @@ import com.staybnb.pages.LoginPage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.MediaPaths;
 import com.staybnb.data.PropertyPayloads;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +18,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Property Management")
+@Feature("Create Property")
+@Tag("regression")
 public class CreatePropertyTest extends BaseTest {
     private LoginPage loginPage;
     private CreatePropertyPage createPropertyPage;
@@ -81,7 +88,10 @@ public class CreatePropertyTest extends BaseTest {
         createPropertyPage.clickNext();
     }
 
+    /* STEP 1 */
+
     @Test
+    @DisplayName("Step 1 displays the Basic Information fields")
     public void testStep1ShowsBasicsFields() {
         loginAsExistingHostAndLoadCreatePage();
 
@@ -92,6 +102,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 1 shows validation error when title is missing")
     public void testStep1ShowsValidationForMissingTitle() {
         loginAsExistingHostAndLoadCreatePage();
         createPropertyPage.clearTitle();
@@ -104,6 +115,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 1 shows validation error when description is missing")
     public void testStep1ShowsValidationForMissingDescription() {
         loginAsExistingHostAndLoadCreatePage();
         createPropertyPage.clearDescription();
@@ -115,7 +127,10 @@ public class CreatePropertyTest extends BaseTest {
         );
     }
 
+    /* STEP 2 */
+
     @Test
+    @DisplayName("Step 2 displays Location fields after completing Step 1")
     public void testStep2ShowsLocationFieldsAfterCompletingStep1() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep2WithValidStep1();
@@ -140,7 +155,10 @@ public class CreatePropertyTest extends BaseTest {
         );
     }
 
+    /* STEP 3 */
+
     @Test
+    @DisplayName("Step 3 displays Property Details fields after completing Step 2")
     public void testStep3ShowsDetailsFieldsAfterCompletingStep2() {
         loginAndGoToStep3();
 
@@ -151,6 +169,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 3 Max Guests minimum value is 1")
     public void testStep3MaxGuestsMinimumIsOne() {
         loginAndGoToStep3();
 
@@ -161,6 +180,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 3 Bedrooms minimum value is 0")
     public void testStep3BedroomsMinimumIsZero() {
         loginAndGoToStep3();
 
@@ -171,6 +191,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 3 Beds minimum value is 1")
     public void testStep3BedsMinimumIsOne() {
         loginAndGoToStep3();
 
@@ -181,6 +202,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 3 Bathrooms minimum value is 0")
     public void testStep3BathroomsMinimumIsZero() {
         loginAndGoToStep3();
 
@@ -191,6 +213,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 3 Bathrooms allows half-step increments")
     public void testStep3BathroomsAllowsHalfIncrements() {
         loginAndGoToStep3();
 
@@ -201,6 +224,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Going back from Step 2 preserves the Step 1 title value")
     public void testBackFromStep2PreservesStep1Title() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep2AndBack();
@@ -212,6 +236,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Going back from Step 2 preserves the Step 1 description value")
     public void testBackFromStep2PreservesStep1Description() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep2AndBack();
@@ -223,6 +248,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Going back from Step 3 preserves the Step 2 country value")
     public void testBackFromStep3PreservesStep2Country() {
         loginAndGoToStep3ThenBack();
 
@@ -233,6 +259,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Going back from Step 3 preserves the Step 2 city value")
     public void testBackFromStep3PreservesStep2City() {
         loginAndGoToStep3ThenBack();
 
@@ -243,6 +270,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Progress indicator shows 'Step 1 of 7' on the first step")
     public void testProgressIndicatorShowsStep1Of7() {
         loginAsExistingHostAndLoadCreatePage();
 
@@ -253,6 +281,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Non-host access to the create property page is blocked with 403")
     public void testNonHostAccessToCreatePropertyIsBlockedWith403() {
         registerNewUserAndLandOnHome("testcreate");
         createPropertyPage.navigateTo();
@@ -264,7 +293,9 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     /* STEP 4 */
+
     @Test
+    @DisplayName("Step 4 displays the Amenities grid after completing Step 3")
     public void testStep4ShowsAmenitiesGridAfterCompletingStep3() {
         loginAndGoToStep4();
 
@@ -275,6 +306,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 4 amenities are grouped under 'Essentials'")
     public void testStep4AmenitiesGroupedByEssentials() {
         loginAndGoToStep4();
 
@@ -285,6 +317,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 4 amenities are grouped under 'Features'")
     public void testStep4AmenitiesGroupedByFeatures() {
         loginAndGoToStep4();
 
@@ -295,6 +328,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 4 amenities are grouped under 'Safety'")
     public void testStep4AmenitiesGroupedBySafety() {
         loginAndGoToStep4();
 
@@ -305,6 +339,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 4 with selected amenities allows advancing to Step 5")
     public void testStep4SelectedAmenitiesAllowAdvancingToStep5() {
         loginAndGoToStep4();
         createPropertyPage.toggleAmenityByLabelContaining("WiFi");
@@ -318,6 +353,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 4 allows proceeding to Step 5 with no amenities selected")
     public void testStep4AllowsProceedingWithoutAmenitiesSelected() {
         loginAndGoToStep4();
         createPropertyPage.clickNext();
@@ -329,6 +365,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Going back from Step 4 and returning preserves amenity selection")
     public void testStep4BackToStep3AndReturnPreservesAmenitySelection() {
         loginAndGoToStep4();
         createPropertyPage.toggleAmenityByLabelContaining("WiFi");
@@ -342,7 +379,9 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     /* STEP 5 */
+
     @Test
+    @DisplayName("Step 5 shows an image upload area with drag-and-drop or browse support")
     public void testStep5ShowsImageUploadAreaWithDragDropOrBrowse() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -354,6 +393,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 uploading images shows preview thumbnails")
     public void testStep5UploadingImagesShowsPreviewThumbnails() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -369,6 +409,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 uploaded images show a sort handle and delete button")
     public void testStep5UploadedImagesShowSortHandleAndDeleteButton() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -381,6 +422,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 first uploaded image is marked as the primary cover")
     public void testStep5FirstUploadedImageIsMarkedAsPrimaryCover() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -396,6 +438,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 cannot advance without uploading at least one image")
     public void testStep5CannotAdvanceWithoutAtLeastOneImage() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -408,6 +451,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 reordering images updates the preview order")
     public void testStep5ReorderingImagesUpdatesPreviewOrder() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -431,6 +475,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 reordering changes the primary cover to the new first image")
     public void testStep5ReorderingChangesPrimaryCoverToNewFirstImage() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -449,6 +494,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 deleting an image removes it from the preview list")
     public void testStep5DeleteRemovesImageFromList() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -469,6 +515,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 deleting the primary image promotes the next image as primary")
     public void testStep5DeletingPrimaryPromotesNextImageAsPrimary() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -488,6 +535,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 deleting the only image and proceeding warns minimum one image is required")
     public void testStep5DeletingOnlyImageWarnsMinimumOneRequired() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -505,6 +553,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 going back to Step 4 and returning preserves uploaded images")
     public void testStep5BackToStep4AndReturnPreservesUploadedImages() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -522,6 +571,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 5 prevents adding more than 10 images")
     public void testStep5PreventsAddingMoreThanTenImages() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep5WithValidStep1ToStep4();
@@ -549,8 +599,11 @@ public class CreatePropertyTest extends BaseTest {
                 ErrorMessages.IMAGE_UPLOAD_STEP5_SHOULD_ENFORCE_MAX_10_IMAGES
         );
     }
+
     /* STEP 6 */
+
     @Test
+    @DisplayName("Step 6 shows a price-per-night input with USD label")
     public void testStep6ShowsPricePerNightInputInUsd() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
@@ -564,6 +617,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 6 shows validation error when price is zero")
     public void testStep6ShowsValidationWhenPriceIsZero() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
@@ -577,6 +631,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 6 with a valid price advances to Step 7 Review")
     public void testStep6NextWithValidPriceAdvancesToStep7Review() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
@@ -590,7 +645,9 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     /* STEP 7 */
+
     @Test
+    @DisplayName("Step 7 shows a summary of all information from previous steps")
     public void testStep7ShowsSummaryOfInformationFromPreviousSteps() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
@@ -604,6 +661,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 7 going back to Step 6 and returning to Step 7 works correctly")
     public void testStep7BackToStep6AndReturnToStep7Works() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
@@ -619,6 +677,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 7 submitting the form redirects to the host dashboard")
     public void testStep7CreatePropertyRedirectsToHostDashboard() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
@@ -633,6 +692,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Step 7 submitting the form shows a success message")
     public void testStep7CreatePropertyShowsSuccessMessage() {
         loginAsExistingHostAndLoadCreatePage();
         goToStep6WithValidStep1ToStep5();
@@ -647,7 +707,10 @@ public class CreatePropertyTest extends BaseTest {
         );
     }
 
+    /* API Tests */
+
     @Test
+    @DisplayName("Create property API returns 201 for a valid host payload")
     public void testCreatePropertyApiReturns201ForValidHostPayload() {
         loginAsExistingHostAndLoadCreatePage();
         long status = createPropertyPage.createPropertyStatusViaApi(PropertyPayloads.validCreatePropertyPayloadJson());
@@ -659,11 +722,11 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Create property API creates a draft with isPublished set to false")
     public void testCreatePropertyApiCreatesDraftWithIsPublishedFalse() {
         loginAsExistingHostAndLoadCreatePage();
         String response = createPropertyPage.createPropertyViaApi(PropertyPayloads.validCreatePropertyPayloadJson());
 
-        //Note: There is no way to find if is_published = false
         assertTrue(
                 response != null && response.toLowerCase().contains("\"is_published\":false"),
                 ErrorMessages.CREATE_PROPERTY_API_SHOULD_CREATE_DRAFT_IS_PUBLISHED_FALSE
@@ -671,6 +734,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Create property API returns 400 when a required field is missing")
     public void testCreatePropertyApiReturns400WhenRequiredFieldMissing() {
         loginAsExistingHostAndLoadCreatePage();
         long status = createPropertyPage.createPropertyStatusViaApi(PropertyPayloads.invalidCreatePropertyPayloadMissingTitleJson());
@@ -683,6 +747,7 @@ public class CreatePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Create property API returns 403 for a non-host user")
     public void testCreatePropertyApiReturns403ForNonHost() {
         registerNewUserAndLandOnHome("testcreateproperty");
         long status = createPropertyPage.createPropertyStatusViaApi(PropertyPayloads.validCreatePropertyPayloadJson());

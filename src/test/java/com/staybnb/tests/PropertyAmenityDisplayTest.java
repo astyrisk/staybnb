@@ -3,11 +3,18 @@ package com.staybnb.tests;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.Constants;
 import com.staybnb.pages.PropertyDetailsPage;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Properties")
+@Feature("Amenity Display")
+@Tag("regression")
 public class PropertyAmenityDisplayTest extends BaseTest {
     private PropertyDetailsPage propertyDetailsPage;
 
@@ -17,6 +24,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Amenity items display both an icon and a label")
     public void testAmenitiesDisplayedWithIconAndLabel() {
         propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
         assertTrue(
@@ -26,6 +34,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("'Show All Amenities' button appears for properties with more than 8 amenities")
     public void testShowAllAmenitiesButtonAppearsForPropertyWithMoreThanEightAmenities() {
         propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
         assertTrue(
@@ -35,6 +44,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("All amenities are visible without 'Show All' button for properties with few amenities")
     public void testAllAmenitiesVisibleWithoutShowAllButtonForPropertyWithFewAmenities() {
         propertyDetailsPage.navigateTo(Constants.PROPERTY_WITH_FEW_AMENITIES_ID);
         assertTrue(
@@ -45,6 +55,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Amenities section is hidden for a property with no amenities")
     public void testAmenitiesSectionIsHiddenForPropertyWithNoAmenities() {
         propertyDetailsPage.navigateTo(Constants.PROPERTY_WITH_NO_AMENITIES_ID);
         assertFalse(

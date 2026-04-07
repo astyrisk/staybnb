@@ -4,11 +4,18 @@ import com.staybnb.config.TestConfig;
 import com.staybnb.pages.RegisterPage;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Authentication")
+@Feature("Registration")
+@Tag("smoke")
 public class RegisterTest extends BaseTest {
     private RegisterPage registerPage;
 
@@ -19,6 +26,7 @@ public class RegisterTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Successful registration redirects to home page")
     public void testSuccessfulRegistration() {
         String uniqueEmail = "testuser_" + System.currentTimeMillis() + "@gmail.com";
 
@@ -36,6 +44,7 @@ public class RegisterTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Registration with an already registered email shows error")
     public void testRegistrationWithExistingEmail() {
         registerPage.submitRegistration(
                 TestConfig.TEST_FIRST_NAME,
@@ -53,6 +62,7 @@ public class RegisterTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Blank registration fields shows inline validation error")
     public void testRegistrationBlankFields() {
         registerPage.clickRegister();
 

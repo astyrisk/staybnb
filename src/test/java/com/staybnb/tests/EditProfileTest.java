@@ -3,7 +3,11 @@ package com.staybnb.tests;
 import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +18,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("User Management")
+@Feature("Edit Profile")
+@Tag("regression")
 public class EditProfileTest extends BaseTest {
     private LoginPage loginPage;
     private OwnProfilePage ownProfilePage;
@@ -64,6 +71,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Submitting with empty first name shows validation error")
     public void testEditProfileValidationErrorFirstNameRequired() {
         loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyFirstName();
@@ -75,6 +83,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Submitting with empty last name shows validation error")
     public void testEditProfileValidationErrorLastNameRequired() {
         loginAsTestUserAndLandOnHome(loginPage);
         editProfilePage.submitWithEmptyLastName("heko");
@@ -113,6 +122,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Cancelling edit profile does not save changes")
     public void testEditProfileCancel() {
         loginAsTestUserAndLandOnHome(loginPage);
         String originalFirstName = editProfilePage.attemptFirstNameChangeThenCancel("CanceledName");
@@ -125,6 +135,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Accessing edit profile while logged out shows 401 error")
     public void testEditProfileUnauthorizedAccess() {
         editProfilePage.navigateTo();
 
@@ -135,6 +146,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth token is present in localStorage when logged in")
     public void testApiUpdateUserProfileTokenNotNull() {
         loginAsTestUserAndLandOnHome(loginPage);
         String token = loginPage.getStaybnbToken();
@@ -146,6 +158,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Update profile API response is not null")
     public void testApiUpdateUserProfileResponseNotNull() {
         loginAsTestUserAndLandOnHome(loginPage);
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",
@@ -159,6 +172,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Update profile API response contains the updated first name")
     public void testApiUpdateUserProfileResponseContainsUpdatedFirstName() {
         loginAsTestUserAndLandOnHome(loginPage);
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",

@@ -4,11 +4,18 @@ import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("User Management")
+@Feature("Own Profile")
+@Tag("regression")
 public class OwnProfileTest extends BaseTest {
     private LoginPage loginPage;
     private OwnProfilePage ownProfilePage;
@@ -20,6 +27,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Own profile displays avatar")
     public void testOwnProfileAvatarDisplayed() {
         loginAsTestUserAndLandOnHome(loginPage);
         ownProfilePage.navigateTo();
@@ -31,6 +39,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Own profile shows correct full name")
     public void testOwnProfileFullName() {
         loginAsTestUserAndLandOnHome(loginPage);
         ownProfilePage.navigateTo();
@@ -43,6 +52,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Own profile meta contains 'Member since'")
     public void testOwnProfileMetaContainsMemberSince() {
         loginAsTestUserAndLandOnHome(loginPage);
         ownProfilePage.navigateTo();
@@ -54,6 +64,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Own profile bio is not empty")
     public void testOwnProfileBioNotEmpty() {
         loginAsTestUserAndLandOnHome(loginPage);
         ownProfilePage.navigateTo();
@@ -65,6 +76,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Own profile shows correct phone number")
     public void testOwnProfilePhone() {
         loginAsTestUserAndLandOnHome(loginPage);
         ownProfilePage.navigateTo();
@@ -77,6 +89,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Own profile shows Edit Profile button")
     public void testOwnProfileEditProfileButtonVisible() {
         loginAsTestUserAndLandOnHome(loginPage);
         ownProfilePage.navigateTo();
@@ -88,6 +101,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Clicking Edit Profile button navigates to edit profile page")
     public void testOwnProfileEditProfileButtonNavigation() {
         loginAsTestUserAndLandOnHome(loginPage);
         ownProfilePage.navigateTo();
@@ -100,6 +114,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response is not null when logged in")
     public void testAuthMeApiLoggedInResponseNotNull() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -111,6 +126,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'id' field")
     public void testAuthMeApiLoggedInContainsId() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -122,6 +138,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'email' field")
     public void testAuthMeApiLoggedInContainsEmail() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -133,6 +150,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'firstName' field")
     public void testAuthMeApiLoggedInContainsFirstName() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -144,6 +162,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'lastName' field")
     public void testAuthMeApiLoggedInContainsLastName() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -154,6 +173,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'phone' field")
     public void testAuthMeApiLoggedInContainsPhone() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -165,6 +185,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'bio' field")
     public void testAuthMeApiLoggedInContainsBio() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -176,6 +197,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'avatarUrl' field")
     public void testAuthMeApiLoggedInContainsAvatarUrl() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -187,6 +209,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'isHost' field")
     public void testAuthMeApiLoggedInContainsIsHost() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -197,6 +220,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API response contains 'createdAt' field")
     public void testAuthMeApiLoggedInContainsCreatedAt() {
         loginAsTestUserAndLandOnHome(loginPage);
         String jsonResponse = ownProfilePage.getAuthMeApiResponse();
@@ -208,6 +232,7 @@ public class OwnProfileTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Auth/me API returns 401 when not logged in")
     public void testAuthMeApiLoggedOut() {
         long status = ownProfilePage.getAuthMeApiStatusLoggedOut();
 

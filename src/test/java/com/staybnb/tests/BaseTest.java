@@ -5,9 +5,14 @@ import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.RegisterPage;
 import com.staybnb.data.Constants;
+import io.qameta.allure.Allure;
+import io.qameta.allure.junit5.AllureJunit5;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.openqa.selenium.OutputType;
@@ -16,17 +21,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+@ExtendWith(AllureJunit5.class)
 public class BaseTest {
+    private static final Logger log = LogManager.getLogger(BaseTest.class);
     protected WebDriver driver;
 
     @BeforeEach
@@ -89,28 +90,26 @@ public class BaseTest {
     @RegisterExtension
     AfterTestExecutionCallback screenshotCallback = new AfterTestExecutionCallback() {
         @Override
-        public void afterTestExecution(ExtensionContext context) throws Exception {
+        public void afterTestExecution(ExtensionContext context) {
             if (context.getExecutionException().isPresent()) {
-                captureScreenshot(context.getDisplayName());
+                attachScreenshotToAllure(context.getDisplayName());
             }
         }
     };
 
-    private void captureScreenshot(String testName) {
-        if (driver != null && driver instanceof TakesScreenshot) {
+    private void attachScreenshotToAllure(String testName) {
+        if (driver instanceof TakesScreenshot ts) {
             try {
-                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-                Path destDir = Paths.get("target/screenshots");
-                Files.createDirectories(destDir);
-                String sanitizedName = testName.replaceAll("[^a-zA-Z0-9._-]", "_");
-                Path destFile = destDir.resolve(sanitizedName + "_" + timestamp + ".png");
-                Files.copy(screenshot.toPath(), destFile);
-                System.out.println("Test Failed! Screenshot saved to: " + destFile.toAbsolutePath());
-            } catch (IOException e) {
-                System.err.println("Failed to capture screenshot: " + e.getMessage());
+                byte[] screenshotBytes = ts.getScreenshotAs(OutputType.BYTES);
+                Allure.addAttachment(
+                        testName + " - Failure Screenshot",
+                        "image/png",
+                        new ByteArrayInputStream(screenshotBytes),
+                        ".png"
+                );
+                log.info("Screenshot attached to Allure report for: {}", testName);
             } catch (Exception e) {
-                System.err.println("Error during screenshot capture: " + e.getMessage());
+                log.error("Error during screenshot attachment: {}", e.getMessage());
             }
         }
     }

@@ -5,7 +5,11 @@ import com.staybnb.data.Constants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.EditPropertyPage;
 import com.staybnb.pages.LoginPage;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +18,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Property Management")
+@Feature("Edit Property")
+@Tag("regression")
 public class EditPropertyTest extends BaseTest {
     private LoginPage loginPage;
     private EditPropertyPage editPropertyPage;
@@ -37,6 +44,7 @@ public class EditPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Edit property page loads with all sections and pre-populated data")
     public void testEditPropertyPageLoadsWithPrePopulatedData() {
         loginAsHostAndOpenEditPage();
 
@@ -59,8 +67,8 @@ public class EditPropertyTest extends BaseTest {
         );
     }
 
-
     @Test
+    @DisplayName("Edit property page is a single-page form, not a wizard")
     public void testEditPropertyPageDoesNotUseCreateWizardFlow() {
         loginAsHostAndOpenEditPage();
         editPropertyPage.waitForSectionsToBeVisible();
@@ -74,6 +82,7 @@ public class EditPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Saving edit property returns 200 for the property owner")
     public void testEditPropertySaveReturns200ForOwner() {
         loginAsHostAndOpenEditPage();
 
@@ -98,6 +107,7 @@ public class EditPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Edit property API returns 403 for a non-owner user")
     public void testEditPropertyApiReturns403ForNonOwner() {
         registerNewUserAndLandOnHome("testeditproperty");
 
@@ -109,6 +119,7 @@ public class EditPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Edit property API returns 404 for a non-existent property ID")
     public void testEditPropertyApiReturns404ForNonExistentPropertyId() {
         loginAsTestUserAndLandOnHome(loginPage);
         long status = editPropertyPage.updatePropertyStatusViaApi(
@@ -124,6 +135,7 @@ public class EditPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Edit property API returns 401 when not logged in")
     public void testEditPropertyApiReturns401WhenLoggedOut() {
         assertEquals(
                 401L,
@@ -133,6 +145,7 @@ public class EditPropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Edit property page shows a Delete Property button")
     public void testEditPropertyPageShowsDeletePropertyButton() {
         loginAsHostAndOpenEditPage();
 

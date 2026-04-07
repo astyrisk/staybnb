@@ -3,13 +3,20 @@ package com.staybnb.tests;
 import com.staybnb.pages.HomePage;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Navigation")
+@Feature("Home Page")
+@Tag("regression")
 public class HomeTest extends BaseTest {
     private HomePage homePage;
 
@@ -20,6 +27,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Hero section is displayed on home page")
     public void testHeroSectionIsDisplayed() {
         assertTrue(
                 homePage.isHeroSectionDisplayed(),
@@ -28,6 +36,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Hero section shows correct headline text")
     public void testHeroSectionHeadlineText() {
         assertEquals(
                 "Find your next stay",
@@ -37,6 +46,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Hero section has a background image")
     public void testHeroSectionHasBackgroundImage() {
         String backgroundImage = homePage.getHeroBackgroundImage();
         assertTrue(
@@ -46,6 +56,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Category bar is displayed on home page")
     public void testCategoryBarIsDisplayed() {
         assertTrue(
                 homePage.isCategoryBarDisplayed(),
@@ -54,6 +65,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Category bar contains at least one category icon")
     public void testCategoryBarContainsIcons() {
         List<WebElement> categories = homePage.getCategoryIcons();
 
@@ -64,6 +76,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Featured properties grid shows between 8 and 12 cards")
     public void testFeaturedPropertiesGridCount() {
         homePage.scrollFeaturedPropertiesIntoView();
         List<WebElement> cards = homePage.getPropertyCards();
@@ -76,6 +89,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property cards are present on home page")
     public void testPropertyCardsArePresent() {
         List<WebElement> cards = homePage.getPropertyCards();
 
@@ -86,6 +100,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Each property card displays all required details")
     public void testPropertyCardsDetailsAreComplete() {
         List<WebElement> cards = homePage.getPropertyCards();
 
@@ -96,6 +111,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property grid shows 4 columns on wide desktop")
     public void testGridColumnsDesktopWide() {
         driver.manage().window().setSize(new Dimension(Constants.WIDE_DESKTOP_WIDTH, Constants.WIDE_DESKTOP_HEIGHT));
         homePage.waitForGridColumns(4);
@@ -108,6 +124,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property grid shows 3 columns on medium desktop")
     public void testGridColumnsDesktopSmall() {
         driver.manage().window().setSize(new Dimension(Constants.MEDIUM_DESKTOP_WIDTH, Constants.MEDIUM_DESKTOP_HEIGHT));
         homePage.waitForGridColumns(3);
@@ -120,6 +137,7 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property grid shows 2 columns on tablet viewport")
     public void testGridColumnsTablet() {
         driver.manage().window().setSize(new Dimension(Constants.TABLET_TEST_WIDTH, Constants.TABLET_TEST_HEIGHT));
         homePage.waitForGridColumns(2);

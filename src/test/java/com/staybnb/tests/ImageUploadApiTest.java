@@ -3,7 +3,11 @@ package com.staybnb.tests;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.ImageUploadPage;
 import com.staybnb.pages.LoginPage;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,6 +19,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Epic("Property Management")
+@Feature("Image Upload API")
+@Tag("api")
 public class ImageUploadApiTest extends BaseTest {
     private LoginPage loginPage;
     private ImageUploadPage imageUploadPage;
@@ -62,6 +69,7 @@ public class ImageUploadApiTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Upload unsupported file type returns 400")
     public void testUploadUnsupportedFileTypeReturns400() {
         loginAsTestUserAndLandOnHome(loginPage);
         long status = imageUploadPage.uploadImageStatusViaApi(DUMMY_BASE64, "bad.gif", "image/gif");
@@ -74,6 +82,7 @@ public class ImageUploadApiTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Upload with no file attached returns 400")
     public void testUploadWithNoFileAttachedReturns400() {
         loginAsTestUserAndLandOnHome(loginPage);
         long status = imageUploadPage.uploadImageStatusViaApiWithoutFile();
@@ -86,6 +95,7 @@ public class ImageUploadApiTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Upload returns 401 when not logged in")
     public void testUploadReturns401WhenLoggedOut() {
         long status = imageUploadPage.uploadImageStatusViaApi(DUMMY_BASE64, "any.png", "image/png");
 

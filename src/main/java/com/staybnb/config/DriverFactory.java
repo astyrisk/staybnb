@@ -1,5 +1,7 @@
 package com.staybnb.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -7,13 +9,16 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.time.Duration;
 
 public final class DriverFactory {
+    private static final Logger log = LogManager.getLogger(DriverFactory.class);
     private static final ThreadLocal<WebDriver> driverThread = new ThreadLocal<>();
 
     private DriverFactory() {}
 
     public static WebDriver createDriver() {
+        boolean headless = isHeadlessMode();
+        log.debug("Creating ChromeDriver (headless={})", headless);
         ChromeOptions options = new ChromeOptions();
-        if (isHeadlessMode()) {
+        if (headless) {
             options.addArguments("--headless=new");
             options.addArguments("--disable-gpu");
             options.addArguments("--no-sandbox");
@@ -23,6 +28,7 @@ public final class DriverFactory {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(AppConstants.MEDIUM_WAIT));
         driver.manage().window().maximize();
         driverThread.set(driver);
+        log.debug("ChromeDriver created for thread [{}]", Thread.currentThread().getName());
         return driver;
     }
 
@@ -33,6 +39,7 @@ public final class DriverFactory {
     public static void quitDriver() {
         WebDriver driver = driverThread.get();
         if (driver != null) {
+            log.debug("Quitting ChromeDriver for thread [{}]", Thread.currentThread().getName());
             driver.quit();
             driverThread.remove();
         }

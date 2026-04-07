@@ -5,12 +5,19 @@ import com.staybnb.data.Constants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
 import com.staybnb.pages.LoginPage;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Epic("Property Management")
+@Feature("Delete Property")
+@Tag("regression")
 public class DeletePropertyTest extends BaseTest {
     private LoginPage loginPage;
     private DeletePropertyPage deletePropertyPage;
@@ -27,6 +34,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Clicking delete on edit page shows confirmation modal")
     public void testDeleteFromEditPageShowsConfirmationModalMessage() {
         loginAsTestUserAndLandOnHome(loginPage);
         deletePropertyPage.navigateToEditPage(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
@@ -39,6 +47,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Clicking delete on dashboard shows confirmation modal")
     public void testDeleteFromDashboardShowsConfirmationModalMessage() {
         loginAsTestUserAndLandOnHome(loginPage);
         deletePropertyPage.navigateToHostingDashboard();
@@ -51,6 +60,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Cancelling deletion keeps the property on the dashboard")
     public void testCancelDeleteKeepsPropertyUnchanged() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Delete Cancel " + System.currentTimeMillis();
@@ -66,6 +76,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Confirming deletion removes the property from the dashboard")
     public void testConfirmDeleteRemovesPropertyFromDashboard() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Delete Confirm " + System.currentTimeMillis();
@@ -81,6 +92,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Delete property API returns 200 for the property owner")
     public void testDeletePropertyApiReturns200ForOwner() {
         loginAsTestUserAndLandOnHome(loginPage);
         String uniqueTitle = "Automation Delete API " + System.currentTimeMillis();
@@ -94,6 +106,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Delete property API returns 403 for a non-owner user")
     public void testDeletePropertyApiReturns403ForNonOwner() {
         registerNewUserAndLandOnHome("testdeleteproperty");
         long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
@@ -106,6 +119,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Delete property API returns 404 for a non-existent property ID")
     public void testDeletePropertyApiReturns404ForNonExistentPropertyId() {
         loginAsTestUserAndLandOnHome(loginPage);
         long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.NON_EXISTENT_PROPERTY_ID);
@@ -118,6 +132,7 @@ public class DeletePropertyTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Delete property API returns 401 when not logged in")
     public void testDeletePropertyApiReturns401WhenLoggedOut() {
         long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
 

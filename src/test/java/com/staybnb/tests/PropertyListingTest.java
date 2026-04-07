@@ -3,13 +3,20 @@ package com.staybnb.tests;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.PropertyListingPage;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Properties")
+@Feature("Property Listing")
+@Tag("regression")
 public class PropertyListingTest extends BaseTest {
     private PropertyListingPage propertyListingPage;
 
@@ -20,6 +27,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property listing page displays property cards")
     public void testPropertyListingHasCards() {
         assertFalse(
                 propertyListingPage.getPropertyCards().isEmpty(),
@@ -28,6 +36,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("First property card has an image")
     public void testFirstPropertyCardHasImage() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
 
@@ -38,6 +47,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("First property card has a title")
     public void testFirstPropertyCardHasTitle() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
 
@@ -48,6 +58,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("First property card location is in 'City, Country' format")
     public void testFirstPropertyCardLocationFormat() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
         String location = propertyListingPage.getLocation(card);
@@ -59,6 +70,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("First property card price contains '/ night'")
     public void testFirstPropertyCardPriceFormat() {
         WebElement card = propertyListingPage.getPropertyCards().get(0);
         String price = propertyListingPage.getPrice(card);
@@ -70,6 +82,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Clicking a property card navigates to the property detail page")
     public void testPropertyCardNavigation() {
         WebElement firstCard = propertyListingPage.getPropertyCards().get(0);
         String expectedHref = propertyListingPage.getCardHref(firstCard);
@@ -83,6 +96,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property grid shows 4 columns on large desktop")
     public void testGridColumnsOnDesktopLarge() {
         driver.manage().window().setSize(new Dimension(Constants.WIDE_DESKTOP_WIDTH, Constants.WIDE_DESKTOP_HEIGHT));
         propertyListingPage.waitForGridColumns(4);
@@ -95,6 +109,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property grid shows 3 columns on medium desktop")
     public void testGridColumnsOnDesktopMedium() {
         driver.manage().window().setSize(new Dimension(Constants.MEDIUM_DESKTOP_WIDTH, Constants.MEDIUM_DESKTOP_HEIGHT));
         propertyListingPage.waitForGridColumns(3);
@@ -107,6 +122,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property grid shows 2 columns on tablet viewport")
     public void testGridColumnsOnTablet() {
         driver.manage().window().setSize(new Dimension(Constants.TABLET_TEST_WIDTH, Constants.TABLET_TEST_HEIGHT));
         propertyListingPage.waitForGridColumns(2);
@@ -119,8 +135,8 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property listing page has no filter controls")
     public void testAbsenceOfFilters() {
-
         assertTrue(
                 propertyListingPage.areControlsEmpty(),
                 ErrorMessages.PROPERTY_LIST_CONTROLS_SHOULD_BE_EMPTY
@@ -128,6 +144,7 @@ public class PropertyListingTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Property listing page has no search or sort controls")
     public void testAbsenceOfSearchAndSort() {
         assertFalse(
                 propertyListingPage.hasSearchOrFilters(),

@@ -4,7 +4,11 @@ import com.staybnb.pages.HostDashboardPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +18,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Epic("Host Management")
+@Feature("Host Dashboard")
+@Tag("regression")
 public class HostDashboardTest extends BaseTest {
     private LoginPage loginPage;
     private HostDashboardPage hostDashboardPage;
@@ -38,6 +45,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Host dashboard shows property cards for a host with properties")
     public void testHostDashboardShowsPropertyCardsForHostWithProperties() {
         loginAndNavigateToDashboard();
 
@@ -59,6 +67,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Host dashboard summary shows total properties count")
     public void testHostDashboardShowsSummaryCount() {
         loginAndNavigateToDashboard();
         String subtitle = hostDashboardPage.getSummarySubtitle().toLowerCase();
@@ -70,6 +79,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Host dashboard shows 'Create New Property' button")
     public void testHostDashboardShowsCreateNewPropertyButton() {
         loginAndNavigateToDashboard();
 
@@ -80,6 +90,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("'Create New Property' button links to the create property page")
     public void testHostDashboardCreateNewPropertyButtonLinksToCreatePage() {
         loginAndNavigateToDashboard();
 
@@ -100,8 +111,8 @@ public class HostDashboardTest extends BaseTest {
         );
     }
 
-    //FIX
     @Test
+    @DisplayName("Host dashboard shows empty state for a host with no properties")
     public void testHostDashboardEmptyStateVisibleForHostWithNoProperties() {
         registerNewUserAndLandOnHome("testhosting");
         hostDashboardPage.navbar().clickBecomeAHost();
@@ -114,6 +125,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Hosting properties API response is not null for a host")
     public void testHostingPropertiesApiResponseNotNullForHost() {
         loginAsTestUserAndLandOnHome(loginPage);
         String response = hostDashboardPage.getHostingPropertiesViaApi();
@@ -125,6 +137,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Hosting properties API includes both published and unpublished properties")
     public void testHostingPropertiesApiIncludesPublishedAndUnpublishedForHost() {
         loginAsTestUserAndLandOnHome(loginPage);
 
@@ -135,6 +148,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Hosting properties API returns 403 for a non-host user")
     public void testHostingPropertiesApiReturns403ForNonHost() {
         registerNewUserAndLandOnHome("testhosting");
 
@@ -147,6 +161,7 @@ public class HostDashboardTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Hosting properties API returns 401 when not logged in")
     public void testHostingPropertiesApiReturns401WhenLoggedOut() {
         long status = hostDashboardPage.getHostingPropertiesStatusViaApi();
         assertEquals(
