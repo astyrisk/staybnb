@@ -471,6 +471,20 @@ public final class ErrorMessages {
     public static final String AMENITIES_SECTION_SHOULD_BE_HIDDEN_FOR_PROPERTY_WITH_NO_AMENITIES =
             "The amenities section should be hidden when the property has no amenities.";
 
+    // --- Search Properties by Location (Story F3.1-S1) messages ---
+    public static final String SEARCH_FORM_SHOULD_EXPAND_ON_COMPACT_BAR_CLICK =
+            "Clicking the compact search bar should expand the search form with Location, Check-in, Check-out, Guests, and Search fields.";
+    public static final String SEARCH_SHOULD_NAVIGATE_TO_CITY_FILTERED_URL =
+            "Searching for a city should navigate to /properties?city={value}.";
+    public static final String SEARCH_SHOULD_SHOW_RESULTS_FOR_KNOWN_CITY =
+            "Search results should show at least one property for a city with matching properties.";
+    public static final String SEARCH_SHOULD_SHOW_EMPTY_STATE_FOR_UNKNOWN_CITY =
+            "Search results should display the empty state when no properties match the city.";
+    public static final String SEARCH_SHOULD_SHOW_ZERO_COUNT_FOR_UNKNOWN_CITY =
+            "Properties count should be zero when no properties match the city.";
+    public static final String SEARCH_COMPACT_BAR_SHOULD_BE_VISIBLE_ON_MOBILE =
+            "Compact search bar should be visible in the navbar on mobile viewport.";
+
     // --- Property Amenities (Story 13) messages ---
     public static final String AMENITIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON =
             "GET /api/t/{slug}/amenities should return a non-empty list where each item includes id, name, and icon fields.";

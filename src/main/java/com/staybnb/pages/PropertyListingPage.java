@@ -4,6 +4,8 @@ import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import com.staybnb.config.Constants;
 
@@ -22,6 +24,8 @@ public class PropertyListingPage extends BasePage {
     private By searchInput = Locators.PropertyListing.SEARCH_INPUT;
     private By filterButtons = Locators.PropertyListing.FILTER_BUTTONS;
     private By sortSelect = Locators.PropertyListing.SORT_SELECT;
+    private By emptyState = Locators.PropertyListing.EMPTY_STATE;
+    private By propertiesCount = Locators.PropertyListing.PROPERTIES_COUNT;
 
     public PropertyListingPage(WebDriver driver) {
         super(driver);
@@ -95,6 +99,28 @@ public class PropertyListingPage extends BasePage {
     
     public String getCardHref(WebElement card) {
         return card.getAttribute("href");
+    }
+
+    public void navigateToWithCity(String city) {
+        String encoded = URLEncoder.encode(city, StandardCharsets.UTF_8);
+        super.navigateTo(PAGE_URL + "?city=" + encoded);
+        waitForSearchResults();
+    }
+
+    public boolean isEmptyStateDisplayed() {
+        return isDisplayed(emptyState);
+    }
+
+    public int getPropertiesCount() {
+        String text = waitForElementVisible(propertiesCount).getText();
+        return Integer.parseInt(text.split(" ")[0]);
+    }
+
+    public void waitForSearchResults() {
+        wait.until(d ->
+                !d.findElements(Locators.PropertyListing.PROPERTY_GRID).isEmpty() ||
+                !d.findElements(Locators.PropertyListing.EMPTY_STATE).isEmpty()
+        );
     }
 
     private void waitForGridToLoad() {

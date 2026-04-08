@@ -5,6 +5,7 @@ import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class Navbar extends BaseComponent {
     private final By navbarLogo = Locators.Navbar.NAVBAR_LOGO;
@@ -21,6 +22,11 @@ public class Navbar extends BaseComponent {
     private final By dropdownMenu = Locators.Navbar.DROPDOWN_MENU;
     private final By profileLink = Locators.Navbar.PROFILE_LINK;
     private final By logoutButton = Locators.Navbar.LOGOUT_BUTTON;
+
+    private final By compactSearchBtn = Locators.SearchBar.COMPACT_SEARCH_BTN;
+    private final By expandedSearchForm = Locators.SearchBar.EXPANDED_FORM;
+    private final By destinationInput = Locators.SearchBar.DESTINATION_INPUT;
+    private final By searchSubmitBtn = Locators.SearchBar.SEARCH_SUBMIT_BTN;
 
     public Navbar(WebDriver driver) {
         super(driver);
@@ -149,5 +155,34 @@ public class Navbar extends BaseComponent {
 
     public void setDesktopLayout() {
         driver.manage().window().maximize();
+    }
+
+    public void clickCompactSearchBar() {
+        waitForElementClickable(compactSearchBtn).click();
+    }
+
+    public boolean isSearchFormExpanded() {
+        return isDisplayed(expandedSearchForm);
+    }
+
+    public boolean isCompactSearchBarDisplayed() {
+        return isDisplayed(compactSearchBtn);
+    }
+
+    public void enterDestination(String city) {
+        WebElement input = waitForElementVisible(destinationInput);
+        input.clear();
+        input.sendKeys(city);
+    }
+
+    public void clickSearch() {
+        waitForElementClickable(searchSubmitBtn).click();
+    }
+
+    public void searchForCity(String city) {
+        clickCompactSearchBar();
+        enterDestination(city);
+        clickSearch();
+        waitForUrlContains("city=");
     }
 }

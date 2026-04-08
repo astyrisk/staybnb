@@ -96,4 +96,11 @@ public final class Constants {
         public static final String OWNED_PROPERTY_ID = "960";
         public static final String NON_EXISTENT_PROPERTY_ID = "99999999";
     }
+
+    public static final class Search {
+        // A city known to have at least one property in the test environment
+        public static final String KNOWN_CITY = "Zermatt";
+        // A city confirmed to return zero results in the test environment
+        public static final String UNKNOWN_CITY = "cairo";
+    }
 }

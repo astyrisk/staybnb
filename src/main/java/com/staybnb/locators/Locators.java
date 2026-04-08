@@ -74,6 +74,15 @@ public final class Locators {
         public static final By CARD_PRICE = By.className("property-card-price");
     }
 
+    public static final class SearchBar {
+        private SearchBar() {}
+
+        public static final By COMPACT_SEARCH_BTN = By.className("search-bar-compact-btn");
+        public static final By EXPANDED_FORM = By.className("search-bar-expanded");
+        public static final By DESTINATION_INPUT = By.cssSelector(".search-bar-field--destination input");
+        public static final By SEARCH_SUBMIT_BTN = By.cssSelector(".search-bar-actions button[type='submit']");
+    }
+
     public static final class PropertyListing {
         private PropertyListing() {}
 
@@ -85,6 +94,8 @@ public final class Locators {
         public static final By CARD_PRICE = By.className("property-card-price");
         public static final By CARD_RATING = By.className("property-card-rating");
         public static final By PROPERTY_LIST_CONTROLS = By.className("property-list-controls");
+        public static final By EMPTY_STATE = By.className("empty-state");
+        public static final By PROPERTIES_COUNT = By.className("properties-count");
 
         public static final By SEARCH_INPUT = By.cssSelector("input[type='search']");
         public static final By FILTER_BUTTONS = By.cssSelector("button.filter-btn");
