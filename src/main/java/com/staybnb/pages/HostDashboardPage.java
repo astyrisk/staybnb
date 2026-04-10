@@ -1,7 +1,7 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class HostDashboardPage extends BasePage {
-    private static final String PAGE_URL = Constants.HOSTING_URL;
+    private static final String PAGE_URL = AppConstants.HOSTING_URL;
     private static final String HOSTING_PROPERTIES_API_JS_RESOURCE = "com/staybnb/scripts/getHostingPropertiesApi.js";
     private static final String HOSTING_PROPERTIES_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/getHostingPropertiesStatusApi.js";
 
@@ -29,6 +29,12 @@ public class HostDashboardPage extends BasePage {
 
     public void navigateTo() {
         super.navigateTo(PAGE_URL);
+        waitForDashboardToLoad();
+    }
+
+    public void navigateViaNavbar() {
+        navbar().clickMyProperties();
+        waitForUrlContains(PAGE_URL);
         waitForDashboardToLoad();
     }
 
@@ -129,18 +135,18 @@ public class HostDashboardPage extends BasePage {
     }
 
     public String getHostingPropertiesViaApi() {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(HOSTING_PROPERTIES_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG);
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG);
         return (String) response;
     }
 
     public long getHostingPropertiesStatusViaApi() {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(HOSTING_PROPERTIES_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG);
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }

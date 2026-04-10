@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
@@ -17,10 +17,10 @@ public class CategoriesApiPage extends BasePage {
     }
 
     public long getCategoriesStatusViaApi() {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(GET_CATEGORIES_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG);
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }
@@ -29,10 +29,10 @@ public class CategoriesApiPage extends BasePage {
     }
 
     public boolean categoriesResponseHasRequiredFieldsViaApi() {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(GET_CATEGORIES_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG);
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG);
         if (response instanceof Boolean b) {
             return b;
         }

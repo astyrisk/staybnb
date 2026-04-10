@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -29,12 +29,12 @@ public class PublishPropertyPage extends BasePage {
     }
 
     public void navigateToHostingDashboard() {
-        super.navigateTo(Constants.HOSTING_URL);
+        super.navigateTo(AppConstants.HOSTING_URL);
         waitForDashboardCardsToLoad();
     }
 
     public void navigateToPropertyListing() {
-        super.navigateTo(Constants.PROPERTY_LISTING_URL);
+        super.navigateTo(AppConstants.PROPERTY_LISTING_URL);
         wait.until(d -> !d.findElements(By.className("property-grid")).isEmpty());
     }
 
@@ -60,10 +60,10 @@ public class PublishPropertyPage extends BasePage {
     }
 
     public String createPropertyViaApi(String payloadJson) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(CREATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, payloadJsonToObject(js, payloadJson));
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
         return (String) response;
     }
 
@@ -84,18 +84,18 @@ public class PublishPropertyPage extends BasePage {
     }
 
     public String updatePublishPropertyViaApi(String propertyId, boolean isPublished) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPDATE_PUBLISH_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, propertyId, publishPayload(js, isPublished));
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, publishPayload(js, isPublished));
         return (String) response;
     }
 
     public long updatePublishPropertyStatusViaApi(String propertyId, boolean isPublished) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPDATE_PUBLISH_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG, propertyId, publishPayload(js, isPublished));
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, publishPayload(js, isPublished));
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }

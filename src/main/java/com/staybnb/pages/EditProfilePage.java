@@ -6,14 +6,14 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class EditProfilePage extends BasePage {
-    private static final String PAGE_URL = Constants.EDIT_PROFILE_URL;
+    private static final String PAGE_URL = AppConstants.EDIT_PROFILE_URL;
     private static final String UPDATE_PROFILE_API_JS_RESOURCE = "com/staybnb/scripts/updateMyProfileApi.js";
 
     private By firstNameField = Locators.EditProfile.FIRST_NAME_FIELD;
@@ -127,10 +127,10 @@ public class EditProfilePage extends BasePage {
     }
 
     public String updateMyProfileViaApi(String updatePayloadJson) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPDATE_PROFILE_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, updatePayloadJson);
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, updatePayloadJson);
         return (String) response;
     }
 

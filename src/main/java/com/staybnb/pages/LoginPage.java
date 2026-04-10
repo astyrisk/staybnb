@@ -1,7 +1,7 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -14,7 +14,7 @@ public class LoginPage extends AuthPage {
 
     @Override
     protected String getPageUrl() {
-        return Constants.LOGIN_URL;
+        return AppConstants.LOGIN_URL;
     }
 
     public void clickLoginButton() {
@@ -29,7 +29,12 @@ public class LoginPage extends AuthPage {
 
     public void loginAndExpectSuccess(String email, String password) {
         login(email, password);
-        waitForUrlToBe(Constants.HOME_URL);
+        waitForUrlToBe(AppConstants.HOME_URL);
+    }
+
+    public void navigateViaNavbar() {
+        navigateTo(AppConstants.HOME_URL);
+        navbar().clickLoginAndWaitForRedirect();
     }
 
     public void clickRegisterLink() {

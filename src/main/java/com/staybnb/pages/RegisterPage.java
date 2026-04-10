@@ -1,7 +1,7 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -17,7 +17,7 @@ public class RegisterPage extends AuthPage {
 
     @Override
     protected String getPageUrl() {
-        return Constants.REGISTER_URL;
+        return AppConstants.REGISTER_URL;
     }
 
     public void enterFirstName(String firstName) {
@@ -59,6 +59,11 @@ public class RegisterPage extends AuthPage {
     public void submitRegistration(String fName, String lName, String email, String pass) {
         fillCompleteRegistration(fName, lName, email, pass);
         clickRegister();
+    }
+
+    public void navigateViaNavbar() {
+        navigateTo(AppConstants.HOME_URL);
+        navbar().clickRegisterAndWaitForRedirect();
     }
 
     public void registerAndWaitForUrl(String fName, String lName, String email, String pass, String expectedUrl) {

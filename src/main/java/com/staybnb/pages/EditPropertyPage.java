@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -37,7 +37,7 @@ public class EditPropertyPage extends BasePage {
     }
 
     public void navigateTo(String propertyId) {
-        super.navigateTo(Constants.HOSTING_URL + "/" + propertyId + "/edit");
+        super.navigateTo(AppConstants.HOSTING_URL + "/" + propertyId + "/edit");
     }
 
     public boolean isEditPageLoaded() {
@@ -152,10 +152,10 @@ public class EditPropertyPage extends BasePage {
     }
 
     public long updatePropertyStatusViaApi(String propertyId, String payloadJson) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPDATE_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG, propertyId, payloadJsonToObject(js, payloadJson));
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, payloadJsonToObject(js, payloadJson));
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }
@@ -164,10 +164,10 @@ public class EditPropertyPage extends BasePage {
     }
 
     public String updatePropertyViaApi(String propertyId, String payloadJson) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPDATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, propertyId, payloadJsonToObject(js, payloadJson));
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, payloadJsonToObject(js, payloadJson));
         return (String) response;
     }
 

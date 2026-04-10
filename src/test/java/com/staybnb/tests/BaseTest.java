@@ -1,10 +1,10 @@
 package com.staybnb.tests;
 
+import com.staybnb.config.AppConstants;
 import com.staybnb.config.DriverFactory;
 import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.RegisterPage;
-import com.staybnb.data.Constants;
 import io.qameta.allure.Allure;
 import io.qameta.allure.junit5.AllureJunit5;
 import org.apache.logging.log4j.LogManager;
@@ -48,11 +48,11 @@ public class BaseTest {
     }
 
     protected void waitForUrlContains(String text) {
-        getWait(Constants.MEDIUM_WAIT).until(ExpectedConditions.urlContains(text));
+        getWait(AppConstants.MEDIUM_WAIT).until(ExpectedConditions.urlContains(text));
     }
 
     protected void waitForUrlToBe(String url) {
-        getWait(Constants.MEDIUM_WAIT).until(ExpectedConditions.urlToBe(url));
+        getWait(AppConstants.MEDIUM_WAIT).until(ExpectedConditions.urlToBe(url));
     }
 
     protected boolean isUrlContains(String text) {
@@ -66,14 +66,14 @@ public class BaseTest {
 
     protected String registerNewUserAndLandOnHome(String emailPrefix) {
         RegisterPage registerPage = new RegisterPage(driver);
-        registerPage.navigateTo();
+        registerPage.navigateViaNavbar();
         String uniqueEmail = emailPrefix + "_" + UUID.randomUUID().toString().replace("-", "") + "@gmail.com";
         registerPage.registerAndWaitForUrl(
                 TestConfig.TEST_FIRST_NAME,
                 TestConfig.TEST_LAST_NAME,
                 uniqueEmail,
                 TestConfig.TEST_PASSWORD,
-                Constants.HOME_URL
+                AppConstants.HOME_URL
         );
         return uniqueEmail;
     }
@@ -83,7 +83,8 @@ public class BaseTest {
     }
 
     protected void loginAsUserAndLandOnHome(LoginPage loginPage, String email, String password) {
-        loginPage.navigateTo();
+        driver.get(AppConstants.HOME_URL);
+        loginPage.navbar().clickLoginAndWaitForRedirect();
         loginPage.loginAndExpectSuccess(email, password);
     }
 

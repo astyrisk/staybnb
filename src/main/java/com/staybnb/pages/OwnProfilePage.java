@@ -4,14 +4,14 @@ import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class OwnProfilePage extends BasePage {
-    private static final String PAGE_URL = Constants.PROFILE_URL;
+    private static final String PAGE_URL = AppConstants.PROFILE_URL;
     private static final String AUTH_ME_API_JS_RESOURCE = "com/staybnb/scripts/getAuthMeApi.js";
     private static final String AUTH_ME_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/getAuthMeStatusApi.js";
     private static final String BECOME_HOST_API_JS_RESOURCE = "com/staybnb/scripts/becomeHostApi.js";
@@ -29,6 +29,11 @@ public class OwnProfilePage extends BasePage {
 
     public void navigateTo() {
         super.navigateTo(PAGE_URL);
+        waitForProfileToLoad();
+    }
+
+    public void navigateViaNavbar() {
+        navbar().clickProfileAndWaitForRedirect();
         waitForProfileToLoad();
     }
 
@@ -78,20 +83,20 @@ public class OwnProfilePage extends BasePage {
 
     public String getAuthMeApiResponse() {
         // Ensure we're on the app origin so the relative `/api/...` endpoint resolves correctly.
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(AUTH_ME_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG);
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG);
         return (String) response;
     }
 
     public long getAuthMeApiStatusLoggedOut() {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(AUTH_ME_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG);
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }
@@ -100,19 +105,19 @@ public class OwnProfilePage extends BasePage {
     }
 
     public String becomeHostViaApi(String payloadJson) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(BECOME_HOST_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, payloadJson);
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJson);
         return (String) response;
     }
 
     public long becomeHostStatusLoggedOut() {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(BECOME_HOST_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG);
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }

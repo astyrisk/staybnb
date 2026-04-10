@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -34,11 +34,11 @@ public class DeletePropertyPage extends BasePage {
     }
 
     public void navigateToEditPage(String propertyId) {
-        super.navigateTo(Constants.HOSTING_URL + "/" + propertyId + "/edit");
+        super.navigateTo(AppConstants.HOSTING_URL + "/" + propertyId + "/edit");
     }
 
     public void navigateToHostingDashboard() {
-        super.navigateTo(Constants.HOSTING_URL);
+        super.navigateTo(AppConstants.HOSTING_URL);
     }
 
     public boolean isDeleteButtonVisibleOnEditPage() {
@@ -91,10 +91,10 @@ public class DeletePropertyPage extends BasePage {
     }
 
     public long deletePropertyStatusViaApi(String propertyId) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(DELETE_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG, propertyId);
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, propertyId);
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }
@@ -103,10 +103,10 @@ public class DeletePropertyPage extends BasePage {
     }
 
     public String createPropertyViaApi(String payloadJson) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(CREATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, payloadJsonToObject(js, payloadJson));
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
         return (String) response;
     }
 

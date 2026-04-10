@@ -1,7 +1,7 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class CreatePropertyPage extends BasePage {
     private static final Logger log = LogManager.getLogger(CreatePropertyPage.class);
-    private static final String PAGE_URL = Constants.HOSTING_CREATE_URL;
+    private static final String PAGE_URL = AppConstants.HOSTING_CREATE_URL;
     private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
     private static final String CREATE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyStatusApi.js";
 
@@ -467,11 +467,11 @@ public class CreatePropertyPage extends BasePage {
     public long createPropertyStatusViaApi(String payloadJson) {
         log.debug("createPropertyStatusViaApi payload: {}", payloadJson);
 
-//        driver.get(Constants.HOME_URL);
+//        driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(CREATE_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG, payloadJsonToObject(js, payloadJson));
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }
@@ -480,10 +480,10 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public String createPropertyViaApi(String payloadJson) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(CREATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, payloadJsonToObject(js, payloadJson));
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
         return (String) response;
     }
 

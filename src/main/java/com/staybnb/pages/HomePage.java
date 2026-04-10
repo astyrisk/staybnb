@@ -10,10 +10,10 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 
 public class HomePage extends BasePage {
-    private final String PAGE_URL = Constants.HOME_URL;
+    private final String PAGE_URL = AppConstants.HOME_URL;
 
     private By heroSection = Locators.Home.HERO_SECTION;
     private By heroHeadline = Locators.Home.HERO_HEADLINE;

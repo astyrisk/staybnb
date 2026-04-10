@@ -7,10 +7,10 @@ import org.openqa.selenium.WebElement;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 
 public class PropertyListingPage extends BasePage {
-    private final String PAGE_URL = Constants.PROPERTY_LISTING_URL;
+    private final String PAGE_URL = AppConstants.PROPERTY_LISTING_URL;
 
     private By propertyGrid = Locators.PropertyListing.PROPERTY_GRID;
     private By propertyCard = Locators.PropertyListing.PROPERTY_CARD;

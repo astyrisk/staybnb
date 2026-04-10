@@ -1,6 +1,6 @@
 package com.staybnb.pages;
 
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
@@ -17,10 +17,10 @@ public class ImageUploadPage extends BasePage {
     }
 
     public long uploadImageStatusViaApi(String base64, String fileName, String mimeType) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPLOAD_IMAGE_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG, base64, fileName, mimeType, true);
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, base64, fileName, mimeType, true);
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }
@@ -29,10 +29,10 @@ public class ImageUploadPage extends BasePage {
     }
 
     public long uploadImageStatusViaApiWithoutFile() {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPLOAD_IMAGE_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, Constants.SLUG, "", "", "", false);
+        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, "", "", "", false);
         if (responseStatus instanceof Number n) {
             return n.longValue();
         }
@@ -42,15 +42,15 @@ public class ImageUploadPage extends BasePage {
 
     public boolean isUploadResponseContainsUrl(String response) {
         String normalized = response == null ? "" : response.replaceAll("\\s+", "").toLowerCase();
-        String expectedPathPrefix = ("/uploads/t/" + Constants.SLUG + "/").toLowerCase();
+        String expectedPathPrefix = ("/uploads/t/" + AppConstants.SLUG + "/").toLowerCase();
         return normalized.contains("\"url\"") && normalized.contains(expectedPathPrefix);
     }
 
     public String uploadImageViaApi(String base64, String fileName, String mimeType) {
-        driver.get(Constants.HOME_URL);
+        driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = loadJavascriptResource(UPLOAD_IMAGE_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, Constants.SLUG, base64, fileName, mimeType, true);
+        Object response = js.executeAsyncScript(script, AppConstants.SLUG, base64, fileName, mimeType, true);
         return (String) response;
     }
 

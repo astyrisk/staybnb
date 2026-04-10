@@ -1,6 +1,6 @@
 package com.staybnb.components;
 
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,7 +16,7 @@ public abstract class BaseComponent {
 
     protected BaseComponent(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(Constants.MEDIUM_WAIT));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_WAIT));
     }
 
     protected WebElement waitForElementVisible(By locator) {

@@ -1,25 +1,7 @@
 package com.staybnb.data;
 
-import com.staybnb.config.AppConstants;
-
 public final class Constants {
     private Constants() {}
-
-    // Base URLs
-    public static final String SLUG = AppConstants.SLUG;
-    public static final String BASE_URL = AppConstants.BASE_URL;
-
-    // Page URLs
-    public static final String LOGIN_URL = AppConstants.LOGIN_URL;
-    public static final String REGISTER_URL = AppConstants.REGISTER_URL;
-    public static final String HOME_URL = AppConstants.HOME_URL;
-    public static final String PROFILE_URL = AppConstants.PROFILE_URL;
-    public static final String EDIT_PROFILE_URL = AppConstants.EDIT_PROFILE_URL;
-    public static final String HOSTING_URL = AppConstants.HOSTING_URL;
-    public static final String HOSTING_CREATE_URL = AppConstants.HOSTING_CREATE_URL;
-    public static final String PROPERTY_LISTING_URL = AppConstants.PROPERTY_LISTING_URL;
-    public static final String PROPERTY_DETAILS_BASE_URL = AppConstants.PROPERTY_DETAILS_BASE_URL;
-    public static final String OTHER_PROFILE_BASE_URL = AppConstants.OTHER_PROFILE_BASE_URL;
 
     // Invalid Credentials
     public static final String INVALID_EMAIL = "wronguser@gmail.com";
@@ -29,24 +11,23 @@ public final class Constants {
     public static final String DEFAULT_PASSWORD = "password123";
 
     // Common IDs
-    public static final String DEFAULT_PROPERTY_ID = "202";
+//    public static final String DEFAULT_PROPERTY_ID = "202";
+    public static final String DEFAULT_PROPERTY_ID = "1084";
     public static final String NON_EXISTENT_ID = "999999";
     // Property with 1–8 amenities (for Story 14 AC4). Must be published and accessible.
-    public static final String PROPERTY_WITH_FEW_AMENITIES_ID = "960";
+//    public static final String PROPERTY_WITH_FEW_AMENITIES_ID = "960";
+    public static final String PROPERTY_WITH_FEW_AMENITIES_ID = "1088";
     // Property with 0 amenities (for Story 14 AC5).
-    public static final String PROPERTY_WITH_NO_AMENITIES_ID = "959";
-    public static final String USER_ID_101 = "101";
-    public static final String USER_ID_102 = "102";
-
-    // Wait Durations
-    public static final int SHORT_WAIT = AppConstants.SHORT_WAIT;
-    public static final int MEDIUM_WAIT = AppConstants.MEDIUM_WAIT;
-    public static final int LONG_WAIT = AppConstants.LONG_WAIT;
+//    public static final String PROPERTY_WITH_NO_AMENITIES_ID = "959";
+    public static final String PROPERTY_WITH_NO_AMENITIES_ID = "1087";
+//    public static final String USER_ID_101 = "101";
+    public static final String USER_ID_101 = "2657";
+//    public static final String USER_ID_102 = "102";
+    public static final String USER_ID_102 = "2658";
 
     // Responsive Dimensions
     public static final int DESKTOP_WIDTH = 1200;
     public static final int TABLET_WIDTH = 768;
-    public static final int MOBILE_WIDTH = AppConstants.MOBILE_WIDTH;
     public static final int DEFAULT_HEIGHT = 800;
 
     // Test viewport dimensions (explicit sizes used in UI tests)
@@ -81,19 +62,19 @@ public final class Constants {
     }
 
     public static final class EditProperty {
-        public static final String EDITABLE_PROPERTY_ID = "960";
+        public static final String EDITABLE_PROPERTY_ID = "1088";
         public static final String NON_EXISTENT_PROPERTY_ID = "99999999";
         public static final String UPDATED_TITLE = "Automation Listing Updated";
     }
 
     public static final class DeleteProperty {
-        public static final String EDITABLE_PROPERTY_ID = "960";
+        public static final String EDITABLE_PROPERTY_ID = "1088";
         public static final String NON_EXISTENT_PROPERTY_ID = "99999999";
         public static final String CONFIRMATION_MESSAGE = "Are you sure you want to delete";
     }
 
     public static final class PublishProperty {
-        public static final String OWNED_PROPERTY_ID = "960";
+        public static final String OWNED_PROPERTY_ID = "1088";
         public static final String NON_EXISTENT_PROPERTY_ID = "99999999";
     }
 

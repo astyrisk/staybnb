@@ -1,6 +1,6 @@
 package com.staybnb.components;
 
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -108,22 +108,22 @@ public class Navbar extends BaseComponent {
 
     public void clickProfileAndWaitForRedirect() {
         clickProfile();
-        waitForUrlContains(Constants.PROFILE_URL);
+        waitForUrlContains(AppConstants.PROFILE_URL);
     }
 
     public void clickLogoutAndWaitForRedirectToHome() {
         clickLogout();
-        waitForUrlToBe(Constants.HOME_URL);
+        waitForUrlToBe(AppConstants.HOME_URL);
     }
 
     public void clickLoginAndWaitForRedirect() {
         clickLogin();
-        waitForUrlContains(Constants.LOGIN_URL);
+        waitForUrlContains(AppConstants.LOGIN_URL);
     }
 
     public void clickRegisterAndWaitForRedirect() {
         clickRegister();
-        waitForUrlContains(Constants.REGISTER_URL);
+        waitForUrlContains(AppConstants.REGISTER_URL);
     }
 
     public boolean isHamburgerMenuDisplayed() {
@@ -150,7 +150,7 @@ public class Navbar extends BaseComponent {
     }
 
     public void setMobileLayout() {
-        driver.manage().window().setSize(new Dimension(Constants.MOBILE_WIDTH, 812));
+        driver.manage().window().setSize(new Dimension(AppConstants.MOBILE_WIDTH, 812));
     }
 
     public void setDesktopLayout() {

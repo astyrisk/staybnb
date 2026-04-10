@@ -6,10 +6,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.staybnb.config.Constants;
+import com.staybnb.config.AppConstants;
 
 public class PropertyDetailsPage extends BasePage {
-    private final String BASE_URL = Constants.PROPERTY_DETAILS_BASE_URL;
+    private final String BASE_URL = AppConstants.PROPERTY_DETAILS_BASE_URL;
 
     private By detailTitle = Locators.PropertyDetails.DETAIL_TITLE;
     private By detailLocation = Locators.PropertyDetails.DETAIL_LOCATION;
