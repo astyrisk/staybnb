@@ -1,7 +1,7 @@
 package com.staybnb.tests.api;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
 import com.staybnb.pages.LoginPage;
@@ -51,7 +51,7 @@ public class DeletePropertyApiTest extends BaseTest {
     public void testDeletePropertyApiReturns403ForNonOwner() {
         new LogoutPage(driver).logoutAndWaitForTokenCleared();
         registerNewUserAndLandOnHome("testdeleteproperty");
-        long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
+        long status = deletePropertyPage.deletePropertyStatusViaApi(AppConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
 
         assertEquals(
                 403L,
@@ -63,7 +63,7 @@ public class DeletePropertyApiTest extends BaseTest {
     @Test
     @DisplayName("Delete property API returns 404 for a non-existent property ID")
     public void testDeletePropertyApiReturns404ForNonExistentPropertyId() {
-        long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.NON_EXISTENT_PROPERTY_ID);
+        long status = deletePropertyPage.deletePropertyStatusViaApi(AppConstants.NON_EXISTENT_PROPERTY_ID);
 
         assertEquals(
                 404L,
@@ -76,7 +76,7 @@ public class DeletePropertyApiTest extends BaseTest {
     @DisplayName("Delete property API returns 401 when not logged in")
     public void testDeletePropertyApiReturns401WhenLoggedOut() {
         deletePropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = deletePropertyPage.deletePropertyStatusViaApi(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
+        long status = deletePropertyPage.deletePropertyStatusViaApi(AppConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
 
         assertEquals(
                 401L,

@@ -1,7 +1,6 @@
 package com.staybnb.tests.ui;
 
 import com.staybnb.config.AppConstants;
-import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
@@ -100,7 +99,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 4 columns on large desktop")
     public void testGridColumnsOnDesktopLarge() {
-        driver.manage().window().setSize(new Dimension(Constants.WIDE_DESKTOP_WIDTH, Constants.WIDE_DESKTOP_HEIGHT));
+        driver.manage().window().setSize(new Dimension(AppConstants.WIDE_DESKTOP_WIDTH, AppConstants.WIDE_DESKTOP_HEIGHT));
         propertyListingPage.waitForGridColumns(4);
 
         assertEquals(
@@ -113,7 +112,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 3 columns on medium desktop")
     public void testGridColumnsOnDesktopMedium() {
-        driver.manage().window().setSize(new Dimension(Constants.MEDIUM_DESKTOP_WIDTH, Constants.MEDIUM_DESKTOP_HEIGHT));
+        driver.manage().window().setSize(new Dimension(AppConstants.MEDIUM_DESKTOP_WIDTH, AppConstants.MEDIUM_DESKTOP_HEIGHT));
         propertyListingPage.waitForGridColumns(3);
 
         assertEquals(
@@ -126,7 +125,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 2 columns on tablet viewport")
     public void testGridColumnsOnTablet() {
-        driver.manage().window().setSize(new Dimension(Constants.TABLET_TEST_WIDTH, Constants.TABLET_TEST_HEIGHT));
+        driver.manage().window().setSize(new Dimension(AppConstants.TABLET_TEST_WIDTH, AppConstants.TABLET_TEST_HEIGHT));
         propertyListingPage.waitForGridColumns(2);
 
         assertEquals(

@@ -4,7 +4,6 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.AppConstants;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PropertyDetailsPage;
-import com.staybnb.data.Constants;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -26,8 +25,6 @@ public class NavbarTest extends BaseTest {
     private LoginPage loginPage;
     private PropertyDetailsPage propertyDetailsPage;
 
-    private static final String PROPERTY_ID = Constants.DEFAULT_PROPERTY_ID;
-
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
@@ -36,7 +33,7 @@ public class NavbarTest extends BaseTest {
 
     private void loginAndNavigateToPropertyDetails() {
         loginAsTestUserAndLandOnHome(loginPage);
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
     }
 
     // --- Authenticated User Tests ---
@@ -122,7 +119,7 @@ public class NavbarTest extends BaseTest {
     @ParameterizedTest(name = "Visitor navbar condition: {0}")
     @MethodSource("provideVisitorNavbarVisibilityCases")
     public void testVisitorNavbarVisibility(String checkName) {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
 
         assertTrue(
                 propertyDetailsPage.navbar().isVisitorNavbarCheckMet(checkName),
@@ -133,7 +130,7 @@ public class NavbarTest extends BaseTest {
     @Test
     @DisplayName("Visitor: Clicking login link navigates to login page")
     public void testClickLoginLink() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
         propertyDetailsPage.navbar().clickLoginAndWaitForRedirect();
 
         assertTrue(isUrlContains(AppConstants.LOGIN_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_LOGIN_PAGE);
@@ -142,7 +139,7 @@ public class NavbarTest extends BaseTest {
     @Test
     @DisplayName("Visitor: Clicking register link navigates to register page")
     public void testClickRegisterLink() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
         propertyDetailsPage.navbar().clickRegisterAndWaitForRedirect();
 
         assertTrue(isUrlContains(AppConstants.REGISTER_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_REGISTER_PAGE);
@@ -151,7 +148,7 @@ public class NavbarTest extends BaseTest {
     @Test
     @DisplayName("Visitor: User dropdown is not displayed")
     public void testNavbarDropdownNotDisplayedVisitor() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
 
         assertFalse(propertyDetailsPage.navbar().isDropdownDisplayed(), ErrorMessages.NAVBAR_SHOULD_NOT_DISPLAY_DROPDOWN_FOR_VISITOR);
     }
@@ -159,7 +156,7 @@ public class NavbarTest extends BaseTest {
     @Test
     @DisplayName("Mobile Visitor: Hamburger menu is not displayed")
     public void testNavbarHamburgerMenuNotDisplayedOnMobileVisitor() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
         propertyDetailsPage.navbar().setMobileLayout();
 
         assertFalse(propertyDetailsPage.navbar().isHamburgerMenuDisplayed(), ErrorMessages.NAVBAR_HAMBURGER_MENU_SHOULD_NOT_BE_DISPLAYED_ON_MOBILE_VISITOR);
@@ -169,7 +166,7 @@ public class NavbarTest extends BaseTest {
     @Test
     @DisplayName("Mobile Visitor: Login link is visible in navbar")
     public void testNavbarLoginLinkDisplayedOnMobileVisitor() {
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
         propertyDetailsPage.navbar().setMobileLayout();
 
         assertTrue(propertyDetailsPage.navbar().isLoginLinkDisplayed(), ErrorMessages.NAVBAR_LOGIN_LINK_SHOULD_BE_VISIBLE_ON_MOBILE_VISITOR);

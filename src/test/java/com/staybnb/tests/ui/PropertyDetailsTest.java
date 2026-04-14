@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui;
 
 import com.staybnb.pages.PropertyDetailsPage;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -21,12 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("regression")
 public class PropertyDetailsTest extends BaseTest {
     private PropertyDetailsPage propertyDetailsPage;
-    private final String PROPERTY_ID = Constants.DEFAULT_PROPERTY_ID;
 
     @BeforeEach
     public void setup() {
         propertyDetailsPage = new PropertyDetailsPage(driver);
-        propertyDetailsPage.navigateTo(PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
     }
 
     @Test
@@ -130,7 +129,7 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     @DisplayName("Non-existent property shows 404 page")
     public void testNonExistentPropertyReturns404() {
-        propertyDetailsPage.navigateTo(Constants.NON_EXISTENT_ID);
+        propertyDetailsPage.navigateTo(AppConstants.NON_EXISTENT_ID);
 
         assertTrue(propertyDetailsPage.isPropertyNotFoundDisplayed());
     }

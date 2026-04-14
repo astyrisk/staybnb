@@ -1,7 +1,7 @@
 package com.staybnb.tests.api;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
 import com.staybnb.tests.BaseTest;
@@ -34,7 +34,7 @@ public class OtherUserApiTest extends BaseTest {
     @Test
     @DisplayName("View other user API response is not null")
     public void testApiViewOtherUserResponseNotNull() {
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(AppConstants.USER_ID_101);
 
         assertNotNull(jsonResponse, ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL);
     }
@@ -42,7 +42,7 @@ public class OtherUserApiTest extends BaseTest {
     @ParameterizedTest(name = "API response contains field: {0}")
     @MethodSource("provideExpectedApiFields")
     public void testApiViewOtherUserContainsField(String field) {
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(AppConstants.USER_ID_101);
 
         assertTrue(
                 jsonResponse.contains("\"" + field + "\""),
@@ -53,7 +53,7 @@ public class OtherUserApiTest extends BaseTest {
     @ParameterizedTest(name = "API response excludes field: {0}")
     @MethodSource("provideExcludedApiFields")
     public void testApiViewOtherUserDoesNotContainField(String field) {
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(Constants.USER_ID_101);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(AppConstants.USER_ID_101);
 
         assertFalse(
                 jsonResponse.contains("\"" + field + "\""),

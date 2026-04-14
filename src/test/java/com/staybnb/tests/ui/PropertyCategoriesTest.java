@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.pages.CreatePropertyPage;
 import com.staybnb.pages.HomePage;
 import com.staybnb.pages.LoginPage;
@@ -46,7 +46,7 @@ public class PropertyCategoriesTest extends BaseTest {
     @DisplayName("Property detail page shows category alongside property type")
     public void testPropertyDetailsShowsCategoryAlongsidePropertyType() {
         PropertyDetailsPage propertyDetailsPage = new PropertyDetailsPage(driver);
-        propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
 
         assertTrue(
                 propertyDetailsPage.getType().contains("·"),

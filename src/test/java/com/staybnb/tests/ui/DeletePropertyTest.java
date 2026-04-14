@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
 import com.staybnb.pages.LoginPage;
@@ -36,11 +36,11 @@ public class DeletePropertyTest extends BaseTest {
     @Test
     @DisplayName("Clicking delete on edit page shows confirmation modal")
     public void testDeleteFromEditPageShowsConfirmationModalMessage() {
-        deletePropertyPage.navigateToEditPage(Constants.DeleteProperty.EDITABLE_PROPERTY_ID);
+        deletePropertyPage.navigateToEditPage(AppConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
         deletePropertyPage.clickDeleteOnEditPage();
 
         assertTrue(
-                deletePropertyPage.hasDeleteConfirmationMessage(Constants.DeleteProperty.CONFIRMATION_MESSAGE),
+                deletePropertyPage.hasDeleteConfirmationMessage(AppConstants.DeleteProperty.CONFIRMATION_MESSAGE),
                 ErrorMessages.DELETE_PROPERTY_EDIT_PAGE_SHOULD_SHOW_CONFIRMATION_MODAL
         );
     }
@@ -52,7 +52,7 @@ public class DeletePropertyTest extends BaseTest {
         deletePropertyPage.clickFirstDashboardDelete();
 
         assertTrue(
-                deletePropertyPage.hasDeleteConfirmationMessage(Constants.DeleteProperty.CONFIRMATION_MESSAGE),
+                deletePropertyPage.hasDeleteConfirmationMessage(AppConstants.DeleteProperty.CONFIRMATION_MESSAGE),
                 ErrorMessages.DELETE_PROPERTY_DASHBOARD_SHOULD_SHOW_CONFIRMATION_MODAL
         );
     }

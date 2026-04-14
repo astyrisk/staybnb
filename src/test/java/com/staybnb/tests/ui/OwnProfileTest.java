@@ -3,7 +3,6 @@ package com.staybnb.tests.ui;
 import com.staybnb.config.AppConstants;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
-import com.staybnb.data.Constants;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -46,7 +45,7 @@ public class OwnProfileTest extends BaseTest {
     @DisplayName("Own profile shows correct full name")
     public void testOwnProfileFullName() {
         assertEquals(
-                Constants.OwnProfile.FULL_NAME,
+                AppConstants.OwnProfile.FULL_NAME,
                 ownProfilePage.getFullName(),
                 ErrorMessages.FULL_NAME_SHOULD_MATCH
         );
@@ -74,7 +73,7 @@ public class OwnProfileTest extends BaseTest {
     @DisplayName("Own profile shows correct phone number")
     public void testOwnProfilePhone() {
         assertEquals(
-                Constants.OwnProfile.PHONE,
+                AppConstants.OwnProfile.PHONE,
                 ownProfilePage.getPhone(),
                 ErrorMessages.PHONE_NUMBER_SHOULD_MATCH
         );

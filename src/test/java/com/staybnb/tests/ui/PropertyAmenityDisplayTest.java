@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -30,7 +30,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     @Test
     @DisplayName("Amenity items display both an icon and a label")
     public void testAmenitiesDisplayedWithIconAndLabel() {
-        propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
         assertTrue(
                 propertyDetailsPage.amenitiesHaveIconAndLabel(),
                 ErrorMessages.AMENITY_ITEMS_SHOULD_DISPLAY_ICON_AND_LABEL
@@ -40,7 +40,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     @Test
     @DisplayName("'Show All Amenities' button appears for properties with more than 8 amenities")
     public void testShowAllAmenitiesButtonAppearsForPropertyWithMoreThanEightAmenities() {
-        propertyDetailsPage.navigateTo(Constants.DEFAULT_PROPERTY_ID);
+        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
         assertTrue(
                 propertyDetailsPage.isShowAllAmenitiesButtonDisplayed(),
                 ErrorMessages.SHOW_ALL_AMENITIES_BUTTON_SHOULD_APPEAR_FOR_MORE_THAN_EIGHT_AMENITIES
@@ -50,7 +50,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     @Test
     @DisplayName("All amenities are visible without 'Show All' button for properties with few amenities")
     public void testAllAmenitiesVisibleWithoutShowAllButtonForPropertyWithFewAmenities() {
-        propertyDetailsPage.navigateTo(Constants.PROPERTY_WITH_FEW_AMENITIES_ID);
+        propertyDetailsPage.navigateTo(AppConstants.PROPERTY_WITH_FEW_AMENITIES_ID);
         assertTrue(
                 propertyDetailsPage.getDisplayedAmenityCount() > 0
                         && !propertyDetailsPage.isShowAllAmenitiesButtonDisplayed(),
@@ -61,7 +61,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     @Test
     @DisplayName("Amenities section is hidden for a property with no amenities")
     public void testAmenitiesSectionIsHiddenForPropertyWithNoAmenities() {
-        propertyDetailsPage.navigateTo(Constants.PROPERTY_WITH_NO_AMENITIES_ID);
+        propertyDetailsPage.navigateTo(AppConstants.PROPERTY_WITH_NO_AMENITIES_ID);
         assertFalse(
                 propertyDetailsPage.isAmenitiesSectionPresent(),
                 ErrorMessages.AMENITIES_SECTION_SHOULD_BE_HIDDEN_FOR_PROPERTY_WITH_NO_AMENITIES

@@ -1,5 +1,7 @@
 package com.staybnb.data;
 
+import com.staybnb.config.AppConstants;
+
 public final class PropertyPayloads {
     private PropertyPayloads() {}
 
@@ -53,7 +55,7 @@ public final class PropertyPayloads {
 
     public static String validEditPayloadJson() {
         return "{"
-                + "\"title\":\"" + Constants.EditProperty.UPDATED_TITLE + "\","
+                + "\"title\":\"" + AppConstants.EditProperty.UPDATED_TITLE + "\","
                 + "\"description\":\"Automation flow for edit property.\","
                 + "\"locationCity\":\"Kabul\","
                 + "\"locationCountry\":\"Afghanistan\","

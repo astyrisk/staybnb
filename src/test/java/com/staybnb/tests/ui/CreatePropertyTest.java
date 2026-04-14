@@ -11,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic("Property Management")
 @Feature("Create Property")
 @Tag("regression")
-@Execution(ExecutionMode.SAME_THREAD)
 public class CreatePropertyTest extends BaseTest {
     private CreatePropertyPage createPropertyPage;
 

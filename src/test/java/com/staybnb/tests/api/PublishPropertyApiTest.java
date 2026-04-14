@@ -1,7 +1,7 @@
 package com.staybnb.tests.api;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
@@ -52,7 +52,7 @@ public class PublishPropertyApiTest extends BaseTest {
     public void testPublishPropertyApiReturns403ForNonOwner() {
         new LogoutPage(driver).logoutAndWaitForTokenCleared();
         registerNewUserAndLandOnHome("testpublishproperty");
-        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(Constants.PublishProperty.OWNED_PROPERTY_ID, true);
+        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(AppConstants.PublishProperty.OWNED_PROPERTY_ID, true);
 
         assertEquals(
                 403L,
@@ -64,7 +64,7 @@ public class PublishPropertyApiTest extends BaseTest {
     @Test
     @DisplayName("Publish property API returns 404 for a non-existent property ID")
     public void testPublishPropertyApiReturns404ForNonExistentPropertyId() {
-        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(Constants.PublishProperty.NON_EXISTENT_PROPERTY_ID, true);
+        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(AppConstants.NON_EXISTENT_PROPERTY_ID, true);
 
         assertEquals(
                 404L,
@@ -77,7 +77,7 @@ public class PublishPropertyApiTest extends BaseTest {
     @DisplayName("Publish property API returns 401 when not logged in")
     public void testPublishPropertyApiReturns401WhenLoggedOut() {
         publishPropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(Constants.PublishProperty.OWNED_PROPERTY_ID, true);
+        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(AppConstants.PublishProperty.OWNED_PROPERTY_ID, true);
 
         assertEquals(
                 401L,

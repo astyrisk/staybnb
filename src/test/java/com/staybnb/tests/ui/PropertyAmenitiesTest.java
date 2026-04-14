@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.pages.EditPropertyPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
@@ -12,8 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -22,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Epic("Properties")
 @Feature("Property Amenities")
 @Tag("regression")
-@Execution(ExecutionMode.SAME_THREAD)
 @ResourceLock("property-1088")
 public class PropertyAmenitiesTest extends BaseTest {
     private LoginPage loginPage;
@@ -37,7 +34,7 @@ public class PropertyAmenitiesTest extends BaseTest {
     }
 
     private void openEditPage() {
-        editPropertyPage.navigateTo(Constants.EditProperty.EDITABLE_PROPERTY_ID);
+        editPropertyPage.navigateTo(AppConstants.EditProperty.EDITABLE_PROPERTY_ID);
         editPropertyPage.waitForSectionsToBeVisible();
     }
 
@@ -70,7 +67,7 @@ public class PropertyAmenitiesTest extends BaseTest {
         editPropertyPage.toggleAmenityByLabelContaining("Air Conditioning");
         editPropertyPage.clickSaveChangesAndDismissAlert();
         airConditioningModified = true;
-        editPropertyPage.navigateTo(Constants.EditProperty.EDITABLE_PROPERTY_ID);
+        editPropertyPage.navigateTo(AppConstants.EditProperty.EDITABLE_PROPERTY_ID);
         editPropertyPage.waitForSectionsToBeVisible();
 
         assertFalse(
@@ -82,7 +79,7 @@ public class PropertyAmenitiesTest extends BaseTest {
     @AfterEach
     public void restoreAmenities() {
         if (airConditioningModified) {
-            editPropertyPage.navigateTo(Constants.EditProperty.EDITABLE_PROPERTY_ID);
+            editPropertyPage.navigateTo(AppConstants.EditProperty.EDITABLE_PROPERTY_ID);
             editPropertyPage.waitForSectionsToBeVisible();
             if (!editPropertyPage.isAmenityCheckedByLabelContaining("Air Conditioning")) {
                 editPropertyPage.toggleAmenityByLabelContaining("Air Conditioning");

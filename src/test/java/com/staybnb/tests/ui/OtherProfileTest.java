@@ -2,7 +2,7 @@ package com.staybnb.tests.ui;
 
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
-import com.staybnb.data.Constants;
+import com.staybnb.config.AppConstants;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -28,11 +28,11 @@ public class OtherProfileTest extends BaseTest {
     }
 
     private void navigateToUser101() {
-        otherProfilePage.navigateTo(Constants.USER_ID_101);
+        otherProfilePage.navigateTo(AppConstants.USER_ID_101);
     }
 
     private void navigateToUser102() {
-        otherProfilePage.navigateTo(Constants.USER_ID_102);
+        otherProfilePage.navigateTo(AppConstants.USER_ID_102);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class OtherProfileTest extends BaseTest {
     @Test
     @DisplayName("Non-existent user profile shows 404")
     public void testNonExistentUserProfile() {
-        otherProfilePage.navigateTo(Constants.NON_EXISTENT_ID);
+        otherProfilePage.navigateTo(AppConstants.NON_EXISTENT_ID);
         assertTrue(otherProfilePage.is404Displayed(), ErrorMessages.PAGE_SHOULD_INDICATE_404_FOR_NON_EXISTENT_USER);
     }
 }
