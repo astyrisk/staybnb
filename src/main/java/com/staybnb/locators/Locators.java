@@ -48,7 +48,7 @@ public final class Locators {
         // Host / Hosting
         // In the UI, this can be either a <button> or <a>, but it consistently uses the same class.
         public static final By BECOME_A_HOST = By.xpath("//*[contains(@class,'navbar-host-link') and normalize-space()='Become a Host']");
-        public static final By MY_PROPERTIES = By.xpath("//*[contains(@class,'navbar-host-link') and normalize-space()='My Properties']");
+        public static final By HOST_DASHBOARD = By.xpath("//div[@class='navbar-dropdown']//a[normalize-space()='Host Dashboard']");
 
         public static final By DROPDOWN_MENU = By.className("navbar-dropdown");
         public static final By PROFILE_LINK = By.xpath("//div[@class='navbar-dropdown']//a[contains(@href, '/profile')]");

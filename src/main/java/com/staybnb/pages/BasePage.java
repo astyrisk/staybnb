@@ -29,7 +29,7 @@ public abstract class BasePage extends BaseComponent {
     }
 
     protected void type(By locator, String text) {
-        WebElement element = driver.findElement(locator);
+        WebElement element = waitForElementVisible(locator);
         element.clear();
         element.sendKeys(text);
     }

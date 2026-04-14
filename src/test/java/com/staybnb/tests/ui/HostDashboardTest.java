@@ -31,12 +31,8 @@ public class HostDashboardTest extends BaseTest {
         loginAsTestUserAndLandOnHome(loginPage);
     }
 
-    private void navigateToDashboard() {
-        hostDashboardPage.navigateViaNavbar();
-    }
-
     private WebElement getFirstPropertyCardForExistingHost() {
-        navigateToDashboard();
+        hostDashboardPage.navigateViaNavbar();
         if (hostDashboardPage.getPropertyCards().isEmpty()) {
             throw new IllegalStateException("Host account has no properties to validate dashboard cards.");
         }
@@ -46,7 +42,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("Host dashboard shows property cards for a host with properties")
     public void testHostDashboardShowsPropertyCardsForHostWithProperties() {
-        navigateToDashboard();
+        hostDashboardPage.navigateViaNavbar();
 
         assertFalse(
                 hostDashboardPage.getPropertyCards().isEmpty(),
@@ -68,7 +64,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("Host dashboard summary shows total properties count")
     public void testHostDashboardShowsSummaryCount() {
-        navigateToDashboard();
+        hostDashboardPage.navigateViaNavbar();
         String subtitle = hostDashboardPage.getSummarySubtitle().toLowerCase();
 
         assertTrue(
@@ -80,7 +76,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("Host dashboard shows 'Create New Property' button")
     public void testHostDashboardShowsCreateNewPropertyButton() {
-        navigateToDashboard();
+        hostDashboardPage.navigateViaNavbar();
 
         assertTrue(
                 hostDashboardPage.isCreateNewPropertyButtonVisible(),
@@ -91,7 +87,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("'Create New Property' button links to the create property page")
     public void testHostDashboardCreateNewPropertyButtonLinksToCreatePage() {
-        navigateToDashboard();
+        hostDashboardPage.navigateViaNavbar();
 
         assertTrue(
                 hostDashboardPage.getCreateNewPropertyHref().endsWith("/hosting/create"),
@@ -113,6 +109,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("Host dashboard shows empty state for a host with no properties")
     public void testHostDashboardEmptyStateVisibleForHostWithNoProperties() {
+        hostDashboardPage.navbar().clickLogoutAndWaitForRedirectToHome();
         registerNewUserAndLandOnHome("testhosting");
         hostDashboardPage.navbar().clickBecomeAHost();
         hostDashboardPage.navigateViaNavbar();

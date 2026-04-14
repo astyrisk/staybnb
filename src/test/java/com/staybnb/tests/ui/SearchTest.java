@@ -87,6 +87,7 @@ public class SearchTest extends BaseTest {
         );
     }
 
+    //fails
     @Test
     @DisplayName("Mobile: Compact search bar is visible in the navbar")
     @Tag("mobile")

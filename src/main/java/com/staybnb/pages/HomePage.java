@@ -78,7 +78,6 @@ public class HomePage extends BasePage {
         By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][text()[normalize-space()='" + expected + "']]");
 
         waitForElementClickable(chip).click();
-        waitForActiveCategoryToBe(expected);
     }
 
     public String getActiveCategoryName() {

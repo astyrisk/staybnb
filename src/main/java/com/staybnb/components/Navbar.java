@@ -17,7 +17,7 @@ public class Navbar extends BaseComponent {
     private final By registerLink = Locators.Navbar.REGISTER_LINK;
 
     private final By becomeAHost = Locators.Navbar.BECOME_A_HOST;
-    private final By myProperties = Locators.Navbar.MY_PROPERTIES;
+    private final By hostDashboard = Locators.Navbar.HOST_DASHBOARD;
 
     private final By dropdownMenu = Locators.Navbar.DROPDOWN_MENU;
     private final By profileLink = Locators.Navbar.PROFILE_LINK;
@@ -60,16 +60,17 @@ public class Navbar extends BaseComponent {
         return isDisplayed(becomeAHost);
     }
 
-    public boolean isMyPropertiesDisplayed() {
-        return isDisplayed(myProperties);
+    public boolean isHostDashboardDisplayed() {
+        return isDisplayed(hostDashboard);
     }
 
     public void clickBecomeAHost() {
         waitForElementClickable(becomeAHost).click();
     }
 
-    public void clickMyProperties() {
-        waitForElementClickable(myProperties).click();
+    public void clickHostDashboard() {
+        openUserMenu();
+        waitForElementClickable(hostDashboard).click();
     }
 
     public void clickLogin() {

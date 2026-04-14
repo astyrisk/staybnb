@@ -46,8 +46,8 @@ public class BecomeHostTest extends BaseTest {
         registerNewUserAndLandOnHome("testhost");
 
         assertFalse(
-                ownProfilePage.navbar().isMyPropertiesDisplayed(),
-                ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER
+                ownProfilePage.navbar().isHostDashboardDisplayed(),
+                ErrorMessages.NAVBAR_HOST_DASHBOARD_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER
         );
     }
 
@@ -57,15 +57,15 @@ public class BecomeHostTest extends BaseTest {
         driver.get(AppConstants.HOME_URL);
     }
 
-    // 'My properties' doesn't exist
+    // fails: 'My properties' doesn't exist
     @Test
     @DisplayName("Navbar shows 'My Properties' after becoming a host")
     public void testNavbarShowsMyPropertiesAfterBecomingHost() {
         becomeHostAsNewUser();
 
         assertTrue(
-                ownProfilePage.navbar().isMyPropertiesDisplayed(),
-                ErrorMessages.NAVBAR_MY_PROPERTIES_SHOULD_BE_VISIBLE_FOR_HOST_USER
+                ownProfilePage.navbar().isHostDashboardDisplayed(),
+                ErrorMessages.NAVBAR_HOST_DASHBOARD_SHOULD_BE_VISIBLE_FOR_HOST_USER
         );
     }
 

@@ -33,7 +33,7 @@ public class HostDashboardPage extends BasePage {
     }
 
     public void navigateViaNavbar() {
-        navbar().clickMyProperties();
+        navbar().clickHostDashboard();
         waitForUrlContains(PAGE_URL);
         waitForDashboardToLoad();
     }
@@ -51,7 +51,7 @@ public class HostDashboardPage extends BasePage {
     }
 
     public List<WebElement> getPropertyCards() {
-        return driver.findElements(propertyCard);
+        return waitForElementsPresent(propertyCard);
     }
 
     public boolean hasThumbnail(WebElement card) {

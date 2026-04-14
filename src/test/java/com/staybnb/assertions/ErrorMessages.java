@@ -176,9 +176,9 @@ public final class ErrorMessages {
     // --- Become Host (hosting enablement) messages ---
     public static final String NAVBAR_BECOME_HOST_SHOULD_BE_VISIBLE_FOR_GUEST_USER =
             "Become a Host should be visible for a non-host authenticated user.";
-    public static final String NAVBAR_MY_PROPERTIES_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER =
+    public static final String NAVBAR_HOST_DASHBOARD_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER =
             "My Properties should not be visible for a non-host authenticated user.";
-    public static final String NAVBAR_MY_PROPERTIES_SHOULD_BE_VISIBLE_FOR_HOST_USER =
+    public static final String NAVBAR_HOST_DASHBOARD_SHOULD_BE_VISIBLE_FOR_HOST_USER =
             "My Properties should be visible for a host user.";
     public static final String NAVBAR_BECOME_HOST_SHOULD_NOT_BE_VISIBLE_FOR_HOST_USER =
             "Become a Host should not be visible for a host user.";

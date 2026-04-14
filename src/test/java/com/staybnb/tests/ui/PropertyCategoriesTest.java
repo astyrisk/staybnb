@@ -41,6 +41,7 @@ public class PropertyCategoriesTest extends BaseTest {
         );
     }
 
+    // fails
     @Test
     @DisplayName("Property detail page shows category alongside property type")
     public void testPropertyDetailsShowsCategoryAlongsidePropertyType() {
@@ -53,6 +54,7 @@ public class PropertyCategoriesTest extends BaseTest {
         );
     }
 
+    // fails on automation-abdelbary
     @Test
     @DisplayName("Selecting a category chip marks it as active")
     public void testSelectingCategoryMarksChipAsActive() {
@@ -69,6 +71,7 @@ public class PropertyCategoriesTest extends BaseTest {
     @DisplayName("Selecting a category filters the property grid")
     public void testSelectingCategoryFiltersPropertyGrid() {
         homePage.clickCategoryByName("Bungalow");
+
         homePage.waitForPropertiesCountToContain("Showing 1 of 1");
 
         assertTrue(

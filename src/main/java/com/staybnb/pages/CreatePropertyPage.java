@@ -75,40 +75,41 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean isStep1BasicsLoaded() {
-        return isDisplayed(step1PropertyTypeSelect)
-                && isDisplayed(step1CategorySelect)
+        waitForElementVisible(step1PropertyTypeSelect);
+        return isDisplayed(step1CategorySelect)
                 && isDisplayed(step1TitleInput)
                 && isDisplayed(step1DescriptionTextarea);
     }
 
     public boolean isStep2LocationLoaded() {
-        return isDisplayed(step2CountryInput)
-                && isDisplayed(step2CityInput)
+        waitForElementVisible(step2CountryInput);
+        return isDisplayed(step2CityInput)
                 && isDisplayed(step2AddressInput);
     }
 
     public boolean isStep3DetailsLoaded() {
-        return isDisplayed(step3MaxGuestsInput)
-                && isDisplayed(step3BedroomsInput)
+        waitForElementVisible(step3MaxGuestsInput);
+        return isDisplayed(step3BedroomsInput)
                 && isDisplayed(step3BedsInput)
                 && isDisplayed(step3BathroomsInput);
     }
 
     public boolean isStep4AmenitiesLoaded() {
-        return isDisplayed(step4AmenitiesTitle)
-                && isDisplayed(step4AmenitiesGrid)
-                && !driver.findElements(step4AmenityCheckboxes).isEmpty();
+        waitForElementVisible(step4AmenitiesTitle);
+        return isDisplayed(step4AmenitiesGrid)
+                && !waitForElementsPresent(step4AmenityCheckboxes).isEmpty();
     }
 
     public boolean isStep5PhotosLoaded() {
-        return isDisplayed(step5PhotosTitle);
+        waitForElementVisible(step5PhotosTitle);
+        return true;
     }
 
     public boolean step5HasUploadAreaSupportingDropOrBrowse() {
         String dropzoneText = waitForElementVisible(step5UploadDropzone).getText().toLowerCase();
         String uploadText = waitForElementVisible(step5UploadText).getText().toLowerCase();
 
-        WebElement input = driver.findElement(step5UploadFileInput);
+        WebElement input = waitForElementsPresent(step5UploadFileInput).get(0);
         String accepts = input.getAttribute("accept");
 
         return accepts != null
@@ -121,12 +122,25 @@ public class CreatePropertyPage extends BasePage {
         return waitForElementVisible(progressText).getText().trim();
     }
 
+    public int getCurrentStep() {
+        String text = getProgressText(); // e.g. "Step 3 of 7"
+        try {
+            return Integer.parseInt(text.split("\\s+")[1]);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
     public void clickNext() {
+        int currentStep = getCurrentStep();
         waitForElementClickable(nextButton).click();
+        wait.until(d -> getCurrentStep() > currentStep || !d.findElements(fieldErrors).isEmpty());
     }
 
     public void clickBack() {
+        int currentStep = getCurrentStep();
         waitForElementClickable(backButton).click();
+        wait.until(d -> getCurrentStep() < currentStep);
     }
 
     public void selectPropertyTypeByVisibleText(String text) {
@@ -134,12 +148,13 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void selectCategoryByIndex(int index) {
-        new Select(waitForElementVisible(step1CategorySelect)).selectByIndex(index);
+        wait.until(d -> new Select(waitForElementVisible(step1CategorySelect)).getOptions().size() > index);
+        new Select(driver.findElement(step1CategorySelect)).selectByIndex(index);
     }
 
     public int getCategoryDropdownOptionCount() {
-        Select select = new Select(waitForElementVisible(step1CategorySelect));
-        return select.getOptions().size();
+        wait.until(d -> new Select(waitForElementVisible(step1CategorySelect)).getOptions().size() > 1);
+        return new Select(driver.findElement(step1CategorySelect)).getOptions().size();
     }
 
     public void enterTitle(String title) {
@@ -210,8 +225,8 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean hasAtLeastNImagePreviews(int minimumCount) {
-        waitForElementVisible(step5UploadDropzone);
-        return driver.findElements(step5ImagePreviews).size() >= minimumCount;
+        wait.until(d -> d.findElements(step5ImagePreviews).size() >= minimumCount);
+        return true;
     }
 
     public int getUploadedImagePreviewCount() {
@@ -220,6 +235,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean uploadedImagesShowSortHandleAndDelete() {
+        waitForElementsPresent(step5ImagePreviews);
         return !driver.findElements(step5ImageMoveUpButtons).isEmpty()
                 && !driver.findElements(step5ImageMoveDownButtons).isEmpty()
                 && !driver.findElements(step5ImageDeleteButtons).isEmpty();
@@ -306,7 +322,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean firstUploadedImageIsMarkedPrimaryOrCover() {
-        List<WebElement> previewItems = driver.findElements(step5ImagePreviews);
+        List<WebElement> previewItems = waitForElementsPresent(step5ImagePreviews);
         if (previewItems.isEmpty()) {
             return false;
         }
@@ -330,7 +346,8 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean isStep6PricingLoaded() {
-        return isDisplayed(step6PricingTitle) && isDisplayed(step6PriceInput);
+        waitForElementVisible(step6PricingTitle);
+        return isDisplayed(step6PriceInput);
     }
 
     public boolean step6PriceInputUsesUsdLabel() {
@@ -351,12 +368,13 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean isStep7ReviewLoaded() {
-        return isDisplayed(step7ReviewTitle)
-                && !driver.findElements(step7ReviewSections).isEmpty()
+        waitForElementVisible(step7ReviewTitle);
+        return !waitForElementsPresent(step7ReviewSections).isEmpty()
                 && isDisplayed(step7CreatePropertyButton);
     }
 
     public boolean reviewContainsAllStep1ToStep6Sections() {
+        waitForElementVisible(step7ReviewTitle);
         String page = driver.getPageSource().toLowerCase();
         return page.contains("type:")
                 && page.contains("category:")
@@ -389,9 +407,10 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean hasInlineErrorContaining(String expectedText) {
-        List<WebElement> errors = driver.findElements(fieldErrors);
         String expectedLower = expectedText.toLowerCase();
-        return errors.stream().anyMatch(el -> el.getText().toLowerCase().contains(expectedLower));
+        wait.until(d -> !d.findElements(fieldErrors).isEmpty());
+        return driver.findElements(fieldErrors).stream()
+                .anyMatch(el -> el.getText().toLowerCase().contains(expectedLower));
     }
 
     public boolean isStep1TitleValuePreserved(String expected) {
@@ -461,7 +480,12 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean pageShows403Error() {
-        return driver.getPageSource().contains("403");
+        try {
+            wait.until(d -> d.getPageSource().contains("403"));
+            return true;
+        } catch (org.openqa.selenium.TimeoutException e) {
+            return false;
+        }
     }
 
     public long createPropertyStatusViaApi(String payloadJson) {

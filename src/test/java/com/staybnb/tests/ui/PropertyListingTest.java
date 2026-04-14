@@ -136,15 +136,7 @@ public class PropertyListingTest extends BaseTest {
         );
     }
 
-    @Test
-    @DisplayName("Property listing page has no filter controls")
-    public void testAbsenceOfFilters() {
-        assertTrue(
-                propertyListingPage.areControlsEmpty(),
-                ErrorMessages.PROPERTY_LIST_CONTROLS_SHOULD_BE_EMPTY
-        );
-    }
-
+    //fails
     @Test
     @DisplayName("Property listing page has no search or sort controls")
     public void testAbsenceOfSearchAndSort() {

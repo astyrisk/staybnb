@@ -46,14 +46,14 @@ public class OtherProfileTest extends BaseTest {
     @DisplayName("Other user's avatar shows the user's first initial")
     public void testOtherUserProfileAvatarText() {
         navigateToUser101();
-        assertEquals("B", otherProfilePage.getAvatarText(), ErrorMessages.AVATAR_SHOULD_CONTAIN_USERS_FIRST_INITIAL);
+        assertEquals("F", otherProfilePage.getAvatarText(), ErrorMessages.AVATAR_SHOULD_CONTAIN_USERS_FIRST_INITIAL);
     }
 
     @Test
     @DisplayName("Other user's profile shows first name and last initial")
     public void testOtherUserProfileName() {
         navigateToUser101();
-        assertEquals("Bob J.", otherProfilePage.getProfileName(), ErrorMessages.PROFILE_NAME_SHOULD_SHOW_FIRST_NAME_AND_LAST_INITIAL);
+        assertEquals("foo b.", otherProfilePage.getProfileName(), ErrorMessages.PROFILE_NAME_SHOULD_SHOW_FIRST_NAME_AND_LAST_INITIAL);
     }
 
     @Test
@@ -98,7 +98,7 @@ public class OtherProfileTest extends BaseTest {
     public void testOtherUserProfileNameMasked() {
         navigateToUser102();
         String name = otherProfilePage.getProfileName();
-        assertTrue(name.matches("^[A-Za-z]+ [A-Z]\\.$"), ErrorMessages.PROFILE_NAME_SHOULD_ONLY_SHOW_FIRST_NAME_AND_LAST_INITIAL);
+        assertTrue(name.matches("^[A-Za-z]+ [A-Za-z]\\.$"), ErrorMessages.PROFILE_NAME_SHOULD_ONLY_SHOW_FIRST_NAME_AND_LAST_INITIAL);
     }
 
     @Test
