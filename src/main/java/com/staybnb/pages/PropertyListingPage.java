@@ -20,8 +20,6 @@ public class PropertyListingPage extends BasePage {
     private final By cardTitle = Locators.PropertyListing.CARD_TITLE;
     private final By cardLocation = Locators.PropertyListing.CARD_LOCATION;
     private final By cardPrice = Locators.PropertyListing.CARD_PRICE;
-    private final By cardRating = Locators.PropertyListing.CARD_RATING;
-    private final By propertyListControls = Locators.PropertyListing.PROPERTY_LIST_CONTROLS;
 
     private final By searchInput = Locators.PropertyListing.SEARCH_INPUT;
     private final By filterButtons = Locators.PropertyListing.FILTER_BUTTONS;
@@ -56,10 +54,6 @@ public class PropertyListingPage extends BasePage {
 
     public String getPrice(WebElement card) {
         return card.findElement(cardPrice).getText();
-    }
-
-    public boolean hasRating(WebElement card) {
-        return !card.findElements(cardRating).isEmpty();
     }
 
     public void clickPropertyCard(WebElement card) {
