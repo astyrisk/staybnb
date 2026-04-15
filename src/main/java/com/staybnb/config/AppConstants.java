@@ -84,12 +84,52 @@ public final class AppConstants {
         public static final String OWNED_PROPERTY_ID = PROPERTY_WITH_FEW_AMENITIES_ID;
     }
 
+    // ── Property Type & Category Filter ──────────────────────────────────────
+    public static final class TypeCategoryFilter {
+        // Property type radio values (match the HTML input value attributes)
+        public static final String ENTIRE_PLACE = "ENTIRE_PLACE";
+        public static final String PRIVATE_ROOM = "PRIVATE_ROOM";
+        public static final String SHARED_ROOM  = "SHARED_ROOM";
+
+        // A type guaranteed to yield results in the test environment
+        public static final String KNOWN_TYPE = ENTIRE_PLACE;
+
+        // Bungalow is known to have exactly 1 published property in the test environment
+        public static final String KNOWN_CATEGORY_ID   = "90";
+        public static final String KNOWN_CATEGORY_NAME = "Bungalow";
+    }
+
+    // ── Price Filter ──────────────────────────────────────────────────────────
+    public static final class PriceFilter {
+        // Range that includes $120 test properties (all automation properties are priced at $120/night)
+        public static final int KNOWN_MIN_PRICE = 50;
+        public static final int KNOWN_MAX_PRICE = 150;
+        // Range guaranteed to match no properties in the test environment
+        public static final int NO_MATCH_MIN_PRICE = 9999;
+        public static final int NO_MATCH_MAX_PRICE = 99999;
+    }
+
     // ── Search ────────────────────────────────────────────────────────────────
     public static final class Search {
         // A city known to have at least one property in the test environment
         public static final String KNOWN_CITY   = "Zermatt";
         // A city confirmed to return zero results in the test environment
         public static final String UNKNOWN_CITY = "cairo";
+
+        // Guest count used for guest-filter search tests
+        public static final int GUEST_COUNT = 2;
+
+        // Future check-in date (30 days from today), formatted as yyyy-MM-dd
+        public static String futureCheckInDate() {
+            return java.time.LocalDate.now().plusDays(30)
+                    .format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE);
+        }
+
+        // Future check-out date (37 days from today), formatted as yyyy-MM-dd
+        public static String futureCheckOutDate() {
+            return java.time.LocalDate.now().plusDays(37)
+                    .format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────

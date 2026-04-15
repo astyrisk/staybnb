@@ -2,6 +2,7 @@ package com.staybnb.config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,7 +27,11 @@ public final class DriverFactory {
         }
         WebDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(AppConstants.MEDIUM_WAIT));
-        driver.manage().window().maximize();
+        if (headless) {
+            driver.manage().window().setSize(new Dimension(AppConstants.WIDE_DESKTOP_WIDTH, AppConstants.WIDE_DESKTOP_HEIGHT));
+        } else {
+            driver.manage().window().maximize();
+        }
         driverThread.set(driver);
         log.debug("ChromeDriver created for thread [{}]", Thread.currentThread().getName());
         return driver;

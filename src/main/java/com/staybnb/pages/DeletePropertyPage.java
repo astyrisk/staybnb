@@ -84,7 +84,7 @@ public class DeletePropertyPage extends BasePage {
 
     public boolean isPropertyListedOnDashboard(String propertyTitle) {
         navigateToHostingDashboard();
-        wait.until(d -> d.findElements(By.cssSelector(".host-dashboard-grid, .host-dashboard-empty")).size() > 0);
+        wait.until(d -> !d.findElements(By.cssSelector(".host-dashboard-grid, .host-dashboard-empty")).isEmpty());
         return driver.findElements(dashboardPropertyTitle)
                 .stream()
                 .anyMatch(el -> propertyTitle.equals(el.getText().trim()));

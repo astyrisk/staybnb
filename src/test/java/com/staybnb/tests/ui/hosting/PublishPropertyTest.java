@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.PropertyPayloads;
@@ -17,12 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Publish Property")
 @Tag("regression")
 public class PublishPropertyTest extends BaseTest {
-    private LoginPage loginPage;
     private PublishPropertyPage publishPropertyPage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
         publishPropertyPage = new PublishPropertyPage(driver);
         loginAsTestUserAndLandOnHome(loginPage);
     }

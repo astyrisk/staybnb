@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.property;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.AppConstants;
@@ -22,13 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Tag("regression")
 @ResourceLock("property-1088")
 public class PropertyAmenitiesTest extends BaseTest {
-    private LoginPage loginPage;
     private EditPropertyPage editPropertyPage;
     private boolean airConditioningModified = false;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
         editPropertyPage = new EditPropertyPage(driver);
         loginAsTestUserAndLandOnHome(loginPage);
     }

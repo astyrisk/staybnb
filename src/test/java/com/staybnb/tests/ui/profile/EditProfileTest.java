@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.profile;
 
 import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.LoginPage;
@@ -25,13 +25,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("regression")
 @ResourceLock("test-user-profile")
 public class EditProfileTest extends BaseTest {
-    private LoginPage loginPage;
     private OwnProfilePage ownProfilePage;
     private EditProfilePage editProfilePage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
         ownProfilePage = new OwnProfilePage(driver);
         editProfilePage = new EditProfilePage(driver);
         loginAsTestUserAndLandOnHome(loginPage);

@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.auth;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.TestConfig;

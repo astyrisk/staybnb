@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.AppConstants;
@@ -62,6 +62,7 @@ public class EditPropertyTest extends BaseTest {
         );
     }
 
+    //TODO should be separated to two tests?
     @Test
     @DisplayName("Edit property page is a single-page form, not a wizard")
     public void testEditPropertyPageDoesNotUseCreateWizardFlow() {

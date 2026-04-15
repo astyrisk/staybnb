@@ -81,6 +81,16 @@ public final class Locators {
         public static final By EXPANDED_FORM = By.className("search-bar-expanded");
         public static final By DESTINATION_INPUT = By.cssSelector(".search-bar-field--destination input");
         public static final By SEARCH_SUBMIT_BTN = By.cssSelector(".search-bar-actions button[type='submit']");
+
+        public static final By CHECK_IN_INPUT = By.xpath(
+                "//div[contains(@class,'search-bar-field')][.//label[text()='Check in']]//input[@type='date']"
+        );
+        public static final By CHECK_OUT_INPUT = By.xpath(
+                "//div[contains(@class,'search-bar-field')][.//label[text()='Check out']]//input[@type='date']"
+        );
+        public static final By GUESTS_DISPLAY = By.cssSelector(".search-bar-guests span");
+        public static final By GUESTS_INCREMENT_BTN = By.cssSelector(".search-bar-guests button:last-child");
+        public static final By GUESTS_DECREMENT_BTN = By.cssSelector(".search-bar-guests button:first-child");
     }
 
     public static final class PropertyListing {
@@ -92,6 +102,7 @@ public final class Locators {
         public static final By CARD_TITLE = By.className("property-card-title");
         public static final By CARD_LOCATION = By.className("property-card-location");
         public static final By CARD_PRICE = By.className("property-card-price");
+        public static final By CARD_PRICE_AMOUNT = By.cssSelector(".property-card-price strong");
         public static final By CARD_RATING = By.className("property-card-rating");
         public static final By PROPERTY_LIST_CONTROLS = By.className("property-list-controls");
         public static final By EMPTY_STATE = By.className("empty-state");
@@ -100,6 +111,28 @@ public final class Locators {
         public static final By SEARCH_INPUT = By.cssSelector("input[type='search']");
         public static final By FILTER_BUTTONS = By.cssSelector("button.filter-btn");
         public static final By SORT_SELECT = By.tagName("select");
+    }
+
+    public static final class FilterSidebar {
+        private FilterSidebar() {}
+
+        public static final By PRICE_MIN_INPUT = By.xpath(
+                "//div[contains(@class,'filter-price-input')][.//label[text()='Min']]//input"
+        );
+        public static final By PRICE_MAX_INPUT = By.xpath(
+                "//div[contains(@class,'filter-price-input')][.//label[text()='Max']]//input"
+        );
+        public static final By ACTIVE_FILTERS_BADGE = By.cssSelector(".active-filters span");
+        public static final By CLEAR_ALL_FILTERS_BTN = By.cssSelector(".active-filters .btn-link");
+        public static final By SIDEBAR_CLEAR_BTN = By.className("filter-clear-btn");
+
+        public static final By PROPERTY_TYPE_RADIO_GROUP = By.className("filter-radio-group");
+        public static final By CATEGORY_SELECT = By.cssSelector("select.filter-select");
+
+        /** Returns a locator for the radio button matching the given propertyType value (e.g. "ENTIRE_PLACE"). */
+        public static By propertyTypeRadio(String value) {
+            return By.cssSelector("input[type='radio'][name='propertyType'][value='" + value + "']");
+        }
     }
 
     public static final class PropertyDetails {

@@ -2,8 +2,10 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -107,6 +109,41 @@ public class PropertyListingPage extends BasePage {
         waitForSearchResults();
     }
 
+    public void navigateToWithDates(String checkIn, String checkOut) {
+        super.navigateTo(PAGE_URL + "?checkIn=" + checkIn + "&checkOut=" + checkOut);
+        waitForSearchResults();
+    }
+
+    public void navigateToWithGuests(int guests) {
+        super.navigateTo(PAGE_URL + "?guests=" + guests);
+        waitForSearchResults();
+    }
+
+    public void navigateToWithPriceRange(int min, int max) {
+        super.navigateTo(PAGE_URL + "?minPrice=" + min + "&maxPrice=" + max);
+        waitForSearchResults();
+    }
+
+    public void setPriceRange(int min, int max) {
+        WebElement minInput = waitForElementVisible(Locators.FilterSidebar.PRICE_MIN_INPUT);
+        minInput.clear();
+        minInput.sendKeys(String.valueOf(min));
+
+        WebElement maxInput = waitForElementVisible(Locators.FilterSidebar.PRICE_MAX_INPUT);
+        maxInput.clear();
+        maxInput.sendKeys(String.valueOf(max));
+        maxInput.sendKeys(Keys.TAB);
+    }
+
+    public void waitForPriceFilterToApply() {
+        waitForUrlContains("minPrice=");
+    }
+
+    public int getPriceAmount(WebElement card) {
+        String text = card.findElement(Locators.PropertyListing.CARD_PRICE_AMOUNT).getText();
+        return Integer.parseInt(text.replaceAll("[^0-9]", ""));
+    }
+
     public boolean isEmptyStateDisplayed() {
         return isDisplayed(emptyState);
     }
@@ -114,6 +151,44 @@ public class PropertyListingPage extends BasePage {
     public int getPropertiesCount() {
         String text = waitForElementVisible(propertiesCount).getText();
         return Integer.parseInt(text.split(" ")[0]);
+    }
+
+    public void navigateToWithPropertyType(String type) {
+        super.navigateTo(PAGE_URL + "?propertyType=" + type);
+        waitForSearchResults();
+    }
+
+    public void navigateToWithCategory(String categoryId) {
+        super.navigateTo(PAGE_URL + "?categoryId=" + categoryId);
+        waitForSearchResults();
+    }
+
+    public void selectPropertyType(String value) {
+        waitForElementClickable(Locators.FilterSidebar.propertyTypeRadio(value)).click();
+    }
+
+    public void selectCategory(String categoryId) {
+        WebElement selectEl = waitForElementVisible(Locators.FilterSidebar.CATEGORY_SELECT);
+        new Select(selectEl).selectByValue(categoryId);
+    }
+
+    public void waitForPropertyTypeFilterToApply() {
+        waitForUrlContains("propertyType=");
+    }
+
+    public void waitForCategoryFilterToApply() {
+        waitForUrlContains("categoryId=");
+    }
+
+    public void clearAllFilters() {
+        waitForElementClickable(Locators.FilterSidebar.CLEAR_ALL_FILTERS_BTN).click();
+    }
+
+    public void waitForFiltersCleared() {
+        wait.until(d -> {
+            String url = d.getCurrentUrl();
+            return !url.contains("propertyType=") && !url.contains("categoryId=");
+        });
     }
 
     public void waitForSearchResults() {
@@ -124,7 +199,7 @@ public class PropertyListingPage extends BasePage {
     }
 
     private void waitForGridToLoad() {
-        waitForElementVisible(propertyGrid);
+        waitForSearchResults();
         waitForElementsPresent(propertyCard);
     }
 }

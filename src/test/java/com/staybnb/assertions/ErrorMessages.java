@@ -471,6 +471,34 @@ public final class ErrorMessages {
     public static final String AMENITIES_SECTION_SHOULD_BE_HIDDEN_FOR_PROPERTY_WITH_NO_AMENITIES =
             "The amenities section should be hidden when the property has no amenities.";
 
+    // --- Filter by Price Range (Story F3.2-S1) messages ---
+    public static final String PRICE_FILTER_SHOULD_UPDATE_RESULTS_IN_REAL_TIME =
+            "Setting a price range in the filter sidebar should update results in real-time.";
+    public static final String PRICE_FILTER_SHOULD_SHOW_RESULTS_IN_RANGE =
+            "Navigating with a price range filter should return at least one matching property.";
+    public static final String PRICE_FILTER_ALL_RESULTS_SHOULD_BE_IN_RANGE =
+            "Every displayed property must have a price per night within the applied min/max range.";
+    public static final String PRICE_FILTER_SHOULD_SHOW_EMPTY_STATE_FOR_NO_MATCH =
+            "A price range that matches no properties should display the empty state.";
+    public static final String PRICE_FILTER_SHOULD_SHOW_ZERO_COUNT_FOR_NO_MATCH =
+            "A price range that matches no properties should show zero results count.";
+
+    // --- Search Properties by Dates and Guests (Story F3.1-S2) messages ---
+    public static final String SEARCH_CHECK_IN_MIN_SHOULD_BE_TODAY =
+            "Check-in date input should have a minimum value of today's date.";
+    public static final String SEARCH_CHECK_OUT_MIN_SHOULD_BE_AFTER_CHECK_IN =
+            "Check-out date input minimum should be set to the day after the selected check-in date.";
+    public static final String SEARCH_SHOULD_NAVIGATE_TO_GUEST_FILTERED_URL =
+            "Searching with a guest count should navigate to /properties?guests={n}.";
+    public static final String SEARCH_SHOULD_NAVIGATE_TO_DATE_FILTERED_URL =
+            "Searching with check-in and check-out dates should navigate to /properties?checkIn={date}&checkOut={date}.";
+    public static final String SEARCH_WITH_GUEST_FILTER_SHOULD_SHOW_RESULTS =
+            "Navigating with a guest filter should show properties that accommodate the requested number of guests.";
+    public static final String SEARCH_WITH_DATE_FILTER_SHOULD_SHOW_RESULTS =
+            "Navigating with a date filter should show properties available for the specified date range.";
+    public static final String SEARCH_WITH_NO_FILTERS_SHOULD_RETURN_ALL_PROPERTIES =
+            "Submitting the search form with no filters applied should return all published properties.";
+
     // --- Search Properties by Location (Story F3.1-S1) messages ---
     public static final String SEARCH_FORM_SHOULD_EXPAND_ON_COMPACT_BAR_CLICK =
             "Clicking the compact search bar should expand the search form with Location, Check-in, Check-out, Guests, and Search fields.";
@@ -484,6 +512,22 @@ public final class ErrorMessages {
             "Properties count should be zero when no properties match the city.";
     public static final String SEARCH_COMPACT_BAR_SHOULD_BE_VISIBLE_ON_MOBILE =
             "Compact search bar should be visible in the navbar on mobile viewport.";
+
+    // --- Property Type and Category Filter (Story 4 — F3.2-S2) messages ---
+    public static final String TYPE_FILTER_SHOULD_UPDATE_RESULTS_IN_REAL_TIME =
+            "Selecting a property type radio should update results in real-time to show matching properties.";
+    public static final String TYPE_FILTER_SHOULD_SHOW_RESULTS =
+            "Navigating with propertyType filter should return at least one matching property.";
+    public static final String CATEGORY_FILTER_SHOULD_SHOW_RESULTS =
+            "Selecting a category from the dropdown should update results to show at least one matching property.";
+    public static final String CATEGORY_FILTER_SHOULD_SHOW_RESULTS_VIA_URL =
+            "Navigating with categoryId filter should return at least one matching property.";
+    public static final String COMBINED_FILTER_SHOULD_CONTAIN_CATEGORY_PARAM =
+            "URL should contain 'categoryId=' when category filter is active alongside a property type filter.";
+    public static final String COMBINED_FILTER_SHOULD_CONTAIN_TYPE_PARAM =
+            "URL should contain 'propertyType=' when property type filter is active alongside a category filter.";
+    public static final String CLEAR_FILTERS_SHOULD_RESTORE_ALL_PROPERTIES =
+            "Clearing all filters should restore the full listing and show more properties than the filtered view.";
 
     // --- Property Amenities (Story 13) messages ---
     public static final String AMENITIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON =

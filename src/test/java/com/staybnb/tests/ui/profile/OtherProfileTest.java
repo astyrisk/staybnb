@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.profile;
 
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
@@ -17,12 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Other User Profile")
 @Tag("regression")
 public class OtherProfileTest extends BaseTest {
-    private LoginPage loginPage;
     private OtherProfilePage otherProfilePage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
         otherProfilePage = new OtherProfilePage(driver);
         loginAsTestUserAndLandOnHome(loginPage);
     }

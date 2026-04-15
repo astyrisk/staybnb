@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.AppConstants;
@@ -18,12 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature("Delete Property")
 @Tag("regression")
 public class DeletePropertyTest extends BaseTest {
-    private LoginPage loginPage;
     private DeletePropertyPage deletePropertyPage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
         deletePropertyPage = new DeletePropertyPage(driver);
         loginAsTestUserAndLandOnHome(loginPage);
     }

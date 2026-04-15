@@ -1,4 +1,4 @@
-package com.staybnb.tests.ui;
+package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.assertions.ErrorMessages;

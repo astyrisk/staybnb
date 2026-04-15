@@ -55,9 +55,11 @@ Headless mode is enabled automatically in CI (GitHub Actions, Jenkins).
 
 ## Known Bugs
 
-| # | Sprint | Area | Description | Status |
-|---|---|---|---|---|
+| # | Sprint | Area                     | Description | Status |
+|---|---|--------------------------|---|---|
 | 1 | Sprint 2 | Create Property — Step 3 | Field constraints (min/max values) on the Details step are not consistently enforced in the UI | Open |
-| 2 | Sprint 2 | Access Control | Non-host users navigating directly to `/hosting/create` get a 403 instead of a redirect to the "Become a Host" flow | Open |
-| 3 | Sprint 2 | Amenities | Amenity grouping (Essentials, Features, Safety) is inconsistent across properties | Open |
-| 4 | Sprint 2 | Home Page | Category bar scroll position is not reset when navigating back to the home page | Open |
+| 2 | Sprint 2 | Access Control           | Non-host users navigating directly to `/hosting/create` get a 403 instead of a redirect to the "Become a Host" flow | Open |
+| 3 | Sprint 2 | Amenities                | Amenity grouping (Essentials, Features, Safety) is inconsistent across properties | Open |
+| 4 | Sprint 2 | Home Page                | Category bar scroll position is not reset when navigating back to the home page | Open |
+| 5 | Sprint 3 | Search                   |  Given the search form is expanded, when the user selects a check-in date, then only dates on or after today are selectable | Open |
+| 5 | Sprint 3 | Search                   |  Given the user has selected a check-in date, when they select a check-out date, then only dates after the check-in date are selectable | Open |

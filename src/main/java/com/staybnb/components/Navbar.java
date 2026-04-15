@@ -4,8 +4,14 @@ import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class Navbar extends BaseComponent {
     private final By navbarLogo = Locators.Navbar.NAVBAR_LOGO;
@@ -27,6 +33,13 @@ public class Navbar extends BaseComponent {
     private final By expandedSearchForm = Locators.SearchBar.EXPANDED_FORM;
     private final By destinationInput = Locators.SearchBar.DESTINATION_INPUT;
     private final By searchSubmitBtn = Locators.SearchBar.SEARCH_SUBMIT_BTN;
+    private final By checkInInput = Locators.SearchBar.CHECK_IN_INPUT;
+    private final By checkOutInput = Locators.SearchBar.CHECK_OUT_INPUT;
+    private final By guestsDisplay = Locators.SearchBar.GUESTS_DISPLAY;
+    private final By guestsIncrementBtn = Locators.SearchBar.GUESTS_INCREMENT_BTN;
+    private final By guestsDecrementBtn = Locators.SearchBar.GUESTS_DECREMENT_BTN;
+
+    private static final String SET_DATE_INPUT_JS = "com/staybnb/scripts/setDateInput.js";
 
     public Navbar(WebDriver driver) {
         super(driver);
@@ -185,5 +198,78 @@ public class Navbar extends BaseComponent {
         enterDestination(city);
         clickSearch();
         waitForUrlContains("city=");
+    }
+
+    public void setCheckInDate(String isoDate) {
+        setDateInput(checkInInput, isoDate);
+    }
+
+    public void setCheckOutDate(String isoDate) {
+        setDateInput(checkOutInput, isoDate);
+    }
+
+    public String getCheckInMinAttribute() {
+        return waitForElementVisible(checkInInput).getAttribute("min");
+    }
+
+    public String getCheckOutMinAttribute() {
+        return waitForElementVisible(checkOutInput).getAttribute("min");
+    }
+
+    public void waitForCheckOutMinToBe(String expectedMin) {
+        wait.until(ExpectedConditions.attributeToBe(checkOutInput, "min", expectedMin));
+    }
+
+    public int getGuestsCount() {
+        return Integer.parseInt(waitForElementVisible(guestsDisplay).getText());
+    }
+
+    public void incrementGuests(int times) {
+        for (int i = 0; i < times; i++) {
+            waitForElementClickable(guestsIncrementBtn).click();
+        }
+    }
+
+    public void decrementGuests(int times) {
+        for (int i = 0; i < times; i++) {
+            waitForElementClickable(guestsDecrementBtn).click();
+        }
+    }
+
+    public void searchWithDates(String checkIn, String checkOut) {
+        clickCompactSearchBar();
+        setCheckInDate(checkIn);
+        setCheckOutDate(checkOut);
+        clickSearch();
+        waitForUrlContains("checkIn=");
+    }
+
+    public void searchWithGuests(int targetGuests) {
+        clickCompactSearchBar();
+        int current = getGuestsCount();
+        if (targetGuests > current) {
+            incrementGuests(targetGuests - current);
+        } else if (targetGuests < current) {
+            decrementGuests(current - targetGuests);
+        }
+        clickSearch();
+        waitForUrlContains("guests=");
+    }
+
+    private void setDateInput(By locator, String isoDate) {
+        WebElement input = waitForElementVisible(locator);
+        String script = loadJavascriptResource(SET_DATE_INPUT_JS);
+        ((JavascriptExecutor) driver).executeScript(script, input, isoDate);
+    }
+
+    private String loadJavascriptResource(String resourcePath) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
+            }
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
+        }
     }
 }

@@ -51,10 +51,6 @@ public class BaseTest {
         getWait(AppConstants.MEDIUM_WAIT).until(ExpectedConditions.urlContains(text));
     }
 
-    protected void waitForUrlToBe(String url) {
-        getWait(AppConstants.MEDIUM_WAIT).until(ExpectedConditions.urlToBe(url));
-    }
-
     protected boolean isUrlContains(String text) {
         try {
             waitForUrlContains(text);
