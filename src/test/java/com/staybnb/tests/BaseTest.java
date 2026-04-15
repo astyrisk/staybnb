@@ -43,12 +43,12 @@ public class BaseTest {
         driver = null;
     }
 
-    protected WebDriverWait getWait(int seconds) {
-        return new WebDriverWait(driver, Duration.ofSeconds(seconds));
+    protected WebDriverWait getWait() {
+        return new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_WAIT));
     }
 
     protected void waitForUrlContains(String text) {
-        getWait(AppConstants.MEDIUM_WAIT).until(ExpectedConditions.urlContains(text));
+        getWait().until(ExpectedConditions.urlContains(text));
     }
 
     protected boolean isUrlContains(String text) {
@@ -75,22 +75,19 @@ public class BaseTest {
     }
 
     protected void loginAsTestUserAndLandOnHome(LoginPage loginPage) {
-        loginAsUserAndLandOnHome(loginPage, TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginAsUserAndLandOnHome(loginPage);
     }
 
-    protected void loginAsUserAndLandOnHome(LoginPage loginPage, String email, String password) {
+    protected void loginAsUserAndLandOnHome(LoginPage loginPage) {
         driver.get(AppConstants.HOME_URL);
         loginPage.navbar().clickLoginAndWaitForRedirect();
-        loginPage.loginAndExpectSuccess(email, password);
+        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
     }
 
     @RegisterExtension
-    AfterTestExecutionCallback screenshotCallback = new AfterTestExecutionCallback() {
-        @Override
-        public void afterTestExecution(ExtensionContext context) {
-            if (context.getExecutionException().isPresent()) {
-                attachScreenshotToAllure(context.getDisplayName());
-            }
+    AfterTestExecutionCallback screenshotCallback = context -> {
+        if (context.getExecutionException().isPresent()) {
+            attachScreenshotToAllure(context.getDisplayName());
         }
     };
 

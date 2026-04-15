@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic("Property Management")
@@ -27,9 +29,9 @@ public class DeletePropertyTest extends BaseTest {
         loginAsTestUserAndLandOnHome(loginPage);
     }
 
-    private String createPropertyAndReturnId(String uniqueTitle) {
+    private void createPropertyAndReturnId(String uniqueTitle) {
         String response = deletePropertyPage.createPropertyViaApi(PropertyPayloads.validCreatePropertyPayloadJson(uniqueTitle));
-        return deletePropertyPage.extractCreatedPropertyId(response);
+        deletePropertyPage.extractCreatedPropertyId(response);
     }
 
     @Test
@@ -80,9 +82,6 @@ public class DeletePropertyTest extends BaseTest {
         deletePropertyPage.clickDeleteOnDashboardForTitle(uniqueTitle);
         deletePropertyPage.confirmDeletion();
 
-        assertTrue(
-                !deletePropertyPage.isPropertyListedOnDashboard(uniqueTitle),
-                ErrorMessages.DELETE_PROPERTY_CONFIRM_SHOULD_REMOVE_PROPERTY_FROM_DASHBOARD
-        );
+        assertFalse(deletePropertyPage.isPropertyListedOnDashboard(uniqueTitle), ErrorMessages.DELETE_PROPERTY_CONFIRM_SHOULD_REMOVE_PROPERTY_FROM_DASHBOARD);
     }
 }

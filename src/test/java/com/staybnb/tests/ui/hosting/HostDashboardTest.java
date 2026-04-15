@@ -36,7 +36,7 @@ public class HostDashboardTest extends BaseTest {
         if (hostDashboardPage.getPropertyCards().isEmpty()) {
             throw new IllegalStateException("Host account has no properties to validate dashboard cards.");
         }
-        return hostDashboardPage.getPropertyCards().get(0);
+        return hostDashboardPage.getPropertyCards().getFirst();
     }
 
     @Test

@@ -149,7 +149,7 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     @DisplayName("Image gallery has at least one image")
     public void testImageGalleryHasImages() {
-        assertTrue(propertyDetailsPage.getGalleryImages().size() >= 1, ErrorMessages.THERE_SHOULD_BE_AT_LEAST_ONE_IMAGE);
+        assertFalse(propertyDetailsPage.getGalleryImages().isEmpty(), ErrorMessages.THERE_SHOULD_BE_AT_LEAST_ONE_IMAGE);
     }
 
     @Test
@@ -157,6 +157,6 @@ public class PropertyDetailsTest extends BaseTest {
     public void testFirstImageAltText() {
         List<WebElement> images = propertyDetailsPage.getGalleryImages();
 
-        assertEquals("Living Room", images.get(0).getAttribute("alt"), ErrorMessages.FIRST_IMAGE_SHOULD_BE_LIVING_ROOM);
+        assertEquals("Living Room", images.getFirst().getAttribute("alt"), ErrorMessages.FIRST_IMAGE_SHOULD_BE_LIVING_ROOM);
     }
 }

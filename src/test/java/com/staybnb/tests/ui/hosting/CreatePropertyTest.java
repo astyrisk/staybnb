@@ -466,7 +466,6 @@ public class CreatePropertyTest extends BaseTest {
         );
         createPropertyPage.hasAtLeastNImagePreviews(2);
 
-        String firstBefore = createPropertyPage.getImagePreviewSignatureAt(0);
         String secondBefore = createPropertyPage.getImagePreviewSignatureAt(1);
         createPropertyPage.moveImageDownAt(0);
         createPropertyPage.waitForFirstPreviewSignatureToBe(secondBefore);

@@ -122,11 +122,8 @@ public final class Locators {
         public static final By PRICE_MAX_INPUT = By.xpath(
                 "//div[contains(@class,'filter-price-input')][.//label[text()='Max']]//input"
         );
-        public static final By ACTIVE_FILTERS_BADGE = By.cssSelector(".active-filters span");
         public static final By CLEAR_ALL_FILTERS_BTN = By.cssSelector(".active-filters .btn-link");
-        public static final By SIDEBAR_CLEAR_BTN = By.className("filter-clear-btn");
 
-        public static final By PROPERTY_TYPE_RADIO_GROUP = By.className("filter-radio-group");
         public static final By CATEGORY_SELECT = By.cssSelector("select.filter-select");
 
         /** Returns a locator for the radio button matching the given propertyType value (e.g. "ENTIRE_PLACE"). */
@@ -211,11 +208,9 @@ public final class Locators {
         private HostDashboard() {}
 
         public static final By CONTAINER = By.className("host-dashboard-container");
-        public static final By PAGE_TITLE = By.xpath("//div[contains(@class,'host-dashboard-header')]//h1[normalize-space()='My Properties']");
         public static final By SUMMARY_SUBTITLE = By.className("host-dashboard-subtitle");
         public static final By CREATE_NEW_PROPERTY_BUTTON = By.className("host-dashboard-create-btn");
 
-        public static final By PROPERTY_GRID = By.className("host-dashboard-grid");
         public static final By PROPERTY_CARD = By.className("host-dashboard-card");
         public static final By CARD_IMAGE = By.cssSelector(".host-dashboard-card-image img");
         public static final By CARD_TITLE = By.cssSelector(".host-dashboard-card-content h3");
@@ -296,11 +291,6 @@ public final class Locators {
                 By.cssSelector(".image-upload-preview-actions button[title='Move down']");
         public static final By STEP_5_IMAGE_DELETE_BUTTONS =
                 By.cssSelector(".image-upload-preview-actions button.delete, .image-upload-preview-actions button[title='Delete']");
-        public static final By STEP_5_PRIMARY_IMAGE_BADGE =
-                By.xpath(
-                        "//*[contains(@class,'image') and contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'cover')"
-                                + " or contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'primary')]"
-                );
 
         public static final By STEP_6_PRICING_TITLE =
                 By.xpath("//div[contains(@class,'create-property-step')]//h2[normalize-space()='Pricing']");
@@ -347,7 +337,6 @@ public final class Locators {
 
         public static final By AMENITY_GRID = By.className("edit-property-amenities-grid");
         public static final By AMENITY_CHECKBOXES = By.cssSelector(".edit-property-amenities-grid input[type='checkbox']");
-        public static final By AMENITY_ITEMS = By.cssSelector(".edit-property-amenity-item");
     }
 
     public static final class DeleteProperty {

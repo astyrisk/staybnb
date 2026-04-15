@@ -19,12 +19,10 @@ import java.util.regex.Pattern;
 
 public class DeletePropertyPage extends BasePage {
     private static final String DELETE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/deletePropertyStatusApi.js";
-    private static final String DELETE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/deletePropertyApi.js";
     private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
 
     private final By editPageDeleteButton = Locators.DeleteProperty.EDIT_PAGE_DELETE_BUTTON;
     private final By dashboardDeleteButtons = Locators.DeleteProperty.DASHBOARD_DELETE_BUTTONS;
-    private final By confirmationMessage = Locators.DeleteProperty.CONFIRMATION_MESSAGE;
     private final By confirmButton = Locators.DeleteProperty.CONFIRM_BUTTON;
     private final By cancelButton = Locators.DeleteProperty.CANCEL_BUTTON;
     private final By dashboardPropertyTitle = Locators.DeleteProperty.DASHBOARD_PROPERTY_TITLE;
@@ -39,10 +37,6 @@ public class DeletePropertyPage extends BasePage {
 
     public void navigateToHostingDashboard() {
         super.navigateTo(AppConstants.HOSTING_URL);
-    }
-
-    public boolean isDeleteButtonVisibleOnEditPage() {
-        return isDisplayed(editPageDeleteButton);
     }
 
     public void clickDeleteOnEditPage() {

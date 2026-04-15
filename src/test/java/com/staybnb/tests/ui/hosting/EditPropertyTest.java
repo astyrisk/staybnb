@@ -24,12 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("regression")
 @ResourceLock("property-1088")
 public class EditPropertyTest extends BaseTest {
-    private LoginPage loginPage;
     private EditPropertyPage editPropertyPage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
         editPropertyPage = new EditPropertyPage(driver);
         loginAsTestUserAndLandOnHome(loginPage);
     }

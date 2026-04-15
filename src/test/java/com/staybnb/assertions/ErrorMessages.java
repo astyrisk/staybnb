@@ -4,8 +4,6 @@ public final class ErrorMessages {
     private ErrorMessages() {}
 
     // Assertion messages (test diagnostics)
-    public static final String JWT_TOKEN_NOT_RETRIEVED =
-            "JWT token was not retrieved after successful login.";
     public static final String JWT_TOKEN_SHOULD_EXIST_AFTER_LOGIN =
             "JWT token should exist after login.";
     public static final String JWT_TOKEN_SHOULD_BE_REMOVED_AFTER_LOGOUT =
@@ -24,8 +22,6 @@ public final class ErrorMessages {
             "API response should not be null.";
 
     // UI validation / inline error texts
-    public static final String EMAIL_AND_PASSWORD_REQUIRED =
-            "Email and password are required";
     public static final String REQUIRED =
             "required";
     public static final String FIRST_NAME_REQUIRED =
@@ -92,8 +88,6 @@ public final class ErrorMessages {
             "Grid should have 3 columns on medium desktop.";
     public static final String LISTING_GRID_SHOULD_HAVE_2_COLUMNS_ON_TABLET =
             "Grid should have 2 columns on tablet.";
-    public static final String PROPERTY_LIST_CONTROLS_SHOULD_BE_EMPTY =
-            "Property list controls should be empty.";
     public static final String THERE_SHOULD_BE_NO_SEARCH_OR_FILTERS =
             "There should be no search or filters.";
 
@@ -210,22 +204,12 @@ public final class ErrorMessages {
             "Profile name should only show first name and last initial.";
     public static final String PAGE_SHOULD_INDICATE_404_FOR_NON_EXISTENT_USER =
             "Page should indicate a 404 error for non-existent user.";
-    public static final String RESPONSE_SHOULD_NOT_CONTAIN_EMAIL =
-            "Response should NOT contain 'email'.";
-    public static final String RESPONSE_SHOULD_NOT_CONTAIN_PHONE =
-            "Response should NOT contain 'phone'.";
     public static final String RESPONSE_SHOULD_CONTAIN_EXPECTED_FIELD =
             "API response should contain the expected field.";
     public static final String RESPONSE_SHOULD_NOT_CONTAIN_EXCLUDED_FIELD =
             "API response should not contain the excluded field.";
 
     // --- Navbar test messages ---
-    public static final String NAVBAR_LOGO_SHOULD_BE_DISPLAYED =
-            "Logo should be displayed";
-    public static final String NAVBAR_USER_AVATAR_SHOULD_BE_DISPLAYED_FOR_AUTHENTICATED_USER =
-            "User avatar should be displayed for logged-in user";
-    public static final String NAVBAR_LOGIN_LINK_SHOULD_NOT_BE_DISPLAYED_FOR_AUTHENTICATED_USER =
-            "Login link should not be displayed for logged-in user";
     public static final String NAVBAR_PROFILE_LINK_SHOULD_BE_IN_DROPDOWN =
             "Profile link should be in dropdown";
     public static final String NAVBAR_LOGOUT_BUTTON_SHOULD_BE_IN_DROPDOWN =
@@ -240,12 +224,6 @@ public final class ErrorMessages {
             "Hamburger menu should be displayed on mobile";
     public static final String NAVBAR_USER_AVATAR_SHOULD_BE_VISIBLE_ON_MOBILE_MENU_BUTTON =
             "User avatar should still be visible on mobile as part of the menu button";
-    public static final String NAVBAR_LOGIN_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR =
-            "Login link should be displayed for visitor";
-    public static final String NAVBAR_REGISTER_LINK_SHOULD_BE_DISPLAYED_FOR_VISITOR =
-            "Register link should be displayed for visitor";
-    public static final String NAVBAR_USER_AVATAR_SHOULD_NOT_BE_DISPLAYED_FOR_VISITOR =
-            "User avatar should not be displayed for visitor";
     public static final String NAVBAR_SHOULD_NOT_DISPLAY_DROPDOWN_FOR_VISITOR =
             "Visitor should not see user dropdown";
     public static final String NAVBAR_HAMBURGER_MENU_SHOULD_NOT_BE_DISPLAYED_ON_MOBILE_VISITOR =
@@ -292,10 +270,6 @@ public final class ErrorMessages {
             "Step 1 should show inline validation when description is missing.";
     public static final String CREATE_PROPERTY_STEP2_SHOULD_DISPLAY_LOCATION_FIELDS =
             "Step 2 should display country, city, and optional address fields.";
-    public static final String CREATE_PROPERTY_STEP2_SHOULD_REQUIRE_COUNTRY =
-            "Step 2 should show inline validation when country is missing.";
-    public static final String CREATE_PROPERTY_STEP2_SHOULD_REQUIRE_CITY =
-            "Step 2 should show inline validation when city is missing.";
     public static final String CREATE_PROPERTY_STEP2_REQUIRED_FIELD_SHOULD_SHOW_VALIDATION =
             "Step 2 should show inline validation when a required field is missing.";
     public static final String CREATE_PROPERTY_STEP3_SHOULD_DISPLAY_DETAILS_FIELDS =
@@ -358,8 +332,6 @@ public final class ErrorMessages {
             "Deleting the primary image should promote the next image as the new primary/cover.";
     public static final String CREATE_PROPERTY_STEP5_SHOULD_WARN_WHEN_DELETING_LAST_IMAGE =
             "When only one image exists, deleting it during create flow should warn that at least 1 image is required.";
-    public static final String CREATE_PROPERTY_STEP6_SHOULD_DISPLAY_PRICE_INPUT_IN_USD =
-            "Step 6 should display a price-per-night number input in USD.";
     public static final String CREATE_PROPERTY_STEP6_PRICING_SECTION_SHOULD_LOAD =
             "Step 6 pricing section should load.";
     public static final String CREATE_PROPERTY_STEP6_PRICE_INPUT_SHOULD_USE_USD_LABEL =
@@ -378,24 +350,18 @@ public final class ErrorMessages {
             "After successful creation, a success message should be visible.";
     public static final String CREATE_PROPERTY_API_SHOULD_RETURN_201_FOR_VALID_HOST_PAYLOAD =
             "Create property API should return 201 for a valid host payload.";
-    public static final String CREATE_PROPERTY_API_SHOULD_CREATE_DRAFT_IS_PUBLISHED_FALSE =
-            "Create property API response should indicate draft creation with is_published false.";
     public static final String CREATE_PROPERTY_API_SHOULD_RETURN_400_FOR_MISSING_REQUIRED_FIELDS =
             "Create property API should return 400 when required fields are missing.";
     public static final String CREATE_PROPERTY_API_SHOULD_RETURN_403_FOR_NON_HOST =
             "Create property API should return 403 for an authenticated non-host user.";
 
     // --- Edit Property test messages ---
-    public static final String EDIT_PROPERTY_PAGE_SHOULD_LOAD_WITH_PREPOPULATED_DATA =
-            "Edit property page should load and show pre-populated existing property data.";
     public static final String EDIT_PROPERTY_PAGE_CONTAINER_AND_CONTROLS_SHOULD_BE_VISIBLE =
             "Edit property page container, header and save button should be visible.";
     public static final String EDIT_PROPERTY_PAGE_CORE_FIELDS_SHOULD_BE_PREPOPULATED =
             "Edit property page core fields (title, description, location, price, type, category) should be pre-populated.";
     public static final String EDIT_PROPERTY_PAGE_SHOULD_DISPLAY_ALL_SINGLE_PAGE_SECTIONS =
             "Edit property page should display all expected sections on a single page.";
-    public static final String EDIT_PROPERTY_PAGE_SHOULD_NOT_USE_CREATE_WIZARD_PROGRESS =
-            "Edit property page should not show create-wizard progress or next/back flow.";
     public static final String EDIT_PROPERTY_PAGE_SHOULD_DISPLAY_ALL_SECTIONS =
             "Edit property page should display all main sections on a single page.";
     public static final String EDIT_PROPERTY_PAGE_SHOULD_NOT_SHOW_WIZARD_NAVIGATION =
@@ -490,8 +456,6 @@ public final class ErrorMessages {
             "Check-out date input minimum should be set to the day after the selected check-in date.";
     public static final String SEARCH_SHOULD_NAVIGATE_TO_GUEST_FILTERED_URL =
             "Searching with a guest count should navigate to /properties?guests={n}.";
-    public static final String SEARCH_SHOULD_NAVIGATE_TO_DATE_FILTERED_URL =
-            "Searching with check-in and check-out dates should navigate to /properties?checkIn={date}&checkOut={date}.";
     public static final String SEARCH_WITH_GUEST_FILTER_SHOULD_SHOW_RESULTS =
             "Navigating with a guest filter should show properties that accommodate the requested number of guests.";
     public static final String SEARCH_WITH_DATE_FILTER_SHOULD_SHOW_RESULTS =

@@ -36,8 +36,8 @@ public class EditProfileTest extends BaseTest {
         loginAsTestUserAndLandOnHome(loginPage);
     }
 
-    private void performEditProfileUpdate(String firstName, String lastName, String phone, String bio, String avatarUrl) {
-        editProfilePage.updateProfile(firstName, lastName, phone, bio, avatarUrl);
+    private void performEditProfileUpdate() {
+        editProfilePage.updateProfile(AppConstants.EditProfile.NEW_FIRST_NAME, AppConstants.EditProfile.NEW_LAST_NAME, AppConstants.EditProfile.NEW_PHONE, AppConstants.EditProfile.NEW_BIO, AppConstants.EditProfile.NEW_AVATAR_URL);
         ownProfilePage.navigateViaNavbar();
     }
 
@@ -45,11 +45,6 @@ public class EditProfileTest extends BaseTest {
     @MethodSource("provideEditProfilePersistenceCases")
     public void testEditProfilePersistence(String checkName) {
         performEditProfileUpdate(
-                AppConstants.EditProfile.NEW_FIRST_NAME,
-                AppConstants.EditProfile.NEW_LAST_NAME,
-                AppConstants.EditProfile.NEW_PHONE,
-                AppConstants.EditProfile.NEW_BIO,
-                AppConstants.EditProfile.NEW_AVATAR_URL
         );
 
         switch (checkName) {

@@ -5,7 +5,7 @@ public final class AppConstants {
 
     // ── URLs ──────────────────────────────────────────────────────────────────
     public static final String BASE_URL                  = TestConfig.BASE_URL;
-    public static final String SLUG                      = resolveSlug(BASE_URL);
+    public static final String SLUG                      = resolveSlug();
     public static final String LOGIN_URL                 = BASE_URL + "/login";
     public static final String REGISTER_URL              = BASE_URL + "/register";
     public static final String HOME_URL                  = BASE_URL;
@@ -28,11 +28,6 @@ public final class AppConstants {
     public static final int MEDIUM_DESKTOP_HEIGHT = 1080;
     public static final int TABLET_TEST_WIDTH     = 770;
     public static final int TABLET_TEST_HEIGHT    = 1024;
-
-    // ── Credentials ───────────────────────────────────────────────────────────
-    public static final String INVALID_EMAIL    = "wronguser@gmail.com";
-    public static final String INVALID_PASSWORD = "WrongPassword123!";
-    public static final String DEFAULT_PASSWORD = "password123";
 
     // ── Property IDs ──────────────────────────────────────────────────────────
     public static final String DEFAULT_PROPERTY_ID             = "227";
@@ -88,15 +83,12 @@ public final class AppConstants {
     public static final class TypeCategoryFilter {
         // Property type radio values (match the HTML input value attributes)
         public static final String ENTIRE_PLACE = "ENTIRE_PLACE";
-        public static final String PRIVATE_ROOM = "PRIVATE_ROOM";
-        public static final String SHARED_ROOM  = "SHARED_ROOM";
 
         // A type guaranteed to yield results in the test environment
         public static final String KNOWN_TYPE = ENTIRE_PLACE;
 
         // Bungalow is known to have exactly 1 published property in the test environment
         public static final String KNOWN_CATEGORY_ID   = "90";
-        public static final String KNOWN_CATEGORY_NAME = "Bungalow";
     }
 
     // ── Price Filter ──────────────────────────────────────────────────────────
@@ -134,17 +126,17 @@ public final class AppConstants {
 
     // ─────────────────────────────────────────────────────────────────────────
 
-    private static String resolveSlug(String baseUrl) {
-        if (baseUrl == null) {
+    private static String resolveSlug() {
+        if (AppConstants.BASE_URL == null) {
             throw new IllegalStateException("TEST_BASE_URL must not be null.");
         }
         String marker = "/t/";
-        int markerIndex = baseUrl.indexOf(marker);
-        if (markerIndex < 0 || markerIndex + marker.length() >= baseUrl.length()) {
+        int markerIndex = AppConstants.BASE_URL.indexOf(marker);
+        if (markerIndex < 0 || markerIndex + marker.length() >= AppConstants.BASE_URL.length()) {
             throw new IllegalStateException(
-                    "TEST_BASE_URL must contain '/t/<slug>' so scripts can resolve tenant slug. Found: " + baseUrl
+                    "TEST_BASE_URL must contain '/t/<slug>' so scripts can resolve tenant slug. Found: " + AppConstants.BASE_URL
             );
         }
-        return baseUrl.substring(markerIndex + marker.length());
+        return AppConstants.BASE_URL.substring(markerIndex + marker.length());
     }
 }

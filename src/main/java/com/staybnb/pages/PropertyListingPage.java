@@ -14,20 +14,20 @@ import com.staybnb.config.AppConstants;
 public class PropertyListingPage extends BasePage {
     private final String PAGE_URL = AppConstants.PROPERTY_LISTING_URL;
 
-    private By propertyGrid = Locators.PropertyListing.PROPERTY_GRID;
-    private By propertyCard = Locators.PropertyListing.PROPERTY_CARD;
-    private By cardImage = Locators.PropertyListing.CARD_IMAGE;
-    private By cardTitle = Locators.PropertyListing.CARD_TITLE;
-    private By cardLocation = Locators.PropertyListing.CARD_LOCATION;
-    private By cardPrice = Locators.PropertyListing.CARD_PRICE;
-    private By cardRating = Locators.PropertyListing.CARD_RATING;
-    private By propertyListControls = Locators.PropertyListing.PROPERTY_LIST_CONTROLS;
+    private final By propertyGrid = Locators.PropertyListing.PROPERTY_GRID;
+    private final By propertyCard = Locators.PropertyListing.PROPERTY_CARD;
+    private final By cardImage = Locators.PropertyListing.CARD_IMAGE;
+    private final By cardTitle = Locators.PropertyListing.CARD_TITLE;
+    private final By cardLocation = Locators.PropertyListing.CARD_LOCATION;
+    private final By cardPrice = Locators.PropertyListing.CARD_PRICE;
+    private final By cardRating = Locators.PropertyListing.CARD_RATING;
+    private final By propertyListControls = Locators.PropertyListing.PROPERTY_LIST_CONTROLS;
 
-    private By searchInput = Locators.PropertyListing.SEARCH_INPUT;
-    private By filterButtons = Locators.PropertyListing.FILTER_BUTTONS;
-    private By sortSelect = Locators.PropertyListing.SORT_SELECT;
-    private By emptyState = Locators.PropertyListing.EMPTY_STATE;
-    private By propertiesCount = Locators.PropertyListing.PROPERTIES_COUNT;
+    private final By searchInput = Locators.PropertyListing.SEARCH_INPUT;
+    private final By filterButtons = Locators.PropertyListing.FILTER_BUTTONS;
+    private final By sortSelect = Locators.PropertyListing.SORT_SELECT;
+    private final By emptyState = Locators.PropertyListing.EMPTY_STATE;
+    private final By propertiesCount = Locators.PropertyListing.PROPERTIES_COUNT;
 
     public PropertyListingPage(WebDriver driver) {
         super(driver);

@@ -49,14 +49,6 @@ public class Navbar extends BaseComponent {
         return isDisplayed(navbarLogo);
     }
 
-    public void clickLogo() {
-        waitForElementClickable(navbarLogo).click();
-    }
-
-    public String getLogoHref() {
-        return waitForElementVisible(navbarLogo).getAttribute("href");
-    }
-
     public boolean isUserAvatarDisplayed() {
         return isDisplayed(userAvatar);
     }
@@ -258,18 +250,18 @@ public class Navbar extends BaseComponent {
 
     private void setDateInput(By locator, String isoDate) {
         WebElement input = waitForElementVisible(locator);
-        String script = loadJavascriptResource(SET_DATE_INPUT_JS);
+        String script = loadJavascriptResource();
         ((JavascriptExecutor) driver).executeScript(script, input, isoDate);
     }
 
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+    private String loadJavascriptResource() {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(Navbar.SET_DATE_INPUT_JS)) {
             if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
+                throw new IllegalStateException("Missing JS resource on classpath: " + Navbar.SET_DATE_INPUT_JS);
             }
             return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
+            throw new RuntimeException("Failed to read JS resource on classpath: " + Navbar.SET_DATE_INPUT_JS, e);
         }
     }
 }

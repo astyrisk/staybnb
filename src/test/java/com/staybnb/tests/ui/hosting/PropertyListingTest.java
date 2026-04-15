@@ -39,7 +39,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card has an image")
     public void testFirstPropertyCardHasImage() {
-        WebElement card = propertyListingPage.getPropertyCards().get(0);
+        WebElement card = propertyListingPage.getPropertyCards().getFirst();
 
         assertTrue(
                 propertyListingPage.hasImage(card),
@@ -50,7 +50,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card has a title")
     public void testFirstPropertyCardHasTitle() {
-        WebElement card = propertyListingPage.getPropertyCards().get(0);
+        WebElement card = propertyListingPage.getPropertyCards().getFirst();
 
         assertFalse(
                 propertyListingPage.getTitle(card).isEmpty(),
@@ -61,7 +61,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card location is in 'City, Country' format")
     public void testFirstPropertyCardLocationFormat() {
-        WebElement card = propertyListingPage.getPropertyCards().get(0);
+        WebElement card = propertyListingPage.getPropertyCards().getFirst();
         String location = propertyListingPage.getLocation(card);
 
         assertTrue(
@@ -73,7 +73,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card price contains '/ night'")
     public void testFirstPropertyCardPriceFormat() {
-        WebElement card = propertyListingPage.getPropertyCards().get(0);
+        WebElement card = propertyListingPage.getPropertyCards().getFirst();
         String price = propertyListingPage.getPrice(card);
 
         assertTrue(
@@ -85,7 +85,7 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Clicking a property card navigates to the property detail page")
     public void testPropertyCardNavigation() {
-        WebElement firstCard = propertyListingPage.getPropertyCards().get(0);
+        WebElement firstCard = propertyListingPage.getPropertyCards().getFirst();
         String expectedHref = propertyListingPage.getCardHref(firstCard);
         propertyListingPage.clickPropertyCard(firstCard);
         String currentUrl = driver.getCurrentUrl();
