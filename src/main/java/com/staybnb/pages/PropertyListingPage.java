@@ -42,10 +42,6 @@ public class PropertyListingPage extends BasePage {
         return waitForElementsPresent(propertyCard);
     }
 
-    public boolean isPropertyCardDisplayed(WebElement card) {
-        return card.isDisplayed();
-    }
-
     public boolean hasImage(WebElement card) {
         return !card.findElements(cardImage).isEmpty() && card.findElement(cardImage).isDisplayed();
     }
@@ -66,13 +62,6 @@ public class PropertyListingPage extends BasePage {
         return !card.findElements(cardRating).isEmpty();
     }
 
-    public String getRatingText(WebElement card) {
-        if (hasRating(card)) {
-            return card.findElement(cardRating).getText();
-        }
-        return null;
-    }
-
     public void clickPropertyCard(WebElement card) {
         card.click();
     }
@@ -86,11 +75,6 @@ public class PropertyListingPage extends BasePage {
 
     public void waitForGridColumns(int expectedCount) {
         wait.until(driver -> getGridColumnCount() == expectedCount);
-    }
-
-    public boolean areControlsEmpty() {
-        WebElement controls = driver.findElement(propertyListControls);
-        return controls.findElements(By.xpath("./*")).isEmpty();
     }
 
     public boolean hasSearchOrFilters() {

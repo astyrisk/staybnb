@@ -345,10 +345,6 @@ public final class Locators {
         public static final By EDIT_PAGE_DELETE_BUTTON = By.className("edit-property-delete-btn");
         public static final By DASHBOARD_DELETE_BUTTONS = By.cssSelector(".host-dashboard-card-actions .host-dashboard-card-btn.danger");
 
-        public static final By CONFIRMATION_MESSAGE = By.xpath(
-                "//*[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')," +
-                        "'are you sure? this cannot be undone')]"
-        );
         public static final By CONFIRM_BUTTON = By.xpath(
                 "//button[contains(@class,'danger') and (normalize-space()='Delete' or normalize-space()='Confirm')]"
                         + " | //button[normalize-space()='Delete' or normalize-space()='Confirm' or normalize-space()='Yes, Delete']"
