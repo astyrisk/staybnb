@@ -55,11 +55,19 @@ Headless mode is enabled automatically in CI (GitHub Actions, Jenkins).
 
 ## Known Bugs
 
-| # | Sprint | Area                     | Description | Status |
-|---|---|--------------------------|---|---|
-| 1 | Sprint 2 | Create Property — Step 3 | Field constraints (min/max values) on the Details step are not consistently enforced in the UI | Open |
-| 2 | Sprint 2 | Access Control           | Non-host users navigating directly to `/hosting/create` get a 403 instead of a redirect to the "Become a Host" flow | Open |
-| 3 | Sprint 2 | Amenities                | Amenity grouping (Essentials, Features, Safety) is inconsistent across properties | Open |
-| 4 | Sprint 2 | Home Page                | Category bar scroll position is not reset when navigating back to the home page | Open |
-| 5 | Sprint 3 | Search                   |  Given the search form is expanded, when the user selects a check-in date, then only dates on or after today are selectable | Open |
-| 5 | Sprint 3 | Search                   |  Given the user has selected a check-in date, when they select a check-out date, then only dates after the check-in date are selectable | Open |
+Full reproduction steps are in [DEFECTS.md](DEFECTS.md).
+
+| # | Sprint | Area | Description | Status |
+|---|---|---|---|---|
+| [BUG-1](DEFECTS.md#bug-1--beds-minimum-constraint-not-enforced-create-property-step-3) | Sprint 2 | Create Property — Step 3 | Beds counter minimum is 0 instead of 1 | Open |
+| [BUG-2](DEFECTS.md#bug-2--non-host-direct-navigation-to-hostingcreate-does-not-return-403) | Sprint 2 | Access Control | Non-host navigating directly to `/hosting/create` gets no 403 or redirect | Open |
+| [BUG-3](DEFECTS.md#bug-3--amenity-groups-missing-on-create-property-step-4) | Sprint 2 | Amenities | Amenity group headings (Essentials, Features, Safety) missing on Step 4 | Open |
+| [BUG-4](DEFECTS.md#bug-4--category-bar-scroll-position-not-reset-on-back-navigation) | Sprint 2 | Home Page | Category bar scroll position not reset when navigating back | Open |
+| [BUG-5](DEFECTS.md#bug-5--navbar-does-not-show-my-properties-after-becoming-a-host) | Sprint 2 | Hosting | Navbar does not show "My Properties" after becoming a host | Open |
+| [BUG-6](DEFECTS.md#bug-6--become-a-host-button-on-profile-page-does-not-redirect-to-hosting) | Sprint 2 | Hosting | "Become a Host" button on profile page does not redirect to hosting | Open |
+| [BUG-7](DEFECTS.md#bug-7--property-details-page-does-not-show-category-alongside-type) | Sprint 2 | Property Details | Property type field missing category and `·` separator | Open |
+| [BUG-8](DEFECTS.md#bug-8--selecting-a-category-chip-does-not-mark-it-as-active) | Sprint 2 | Home Page | Clicking a category chip does not apply active styling | Open |
+| [BUG-9](DEFECTS.md#bug-9--property-listing-page-shows-unexpected-searchsort-controls) | Sprint 2 | Hosting — Property Listing | Property listing page shows unexpected search/sort controls | Open |
+| [BUG-10](DEFECTS.md#bug-10--mobile-compact-search-bar-not-visible-in-navbar) | Sprint 3 | Search | Mobile compact search bar not visible in navbar | Open |
+| [BUG-11](DEFECTS.md#bug-11--check-in-date-picker-allows-past-dates) | Sprint 3 | Search | Check-in date picker allows selection of past dates | Open |
+| [BUG-12](DEFECTS.md#bug-12--check-out-date-picker-allows-dates-before-check-in) | Sprint 3 | Search | Check-out date picker allows dates before the check-in date | Open |
