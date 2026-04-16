@@ -135,7 +135,6 @@ public class PropertyListingTest extends BaseTest {
         );
     }
 
-    //fails
     @Test
     @DisplayName("Property listing page has no search or sort controls")
     public void testAbsenceOfSearchAndSort() {

@@ -67,7 +67,6 @@ Full reproduction steps are in [DEFECTS.md](DEFECTS.md).
 | [BUG-6](DEFECTS.md#bug-6--become-a-host-button-on-profile-page-does-not-redirect-to-hosting) | Sprint 2 | Hosting | "Become a Host" button on profile page does not redirect to hosting | Open |
 | [BUG-7](DEFECTS.md#bug-7--property-details-page-does-not-show-category-alongside-type) | Sprint 2 | Property Details | Property type field missing category and `·` separator | Open |
 | [BUG-8](DEFECTS.md#bug-8--selecting-a-category-chip-does-not-mark-it-as-active) | Sprint 2 | Home Page | Clicking a category chip does not apply active styling | Open |
-| [BUG-9](DEFECTS.md#bug-9--property-listing-page-shows-unexpected-searchsort-controls) | Sprint 2 | Hosting — Property Listing | Property listing page shows unexpected search/sort controls | Open |
-| [BUG-10](DEFECTS.md#bug-10--mobile-compact-search-bar-not-visible-in-navbar) | Sprint 3 | Search | Mobile compact search bar not visible in navbar | Open |
-| [BUG-11](DEFECTS.md#bug-11--check-in-date-picker-allows-past-dates) | Sprint 3 | Search | Check-in date picker allows selection of past dates | Open |
-| [BUG-12](DEFECTS.md#bug-12--check-out-date-picker-allows-dates-before-check-in) | Sprint 3 | Search | Check-out date picker allows dates before the check-in date | Open |
+| [BUG-9](DEFECTS.md#bug-9--mobile-compact-search-bar-not-visible-in-navbar) | Sprint 3 | Search | Mobile compact search bar not visible in navbar | Open |
+| [BUG-10](DEFECTS.md#bug-10--check-in-date-picker-allows-past-dates) | Sprint 3 | Search | Check-in date picker allows selection of past dates | Open |
+| [BUG-11](DEFECTS.md#bug-11--check-out-date-picker-allows-dates-before-check-in) | Sprint 3 | Search | Check-out date picker allows dates before the check-in date | Open |

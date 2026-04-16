@@ -157,26 +157,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 
 ---
 
-## BUG-9 — Property Listing Page Shows Unexpected Search/Sort Controls
-
-**Sprint:** 2
-**Area:** Hosting — Property Listing
-**Test:** `PropertyListingTest#testAbsenceOfSearchAndSort`
-**Status:** Open
-
-**Description:** The host's property listing page is expected to be a plain grid with no search or filter controls. Search/sort UI is present when it should not be.
-
-**Steps to reproduce:**
-1. Log in as a host with at least one property.
-2. Navigate to the hosting dashboard / property listing page.
-3. Inspect the page for search bars or filter/sort controls.
-
-**Expected:** No search or sort controls are present.
-**Actual:** Search or filter controls are visible on the page.
-
----
-
-## BUG-10 — Mobile Compact Search Bar Not Visible in Navbar
+## BUG-9 — Mobile Compact Search Bar Not Visible in Navbar
 
 **Sprint:** 3
 **Area:** Search
@@ -195,7 +176,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 
 ---
 
-## BUG-11 — Check-In Date Picker Allows Past Dates
+## BUG-10 — Check-In Date Picker Allows Past Dates
 
 **Sprint:** 3
 **Area:** Search
@@ -213,7 +194,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 
 ---
 
-## BUG-12 — Check-Out Date Picker Allows Dates Before Check-In
+## BUG-11 — Check-Out Date Picker Allows Dates Before Check-In
 
 **Sprint:** 3
 **Area:** Search
