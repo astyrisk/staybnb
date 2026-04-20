@@ -493,6 +493,26 @@ public final class ErrorMessages {
     public static final String CLEAR_FILTERS_SHOULD_RESTORE_ALL_PROPERTIES =
             "Clearing all filters should restore the full listing and show more properties than the filtered view.";
 
+    // --- Filter by Amenities, Bedrooms, and Bathrooms (Story F3.2-S3) messages ---
+    public static final String AMENITY_FILTER_SHOULD_UPDATE_RESULTS_IN_REAL_TIME =
+            "Checking an amenity checkbox should change the properties count without a page reload.";
+    public static final String AMENITY_FILTER_SHOULD_SHOW_RESULTS =
+            "Navigating with an amenities filter should return at least one matching property.";
+    public static final String BEDROOM_FILTER_SHOULD_UPDATE_RESULTS_IN_REAL_TIME =
+            "Setting a minimum bedrooms value should change the properties count without a page reload.";
+    public static final String BEDROOM_FILTER_SHOULD_SHOW_RESULTS =
+            "Navigating with a bedrooms filter should return at least one matching property.";
+    public static final String BATHROOM_FILTER_SHOULD_UPDATE_RESULTS_IN_REAL_TIME =
+            "Setting a minimum bathrooms value should change the properties count without a page reload.";
+    public static final String BATHROOM_FILTER_SHOULD_SHOW_RESULTS =
+            "Navigating with a bathrooms filter should return at least one matching property.";
+    public static final String COMBINED_AMENITY_BEDROOM_BATHROOM_PRICE_FILTER_URL_SHOULD_CONTAIN_ALL_PARAMS =
+            "URL should contain all active filter params (amenities, bedrooms, bathrooms, minPrice, maxPrice) when all filters are applied.";
+    public static final String MOBILE_FILTER_BUTTON_SHOULD_BE_VISIBLE =
+            "A 'Filters' button should be visible on mobile viewport.";
+    public static final String MOBILE_FILTER_BUTTON_SHOULD_OPEN_MODAL =
+            "Tapping the mobile Filters button should open the slide-out filter modal.";
+
     // --- Property Amenities (Story 13) messages ---
     public static final String AMENITIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON =
             "GET /api/t/{slug}/amenities should return a non-empty list where each item includes id, name, and icon fields.";

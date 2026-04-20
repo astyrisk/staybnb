@@ -130,6 +130,22 @@ public final class Locators {
         public static By propertyTypeRadio(String value) {
             return By.cssSelector("input[type='radio'][name='propertyType'][value='" + value + "']");
         }
+
+        public static final By BEDROOMS_INPUT = By.xpath(
+                "//div[contains(@class,'filter-section')][.//h4[text()='Bedrooms']]//input");
+        public static final By BATHROOMS_INPUT = By.xpath(
+                "//div[contains(@class,'filter-section')][.//h4[text()='Bathrooms']]//input");
+        public static final By MOBILE_FILTER_BTN = By.cssSelector("button.mobile-filter-btn");
+        public static final By ACTIVE_FILTERS_TEXT = By.cssSelector(".active-filters span");
+        public static final By MOBILE_FILTER_MODAL = By.cssSelector(
+                ".filter-sidebar-container.mobile-visible, .filter-modal-overlay, .filter-modal");
+
+        /** Returns a locator for the amenity checkbox label with the given display name. */
+        public static By amenityCheckbox(String name) {
+            return By.xpath(
+                    "//div[contains(@class,'filter-amenities')]//label[.//span[text()='" + name + "']]"
+            );
+        }
     }
 
     public static final class PropertyDetails {

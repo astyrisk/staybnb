@@ -124,6 +124,18 @@ public final class AppConstants {
         }
     }
 
+    // ── Amenities, Bedrooms & Bathrooms Filter ────────────────────────────────
+    public static final class AmenitiesFilter {
+        // Amenity ID known to match published properties in the test environment (from URL: ?amenities=173)
+        public static final String KNOWN_AMENITY_ID   = "173";
+        // Amenity name used for checkbox interaction tests (must match the span text in the filter sidebar)
+        public static final String KNOWN_AMENITY_NAME = "Beach Access";
+        // Minimum bedrooms value that still yields results
+        public static final int    KNOWN_MIN_BEDROOMS  = 2;
+        // Minimum bathrooms value that still yields results
+        public static final int    KNOWN_MIN_BATHROOMS = 1;
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
 
     private static String resolveSlug() {

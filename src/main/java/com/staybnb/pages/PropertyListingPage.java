@@ -176,6 +176,85 @@ public class PropertyListingPage extends BasePage {
         );
     }
 
+    public void checkAmenityByName(String name) {
+        WebElement label = waitForElementVisible(Locators.FilterSidebar.amenityCheckbox(name));
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", label);
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", label);
+    }
+
+    public void setMinBedrooms(int count) {
+        WebElement input = waitForElementVisible(Locators.FilterSidebar.BEDROOMS_INPUT);
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", input);
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"), String.valueOf(count));
+        input.sendKeys(Keys.TAB);
+    }
+
+    public void setMinBathrooms(int count) {
+        WebElement input = waitForElementVisible(Locators.FilterSidebar.BATHROOMS_INPUT);
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", input);
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"), String.valueOf(count));
+        input.sendKeys(Keys.TAB);
+    }
+
+    public void waitForCountToChangeTo(int previousCount) {
+        wait.until(d -> {
+            String text = d.findElement(propertiesCount).getText();
+            return Integer.parseInt(text.split(" ")[0]) != previousCount;
+        });
+    }
+
+    public void waitForAmenitiesFilterToApply() {
+        waitForUrlContains("amenities=");
+    }
+
+    public void waitForBedroomsFilterToApply() {
+        waitForUrlContains("minBedrooms=");
+    }
+
+    public void waitForBathroomsFilterToApply() {
+        waitForUrlContains("minBathrooms=");
+    }
+
+    public void navigateToWithAmenity(String amenityId) {
+        super.navigateTo(PAGE_URL + "?amenities=" + amenityId);
+        waitForSearchResults();
+    }
+
+    public void navigateToWithBedrooms(int count) {
+        super.navigateTo(PAGE_URL + "?minBedrooms=" + count);
+        waitForSearchResults();
+    }
+
+    public void navigateToWithBathrooms(int count) {
+        super.navigateTo(PAGE_URL + "?minBathrooms=" + count);
+        waitForSearchResults();
+    }
+
+    public void navigateToWithCombinedAmenityBedroomBathroomPriceFilters(
+            String amenityId, int bedrooms, int bathrooms, int minPrice, int maxPrice) {
+        super.navigateTo(PAGE_URL
+                + "?amenities=" + amenityId
+                + "&minBedrooms=" + bedrooms
+                + "&minBathrooms=" + bathrooms
+                + "&minPrice=" + minPrice
+                + "&maxPrice=" + maxPrice);
+        waitForSearchResults();
+    }
+
+    public boolean isMobileFilterButtonDisplayed() {
+        return isDisplayed(Locators.FilterSidebar.MOBILE_FILTER_BTN);
+    }
+
+    public void clickMobileFilterButton() {
+        waitForElementClickable(Locators.FilterSidebar.MOBILE_FILTER_BTN).click();
+    }
+
+    public boolean isMobileFilterModalDisplayed() {
+        return isDisplayed(Locators.FilterSidebar.MOBILE_FILTER_MODAL);
+    }
+
     private void waitForGridToLoad() {
         waitForSearchResults();
         waitForElementsPresent(propertyCard);
