@@ -16,6 +16,7 @@ public final class AppConstants {
     public static final String PROPERTY_LISTING_URL      = BASE_URL + "/properties";
     public static final String PROPERTY_DETAILS_BASE_URL = BASE_URL + "/properties/";
     public static final String OTHER_PROFILE_BASE_URL    = BASE_URL + "/users/";
+    public static final String WISHLIST_URL              = BASE_URL + "/wishlists";
 
     // ── Wait ──────────────────────────────────────────────────────────────────
     public static final int MEDIUM_WAIT = ConfigProperties.getInt("medium.wait.seconds", 10);
@@ -134,6 +135,21 @@ public final class AppConstants {
         public static final int    KNOWN_MIN_BEDROOMS  = 2;
         // Minimum bathrooms value that still yields results
         public static final int    KNOWN_MIN_BATHROOMS = 1;
+    }
+
+    // ── Pagination ────────────────────────────────────────────────────────────
+    public static final class Pagination {
+        public static final int PAGE_SIZE = 20;
+        // Last page number for the default (unfiltered) results in the test environment (46 total → 3 pages)
+        public static final int LAST_PAGE = 3;
+    }
+
+    // ── Sort Search Results ───────────────────────────────────────────────────
+    public static final class SortFilter {
+        public static final String SORT_NEWEST      = "newest";
+        public static final String SORT_PRICE_ASC   = "price_asc";
+        public static final String SORT_PRICE_DESC  = "price_desc";
+        public static final String SORT_RATING_DESC = "rating_desc";
     }
 
     // ─────────────────────────────────────────────────────────────────────────

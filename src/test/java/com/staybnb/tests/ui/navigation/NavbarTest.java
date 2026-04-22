@@ -59,6 +59,24 @@ public class NavbarTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Authenticated: Wishlists link is displayed in user dropdown")
+    public void testNavbarWishlistsLinkDisplayedInDropdown() {
+        loginAndNavigateToPropertyDetails();
+        propertyDetailsPage.navbar().openUserMenu();
+
+        assertTrue(propertyDetailsPage.navbar().isWishlistsLinkDisplayed(), ErrorMessages.NAVBAR_WISHLISTS_LINK_SHOULD_BE_IN_DROPDOWN);
+    }
+
+    @Test
+    @DisplayName("Clicking Wishlists link in dropdown navigates to wishlists page")
+    public void testClickWishlistsInDropdown() {
+        loginAndNavigateToPropertyDetails();
+        propertyDetailsPage.navbar().clickWishlistsAndWaitForRedirect();
+
+        assertTrue(isUrlContains(AppConstants.WISHLIST_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_WISHLISTS_PAGE);
+    }
+
+    @Test
     @DisplayName("Authenticated: Logout button is displayed in user dropdown")
     public void testNavbarLogoutButtonDisplayedInDropdown() {
         loginAndNavigateToPropertyDetails();
@@ -177,7 +195,8 @@ public class NavbarTest extends BaseTest {
         return Stream.of(
                 "logo displayed",
                 "user avatar displayed",
-                "login link hidden"
+                "login link hidden",
+                "wishlists link displayed"
         );
     }
 

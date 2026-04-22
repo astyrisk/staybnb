@@ -169,6 +169,22 @@ public class PropertyDetailsPage extends BasePage {
         });
     }
 
+    public void clickWishlistButton() {
+        waitForElementClickable(Locators.PropertyDetails.DETAIL_WISHLIST_BTN).click();
+    }
+
+    public boolean isWishlistFavorited() {
+        return !driver.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty();
+    }
+
+    public void waitForWishlistFavorited() {
+        wait.until(d -> !d.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty());
+    }
+
+    public void waitForWishlistUnfavorited() {
+        wait.until(d -> d.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty());
+    }
+
     private void waitForDetailsToLoad() {
         wait.until(d ->
                 d.findElements(detailTitle).size() > 0 ||

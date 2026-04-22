@@ -52,6 +52,7 @@ public final class Locators {
 
         public static final By DROPDOWN_MENU = By.className("navbar-dropdown");
         public static final By PROFILE_LINK = By.xpath("//div[@class='navbar-dropdown']//a[contains(@href, '/profile')]");
+        public static final By WISHLISTS_LINK = By.xpath("//div[@class='navbar-dropdown']//a[contains(@href, '/wishlists')]");
         public static final By LOGOUT_BUTTON = By.xpath("//div[@class='navbar-dropdown']//button[text()='Log out']");
     }
 
@@ -110,7 +111,17 @@ public final class Locators {
 
         public static final By SEARCH_INPUT = By.cssSelector("input[type='search']");
         public static final By FILTER_BUTTONS = By.cssSelector("button.filter-btn");
-        public static final By SORT_SELECT = By.tagName("select");
+        public static final By SORT_SELECT = By.cssSelector("select.sort-select");
+
+        public static final By PAGINATION_INFO = By.className("pagination-info");
+        public static final By PAGINATION_PREV_BTN = By.xpath(
+                "//div[contains(@class,'pagination-controls')]//button[normalize-space()='Previous']");
+        public static final By PAGINATION_NEXT_BTN = By.xpath(
+                "//div[contains(@class,'pagination-controls')]//button[normalize-space()='Next']");
+        public static final By PAGINATION_ACTIVE_PAGE = By.cssSelector(".pagination-controls button.btn-primary");
+
+        public static final By CARD_FAVORITE_BTN = By.cssSelector("button.property-card-favorite");
+        public static final By CARD_FAVORITE_FAVORITED_BTN = By.cssSelector("button.property-card-favorite.favorited");
     }
 
     public static final class FilterSidebar {
@@ -172,6 +183,20 @@ public final class Locators {
         public static final By SHOW_ALL_PHOTOS_BUTTON = By.className("show-all-photos-btn");
         public static final By GALLERY_MODAL = By.className("gallery-modal");
         public static final By GALLERY_CAROUSEL = By.className("detail-gallery-carousel");
+
+        public static final By DETAIL_WISHLIST_BTN = By.cssSelector("button.detail-wishlist-btn");
+        public static final By DETAIL_WISHLIST_FAVORITED_BTN = By.cssSelector("button.detail-wishlist-btn.favorited");
+    }
+
+    public static final class Wishlist {
+        private Wishlist() {}
+
+        public static final By PAGE_TITLE        = By.xpath("//h1[normalize-space()='My Wishlists']");
+        public static final By PROPERTIES_COUNT  = By.className("properties-count");
+        public static final By PROPERTY_CARDS    = By.className("property-card");
+        public static final By CARD_FAVORITE_BTN = By.cssSelector("button.property-card-favorite");
+        public static final By CARD_FAVORITED_BTN = By.cssSelector("button.property-card-favorite.favorited");
+        public static final By EMPTY_STATE        = By.className("empty-state");
     }
 
     public static final class OwnProfile {

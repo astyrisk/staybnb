@@ -54,4 +54,13 @@ public abstract class BaseComponent {
     public void waitForUrlToBe(String url) {
         wait.until(ExpectedConditions.urlToBe(url));
     }
+
+    public void acceptConfirmationIfPresent() {
+        try {
+            wait.until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+        } catch (Exception ignored) {
+            // no browser confirmation dialog present
+        }
+    }
 }

@@ -238,6 +238,10 @@ public final class ErrorMessages {
             "The authenticated navbar check condition should be met.";
     public static final String NAVBAR_VISITOR_CHECK_CONDITION_SHOULD_BE_MET =
             "The visitor navbar check condition should be met.";
+    public static final String NAVBAR_WISHLISTS_LINK_SHOULD_BE_IN_DROPDOWN =
+            "Wishlists link should be in dropdown";
+    public static final String NAVBAR_SHOULD_NAVIGATE_TO_WISHLISTS_PAGE =
+            "Should navigate to wishlists page";
 
     // --- Host Dashboard test messages ---
     public static final String HOST_DASHBOARD_SHOULD_DISPLAY_PROPERTY_CARDS_FOR_HOST_WITH_PROPERTIES =
@@ -512,6 +516,78 @@ public final class ErrorMessages {
             "A 'Filters' button should be visible on mobile viewport.";
     public static final String MOBILE_FILTER_BUTTON_SHOULD_OPEN_MODAL =
             "Tapping the mobile Filters button should open the slide-out filter modal.";
+
+    // --- Sort Search Results (Story F3.3-S1) messages ---
+    public static final String SORT_DROPDOWN_SHOULD_HAVE_FOUR_OPTIONS =
+            "Sort dropdown should display exactly four sort options.";
+    public static final String SORT_DROPDOWN_SHOULD_CONTAIN_EXPECTED_OPTIONS =
+            "Sort dropdown should contain the expected option label.";
+    public static final String SORT_BY_NEWEST_SHOULD_RESET_URL =
+            "Selecting 'Newest' after another sort option should remove the sort param from the URL (Newest is the default).";
+    public static final String SORT_BY_PRICE_ASC_RESULTS_SHOULD_BE_IN_ASCENDING_ORDER =
+            "Sort by 'Price: Low to High' should order all visible properties by price per night ascending.";
+    public static final String SORT_BY_PRICE_DESC_RESULTS_SHOULD_BE_IN_DESCENDING_ORDER =
+            "Sort by 'Price: High to Low' should order all visible properties by price per night descending.";
+    public static final String SORT_BY_RATING_DESC_FIRST_RESULT_SHOULD_HAVE_HIGHEST_RATING =
+            "Sort by 'Top Rated' should place the highest-rated property first.";
+    public static final String SORT_AND_FILTER_URL_SHOULD_CONTAIN_SORT_PARAM =
+            "URL should contain 'sort=' when a sort option is selected alongside an active filter.";
+    public static final String SORT_AND_FILTER_URL_SHOULD_CONTAIN_FILTER_PARAM =
+            "URL should contain the active filter param when a sort option is applied on top of a filter.";
+
+    // --- Paginate Search Results (Story F3.4-S1) messages ---
+    public static final String PAGINATION_FIRST_PAGE_SHOULD_SHOW_AT_MOST_PAGE_SIZE_CARDS =
+            "First page of results should display at most 20 property cards.";
+    public static final String PAGINATION_CLICKING_NEXT_SHOULD_LOAD_NEXT_PAGE =
+            "Clicking 'Next' should navigate to the next page of results.";
+    public static final String PAGINATION_CLICKING_PREVIOUS_SHOULD_LOAD_PREVIOUS_PAGE =
+            "Clicking 'Previous' on page 2 should navigate back to page 1.";
+    public static final String PAGINATION_INFO_SHOULD_MATCH_SHOWING_FORMAT =
+            "Pagination info should display text matching 'Showing X–Y of Z results'.";
+    public static final String PAGINATION_URL_SHOULD_REFLECT_CURRENT_PAGE =
+            "Navigating to page 2 should reflect 'page=2' in the URL.";
+    public static final String PAGINATION_PREVIOUS_BUTTON_SHOULD_BE_DISABLED_ON_FIRST_PAGE =
+            "The 'Previous' pagination button should be disabled when on the first page.";
+    public static final String PAGINATION_NEXT_BUTTON_SHOULD_BE_DISABLED_ON_LAST_PAGE =
+            "The 'Next' pagination button should be disabled when on the last page.";
+    public static final String PAGINATION_SHOULD_RESET_TO_PAGE_1_ON_FILTER_CHANGE =
+            "Changing sort or filters while on page 2+ should reset pagination back to page 1.";
+
+    // --- Add Property to Wishlist (Story F3.5-S1) messages ---
+    public static final String WISHLIST_HEART_SHOULD_BECOME_FILLED_ON_CARD =
+            "After clicking the outline heart on a property card, the heart icon should become filled.";
+    public static final String WISHLIST_HEART_SHOULD_BECOME_FILLED_ON_DETAIL =
+            "After clicking the outline heart on the property detail page, the heart icon should become filled.";
+    public static final String WISHLIST_UNAUTHENTICATED_CLICK_SHOULD_REDIRECT_TO_LOGIN =
+            "Clicking the heart icon when not authenticated should redirect to the login page.";
+    public static final String WISHLIST_ALREADY_IN_WISHLIST_HEART_SHOULD_REMAIN_FILLED =
+            "A property already in the wishlist should display a filled heart on the detail page.";
+    public static final String WISHLIST_ADD_NON_EXISTENT_PROPERTY_SHOULD_RETURN_404 =
+            "Adding a non-existent property to the wishlist should return HTTP 404.";
+
+    // --- View Wishlist Page (Story F3.5-S3) messages ---
+    public static final String WISHLIST_PAGE_SHOULD_DISPLAY_PROPERTY_CARDS =
+            "Wishlist page should display property cards for an authenticated user with favorited properties.";
+    public static final String WISHLIST_PAGE_CARDS_SHOULD_SHOW_FILLED_HEARTS =
+            "All property cards on the wishlist page should show filled heart icons.";
+    public static final String WISHLIST_PAGE_EMPTY_STATE_SHOULD_BE_VISIBLE =
+            "Wishlist page should show an empty state when the user has no favorited properties.";
+    public static final String WISHLIST_PAGE_EMPTY_STATE_TEXT_SHOULD_MATCH =
+            "Wishlist page empty state should display the expected message text.";
+    public static final String WISHLIST_PAGE_UNAUTHENTICATED_SHOULD_SHOW_LOGIN_PROMPT =
+            "Navigating to the wishlist page while unauthenticated should display a login prompt.";
+    public static final String WISHLIST_PAGE_UNAUTHENTICATED_LOGIN_PROMPT_TEXT_SHOULD_MATCH =
+            "Unauthenticated wishlist page login prompt should contain the expected message text.";
+
+    // --- Remove Property from Wishlist (Story F3.5-S2) messages ---
+    public static final String WISHLIST_HEART_SHOULD_BECOME_OUTLINE_ON_CARD =
+            "After clicking the filled heart on a property card, the heart icon should become an outline.";
+    public static final String WISHLIST_HEART_SHOULD_BECOME_OUTLINE_ON_DETAIL =
+            "After clicking the filled heart on the property detail page, the heart icon should become an outline.";
+    public static final String WISHLIST_CARD_SHOULD_DISAPPEAR_AFTER_REMOVAL_ON_WISHLIST_PAGE =
+            "Removing a property from the wishlists page should cause its card to disappear from the page.";
+    public static final String WISHLIST_REMOVE_NON_WISHLISTED_PROPERTY_SHOULD_RETURN_404 =
+            "Removing a property that is not in the wishlist should return HTTP 404.";
 
     // --- Property Amenities (Story 13) messages ---
     public static final String AMENITIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON =

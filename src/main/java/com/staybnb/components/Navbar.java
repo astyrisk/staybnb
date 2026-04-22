@@ -27,6 +27,7 @@ public class Navbar extends BaseComponent {
 
     private final By dropdownMenu = Locators.Navbar.DROPDOWN_MENU;
     private final By profileLink = Locators.Navbar.PROFILE_LINK;
+    private final By wishlistsLink = Locators.Navbar.WISHLISTS_LINK;
     private final By logoutButton = Locators.Navbar.LOGOUT_BUTTON;
 
     private final By compactSearchBtn = Locators.SearchBar.COMPACT_SEARCH_BTN;
@@ -98,6 +99,10 @@ public class Navbar extends BaseComponent {
         return isDisplayed(profileLink);
     }
 
+    public boolean isWishlistsLinkDisplayed() {
+        return isDisplayed(wishlistsLink);
+    }
+
     public boolean isLogoutButtonDisplayed() {
         return isDisplayed(logoutButton);
     }
@@ -105,6 +110,16 @@ public class Navbar extends BaseComponent {
     public void clickProfile() {
         openUserMenu();
         waitForElementClickable(profileLink).click();
+    }
+
+    public void clickWishlists() {
+        openUserMenu();
+        waitForElementClickable(wishlistsLink).click();
+    }
+
+    public void clickWishlistsAndWaitForRedirect() {
+        clickWishlists();
+        waitForUrlContains(AppConstants.WISHLIST_URL);
     }
 
     public void clickLogout() {
@@ -141,6 +156,7 @@ public class Navbar extends BaseComponent {
             case "logo displayed" -> isLogoDisplayed();
             case "user avatar displayed" -> isUserAvatarDisplayed();
             case "login link hidden" -> !isLoginLinkDisplayed();
+            case "wishlists link displayed" -> { openUserMenu(); yield isWishlistsLinkDisplayed(); }
             default -> throw new IllegalArgumentException("Unsupported authenticated navbar check: " + checkName);
         };
     }
