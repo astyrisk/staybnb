@@ -10,6 +10,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Area:** Create Property — Step 3
 **Test:** `CreatePropertyStep3Test#testStep3BedsMinimumIsOne`
 **Status:** Open
+**Severity:** Medium
 
 **Description:** The "Beds" counter on the Details step allows a value of 0. The expected minimum is 1.
 
@@ -22,6 +23,9 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Expected:** Minimum is 1 — the decrement button is disabled at 1.
 **Actual:** Minimum is 0 — the counter can be decremented to 0.
 
+**Screenshots:**
+![Beds counter at 0](screenshots/bug-1.png)
+
 ---
 
 ## BUG-2 — Non-Host Direct Navigation to `/hosting/create` Does Not Return 403
@@ -30,6 +34,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Area:** Access Control
 **Test:** `CreatePropertyStep1Test#testNonHostAccessToCreatePropertyIsBlockedWith403`
 **Status:** Open
+**Severity:** Low
 
 **Description:** When a non-host user navigates directly to the create-property URL, they should see a 403 error (or be redirected to the "Become a Host" flow). Neither happens — the page loads without any access block.
 
@@ -38,7 +43,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 2. Directly navigate to `{BASE_URL}/hosting/create`.
 
 **Expected:** A 403 error page is displayed.
-**Actual:** The page loads without a 403 or a redirect.
+**Actual:** A different error page is displayed — not a 403.
 
 ---
 
@@ -48,6 +53,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Area:** Amenities
 **Tests:** `CreatePropertyStep4Test#testStep4AmenitiesGroupedByEssentials`, `testStep4AmenitiesGroupedByFeatures`, `testStep4AmenitiesGroupedBySafety`
 **Status:** Open
+**Severity:** Medium
 
 **Description:** The amenities grid on Step 4 is supposed to render amenities organised under three group headings: **Essentials**, **Features**, and **Safety**. None of these headings are present.
 
@@ -60,24 +66,8 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Expected:** Amenities are visually grouped under "Essentials", "Features", and "Safety" headings.
 **Actual:** No group headings are rendered; amenities appear ungrouped.
 
----
-
-## BUG-4 — Category Bar Scroll Position Not Reset on Back Navigation
-
-**Sprint:** 2
-**Area:** Home Page
-**Status:** Open
-
-**Description:** When a user scrolls the home-page category bar and then navigates to a property and back, the category bar scroll position is not reset to the start.
-
-**Steps to reproduce:**
-1. Open the home page.
-2. Scroll the category bar horizontally to the right.
-3. Click into any property listing.
-4. Press the browser back button to return to the home page.
-
-**Expected:** Category bar scroll position resets to the beginning.
-**Actual:** The bar retains the previous scroll offset.
+**Screenshots:**
+![Amenities ungrouped](screenshots/bug-3.png)
 
 ---
 
@@ -87,6 +77,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Area:** Hosting — Become a Host
 **Test:** `BecomeHostTest#testNavbarShowsMyPropertiesAfterBecomingHost`
 **Status:** Open
+**Severity:** High
 
 **Description:** After a user successfully completes the "Become a Host" flow, the navbar should surface a **"My Properties"** link. The link does not appear.
 
@@ -99,24 +90,8 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Expected:** A "My Properties" (host dashboard) link is visible in the navbar.
 **Actual:** The link is absent — the navbar does not update to reflect the new host status.
 
----
-
-## BUG-6 — "Become a Host" Button on Profile Page Does Not Redirect to Hosting
-
-**Sprint:** 2
-**Area:** Hosting — Become a Host
-**Test:** `BecomeHostTest#testBecomeHostRedirectsToHostingFromProfilePage`
-**Status:** Open
-
-**Description:** Clicking "Become a Host" from the **profile page** does not redirect the user to the hosting dashboard. The same action triggered from the navbar works correctly.
-
-**Steps to reproduce:**
-1. Register a new user.
-2. Navigate to your profile page via the navbar.
-3. Click the **"Become a Host"** button on the profile page.
-
-**Expected:** User is redirected to the `/hosting/` URL.
-**Actual:** No redirect occurs; the user stays on the profile page.
+**Screenshots:**
+![Navbar missing My Properties link](screenshots/bug-5.png)
 
 ---
 
@@ -126,6 +101,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Area:** Property Details
 **Test:** `PropertyCategoriesTest#testPropertyDetailsShowsCategoryAlongsidePropertyType`
 **Status:** Open
+**Severity:** Low
 
 **Description:** The property type field on the property details page is expected to include the category separated by a `·` character (e.g., `"Apartment · Beach"`). The category portion is missing.
 
@@ -136,6 +112,9 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Expected:** Text is formatted as `"<Type> · <Category>"`.
 **Actual:** Only the type is shown; the `·` separator and category are absent.
 
+**Screenshots:**
+![Property type missing category](screenshots/bug-7.png)
+
 ---
 
 ## BUG-8 — Selecting a Category Chip Does Not Mark It as Active
@@ -144,6 +123,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Area:** Home Page — Categories
 **Test:** `PropertyCategoriesTest#testSelectingCategoryMarksChipAsActive`
 **Status:** Open
+**Severity:** Low
 
 **Description:** Clicking a category chip on the home page should apply an active/selected style to that chip. The active state is not applied.
 
@@ -155,6 +135,9 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Expected:** The "Bungalow" chip is rendered in an active/selected state.
 **Actual:** The chip has no active styling after being clicked.
 
+**Screenshots:**
+![Category chip with no active state](screenshots/bug-8.png)
+
 ---
 
 ## BUG-9 — Mobile Compact Search Bar Not Visible in Navbar
@@ -163,6 +146,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Area:** Search
 **Test:** `SearchTest#testMobileCompactSearchBarIsVisible`
 **Status:** Open
+**Severity:** High
 
 **Description:** In a mobile viewport, the navbar should display a compact search bar. It is not rendered.
 
@@ -174,6 +158,9 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Expected:** A compact/collapsed search bar is visible inside the navbar.
 **Actual:** No compact search bar is displayed.
 
+**Screenshots:**
+![Mobile navbar missing compact search bar](screenshots/bug-9.png)
+
 ---
 
 ## BUG-10 — Check-In Date Picker Allows Past Dates
@@ -181,6 +168,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Sprint:** 3
 **Area:** Search
 **Status:** Open
+**Severity:** High
 
 **Description:** When the search form is expanded and the user opens the check-in date picker, dates in the past should not be selectable.
 
@@ -192,6 +180,9 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Expected:** Only today and future dates are selectable; past dates are disabled.
 **Actual:** Past dates are selectable.
 
+**Screenshots:**
+![Check-in date picker allowing past dates](screenshots/bug-10.png)
+
 ---
 
 ## BUG-11 — Check-Out Date Picker Allows Dates Before Check-In
@@ -199,6 +190,7 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 **Sprint:** 3
 **Area:** Search
 **Status:** Open
+**Severity:** High
 
 **Description:** After a check-in date has been selected, the check-out date picker should only allow dates after the check-in date.
 
@@ -210,3 +202,6 @@ All known defects in the StayBnB QA environment. Each entry includes a descripti
 
 **Expected:** Only dates after the selected check-in date are selectable.
 **Actual:** Dates on or before the check-in date are selectable.
+
+**Screenshots:**
+![Check-out date picker allowing dates before check-in](screenshots/bug-11.png)
