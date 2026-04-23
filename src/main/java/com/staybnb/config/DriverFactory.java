@@ -26,9 +26,9 @@ public final class DriverFactory {
             options.addArguments("--disable-dev-shm-usage");
         }
         WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(AppConstants.MEDIUM_WAIT));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(WaitConstants.MEDIUM_WAIT));
         if (headless) {
-            driver.manage().window().setSize(new Dimension(AppConstants.WIDE_DESKTOP_WIDTH, AppConstants.WIDE_DESKTOP_HEIGHT));
+            driver.manage().window().setSize(new Dimension(WaitConstants.WIDE_DESKTOP_WIDTH, WaitConstants.WIDE_DESKTOP_HEIGHT));
         } else {
             driver.manage().window().maximize();
         }
@@ -45,8 +45,11 @@ public final class DriverFactory {
         WebDriver driver = driverThread.get();
         if (driver != null) {
             log.debug("Quitting ChromeDriver for thread [{}]", Thread.currentThread().getName());
-            driver.quit();
-            driverThread.remove();
+            try {
+                driver.quit();
+            } finally {
+                driverThread.remove();
+            }
         }
     }
 

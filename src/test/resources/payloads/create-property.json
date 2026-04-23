@@ -1,0 +1,19 @@
+{
+  "propertyType": "ENTIRE_PLACE",
+  "categoryId": 71,
+  "title": "{{title}}",
+  "description": "Automation flow for create property wizard.",
+  "locationCountry": "Afghanistan",
+  "locationCity": "Kabul",
+  "locationAddress": "Street 1",
+  "maxGuests": 1,
+  "numBedrooms": 1,
+  "numBeds": 1,
+  "numBathrooms": 1,
+  "amenities": [],
+  "images": [
+    {"url": "https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp", "caption": ""},
+    {"url": "https://is1-2.housingcdn.com/012c1500/96c67b8d4f357e39da3ebbbca1bd60da/v0/medium.jpeg", "caption": ""}
+  ],
+  "pricePerNight": 120
+}

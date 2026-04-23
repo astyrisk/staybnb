@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.property;
 
 import com.staybnb.pages.PropertyDetailsPage;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -25,7 +25,7 @@ public class PropertyDetailsTest extends BaseTest {
     @BeforeEach
     public void setup() {
         propertyDetailsPage = new PropertyDetailsPage(driver);
-        propertyDetailsPage.navigateTo(AppConstants.DEFAULT_PROPERTY_ID);
+        propertyDetailsPage.navigateTo(TestDataConstants.DEFAULT_PROPERTY_ID);
     }
 
     @Test
@@ -129,7 +129,7 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     @DisplayName("Non-existent property shows 404 page")
     public void testNonExistentPropertyReturns404() {
-        propertyDetailsPage.navigateTo(AppConstants.NON_EXISTENT_ID);
+        propertyDetailsPage.navigateTo(TestDataConstants.NON_EXISTENT_ID);
 
         assertTrue(propertyDetailsPage.isPropertyNotFoundDisplayed());
     }

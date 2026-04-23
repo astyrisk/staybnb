@@ -1,7 +1,7 @@
 package com.staybnb.tests.api;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
@@ -13,11 +13,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("Property Management")
 @Feature("Publish Property API")
 @Tag("api")
+@ResourceLock(value = "property-1088", mode = ResourceAccessMode.READ)
 public class PublishPropertyApiTest extends BaseTest {
     private PublishPropertyPage publishPropertyPage;
 
@@ -52,7 +55,7 @@ public class PublishPropertyApiTest extends BaseTest {
     public void testPublishPropertyApiReturns403ForNonOwner() {
         new LogoutPage(driver).logoutAndWaitForTokenCleared();
         registerNewUserAndLandOnHome("testpublishproperty");
-        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(AppConstants.PublishProperty.OWNED_PROPERTY_ID, true);
+        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(TestDataConstants.PublishProperty.OWNED_PROPERTY_ID, true);
 
         assertEquals(
                 403L,
@@ -64,7 +67,7 @@ public class PublishPropertyApiTest extends BaseTest {
     @Test
     @DisplayName("Publish property API returns 404 for a non-existent property ID")
     public void testPublishPropertyApiReturns404ForNonExistentPropertyId() {
-        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(AppConstants.NON_EXISTENT_PROPERTY_ID, true);
+        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(TestDataConstants.NON_EXISTENT_PROPERTY_ID, true);
 
         assertEquals(
                 404L,
@@ -77,7 +80,7 @@ public class PublishPropertyApiTest extends BaseTest {
     @DisplayName("Publish property API returns 401 when not logged in")
     public void testPublishPropertyApiReturns401WhenLoggedOut() {
         publishPropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(AppConstants.PublishProperty.OWNED_PROPERTY_ID, true);
+        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(TestDataConstants.PublishProperty.OWNED_PROPERTY_ID, true);
 
         assertEquals(
                 401L,

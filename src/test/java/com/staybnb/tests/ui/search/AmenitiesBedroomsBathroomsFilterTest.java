@@ -3,7 +3,8 @@ package com.staybnb.tests.ui.search;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
+import com.staybnb.config.WaitConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -37,8 +38,8 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
                 .window()
                 .setSize(
                     new Dimension(
-                        AppConstants.WIDE_DESKTOP_WIDTH,
-                        AppConstants.WIDE_DESKTOP_HEIGHT
+                        WaitConstants.WIDE_DESKTOP_WIDTH,
+                        WaitConstants.WIDE_DESKTOP_HEIGHT
                     )
                 );
             mobileViewportActive = false;
@@ -52,7 +53,7 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
         int countBefore = propertyListingPage.getPropertiesCount();
 
         propertyListingPage.checkAmenityByName(
-            AppConstants.AmenitiesFilter.KNOWN_AMENITY_NAME
+            TestDataConstants.AmenitiesFilter.KNOWN_AMENITY_NAME
         );
         propertyListingPage.waitForCountToChangeTo(countBefore);
 
@@ -68,7 +69,7 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
     @DisplayName("Navigating with amenities filter returns matching properties")
     public void testNavigatingWithAmenityFilterShowsResults() {
         propertyListingPage.navigateToWithAmenity(
-            AppConstants.AmenitiesFilter.KNOWN_AMENITY_ID
+            TestDataConstants.AmenitiesFilter.KNOWN_AMENITY_ID
         );
 
         assertTrue(
@@ -86,7 +87,7 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
         int countBefore = propertyListingPage.getPropertiesCount();
 
         propertyListingPage.setMinBedrooms(
-            AppConstants.AmenitiesFilter.KNOWN_MIN_BEDROOMS
+            TestDataConstants.AmenitiesFilter.KNOWN_MIN_BEDROOMS
         );
         propertyListingPage.waitForCountToChangeTo(countBefore);
 
@@ -102,7 +103,7 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
     @DisplayName("Navigating with bedrooms filter returns matching properties")
     public void testNavigatingWithBedroomFilterShowsResults() {
         propertyListingPage.navigateToWithBedrooms(
-            AppConstants.AmenitiesFilter.KNOWN_MIN_BEDROOMS
+            TestDataConstants.AmenitiesFilter.KNOWN_MIN_BEDROOMS
         );
 
         assertTrue(
@@ -134,7 +135,7 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
     @DisplayName("Navigating with bathrooms filter returns matching properties")
     public void testNavigatingWithBathroomFilterShowsResults() {
         propertyListingPage.navigateToWithBathrooms(
-            AppConstants.AmenitiesFilter.KNOWN_MIN_BATHROOMS
+            TestDataConstants.AmenitiesFilter.KNOWN_MIN_BATHROOMS
         );
 
         assertTrue(
@@ -150,11 +151,11 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
     )
     public void testCombinedFiltersApplyAndLogic() {
         propertyListingPage.navigateToWithCombinedAmenityBedroomBathroomPriceFilters(
-            AppConstants.AmenitiesFilter.KNOWN_AMENITY_ID,
-            AppConstants.AmenitiesFilter.KNOWN_MIN_BEDROOMS,
-            AppConstants.AmenitiesFilter.KNOWN_MIN_BATHROOMS,
-            AppConstants.PriceFilter.KNOWN_MIN_PRICE,
-            AppConstants.PriceFilter.KNOWN_MAX_PRICE
+            TestDataConstants.AmenitiesFilter.KNOWN_AMENITY_ID,
+            TestDataConstants.AmenitiesFilter.KNOWN_MIN_BEDROOMS,
+            TestDataConstants.AmenitiesFilter.KNOWN_MIN_BATHROOMS,
+            TestDataConstants.PriceFilter.KNOWN_MIN_PRICE,
+            TestDataConstants.PriceFilter.KNOWN_MAX_PRICE
         );
 
         assertAll(
@@ -188,7 +189,7 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
         driver
             .manage()
             .window()
-            .setSize(new Dimension(AppConstants.MOBILE_WIDTH, 812));
+            .setSize(new Dimension(WaitConstants.MOBILE_WIDTH, 812));
         mobileViewportActive = true;
 
         assertTrue(
@@ -206,7 +207,7 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
         driver
             .manage()
             .window()
-            .setSize(new Dimension(AppConstants.MOBILE_WIDTH, 812));
+            .setSize(new Dimension(WaitConstants.MOBILE_WIDTH, 812));
         mobileViewportActive = true;
         propertyListingPage.clickMobileFilterButton();
 

@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.search;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -29,7 +29,7 @@ public class PropertyTypeAndCategoryFilterTest extends BaseTest {
     @Test
     @DisplayName("Selecting a property type radio updates results in real-time")
     public void testPropertyTypeFilterUpdatesResultsInRealTime() {
-        propertyListingPage.selectPropertyType(AppConstants.TypeCategoryFilter.KNOWN_TYPE);
+        propertyListingPage.selectPropertyType(TestDataConstants.TypeCategoryFilter.KNOWN_TYPE);
         propertyListingPage.waitForPropertyTypeFilterToApply();
 
         assertTrue(
@@ -42,7 +42,7 @@ public class PropertyTypeAndCategoryFilterTest extends BaseTest {
     @Test
     @DisplayName("Navigating with propertyType=ENTIRE_PLACE returns matching properties")
     public void testPropertyTypeFilterShowsMatchingResults() {
-        propertyListingPage.navigateToWithPropertyType(AppConstants.TypeCategoryFilter.KNOWN_TYPE);
+        propertyListingPage.navigateToWithPropertyType(TestDataConstants.TypeCategoryFilter.KNOWN_TYPE);
 
         assertTrue(
                 propertyListingPage.getPropertiesCount() > 0,
@@ -54,7 +54,7 @@ public class PropertyTypeAndCategoryFilterTest extends BaseTest {
     @Test
     @DisplayName("Selecting a category from the dropdown updates results in real-time")
     public void testCategoryFilterUpdatesResultsInRealTime() {
-        propertyListingPage.selectCategory(AppConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
+        propertyListingPage.selectCategory(TestDataConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
         propertyListingPage.waitForCategoryFilterToApply();
 
         assertTrue(
@@ -67,7 +67,7 @@ public class PropertyTypeAndCategoryFilterTest extends BaseTest {
     @Test
     @DisplayName("Navigating with categoryId returns only properties in that category")
     public void testCategoryFilterShowsMatchingResults() {
-        propertyListingPage.navigateToWithCategory(AppConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
+        propertyListingPage.navigateToWithCategory(TestDataConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
 
         assertTrue(
                 propertyListingPage.getPropertiesCount() > 0,
@@ -79,8 +79,8 @@ public class PropertyTypeAndCategoryFilterTest extends BaseTest {
     @Test
     @DisplayName("Applying category and property type together reflects both filters in the URL")
     public void testCombinedCategoryAndTypeFiltersApplyAndLogic() {
-        propertyListingPage.navigateToWithCategory(AppConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
-        propertyListingPage.selectPropertyType(AppConstants.TypeCategoryFilter.KNOWN_TYPE);
+        propertyListingPage.navigateToWithCategory(TestDataConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
+        propertyListingPage.selectPropertyType(TestDataConstants.TypeCategoryFilter.KNOWN_TYPE);
         propertyListingPage.waitForPropertyTypeFilterToApply();
 
         assertAll(
@@ -95,7 +95,7 @@ public class PropertyTypeAndCategoryFilterTest extends BaseTest {
     @Test
     @DisplayName("Clearing all filters restores the full property listing")
     public void testClearingAllFiltersRestoresAllProperties() {
-        propertyListingPage.navigateToWithCategory(AppConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
+        propertyListingPage.navigateToWithCategory(TestDataConstants.TypeCategoryFilter.KNOWN_CATEGORY_ID);
         int filteredCount = propertyListingPage.getPropertiesCount();
 
         propertyListingPage.clearAllFilters();

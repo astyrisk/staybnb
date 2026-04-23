@@ -1,7 +1,12 @@
 package com.staybnb.components;
 
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.WaitConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,47 +19,52 @@ import java.time.Duration;
 import java.util.List;
 
 public abstract class BaseComponent {
+    // Instance field so each concrete subclass logs under its own class name.
+    protected final Logger log = LogManager.getLogger(getClass());
+
     protected final WebDriver driver;
     protected final WebDriverWait wait;
 
     protected BaseComponent(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_WAIT));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(WaitConstants.MEDIUM_WAIT));
     }
 
     protected WebElement waitForElementVisible(By locator) {
+        log.debug("Waiting for visible: {}", locator);
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
-    protected List<WebElement> waitForElementsVisible(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
-    }
-
     protected List<WebElement> waitForElementsPresent(By locator) {
+        log.debug("Waiting for present: {}", locator);
         return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
     protected WebElement waitForElementClickable(By locator) {
+        log.debug("Waiting for clickable: {}", locator);
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     protected void click(By locator) {
+        log.debug("Clicking: {}", locator);
         driver.findElement(locator).click();
     }
 
     protected boolean isDisplayed(By locator) {
         try {
             return driver.findElement(locator).isDisplayed();
-        } catch (Exception e) {
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
 
     public void waitForUrlContains(String text) {
+        log.debug("Waiting for URL to contain: {}", text);
         wait.until(ExpectedConditions.urlContains(text));
     }
 
     public void waitForUrlToBe(String url) {
+        log.debug("Waiting for URL to be: {}", url);
         wait.until(ExpectedConditions.urlToBe(url));
     }
 
@@ -62,7 +72,8 @@ public abstract class BaseComponent {
         try {
             wait.until(ExpectedConditions.alertIsPresent());
             driver.switchTo().alert().accept();
-        } catch (Exception ignored) {
+            log.debug("Accepted browser confirmation dialog");
+        } catch (TimeoutException ignored) {
             // no browser confirmation dialog present
         }
     }

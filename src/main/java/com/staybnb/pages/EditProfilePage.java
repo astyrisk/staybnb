@@ -4,6 +4,7 @@ import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import com.staybnb.config.AppConstants;
@@ -12,6 +13,7 @@ public class EditProfilePage extends BasePage {
     private static final String PAGE_URL = AppConstants.EDIT_PROFILE_URL;
     private static final String UPDATE_PROFILE_API_JS_RESOURCE = "com/staybnb/scripts/updateMyProfileApi.js";
 
+    //TODO remove duplication, redundancy
     private By firstNameField = Locators.EditProfile.FIRST_NAME_FIELD;
     private By lastNameField = Locators.EditProfile.LAST_NAME_FIELD;
     private By phoneField = Locators.EditProfile.PHONE_FIELD;
@@ -105,7 +107,7 @@ public class EditProfilePage extends BasePage {
     public String getFieldError(String fieldId) {
         try {
             return driver.findElement(By.xpath("//input[@id='" + fieldId + "']/following-sibling::span[@class='field-error']")).getText();
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             return "";
         }
     }
@@ -116,10 +118,6 @@ public class EditProfilePage extends BasePage {
 
     public String getFirstNameValue() {
         return waitForElementVisible(firstNameField).getAttribute("value");
-    }
-
-    public String getLastNameValue() {
-        return waitForElementVisible(lastNameField).getAttribute("value");
     }
 
     public String updateMyProfileViaApi(String updatePayloadJson) {

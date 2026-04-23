@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.wishlist;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.pages.PropertyListingPage;
@@ -95,7 +95,7 @@ public class AddToWishlistTest extends BaseTest {
     @DisplayName("Adding a non-existent property to wishlist returns 404")
     public void testAddNonExistentPropertyReturns404() {
         loginAsTestUserAndLandOnHome(loginPage);
-        long status = wishlistPage.addToWishlistViaApi(AppConstants.NON_EXISTENT_PROPERTY_ID);
+        long status = wishlistPage.addToWishlistViaApi(TestDataConstants.NON_EXISTENT_PROPERTY_ID);
         assertEquals(
                 404L,
                 status,

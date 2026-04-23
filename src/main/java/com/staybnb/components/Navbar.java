@@ -1,6 +1,7 @@
 package com.staybnb.components;
 
 import com.staybnb.config.AppConstants;
+import com.staybnb.config.WaitConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -169,7 +170,7 @@ public class Navbar extends BaseComponent {
     }
 
     public void setMobileLayout() {
-        driver.manage().window().setSize(new Dimension(AppConstants.MOBILE_WIDTH, 812));
+        driver.manage().window().setSize(new Dimension(WaitConstants.MOBILE_WIDTH, 812));
     }
 
     public void setDesktopLayout() {

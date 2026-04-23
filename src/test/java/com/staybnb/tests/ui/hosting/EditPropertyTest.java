@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.EditPropertyPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
@@ -34,7 +34,7 @@ public class EditPropertyTest extends BaseTest {
     }
 
     private void openEditPage() {
-        editPropertyPage.navigateTo(AppConstants.EditProperty.EDITABLE_PROPERTY_ID);
+        editPropertyPage.navigateTo(TestDataConstants.EditProperty.EDITABLE_PROPERTY_ID);
     }
 
     @Test

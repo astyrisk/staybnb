@@ -12,18 +12,6 @@ public class AmenitiesApiPage extends BasePage {
         super(driver);
     }
 
-    public long getAmenitiesStatusViaApi() {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(GET_AMENITIES_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected amenities status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
-    }
-
     public boolean amenitiesResponseHasRequiredFieldsViaApi() {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;

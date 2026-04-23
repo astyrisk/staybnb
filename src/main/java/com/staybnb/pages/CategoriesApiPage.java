@@ -12,18 +12,6 @@ public class CategoriesApiPage extends BasePage {
         super(driver);
     }
 
-    public long getCategoriesStatusViaApi() {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(GET_CATEGORIES_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected categories status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
-    }
-
     public boolean categoriesResponseHasRequiredFieldsViaApi() {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;

@@ -1,6 +1,7 @@
 package com.staybnb.tests.ui.profile;
 
 import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.assertions.ErrorMessages;
@@ -44,7 +45,7 @@ public class OwnProfileTest extends BaseTest {
     @DisplayName("Own profile shows correct full name")
     public void testOwnProfileFullName() {
         assertEquals(
-                AppConstants.OwnProfile.FULL_NAME,
+                TestDataConstants.OwnProfile.FULL_NAME,
                 ownProfilePage.getFullName(),
                 ErrorMessages.FULL_NAME_SHOULD_MATCH
         );
@@ -72,7 +73,7 @@ public class OwnProfileTest extends BaseTest {
     @DisplayName("Own profile shows correct phone number")
     public void testOwnProfilePhone() {
         assertEquals(
-                AppConstants.OwnProfile.PHONE,
+                TestDataConstants.OwnProfile.PHONE,
                 ownProfilePage.getPhone(),
                 ErrorMessages.PHONE_NUMBER_SHOULD_MATCH
         );

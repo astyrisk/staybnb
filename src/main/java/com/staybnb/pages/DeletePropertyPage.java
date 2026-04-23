@@ -6,6 +6,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -122,7 +123,7 @@ public class DeletePropertyPage extends BasePage {
             Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             alert.accept();
             return true;
-        } catch (Exception e) {
+        } catch (TimeoutException e) {
             return false;
         }
     }
@@ -132,7 +133,7 @@ public class DeletePropertyPage extends BasePage {
             Alert alert = wait.until(ExpectedConditions.alertIsPresent());
             alert.dismiss();
             return true;
-        } catch (Exception e) {
+        } catch (TimeoutException e) {
             return false;
         }
     }

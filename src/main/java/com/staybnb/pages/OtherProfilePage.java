@@ -4,6 +4,7 @@ import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
 import java.util.List;
@@ -12,6 +13,7 @@ public class OtherProfilePage extends BasePage {
     private static final String OTHER_PROFILE_BASE_URL = AppConstants.OTHER_PROFILE_BASE_URL;
     private static final String OTHER_USER_PROFILE_API_JS_RESOURCE = "com/staybnb/scripts/getOtherUserProfileApi.js";
 
+    //TODO remove duplication, redundancy
     private By profileAvatar = Locators.OtherProfile.PROFILE_AVATAR;
     private By profileName = Locators.OtherProfile.PROFILE_NAME;
     private By profileMeta = Locators.OtherProfile.PROFILE_META;
@@ -76,28 +78,28 @@ public class OtherProfilePage extends BasePage {
     }
 
     private void waitForProfileToLoad() {
-        wait.until(d -> hasAnyProfileIndicator(d));
+        wait.until(this::hasAnyProfileIndicator);
     }
 
     private boolean hasAnyProfileIndicator(WebDriver d) {
-        return d.findElements(profileAvatar).size() > 0
-                || d.findElements(profileName).size() > 0
-                || d.findElements(profileMeta).size() > 0
-                || d.findElements(bioText).size() > 0
+        return !d.findElements(profileAvatar).isEmpty()
+                || !d.findElements(profileName).isEmpty()
+                || !d.findElements(profileMeta).isEmpty()
+                || !d.findElements(bioText).isEmpty()
                 || isErrorPagePresent(d);
     }
 
     private boolean isErrorPagePresent(WebDriver d) {
         return d.getPageSource().contains("404")
                 || d.getPageSource().contains("User not found")
-                || d.findElements(errorMessage).size() > 0;
+                || !d.findElements(errorMessage).isEmpty();
     }
 
     private boolean isElementVisible(By locator) {
         try {
             List<WebElement> elements = driver.findElements(locator);
             return elements.stream().anyMatch(WebElement::isDisplayed);
-        } catch (Exception e) {
+        } catch (StaleElementReferenceException e) {
             return false;
         }
     }

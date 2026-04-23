@@ -2,14 +2,14 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import com.staybnb.config.AppConstants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class CreatePropertyPage extends BasePage {
-    private static final Logger log = LogManager.getLogger(CreatePropertyPage.class);
     private static final String PAGE_URL = AppConstants.HOSTING_CREATE_URL;
     private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
     private static final String CREATE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyStatusApi.js";
 
+    //TODO remove redundancy, duplications
     private final By container = Locators.CreateProperty.CONTAINER;
     private final By progressText = Locators.CreateProperty.PROGRESS_TEXT;
     private final By nextButton = Locators.CreateProperty.NEXT_BUTTON;
@@ -60,7 +60,6 @@ public class CreatePropertyPage extends BasePage {
     private final By step7ReviewTitle = Locators.CreateProperty.STEP_7_REVIEW_TITLE;
     private final By step7ReviewSections = Locators.CreateProperty.STEP_7_REVIEW_SECTIONS;
     private final By step7CreatePropertyButton = Locators.CreateProperty.STEP_7_CREATE_PROPERTY_BUTTON;
-    private final By step7SuccessMessage = Locators.CreateProperty.STEP_7_SUCCESS_MESSAGE;
 
     public CreatePropertyPage(WebDriver driver) {
         super(driver);
@@ -123,7 +122,7 @@ public class CreatePropertyPage extends BasePage {
         String text = getProgressText(); // e.g. "Step 3 of 7"
         try {
             return Integer.parseInt(text.split("\\s+")[1]);
-        } catch (Exception e) {
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             return -1;
         }
     }
@@ -250,7 +249,7 @@ public class CreatePropertyPage extends BasePage {
             if (src != null && !src.trim().isEmpty()) {
                 return src.trim();
             }
-        } catch (Exception ignored) {
+        } catch (NoSuchElementException ignored) {
         }
         String text = previewItem.getText();
         return text == null ? "" : text.trim();
@@ -459,21 +458,11 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void toggleAmenityByLabelContaining(String labelText) {
-        String normalized = labelText.toLowerCase();
-        By amenityCheckbox = By.xpath(
-                "//label[contains(@class,'create-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
-                        + normalized + "')]//input[@type='checkbox']"
-        );
-        waitForElementClickable(amenityCheckbox).click();
+        waitForElementClickable(Locators.CreateProperty.amenityCheckbox(labelText)).click();
     }
 
     public boolean isAmenityCheckedByLabelContaining(String labelText) {
-        String normalized = labelText.toLowerCase();
-        By amenityCheckbox = By.xpath(
-                "//label[contains(@class,'create-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
-                        + normalized + "')]//input[@type='checkbox']"
-        );
-        return waitForElementVisible(amenityCheckbox).isSelected();
+        return waitForElementVisible(Locators.CreateProperty.amenityCheckbox(labelText)).isSelected();
     }
 
     public boolean pageShows403Error() {
@@ -520,7 +509,7 @@ public class CreatePropertyPage extends BasePage {
                 return body == null ? null : body.toString();
             }
             return raw;
-        } catch (Exception e) {
+        } catch (JavascriptException e) {
             return raw;
         }
     }

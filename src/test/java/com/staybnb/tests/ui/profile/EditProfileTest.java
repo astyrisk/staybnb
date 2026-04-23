@@ -4,7 +4,7 @@ import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -37,7 +37,7 @@ public class EditProfileTest extends BaseTest {
     }
 
     private void performEditProfileUpdate() {
-        editProfilePage.updateProfile(AppConstants.EditProfile.NEW_FIRST_NAME, AppConstants.EditProfile.NEW_LAST_NAME, AppConstants.EditProfile.NEW_PHONE, AppConstants.EditProfile.NEW_BIO, AppConstants.EditProfile.NEW_AVATAR_URL);
+        editProfilePage.updateProfile(TestDataConstants.EditProfile.NEW_FIRST_NAME, TestDataConstants.EditProfile.NEW_LAST_NAME, TestDataConstants.EditProfile.NEW_PHONE, TestDataConstants.EditProfile.NEW_BIO, TestDataConstants.EditProfile.NEW_AVATAR_URL);
         ownProfilePage.navigateViaNavbar();
     }
 
@@ -49,17 +49,17 @@ public class EditProfileTest extends BaseTest {
 
         switch (checkName) {
             case "full name" -> assertEquals(
-                    AppConstants.EditProfile.NEW_FIRST_NAME + " " + AppConstants.EditProfile.NEW_LAST_NAME,
+                    TestDataConstants.EditProfile.NEW_FIRST_NAME + " " + TestDataConstants.EditProfile.NEW_LAST_NAME,
                     ownProfilePage.getFullName(),
                     "Full name should be updated."
             );
             case "phone" -> assertEquals(
-                    AppConstants.EditProfile.NEW_PHONE,
+                    TestDataConstants.EditProfile.NEW_PHONE,
                     ownProfilePage.getPhone(),
                     "Phone should be updated."
             );
             case "bio" -> assertEquals(
-                    AppConstants.EditProfile.NEW_BIO,
+                    TestDataConstants.EditProfile.NEW_BIO,
                     ownProfilePage.getBio(),
                     "Bio should be updated."
             );

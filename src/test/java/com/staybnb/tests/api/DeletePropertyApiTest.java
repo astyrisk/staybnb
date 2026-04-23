@@ -1,7 +1,7 @@
 package com.staybnb.tests.api;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
 import com.staybnb.pages.LoginPage;
@@ -13,11 +13,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Epic("Property Management")
 @Feature("Delete Property API")
 @Tag("api")
+@ResourceLock(value = "property-1088", mode = ResourceAccessMode.READ)
 public class DeletePropertyApiTest extends BaseTest {
     private DeletePropertyPage deletePropertyPage;
 
@@ -51,7 +54,7 @@ public class DeletePropertyApiTest extends BaseTest {
     public void testDeletePropertyApiReturns403ForNonOwner() {
         new LogoutPage(driver).logoutAndWaitForTokenCleared();
         registerNewUserAndLandOnHome("testdeleteproperty");
-        long status = deletePropertyPage.deletePropertyStatusViaApi(AppConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
+        long status = deletePropertyPage.deletePropertyStatusViaApi(TestDataConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
 
         assertEquals(
                 403L,
@@ -63,7 +66,7 @@ public class DeletePropertyApiTest extends BaseTest {
     @Test
     @DisplayName("Delete property API returns 404 for a non-existent property ID")
     public void testDeletePropertyApiReturns404ForNonExistentPropertyId() {
-        long status = deletePropertyPage.deletePropertyStatusViaApi(AppConstants.NON_EXISTENT_PROPERTY_ID);
+        long status = deletePropertyPage.deletePropertyStatusViaApi(TestDataConstants.NON_EXISTENT_PROPERTY_ID);
 
         assertEquals(
                 404L,
@@ -76,7 +79,7 @@ public class DeletePropertyApiTest extends BaseTest {
     @DisplayName("Delete property API returns 401 when not logged in")
     public void testDeletePropertyApiReturns401WhenLoggedOut() {
         deletePropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = deletePropertyPage.deletePropertyStatusViaApi(AppConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
+        long status = deletePropertyPage.deletePropertyStatusViaApi(TestDataConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
 
         assertEquals(
                 401L,

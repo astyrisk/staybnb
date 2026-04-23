@@ -5,6 +5,7 @@ import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -78,11 +79,6 @@ public class EditPropertyPage extends BasePage {
         return headers.stream().anyMatch(h -> h.getText().trim().toLowerCase().contains(expected));
     }
 
-    public void updateTitleAndSave(String title) {
-        type(titleInput, title);
-        clickSaveChanges();
-    }
-
     public void clearRequiredField(String fieldName) {
         By locator = switch (fieldName) {
             case "title" -> titleInput;
@@ -106,7 +102,7 @@ public class EditPropertyPage extends BasePage {
         waitForElementClickable(saveChangesButton).click();
         try {
             wait.until(ExpectedConditions.alertIsPresent()).accept();
-        } catch (Exception ignored) {
+        } catch (TimeoutException ignored) {
         }
     }
 
@@ -125,27 +121,12 @@ public class EditPropertyPage extends BasePage {
                 && !driver.findElements(Locators.EditProperty.AMENITY_CHECKBOXES).isEmpty();
     }
 
-    public boolean hasAnyAmenityChecked() {
-        List<WebElement> checkboxes = driver.findElements(Locators.EditProperty.AMENITY_CHECKBOXES);
-        return checkboxes.stream().anyMatch(WebElement::isSelected);
-    }
-
     public boolean isAmenityCheckedByLabelContaining(String labelText) {
-        String normalized = labelText.toLowerCase();
-        By checkbox = By.xpath(
-                "//label[contains(@class,'edit-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
-                        + normalized + "')]//input[@type='checkbox']"
-        );
-        return waitForElementVisible(checkbox).isSelected();
+        return waitForElementVisible(Locators.EditProperty.amenityCheckbox(labelText)).isSelected();
     }
 
     public void toggleAmenityByLabelContaining(String labelText) {
-        String normalized = labelText.toLowerCase();
-        By checkbox = By.xpath(
-                "//label[contains(@class,'edit-property-amenity-item')][contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'"
-                        + normalized + "')]//input[@type='checkbox']"
-        );
-        waitForElementClickable(checkbox).click();
+        waitForElementClickable(Locators.EditProperty.amenityCheckbox(labelText)).click();
     }
 
     public long updatePropertyStatusViaApi(String propertyId, String payloadJson) {
@@ -158,14 +139,6 @@ public class EditPropertyPage extends BasePage {
         }
         throw new RuntimeException("Unexpected edit-property status response type: " +
                 (responseStatus == null ? "null" : responseStatus.getClass().getName()));
-    }
-
-    public String updatePropertyViaApi(String propertyId, String payloadJson) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(UPDATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, payloadJsonToObject(js, payloadJson));
-        return (String) response;
     }
 
     private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {

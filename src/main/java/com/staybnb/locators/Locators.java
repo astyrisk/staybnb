@@ -295,13 +295,13 @@ public final class Locators {
                 By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(normalize-space(),'Address')]]//input");
 
         public static final By STEP_3_MAX_GUESTS_INPUT =
-                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'max guests')]]//input");
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Max Guests']]//input");
         public static final By STEP_3_BEDROOMS_INPUT =
-                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'bedrooms')]]//input");
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Bedrooms']]//input");
         public static final By STEP_3_BEDS_INPUT =
-                By.xpath("//div[contains(@class,'create-property-field')][.//label[translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='beds']]//input");
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Beds']]//input");
         public static final By STEP_3_BATHROOMS_INPUT =
-                By.xpath("//div[contains(@class,'create-property-field')][.//label[contains(translate(normalize-space(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'bathrooms')]]//input");
+                By.xpath("//div[contains(@class,'create-property-field')][.//label[normalize-space()='Bathrooms']]//input");
 
         public static final By STEP_4_AMENITIES_TITLE =
                 By.xpath("//div[contains(@class,'create-property-step')]//h2[normalize-space()='Amenities']");
@@ -313,6 +313,15 @@ public final class Locators {
                 By.cssSelector(".create-property-amenity-item");
         public static final By STEP_4_GROUP_HEADERS =
                 By.cssSelector(".create-property-amenities-group h3, .create-property-amenities-group-title");
+
+        /** Returns a locator for the amenity checkbox whose label contains the given text (exact case). */
+        public static By amenityCheckbox(String labelText) {
+            return By.xpath(
+                    "//label[contains(@class,'create-property-amenity-item')]"
+                    + "[contains(normalize-space(),'" + labelText + "')]"
+                    + "//input[@type='checkbox']"
+            );
+        }
 
         public static final By STEP_5_PHOTOS_TITLE =
                 By.xpath("//div[contains(@class,'create-property-step')]//h2[normalize-space()='Photos']");
@@ -378,6 +387,15 @@ public final class Locators {
 
         public static final By AMENITY_GRID = By.className("edit-property-amenities-grid");
         public static final By AMENITY_CHECKBOXES = By.cssSelector(".edit-property-amenities-grid input[type='checkbox']");
+
+        /** Returns a locator for the amenity checkbox whose label contains the given text (exact case). */
+        public static By amenityCheckbox(String labelText) {
+            return By.xpath(
+                    "//label[contains(@class,'edit-property-amenity-item')]"
+                    + "[contains(normalize-space(),'" + labelText + "')]"
+                    + "//input[@type='checkbox']"
+            );
+        }
     }
 
     public static final class DeleteProperty {

@@ -5,6 +5,7 @@ import com.staybnb.components.Navbar;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public abstract class BasePage extends BaseComponent {
@@ -16,6 +17,7 @@ public abstract class BasePage extends BaseComponent {
     }
 
     public void navigateTo(String url) {
+        log.info("Navigating to: {}", url);
         driver.get(url);
     }
 
@@ -23,7 +25,7 @@ public abstract class BasePage extends BaseComponent {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         try {
             return (String) js.executeScript("return window.localStorage.getItem('staybnb_token');");
-        } catch (Exception e) {
+        } catch (WebDriverException e) {
             return null;
         }
     }

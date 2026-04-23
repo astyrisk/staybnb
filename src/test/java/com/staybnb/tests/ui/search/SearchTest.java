@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.search;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -44,10 +44,10 @@ public class SearchTest extends BaseTest {
     @Test
     @DisplayName("Searching for a city navigates to the city-filtered URL")
     public void testSearchByCityNavigatesToFilteredUrl() {
-        propertyListingPage.navbar().searchForCity(AppConstants.Search.KNOWN_CITY);
+        propertyListingPage.navbar().searchForCity(TestDataConstants.Search.KNOWN_CITY);
 
         assertTrue(
-                isUrlContains("city=" + AppConstants.Search.KNOWN_CITY),
+                isUrlContains("city=" + TestDataConstants.Search.KNOWN_CITY),
                 ErrorMessages.SEARCH_SHOULD_NAVIGATE_TO_CITY_FILTERED_URL
         );
     }
@@ -55,7 +55,7 @@ public class SearchTest extends BaseTest {
     @Test
     @DisplayName("Searching for a city with matching properties shows results")
     public void testSearchByCityShowsFilteredResults() {
-        propertyListingPage.navigateToWithCity(AppConstants.Search.KNOWN_CITY);
+        propertyListingPage.navigateToWithCity(TestDataConstants.Search.KNOWN_CITY);
 
         assertTrue(
                 propertyListingPage.getPropertiesCount() > 0,
@@ -66,7 +66,7 @@ public class SearchTest extends BaseTest {
     @Test
     @DisplayName("Searching for a city with no matching properties shows the empty state")
     public void testSearchWithNonExistentCityShowsEmptyState() {
-        propertyListingPage.navbar().searchForCity(AppConstants.Search.UNKNOWN_CITY);
+        propertyListingPage.navbar().searchForCity(TestDataConstants.Search.UNKNOWN_CITY);
         propertyListingPage.waitForSearchResults();
 
         assertTrue(
@@ -78,7 +78,7 @@ public class SearchTest extends BaseTest {
     @Test
     @DisplayName("Searching for a city with no matching properties shows zero properties count")
     public void testSearchWithNonExistentCityShowsZeroCount() {
-        propertyListingPage.navigateToWithCity(AppConstants.Search.UNKNOWN_CITY);
+        propertyListingPage.navigateToWithCity(TestDataConstants.Search.UNKNOWN_CITY);
 
         assertEquals(
                 0,

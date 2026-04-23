@@ -1,65 +1,42 @@
 package com.staybnb.data;
 
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public final class PropertyPayloads {
+    private static final String CREATE_TEMPLATE = "payloads/create-property.json";
+    private static final String EDIT_TEMPLATE   = "payloads/edit-property.json";
+
     private PropertyPayloads() {}
 
     public static String validCreatePropertyPayloadJson() {
-        return validCreatePropertyPayloadJson("Automation API Listing");
+        return withTitle(CREATE_TEMPLATE, "Automation API Listing");
     }
 
     public static String validCreatePropertyPayloadJson(String title) {
-        return "{"
-                + "\"propertyType\":\"ENTIRE_PLACE\","
-                + "\"categoryId\":71,"
-                + "\"title\":\"" + title + "\","
-                + "\"description\":\"Automation flow for create property wizard.\","
-                + "\"locationCountry\":\"Afghanistan\","
-                + "\"locationCity\":\"Kabul\","
-                + "\"locationAddress\":\"Street 1\","
-                + "\"maxGuests\":1,"
-                + "\"numBedrooms\":1,"
-                + "\"numBeds\":1,"
-                + "\"numBathrooms\":1,"
-                + "\"amenities\":[],"
-                + "\"images\":["
-                + "{\"url\":\"https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp\",\"caption\":\"\"},"
-                + "{\"url\":\"https://is1-2.housingcdn.com/012c1500/96c67b8d4f357e39da3ebbbca1bd60da/v0/medium.jpeg\",\"caption\":\"\"}"
-                + "],"
-                + "\"pricePerNight\":120"
-                + "}";
+        return withTitle(CREATE_TEMPLATE, title);
     }
 
     public static String invalidCreatePropertyPayloadMissingTitleJson() {
-        return "{"
-                + "\"propertyType\":\"ENTIRE_PLACE\","
-                + "\"categoryId\":71,"
-                + "\"title\":\"\","
-                + "\"description\":\"Automation flow for create property wizard.\","
-                + "\"locationCountry\":\"Afghanistan\","
-                + "\"locationCity\":\"Kabul\","
-                + "\"locationAddress\":\"Street 1\","
-                + "\"maxGuests\":1,"
-                + "\"numBedrooms\":1,"
-                + "\"numBeds\":1,"
-                + "\"numBathrooms\":1,"
-                + "\"amenities\":[],"
-                + "\"images\":["
-                + "{\"url\":\"https://emplavi.com.br/wp-content/uploads/2024/09/HORZON-Fachada-1-Diurna-jpg.webp\",\"caption\":\"\"},"
-                + "{\"url\":\"https://is1-2.housingcdn.com/012c1500/96c67b8d4f357e39da3ebbbca1bd60da/v0/medium.jpeg\",\"caption\":\"\"}"
-                + "],"
-                + "\"pricePerNight\":120"
-                + "}";
+        return withTitle(CREATE_TEMPLATE, "");
     }
 
     public static String validEditPayloadJson() {
-        return "{"
-                + "\"title\":\"" + AppConstants.EditProperty.UPDATED_TITLE + "\","
-                + "\"description\":\"Automation flow for edit property.\","
-                + "\"locationCity\":\"Kabul\","
-                + "\"locationCountry\":\"Afghanistan\","
-                + "\"pricePerNight\":120"
-                + "}";
+        return withTitle(EDIT_TEMPLATE, TestDataConstants.EditProperty.UPDATED_TITLE);
+    }
+
+    private static String withTitle(String resourcePath, String title) {
+        try (InputStream stream = PropertyPayloads.class.getClassLoader().getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing payload template on classpath: " + resourcePath);
+            }
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                    .replace("{{title}}", title);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load payload template: " + resourcePath, e);
+        }
     }
 }

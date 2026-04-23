@@ -2,8 +2,6 @@ package com.staybnb.pages;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,8 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class WishlistPage extends BasePage {
-    private static final Logger log = LogManager.getLogger(WishlistPage.class);
-
     private static final String WISHLIST_ADD_STATUS_JS      = "com/staybnb/scripts/wishlistAddStatusApi.js";
     private static final String WISHLIST_REMOVE_STATUS_JS   = "com/staybnb/scripts/wishlistRemoveStatusApi.js";
     private static final String WISHLIST_GET_IDS_JS         = "com/staybnb/scripts/wishlistGetIdsApi.js";
@@ -34,7 +30,7 @@ public class WishlistPage extends BasePage {
 
     public void clickFavoriteOnFirstCard() {
         List<WebElement> cards = waitForElementsPresent(Locators.Wishlist.PROPERTY_CARDS);
-        WebElement btn = cards.get(0).findElement(Locators.Wishlist.CARD_FAVORITE_BTN);
+        WebElement btn = cards.getFirst().findElement(Locators.Wishlist.CARD_FAVORITE_BTN);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
     }
 
@@ -66,6 +62,7 @@ public class WishlistPage extends BasePage {
     public void clearWishlistViaApi() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         Object raw = js.executeAsyncScript(loadScript(WISHLIST_GET_IDS_JS), AppConstants.SLUG);
+        //TODO Warning:(69, 52) Unchecked cast: 'java.lang.Object' to 'java.util.List<java.lang.Object>'
         List<Object> ids = (raw instanceof List) ? (List<Object>) raw : Collections.emptyList();
         log.info("clearWishlistViaApi: found {} item(s) to remove — ids: {}", ids.size(), ids);
         for (Object id : ids) {

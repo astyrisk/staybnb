@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.search;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -33,7 +33,7 @@ public class PaginateSearchResultsTest extends BaseTest {
     public void testFirstPageShowsAtMostTwentyCards() {
         List<?> cards = propertyListingPage.getPropertyCards();
         assertTrue(
-                cards.size() <= AppConstants.Pagination.PAGE_SIZE,
+                cards.size() <= TestDataConstants.Pagination.PAGE_SIZE,
                 ErrorMessages.PAGINATION_FIRST_PAGE_SHOULD_SHOW_AT_MOST_PAGE_SIZE_CARDS
         );
     }
@@ -99,7 +99,7 @@ public class PaginateSearchResultsTest extends BaseTest {
     @Test
     @DisplayName("'Next' button is disabled on the last page")
     public void testNextButtonDisabledOnLastPage() {
-        propertyListingPage.navigateToPage(AppConstants.Pagination.LAST_PAGE);
+        propertyListingPage.navigateToPage(TestDataConstants.Pagination.LAST_PAGE);
         assertTrue(
                 propertyListingPage.isNextButtonDisabled(),
                 ErrorMessages.PAGINATION_NEXT_BUTTON_SHOULD_BE_DISABLED_ON_LAST_PAGE
@@ -111,7 +111,7 @@ public class PaginateSearchResultsTest extends BaseTest {
     @DisplayName("Changing sort while on page 2 resets pagination to page 1")
     public void testPaginationResetsToFirstPageOnFilterChange() {
         propertyListingPage.navigateToPage(2);
-        propertyListingPage.selectSortOption(AppConstants.SortFilter.SORT_PRICE_ASC);
+        propertyListingPage.selectSortOption(TestDataConstants.SortFilter.SORT_PRICE_ASC);
         propertyListingPage.waitForSortToApply();
         assertFalse(
                 isUrlContains("page=2"),

@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.property;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.EditPropertyPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
@@ -33,7 +33,7 @@ public class PropertyAmenitiesTest extends BaseTest {
     }
 
     private void openEditPage() {
-        editPropertyPage.navigateTo(AppConstants.EditProperty.EDITABLE_PROPERTY_ID);
+        editPropertyPage.navigateTo(TestDataConstants.EditProperty.EDITABLE_PROPERTY_ID);
         editPropertyPage.waitForSectionsToBeVisible();
     }
 
@@ -66,7 +66,7 @@ public class PropertyAmenitiesTest extends BaseTest {
         editPropertyPage.toggleAmenityByLabelContaining("Air Conditioning");
         editPropertyPage.clickSaveChangesAndDismissAlert();
         airConditioningModified = true;
-        editPropertyPage.navigateTo(AppConstants.EditProperty.EDITABLE_PROPERTY_ID);
+        editPropertyPage.navigateTo(TestDataConstants.EditProperty.EDITABLE_PROPERTY_ID);
         editPropertyPage.waitForSectionsToBeVisible();
 
         assertFalse(
@@ -78,7 +78,7 @@ public class PropertyAmenitiesTest extends BaseTest {
     @AfterEach
     public void restoreAmenities() {
         if (airConditioningModified) {
-            editPropertyPage.navigateTo(AppConstants.EditProperty.EDITABLE_PROPERTY_ID);
+            editPropertyPage.navigateTo(TestDataConstants.EditProperty.EDITABLE_PROPERTY_ID);
             editPropertyPage.waitForSectionsToBeVisible();
             if (!editPropertyPage.isAmenityCheckedByLabelContaining("Air Conditioning")) {
                 editPropertyPage.toggleAmenityByLabelContaining("Air Conditioning");

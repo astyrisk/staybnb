@@ -1,7 +1,7 @@
 package com.staybnb.tests.api;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
@@ -35,11 +35,11 @@ public class UpdateProfileApiTest extends BaseTest {
     public void restoreProfile() {
         String restorePayload = String.format(
                 "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"%s\"}",
-                AppConstants.EditProfile.NEW_FIRST_NAME,
-                AppConstants.EditProfile.NEW_LAST_NAME,
-                AppConstants.EditProfile.NEW_PHONE,
-                AppConstants.EditProfile.NEW_BIO,
-                AppConstants.EditProfile.NEW_AVATAR_URL
+                TestDataConstants.EditProfile.NEW_FIRST_NAME,
+                TestDataConstants.EditProfile.NEW_LAST_NAME,
+                TestDataConstants.EditProfile.NEW_PHONE,
+                TestDataConstants.EditProfile.NEW_BIO,
+                TestDataConstants.EditProfile.NEW_AVATAR_URL
         );
         editProfilePage.updateMyProfileViaApi(restorePayload);
     }
@@ -59,7 +59,7 @@ public class UpdateProfileApiTest extends BaseTest {
     @DisplayName("Update profile API response is not null")
     public void testApiUpdateUserProfileResponseNotNull() {
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",
-                AppConstants.EditProfile.API_FIRST_NAME, AppConstants.EditProfile.API_LAST_NAME, AppConstants.EditProfile.API_PHONE, AppConstants.EditProfile.API_BIO);
+                TestDataConstants.EditProfile.API_FIRST_NAME, TestDataConstants.EditProfile.API_LAST_NAME, TestDataConstants.EditProfile.API_PHONE, TestDataConstants.EditProfile.API_BIO);
         String jsonResponse = editProfilePage.updateMyProfileViaApi(updatePayload);
 
         assertNotNull(
@@ -72,11 +72,11 @@ public class UpdateProfileApiTest extends BaseTest {
     @DisplayName("Update profile API response contains the updated first name")
     public void testApiUpdateUserProfileResponseContainsUpdatedFirstName() {
         String updatePayload = String.format("{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"\"}",
-                AppConstants.EditProfile.API_FIRST_NAME, AppConstants.EditProfile.API_LAST_NAME, AppConstants.EditProfile.API_PHONE, AppConstants.EditProfile.API_BIO);
+                TestDataConstants.EditProfile.API_FIRST_NAME, TestDataConstants.EditProfile.API_LAST_NAME, TestDataConstants.EditProfile.API_PHONE, TestDataConstants.EditProfile.API_BIO);
         String jsonResponse = editProfilePage.updateMyProfileViaApi(updatePayload);
 
         assertTrue(
-                jsonResponse != null && jsonResponse.contains("\"firstName\":\"" + AppConstants.EditProfile.API_FIRST_NAME + "\""),
+                jsonResponse != null && jsonResponse.contains("\"firstName\":\"" + TestDataConstants.EditProfile.API_FIRST_NAME + "\""),
                 "API should return the updated user object."
         );
     }

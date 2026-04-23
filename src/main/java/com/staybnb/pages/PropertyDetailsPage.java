@@ -2,6 +2,8 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.List;
@@ -52,7 +54,7 @@ public class PropertyDetailsPage extends BasePage {
     public String getType() {
         try {
             return getText(detailType);
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             return "";
         }
     }
@@ -109,7 +111,7 @@ public class PropertyDetailsPage extends BasePage {
         try {
             WebElement error = waitForElementVisible(authError);
             return error.getText().toLowerCase().contains("property not found");
-        } catch (Exception e) {
+        } catch (TimeoutException e) {
             return false;
         }
     }
@@ -117,7 +119,7 @@ public class PropertyDetailsPage extends BasePage {
     public String getErrorMessage() {
         try {
             return getText(authError);
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             return "";
         }
     }

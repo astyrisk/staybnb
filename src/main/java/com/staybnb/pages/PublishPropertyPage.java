@@ -2,10 +2,7 @@ package com.staybnb.pages;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -16,6 +13,7 @@ public class PublishPropertyPage extends BasePage {
     private static final String UPDATE_PUBLISH_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/updatePublishPropertyApi.js";
     private static final String UPDATE_PUBLISH_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/updatePublishPropertyStatusApi.js";
 
+    //TODO Redundant, repeated
     private final By dashboardCard = Locators.HostDashboard.PROPERTY_CARD;
     private final By dashboardTitle = Locators.HostDashboard.CARD_TITLE;
     private final By dashboardStatus = Locators.HostDashboard.CARD_STATUS;
@@ -117,7 +115,7 @@ public class PublishPropertyPage extends BasePage {
     }
 
     private void waitForDashboardCardsToLoad() {
-        wait.until(d -> d.findElements(dashboardCard).size() > 0 || !d.findElements(By.className("host-dashboard-empty")).isEmpty());
+        wait.until(d -> !d.findElements(dashboardCard).isEmpty() || !d.findElements(By.className("host-dashboard-empty")).isEmpty());
     }
 
     private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {
@@ -133,9 +131,7 @@ public class PublishPropertyPage extends BasePage {
         wait.until(d -> {
             try {
                 return isPropertyPublishedOnDashboard(propertyTitle);
-            } catch (org.openqa.selenium.StaleElementReferenceException e) {
-                return false;
-            } catch (IllegalStateException e) {
+            } catch (StaleElementReferenceException | IllegalStateException e) {
                 return false;
             }
         });

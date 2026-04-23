@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.search;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -51,8 +51,8 @@ public class SortSearchResultsTest extends BaseTest {
     @Test
     @DisplayName("Selecting 'Newest' after another sort removes the sort param from the URL")
     public void testSortByNewestResetsToDefault() {
-        propertyListingPage.navigateToWithSort(AppConstants.SortFilter.SORT_PRICE_ASC);
-        propertyListingPage.selectSortOption(AppConstants.SortFilter.SORT_NEWEST);
+        propertyListingPage.navigateToWithSort(TestDataConstants.SortFilter.SORT_PRICE_ASC);
+        propertyListingPage.selectSortOption(TestDataConstants.SortFilter.SORT_NEWEST);
         propertyListingPage.waitForSortParamRemoved();
         assertFalse(isUrlContains("sort="), ErrorMessages.SORT_BY_NEWEST_SHOULD_RESET_URL);
     }
@@ -61,7 +61,7 @@ public class SortSearchResultsTest extends BaseTest {
     @Test
     @DisplayName("Sort by 'Price: Low to High' orders all visible properties by price ascending")
     public void testSortByPriceAscendingOrdersResults() {
-        propertyListingPage.navigateToWithSort(AppConstants.SortFilter.SORT_PRICE_ASC);
+        propertyListingPage.navigateToWithSort(TestDataConstants.SortFilter.SORT_PRICE_ASC);
         List<Integer> prices = propertyListingPage.getVisibleCardPrices();
         assertTrue(isNonDecreasing(prices), ErrorMessages.SORT_BY_PRICE_ASC_RESULTS_SHOULD_BE_IN_ASCENDING_ORDER);
     }
@@ -70,7 +70,7 @@ public class SortSearchResultsTest extends BaseTest {
     @Test
     @DisplayName("Sort by 'Price: High to Low' orders all visible properties by price descending")
     public void testSortByPriceDescendingOrdersResults() {
-        propertyListingPage.navigateToWithSort(AppConstants.SortFilter.SORT_PRICE_DESC);
+        propertyListingPage.navigateToWithSort(TestDataConstants.SortFilter.SORT_PRICE_DESC);
         List<Integer> prices = propertyListingPage.getVisibleCardPrices();
         assertTrue(isNonIncreasing(prices), ErrorMessages.SORT_BY_PRICE_DESC_RESULTS_SHOULD_BE_IN_DESCENDING_ORDER);
     }
@@ -79,7 +79,7 @@ public class SortSearchResultsTest extends BaseTest {
     @Test
     @DisplayName("Sort by 'Top Rated' places the highest-rated property first")
     public void testSortByTopRatedPlacesHighestRatedFirst() {
-        propertyListingPage.navigateToWithSort(AppConstants.SortFilter.SORT_RATING_DESC);
+        propertyListingPage.navigateToWithSort(TestDataConstants.SortFilter.SORT_RATING_DESC);
         List<WebElement> cards = propertyListingPage.getPropertyCards();
         double firstRating = propertyListingPage.getCardRating(cards.get(0));
         double secondRating = propertyListingPage.getCardRating(cards.get(1));
@@ -91,10 +91,10 @@ public class SortSearchResultsTest extends BaseTest {
     @DisplayName("Changing sort while a price filter is active preserves both sort and filter params in URL")
     public void testSortAndFilterApplyTogether() {
         propertyListingPage.navigateToWithPriceRange(
-                AppConstants.PriceFilter.KNOWN_MIN_PRICE,
-                AppConstants.PriceFilter.KNOWN_MAX_PRICE
+                TestDataConstants.PriceFilter.KNOWN_MIN_PRICE,
+                TestDataConstants.PriceFilter.KNOWN_MAX_PRICE
         );
-        propertyListingPage.selectSortOption(AppConstants.SortFilter.SORT_PRICE_ASC);
+        propertyListingPage.selectSortOption(TestDataConstants.SortFilter.SORT_PRICE_ASC);
         propertyListingPage.waitForSortToApply();
         assertAll(
                 () -> assertTrue(isUrlContains("sort="), ErrorMessages.SORT_AND_FILTER_URL_SHOULD_CONTAIN_SORT_PARAM),

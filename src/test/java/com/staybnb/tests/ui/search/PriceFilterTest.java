@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.search;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -30,8 +30,8 @@ public class PriceFilterTest extends BaseTest {
     @DisplayName("Setting a price range in the filter sidebar updates results in real-time")
     public void testPriceRangeUpdatesResultsInRealTime() {
         propertyListingPage.setPriceRange(
-                AppConstants.PriceFilter.KNOWN_MIN_PRICE,
-                AppConstants.PriceFilter.KNOWN_MAX_PRICE
+                TestDataConstants.PriceFilter.KNOWN_MIN_PRICE,
+                TestDataConstants.PriceFilter.KNOWN_MAX_PRICE
         );
         propertyListingPage.waitForPriceFilterToApply();
 
@@ -46,8 +46,8 @@ public class PriceFilterTest extends BaseTest {
     @DisplayName("Navigating with minPrice=50 and maxPrice=150 returns matching properties")
     public void testPriceRangeShowsMatchingResults() {
         propertyListingPage.navigateToWithPriceRange(
-                AppConstants.PriceFilter.KNOWN_MIN_PRICE,
-                AppConstants.PriceFilter.KNOWN_MAX_PRICE
+                TestDataConstants.PriceFilter.KNOWN_MIN_PRICE,
+                TestDataConstants.PriceFilter.KNOWN_MAX_PRICE
         );
 
         assertTrue(
@@ -61,15 +61,15 @@ public class PriceFilterTest extends BaseTest {
     @DisplayName("Every displayed property has a price within the applied min/max range")
     public void testAllResultsAreWithinPriceRange() {
         propertyListingPage.navigateToWithPriceRange(
-                AppConstants.PriceFilter.KNOWN_MIN_PRICE,
-                AppConstants.PriceFilter.KNOWN_MAX_PRICE
+                TestDataConstants.PriceFilter.KNOWN_MIN_PRICE,
+                TestDataConstants.PriceFilter.KNOWN_MAX_PRICE
         );
 
         assertTrue(
                 propertyListingPage.getPropertyCards().stream().allMatch(card -> {
                     int price = propertyListingPage.getPriceAmount(card);
-                    return price >= AppConstants.PriceFilter.KNOWN_MIN_PRICE
-                            && price <= AppConstants.PriceFilter.KNOWN_MAX_PRICE;
+                    return price >= TestDataConstants.PriceFilter.KNOWN_MIN_PRICE
+                            && price <= TestDataConstants.PriceFilter.KNOWN_MAX_PRICE;
                 }),
                 ErrorMessages.PRICE_FILTER_ALL_RESULTS_SHOULD_BE_IN_RANGE
         );
@@ -80,8 +80,8 @@ public class PriceFilterTest extends BaseTest {
     @DisplayName("A price range with no matching properties shows the empty state")
     public void testPriceRangeWithNoMatchShowsEmptyState() {
         propertyListingPage.navigateToWithPriceRange(
-                AppConstants.PriceFilter.NO_MATCH_MIN_PRICE,
-                AppConstants.PriceFilter.NO_MATCH_MAX_PRICE
+                TestDataConstants.PriceFilter.NO_MATCH_MIN_PRICE,
+                TestDataConstants.PriceFilter.NO_MATCH_MAX_PRICE
         );
 
         assertTrue(
@@ -95,8 +95,8 @@ public class PriceFilterTest extends BaseTest {
     @DisplayName("A price range with no matching properties shows zero results count")
     public void testPriceRangeWithNoMatchShowsZeroCount() {
         propertyListingPage.navigateToWithPriceRange(
-                AppConstants.PriceFilter.NO_MATCH_MIN_PRICE,
-                AppConstants.PriceFilter.NO_MATCH_MAX_PRICE
+                TestDataConstants.PriceFilter.NO_MATCH_MIN_PRICE,
+                TestDataConstants.PriceFilter.NO_MATCH_MAX_PRICE
         );
 
         assertEquals(

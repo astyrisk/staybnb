@@ -127,10 +127,6 @@ public class HostDashboardPage extends BasePage {
         return isDisplayed(emptyStateMessage);
     }
 
-    public String getEmptyStateText() {
-        return waitForElementVisible(emptyStateMessage).getText();
-    }
-
     public String getHostingPropertiesViaApi() {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;

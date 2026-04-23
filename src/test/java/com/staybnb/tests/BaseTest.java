@@ -1,6 +1,7 @@
 package com.staybnb.tests;
 
 import com.staybnb.config.AppConstants;
+import com.staybnb.config.WaitConstants;
 import com.staybnb.config.DriverFactory;
 import com.staybnb.config.TestConfig;
 import com.staybnb.extensions.ScreenshotOnFailureExtension;
@@ -21,24 +22,15 @@ import java.util.UUID;
 
 @ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class})
 public class BaseTest {
-    private static final Logger log = LogManager.getLogger(BaseTest.class);
     protected WebDriver driver;
 
     @BeforeEach
     public void commonSetup() {
-        if (driver == null) {
-            driver = DriverFactory.createDriver();
-        }
-    }
-
-    @AfterEach
-    public void commonTeardown() {
-        DriverFactory.quitDriver();
-        driver = null;
+        driver = DriverFactory.createDriver();
     }
 
     protected WebDriverWait getWait() {
-        return new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_WAIT));
+        return new WebDriverWait(driver, Duration.ofSeconds(WaitConstants.MEDIUM_WAIT));
     }
 
     protected void waitForUrlContains(String text) {

@@ -3,6 +3,8 @@ package com.staybnb.pages;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import java.util.List;
@@ -12,6 +14,7 @@ import com.staybnb.config.AppConstants;
 public class HomePage extends BasePage {
     private final String PAGE_URL = AppConstants.HOME_URL;
 
+    //TODO remove duplication
     private By heroSection = Locators.Home.HERO_SECTION;
     private By heroHeadline = Locators.Home.HERO_HEADLINE;
     private By categoryBar = Locators.Home.CATEGORY_BAR;
@@ -54,10 +57,6 @@ public class HomePage extends BasePage {
         return isDisplayed(categoryBar);
     }
 
-    public List<WebElement> getCategoryChips() {
-        return waitForElementsPresent(categoryChips);
-    }
-
     public boolean hasCategoryChipNamed(String categoryName) {
         String expected = categoryName == null ? "" : categoryName.trim();
         if (expected.isEmpty()) {
@@ -82,11 +81,6 @@ public class HomePage extends BasePage {
         String script = loadScript(GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE);
         Object result = ((JavascriptExecutor) driver).executeScript(script, chip);
         return Optional.ofNullable(result).map(Object::toString).orElse("").trim();
-    }
-
-    public void waitForActiveCategoryToBe(String expectedCategoryName) {
-        String expected = expectedCategoryName == null ? "" : expectedCategoryName.trim();
-        wait.until(d -> expected.equalsIgnoreCase(getActiveCategoryName()));
     }
 
     public List<WebElement> getCategoryIcons() {
@@ -132,7 +126,7 @@ public class HomePage extends BasePage {
             boolean hasLocation = !card.findElement(cardLocation).getText().isEmpty();
             boolean hasPrice = card.findElement(cardPrice).getText().contains("/ night");
             return hasImage && hasTitle && hasLocation && hasPrice ;
-        } catch (Exception e) {
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
@@ -156,8 +150,7 @@ public class HomePage extends BasePage {
 
     private void waitForHomeToLoad() {
         wait.until(d ->
-                d.findElements(heroSection).size() > 0 ||
-                d.findElements(propertyGrid).size() > 0
+                !d.findElements(heroSection).isEmpty() || !d.findElements(propertyGrid).isEmpty()
         );
     }
 }

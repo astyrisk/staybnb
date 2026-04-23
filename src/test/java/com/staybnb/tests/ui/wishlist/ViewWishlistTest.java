@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.wishlist;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.WishlistPage;
 import com.staybnb.tests.BaseTest;
@@ -33,7 +33,7 @@ public class ViewWishlistTest extends BaseTest {
     @DisplayName("Authenticated user with favorited properties sees a grid of cards with filled hearts")
     public void testAuthenticatedUserWithPropertiesSeesGridWithFilledHearts() {
         loginAndClearWishlist();
-        wishlistPage.addToWishlistViaApi(AppConstants.DEFAULT_PROPERTY_ID);
+        wishlistPage.addToWishlistViaApi(TestDataConstants.DEFAULT_PROPERTY_ID);
         wishlistPage.navigateTo();
         Assertions.assertAll(
                 () -> assertTrue(

@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.search;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("regression")
 public class SearchByDatesAndGuestsTest extends BaseTest {
     private PropertyListingPage propertyListingPage;
-    private final String checkIn = AppConstants.Search.futureCheckInDate();
-    private final String checkOut = AppConstants.Search.futureCheckOutDate();
+    private final String checkIn = TestDataConstants.Search.futureCheckInDate();
+    private final String checkOut = TestDataConstants.Search.futureCheckOutDate();
 
     @BeforeEach
     public void setup() {
@@ -73,10 +73,10 @@ public class SearchByDatesAndGuestsTest extends BaseTest {
     @Test
     @DisplayName("Searching with a guest count navigates to a guest-filtered URL")
     public void testSearchWithGuestsNavigatesToFilteredUrl() {
-        propertyListingPage.navbar().searchWithGuests(AppConstants.Search.GUEST_COUNT);
+        propertyListingPage.navbar().searchWithGuests(TestDataConstants.Search.GUEST_COUNT);
 
         assertTrue(
-                isUrlContains("guests=" + AppConstants.Search.GUEST_COUNT),
+                isUrlContains("guests=" + TestDataConstants.Search.GUEST_COUNT),
                 ErrorMessages.SEARCH_SHOULD_NAVIGATE_TO_GUEST_FILTERED_URL
         );
     }
@@ -99,7 +99,7 @@ public class SearchByDatesAndGuestsTest extends BaseTest {
     @Test
     @DisplayName("Navigating with a guest filter shows properties matching the guest count")
     public void testGuestFilterShowsResults() {
-        propertyListingPage.navigateToWithGuests(AppConstants.Search.GUEST_COUNT);
+        propertyListingPage.navigateToWithGuests(TestDataConstants.Search.GUEST_COUNT);
 
         assertTrue(
                 propertyListingPage.getPropertiesCount() > 0,

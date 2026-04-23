@@ -1,7 +1,7 @@
 package com.staybnb.tests.api;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.EditPropertyPage;
 import com.staybnb.pages.LoginPage;
@@ -33,7 +33,7 @@ public class EditPropertyApiTest extends BaseTest {
 
     private long updateEditablePropertyStatus() {
         return editPropertyPage.updatePropertyStatusViaApi(
-                AppConstants.EditProperty.EDITABLE_PROPERTY_ID,
+                TestDataConstants.EditProperty.EDITABLE_PROPERTY_ID,
                 PropertyPayloads.validEditPayloadJson()
         );
     }
@@ -65,7 +65,7 @@ public class EditPropertyApiTest extends BaseTest {
     @DisplayName("Edit property API returns 404 for a non-existent property ID")
     public void testEditPropertyApiReturns404ForNonExistentPropertyId() {
         long status = editPropertyPage.updatePropertyStatusViaApi(
-                AppConstants.NON_EXISTENT_PROPERTY_ID,
+                TestDataConstants.NON_EXISTENT_PROPERTY_ID,
                 PropertyPayloads.validEditPayloadJson()
         );
 

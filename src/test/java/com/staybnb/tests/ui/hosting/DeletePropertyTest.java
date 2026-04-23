@@ -1,7 +1,7 @@
 package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.config.AppConstants;
+import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
 import com.staybnb.pages.LoginPage;
@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Epic("Property Management")
 @Feature("Delete Property")
 @Tag("regression")
+@ResourceLock(value = "property-1088", mode = ResourceAccessMode.READ)
 public class DeletePropertyTest extends BaseTest {
     private DeletePropertyPage deletePropertyPage;
 
@@ -37,11 +40,11 @@ public class DeletePropertyTest extends BaseTest {
     @Test
     @DisplayName("Clicking delete on edit page shows confirmation modal")
     public void testDeleteFromEditPageShowsConfirmationModalMessage() {
-        deletePropertyPage.navigateToEditPage(AppConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
+        deletePropertyPage.navigateToEditPage(TestDataConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
         deletePropertyPage.clickDeleteOnEditPage();
 
         assertTrue(
-                deletePropertyPage.hasDeleteConfirmationMessage(AppConstants.DeleteProperty.CONFIRMATION_MESSAGE),
+                deletePropertyPage.hasDeleteConfirmationMessage(TestDataConstants.DeleteProperty.CONFIRMATION_MESSAGE),
                 ErrorMessages.DELETE_PROPERTY_EDIT_PAGE_SHOULD_SHOW_CONFIRMATION_MODAL
         );
     }
@@ -53,7 +56,7 @@ public class DeletePropertyTest extends BaseTest {
         deletePropertyPage.clickFirstDashboardDelete();
 
         assertTrue(
-                deletePropertyPage.hasDeleteConfirmationMessage(AppConstants.DeleteProperty.CONFIRMATION_MESSAGE),
+                deletePropertyPage.hasDeleteConfirmationMessage(TestDataConstants.DeleteProperty.CONFIRMATION_MESSAGE),
                 ErrorMessages.DELETE_PROPERTY_DASHBOARD_SHOULD_SHOW_CONFIRMATION_MODAL
         );
     }

@@ -13,6 +13,7 @@ public class OwnProfilePage extends BasePage {
     private static final String BECOME_HOST_API_JS_RESOURCE = "com/staybnb/scripts/becomeHostApi.js";
     private static final String BECOME_HOST_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/becomeHostStatusApi.js";
 
+    //TODO remove redundancy, duplication
     private By profileAvatar = Locators.OwnProfile.PROFILE_AVATAR;
     private By profileName = Locators.OwnProfile.PROFILE_NAME;
     private By profileMeta = Locators.OwnProfile.PROFILE_META;
@@ -35,10 +36,6 @@ public class OwnProfilePage extends BasePage {
 
     public boolean isAvatarDisplayed() {
         return isDisplayed(profileAvatar);
-    }
-
-    public String getAvatarStyle() {
-        return driver.findElement(profileAvatar).getAttribute("class");
     }
 
     public String getFullName() {
@@ -123,9 +120,9 @@ public class OwnProfilePage extends BasePage {
 
     private void waitForProfileToLoad() {
         wait.until(d ->
-                d.findElements(profileAvatar).size() > 0 ||
-                d.findElements(profileName).size() > 0 ||
-                d.findElements(profileMeta).size() > 0
+                !d.findElements(profileAvatar).isEmpty() ||
+                !d.findElements(profileName).isEmpty()   ||
+                !d.findElements(profileMeta).isEmpty()
         );
     }
 }
