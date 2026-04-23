@@ -3,7 +3,7 @@ package com.staybnb.tests.api;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic("User Management")
 @Feature("Auth Me API")
 @Tag("api")
-public class AuthMeApiTest extends BaseTest {
+public class AuthMeApiTest extends BaseApiTest {
     private OwnProfilePage ownProfilePage;
 
     @BeforeEach
@@ -138,8 +138,7 @@ public class AuthMeApiTest extends BaseTest {
     @Test
     @DisplayName("Auth/me API returns 401 when not logged in")
     public void testAuthMeApiLoggedOut() {
-        ownProfilePage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = ownProfilePage.getAuthMeApiStatusLoggedOut();
+        long status = unauthedRequest().get("/auth/me").statusCode();
 
         assertEquals(
                 401L,

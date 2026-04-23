@@ -6,9 +6,10 @@ import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.EditPropertyPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Feature("Edit Property API")
 @Tag("api")
 @ResourceLock("property-1088")
-public class EditPropertyApiTest extends BaseTest {
+public class EditPropertyApiTest extends BaseApiTest {
     private EditPropertyPage editPropertyPage;
 
     @BeforeEach
@@ -79,11 +80,15 @@ public class EditPropertyApiTest extends BaseTest {
     @Test
     @DisplayName("Edit property API returns 401 when not logged in")
     public void testEditPropertyApiReturns401WhenLoggedOut() {
-        editPropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
+        long status = unauthedRequest()
+                .contentType(ContentType.JSON)
+                .body(PropertyPayloads.validEditPayloadJson())
+                .put("/properties/" + TestDataConstants.EditProperty.EDITABLE_PROPERTY_ID)
+                .statusCode();
 
         assertEquals(
                 401L,
-                updateEditablePropertyStatus(),
+                status,
                 ErrorMessages.EDIT_PROPERTY_API_SHOULD_RETURN_401_WHEN_LOGGED_OUT
         );
     }

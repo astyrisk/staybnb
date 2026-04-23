@@ -1,8 +1,8 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
+import io.restassured.http.ContentType;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +11,6 @@ import com.staybnb.config.AppConstants;
 
 public class EditProfilePage extends BasePage {
     private static final String PAGE_URL = AppConstants.EDIT_PROFILE_URL;
-    private static final String UPDATE_PROFILE_API_JS_RESOURCE = "com/staybnb/scripts/updateMyProfileApi.js";
 
     //TODO remove duplication, redundancy
     private By firstNameField = Locators.EditProfile.FIRST_NAME_FIELD;
@@ -121,11 +120,11 @@ public class EditProfilePage extends BasePage {
     }
 
     public String updateMyProfileViaApi(String updatePayloadJson) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(UPDATE_PROFILE_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, updatePayloadJson);
-        return (String) response;
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body(updatePayloadJson)
+                .put("/users/me")
+                .asString();
     }
 
     private void waitForEditProfileToLoad() {

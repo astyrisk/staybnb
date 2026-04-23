@@ -2,18 +2,17 @@ package com.staybnb.pages;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
+import io.restassured.http.ContentType;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WishlistPage extends BasePage {
-    private static final String WISHLIST_ADD_STATUS_JS      = "com/staybnb/scripts/wishlistAddStatusApi.js";
-    private static final String WISHLIST_REMOVE_STATUS_JS   = "com/staybnb/scripts/wishlistRemoveStatusApi.js";
-    private static final String WISHLIST_GET_IDS_JS         = "com/staybnb/scripts/wishlistGetIdsApi.js";
-    private static final String GET_FIRST_PROPERTY_ID_JS   = "com/staybnb/scripts/getFirstPropertyIdApi.js";
 
     public WishlistPage(WebDriver driver) {
         super(driver);
@@ -39,35 +38,43 @@ public class WishlistPage extends BasePage {
     }
 
     public long addToWishlistViaApi(String propertyId) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        Object result = js.executeAsyncScript(loadScript(WISHLIST_ADD_STATUS_JS), AppConstants.SLUG, propertyId);
-        if (result instanceof Number n) return n.longValue();
-        throw new RuntimeException("Unexpected wishlist add status type: " + result);
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body("{\"propertyId\":" + propertyId + "}")
+                .post("/wishlists")
+                .statusCode();
     }
 
     public long removeFromWishlistViaApi(String propertyId) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        Object result = js.executeAsyncScript(loadScript(WISHLIST_REMOVE_STATUS_JS), AppConstants.SLUG, propertyId);
-        if (result instanceof Number n) return n.longValue();
-        throw new RuntimeException("Unexpected wishlist remove status type: " + result);
+        return apiRequest()
+                .delete("/wishlists/" + propertyId)
+                .statusCode();
     }
 
     public String getFirstPropertyIdViaApi() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        Object result = js.executeAsyncScript(loadScript(GET_FIRST_PROPERTY_ID_JS), AppConstants.SLUG);
-        if (result == null) throw new RuntimeException("Could not retrieve first property ID from API");
-        return String.valueOf(result);
+        String body = apiRequest().get("/properties?limit=1").asString();
+        Matcher m = Pattern.compile("\"id\"\\s*:\\s*(\\d+)").matcher(body);
+        if (m.find()) return m.group(1);
+        throw new RuntimeException("Could not retrieve first property ID from API");
     }
 
     public void clearWishlistViaApi() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        Object raw = js.executeAsyncScript(loadScript(WISHLIST_GET_IDS_JS), AppConstants.SLUG);
-        //TODO Warning:(69, 52) Unchecked cast: 'java.lang.Object' to 'java.util.List<java.lang.Object>'
-        List<Object> ids = (raw instanceof List) ? (List<Object>) raw : Collections.emptyList();
+        String body = apiRequest().get("/wishlists").asString();
+        List<String> ids = extractWishlistPropertyIds(body);
         log.info("clearWishlistViaApi: found {} item(s) to remove — ids: {}", ids.size(), ids);
-        for (Object id : ids) {
-            removeFromWishlistViaApi(String.valueOf(id));
+        for (String id : ids) {
+            removeFromWishlistViaApi(id);
         }
+    }
+
+    private List<String> extractWishlistPropertyIds(String body) {
+        List<String> ids = new ArrayList<>();
+        Matcher m = Pattern.compile("\"propertyId\"\\s*:\\s*(\\d+)").matcher(body);
+        while (m.find()) ids.add(m.group(1));
+        if (!ids.isEmpty()) return ids;
+        m = Pattern.compile("\"id\"\\s*:\\s*(\\d+)").matcher(body);
+        while (m.find()) ids.add(m.group(1));
+        return ids;
     }
 
     public boolean areAllCardsShowingFilledHeart() {

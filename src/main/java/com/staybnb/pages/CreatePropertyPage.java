@@ -2,10 +2,11 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import com.staybnb.config.AppConstants;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -19,8 +20,6 @@ import java.util.Optional;
 
 public class CreatePropertyPage extends BasePage {
     private static final String PAGE_URL = AppConstants.HOSTING_CREATE_URL;
-    private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
-    private static final String CREATE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyStatusApi.js";
 
     //TODO remove redundancy, duplications
     private final By container = Locators.CreateProperty.CONTAINER;
@@ -476,45 +475,26 @@ public class CreatePropertyPage extends BasePage {
 
     public long createPropertyStatusViaApi(String payloadJson) {
         log.debug("createPropertyStatusViaApi payload: {}", payloadJson);
-
-//        driver.get(AppConstants.HOME_URL);
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(CREATE_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected create-property status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body(payloadJson)
+                .post("/properties")
+                .statusCode();
     }
 
     public String createPropertyViaApi(String payloadJson) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(CREATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
-        return (String) response;
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body(payloadJson)
+                .post("/properties")
+                .asString();
     }
 
     public String createPropertyErrorBodyViaApi(String payloadJson) {
-        String raw = createPropertyViaApi(payloadJson);
-        if (raw == null) {
-            return null;
-        }
-        try {
-            Object parsed = ((JavascriptExecutor) driver).executeScript("return JSON.parse(arguments[0]);", raw);
-            if (parsed instanceof java.util.Map<?, ?> map) {
-                Object body = map.get("body");
-                return body == null ? null : body.toString();
-            }
-            return raw;
-        } catch (JavascriptException e) {
-            return raw;
-        }
-    }
-
-    private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {
-        return js.executeScript("return JSON.parse(arguments[0]);", payloadJson);
+        Response response = apiRequest()
+                .contentType(ContentType.JSON)
+                .body(payloadJson)
+                .post("/properties");
+        return response.asString();
     }
 }

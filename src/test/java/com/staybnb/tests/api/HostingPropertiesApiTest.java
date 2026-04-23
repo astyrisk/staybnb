@@ -4,7 +4,7 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.HostDashboardPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic("Host Management")
 @Feature("Hosting Properties API")
 @Tag("api")
-public class HostingPropertiesApiTest extends BaseTest {
+public class HostingPropertiesApiTest extends BaseApiTest {
     private HostDashboardPage hostDashboardPage;
 
     @BeforeEach
@@ -63,8 +63,7 @@ public class HostingPropertiesApiTest extends BaseTest {
     @Test
     @DisplayName("Hosting properties API returns 401 when not logged in")
     public void testHostingPropertiesApiReturns401WhenLoggedOut() {
-        hostDashboardPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = hostDashboardPage.getHostingPropertiesStatusViaApi();
+        long status = unauthedRequest().get("/hosting/properties").statusCode();
 
         assertEquals(
                 401L,

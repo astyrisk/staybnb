@@ -5,7 +5,7 @@ import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.CreatePropertyPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic("Property Management")
 @Feature("Create Property API")
 @Tag("api")
-public class CreatePropertyApiTest extends BaseTest {
+public class CreatePropertyApiTest extends BaseApiTest {
     private CreatePropertyPage createPropertyPage;
 
     @BeforeEach

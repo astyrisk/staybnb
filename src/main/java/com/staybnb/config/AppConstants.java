@@ -6,6 +6,7 @@ public final class AppConstants {
     // ── URLs ──────────────────────────────────────────────────────────────────
     public static final String BASE_URL                  = TestConfig.BASE_URL;
     public static final String SLUG                      = resolveSlug();
+    public static final String API_BASE_URL              = BASE_URL.substring(0, BASE_URL.indexOf("/t/")) + "/api/t/" + SLUG;
     public static final String LOGIN_URL                 = BASE_URL + "/login";
     public static final String REGISTER_URL              = BASE_URL + "/register";
     public static final String HOME_URL                  = BASE_URL;

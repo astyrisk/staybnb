@@ -6,9 +6,10 @@ import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
 import com.staybnb.pages.PublishPropertyPage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Publish Property API")
 @Tag("api")
 @ResourceLock(value = "property-1088", mode = ResourceAccessMode.READ)
-public class PublishPropertyApiTest extends BaseTest {
+public class PublishPropertyApiTest extends BaseApiTest {
     private PublishPropertyPage publishPropertyPage;
 
     @BeforeEach
@@ -79,8 +80,11 @@ public class PublishPropertyApiTest extends BaseTest {
     @Test
     @DisplayName("Publish property API returns 401 when not logged in")
     public void testPublishPropertyApiReturns401WhenLoggedOut() {
-        publishPropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = publishPropertyPage.updatePublishPropertyStatusViaApi(TestDataConstants.PublishProperty.OWNED_PROPERTY_ID, true);
+        long status = unauthedRequest()
+                .contentType(ContentType.JSON)
+                .body("{\"isPublished\":true}")
+                .put("/properties/" + TestDataConstants.PublishProperty.OWNED_PROPERTY_ID)
+                .statusCode();
 
         assertEquals(
                 401L,

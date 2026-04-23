@@ -3,7 +3,7 @@ package com.staybnb.tests.api;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.ImageUploadPage;
 import com.staybnb.pages.LoginPage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Epic("Property Management")
 @Feature("Image Upload API")
 @Tag("api")
-public class ImageUploadApiTest extends BaseTest {
+public class ImageUploadApiTest extends BaseApiTest {
     private ImageUploadPage imageUploadPage;
 
     private static final String DUMMY_BASE64 =
@@ -95,8 +95,11 @@ public class ImageUploadApiTest extends BaseTest {
     @Test
     @DisplayName("Upload returns 401 when not logged in")
     public void testUploadReturns401WhenLoggedOut() {
-        imageUploadPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = imageUploadPage.uploadImageStatusViaApi(DUMMY_BASE64, "any.png", "image/png");
+        byte[] imageBytes = Base64.getDecoder().decode(DUMMY_BASE64);
+        long status = unauthedRequest()
+                .multiPart("image", "any.png", imageBytes, "image/png")
+                .post("/upload")
+                .statusCode();
 
         assertEquals(
                 401L,

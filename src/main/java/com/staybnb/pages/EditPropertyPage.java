@@ -2,8 +2,8 @@ package com.staybnb.pages;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
+import io.restassured.http.ContentType;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -13,8 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 
 public class EditPropertyPage extends BasePage {
-    private static final String UPDATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/updatePropertyApi.js";
-    private static final String UPDATE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/updatePropertyStatusApi.js";
 
     private final By container = Locators.EditProperty.CONTAINER;
     private final By headerTitle = Locators.EditProperty.HEADER_TITLE;
@@ -130,18 +128,10 @@ public class EditPropertyPage extends BasePage {
     }
 
     public long updatePropertyStatusViaApi(String propertyId, String payloadJson) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(UPDATE_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, payloadJsonToObject(js, payloadJson));
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected edit-property status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
-    }
-
-    private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {
-        return js.executeScript("return JSON.parse(arguments[0]);", payloadJson);
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body(payloadJson)
+                .put("/properties/" + propertyId)
+                .statusCode();
     }
 }

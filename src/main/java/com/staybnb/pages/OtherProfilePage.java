@@ -3,7 +3,6 @@ package com.staybnb.pages;
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +10,6 @@ import java.util.List;
 
 public class OtherProfilePage extends BasePage {
     private static final String OTHER_PROFILE_BASE_URL = AppConstants.OTHER_PROFILE_BASE_URL;
-    private static final String OTHER_USER_PROFILE_API_JS_RESOURCE = "com/staybnb/scripts/getOtherUserProfileApi.js";
 
     //TODO remove duplication, redundancy
     private By profileAvatar = Locators.OtherProfile.PROFILE_AVATAR;
@@ -64,13 +62,7 @@ public class OtherProfilePage extends BasePage {
     }
 
     public String getOtherUserApiResponse(String userId) {
-        // Ensure we're on the app origin so the relative `/api/...` endpoint resolves correctly.
-        driver.get(AppConstants.HOME_URL);
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(OTHER_USER_PROFILE_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, userId);
-        return (String) response;
+        return apiRequest().get("/users/" + userId).asString();
     }
 
     private String buildOtherProfileUrl(String userId) {

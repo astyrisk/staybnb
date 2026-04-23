@@ -1,17 +1,13 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
+import io.restassured.http.ContentType;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import com.staybnb.config.AppConstants;
 
 public class OwnProfilePage extends BasePage {
     private static final String PAGE_URL = AppConstants.PROFILE_URL;
-    private static final String AUTH_ME_API_JS_RESOURCE = "com/staybnb/scripts/getAuthMeApi.js";
-    private static final String AUTH_ME_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/getAuthMeStatusApi.js";
-    private static final String BECOME_HOST_API_JS_RESOURCE = "com/staybnb/scripts/becomeHostApi.js";
-    private static final String BECOME_HOST_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/becomeHostStatusApi.js";
 
     //TODO remove redundancy, duplication
     private By profileAvatar = Locators.OwnProfile.PROFILE_AVATAR;
@@ -75,47 +71,15 @@ public class OwnProfilePage extends BasePage {
     }
 
     public String getAuthMeApiResponse() {
-        // Ensure we're on the app origin so the relative `/api/...` endpoint resolves correctly.
-        driver.get(AppConstants.HOME_URL);
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(AUTH_ME_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG);
-        return (String) response;
-    }
-
-    public long getAuthMeApiStatusLoggedOut() {
-        driver.get(AppConstants.HOME_URL);
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(AUTH_ME_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected auth/me status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
+        return apiRequest().get("/auth/me").asString();
     }
 
     public String becomeHostViaApi(String payloadJson) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(BECOME_HOST_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJson);
-        return (String) response;
-    }
-
-    public long becomeHostStatusLoggedOut() {
-        driver.get(AppConstants.HOME_URL);
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(BECOME_HOST_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected become-host status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body(payloadJson)
+                .put("/users/me/host")
+                .asString();
     }
 
     private void waitForProfileToLoad() {

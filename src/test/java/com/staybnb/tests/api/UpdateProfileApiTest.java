@@ -4,7 +4,7 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.LoginPage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.AfterEach;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Update Profile API")
 @Tag("api")
 @ResourceLock("test-user-profile")
-public class UpdateProfileApiTest extends BaseTest {
+public class UpdateProfileApiTest extends BaseApiTest {
     private LoginPage loginPage;
     private EditProfilePage editProfilePage;
 

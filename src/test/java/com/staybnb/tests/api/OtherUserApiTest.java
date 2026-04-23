@@ -4,7 +4,7 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic("User Management")
 @Feature("Other User Profile API")
 @Tag("api")
-public class OtherUserApiTest extends BaseTest {
+public class OtherUserApiTest extends BaseApiTest {
     private OtherProfilePage otherProfilePage;
 
     @BeforeEach

@@ -6,7 +6,7 @@ import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
-import com.staybnb.tests.BaseTest;
+import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Feature("Delete Property API")
 @Tag("api")
 @ResourceLock(value = "property-1088", mode = ResourceAccessMode.READ)
-public class DeletePropertyApiTest extends BaseTest {
+public class DeletePropertyApiTest extends BaseApiTest {
     private DeletePropertyPage deletePropertyPage;
 
     @BeforeEach
@@ -78,8 +78,9 @@ public class DeletePropertyApiTest extends BaseTest {
     @Test
     @DisplayName("Delete property API returns 401 when not logged in")
     public void testDeletePropertyApiReturns401WhenLoggedOut() {
-        deletePropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        long status = deletePropertyPage.deletePropertyStatusViaApi(TestDataConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
+        long status = unauthedRequest()
+                .delete("/properties/" + TestDataConstants.DeleteProperty.EDITABLE_PROPERTY_ID)
+                .statusCode();
 
         assertEquals(
                 401L,

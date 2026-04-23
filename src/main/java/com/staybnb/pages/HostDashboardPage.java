@@ -3,7 +3,6 @@ package com.staybnb.pages;
 import com.staybnb.locators.Locators;
 import com.staybnb.config.AppConstants;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -11,8 +10,6 @@ import java.util.List;
 
 public class HostDashboardPage extends BasePage {
     private static final String PAGE_URL = AppConstants.HOSTING_URL;
-    private static final String HOSTING_PROPERTIES_API_JS_RESOURCE = "com/staybnb/scripts/getHostingPropertiesApi.js";
-    private static final String HOSTING_PROPERTIES_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/getHostingPropertiesStatusApi.js";
 
     private final By container = Locators.HostDashboard.CONTAINER;
     private final By summarySubtitle = Locators.HostDashboard.SUMMARY_SUBTITLE;
@@ -128,23 +125,11 @@ public class HostDashboardPage extends BasePage {
     }
 
     public String getHostingPropertiesViaApi() {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(HOSTING_PROPERTIES_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG);
-        return (String) response;
+        return apiRequest().get("/hosting/properties").asString();
     }
 
     public long getHostingPropertiesStatusViaApi() {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(HOSTING_PROPERTIES_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected hosting/properties status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
+        return apiRequest().get("/hosting/properties").statusCode();
     }
 
     private void waitForDashboardToLoad() {

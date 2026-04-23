@@ -2,6 +2,9 @@ package com.staybnb.pages;
 
 import com.staybnb.components.BaseComponent;
 import com.staybnb.components.Navbar;
+import com.staybnb.config.AppConstants;
+import io.restassured.RestAssured;
+import io.restassured.specification.RequestSpecification;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -28,6 +31,15 @@ public abstract class BasePage extends BaseComponent {
         } catch (WebDriverException e) {
             return null;
         }
+    }
+
+    protected RequestSpecification apiRequest() {
+        String token = getStaybnbToken();
+        RequestSpecification spec = RestAssured.given().baseUri(AppConstants.API_BASE_URL);
+        if (token != null && !token.isBlank()) {
+            spec.header("Authorization", "Bearer " + token);
+        }
+        return spec;
     }
 
     protected void type(By locator, String text) {

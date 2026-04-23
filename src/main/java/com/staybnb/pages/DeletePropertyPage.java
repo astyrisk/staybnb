@@ -2,9 +2,9 @@ package com.staybnb.pages;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
+import io.restassured.http.ContentType;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -14,10 +14,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DeletePropertyPage extends BasePage {
-    private static final String DELETE_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/deletePropertyStatusApi.js";
-    private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
 
     private final By editPageDeleteButton = Locators.DeleteProperty.EDIT_PAGE_DELETE_BUTTON;
     private final By dashboardDeleteButtons = Locators.DeleteProperty.DASHBOARD_DELETE_BUTTONS;
@@ -83,35 +83,24 @@ public class DeletePropertyPage extends BasePage {
     }
 
     public long deletePropertyStatusViaApi(String propertyId) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(DELETE_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, propertyId);
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected delete-property status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
+        return apiRequest()
+                .delete("/properties/" + propertyId)
+                .statusCode();
     }
 
     public String createPropertyViaApi(String payloadJson) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(CREATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
-        return (String) response;
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body(payloadJson)
+                .post("/properties")
+                .asString();
     }
 
     public String extractCreatedPropertyId(String createPropertyResponse) {
         if (createPropertyResponse == null) {
             throw new IllegalStateException("Create property API response was null.");
         }
-        Matcher bodyMatcher = Pattern.compile("\"body\"\\s*:\\s*\"(.*)\"\\s*}", Pattern.DOTALL).matcher(createPropertyResponse);
-        String searchable = bodyMatcher.find()
-                ? bodyMatcher.group(1).replace("\\\"", "\"")
-                : createPropertyResponse;
-
-        Matcher idMatcher = Pattern.compile("\"id\"\\s*:\\s*(\\d+)").matcher(searchable);
+        Matcher idMatcher = Pattern.compile("\"id\"\\s*:\\s*(\\d+)").matcher(createPropertyResponse);
         if (idMatcher.find()) {
             return idMatcher.group(1);
         }
@@ -147,7 +136,4 @@ public class DeletePropertyPage extends BasePage {
         }
     }
 
-    private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {
-        return js.executeScript("return JSON.parse(arguments[0]);", payloadJson);
-    }
 }

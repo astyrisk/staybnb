@@ -2,6 +2,7 @@ package com.staybnb.pages;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
+import io.restassured.http.ContentType;
 import org.openqa.selenium.*;
 
 import java.util.List;
@@ -9,9 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PublishPropertyPage extends BasePage {
-    private static final String CREATE_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/createPropertyApi.js";
-    private static final String UPDATE_PUBLISH_PROPERTY_API_JS_RESOURCE = "com/staybnb/scripts/updatePublishPropertyApi.js";
-    private static final String UPDATE_PUBLISH_PROPERTY_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/updatePublishPropertyStatusApi.js";
 
     //TODO Redundant, repeated
     private final By dashboardCard = Locators.HostDashboard.PROPERTY_CARD;
@@ -55,23 +53,18 @@ public class PublishPropertyPage extends BasePage {
     }
 
     public String createPropertyViaApi(String payloadJson) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(CREATE_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
-        return (String) response;
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body(payloadJson)
+                .post("/properties")
+                .asString();
     }
 
     public String extractCreatedPropertyId(String createPropertyResponse) {
         if (createPropertyResponse == null) {
             throw new IllegalStateException("Create property API response was null.");
         }
-        Matcher bodyMatcher = Pattern.compile("\"body\"\\s*:\\s*\"(.*)\"\\s*}", Pattern.DOTALL).matcher(createPropertyResponse);
-        String searchable = bodyMatcher.find()
-                ? bodyMatcher.group(1).replace("\\\"", "\"")
-                : createPropertyResponse;
-
-        Matcher idMatcher = Pattern.compile("\"id\"\\s*:\\s*(\\d+)").matcher(searchable);
+        Matcher idMatcher = Pattern.compile("\"id\"\\s*:\\s*(\\d+)").matcher(createPropertyResponse);
         if (idMatcher.find()) {
             return idMatcher.group(1);
         }
@@ -79,27 +72,19 @@ public class PublishPropertyPage extends BasePage {
     }
 
     public String updatePublishPropertyViaApi(String propertyId, boolean isPublished) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(UPDATE_PUBLISH_PROPERTY_API_JS_RESOURCE);
-        Object response = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, publishPayload(js, isPublished));
-        return (String) response;
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body("{\"isPublished\":" + isPublished + "}")
+                .put("/properties/" + propertyId)
+                .asString();
     }
 
     public long updatePublishPropertyStatusViaApi(String propertyId, boolean isPublished) {
-        driver.get(AppConstants.HOME_URL);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadScript(UPDATE_PUBLISH_PROPERTY_STATUS_API_JS_RESOURCE);
-        Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, propertyId, publishPayload(js, isPublished));
-        if (responseStatus instanceof Number n) {
-            return n.longValue();
-        }
-        throw new RuntimeException("Unexpected publish-property status response type: " +
-                (responseStatus == null ? "null" : responseStatus.getClass().getName()));
-    }
-
-    private Object publishPayload(JavascriptExecutor js, boolean isPublished) {
-        return js.executeScript("return { isPublished: arguments[0] };", isPublished);
+        return apiRequest()
+                .contentType(ContentType.JSON)
+                .body("{\"isPublished\":" + isPublished + "}")
+                .put("/properties/" + propertyId)
+                .statusCode();
     }
 
     private WebElement findDashboardCardByTitle(String propertyTitle) {
@@ -116,10 +101,6 @@ public class PublishPropertyPage extends BasePage {
 
     private void waitForDashboardCardsToLoad() {
         wait.until(d -> !d.findElements(dashboardCard).isEmpty() || !d.findElements(By.className("host-dashboard-empty")).isEmpty());
-    }
-
-    private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {
-        return js.executeScript("return JSON.parse(arguments[0]);", payloadJson);
     }
 
     public boolean isPublishSuccessfulResponse(String response) {
