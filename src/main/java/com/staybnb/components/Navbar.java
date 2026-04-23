@@ -9,9 +9,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 public class Navbar extends BaseComponent {
     private final By navbarLogo = Locators.Navbar.NAVBAR_LOGO;
@@ -266,18 +263,7 @@ public class Navbar extends BaseComponent {
 
     private void setDateInput(By locator, String isoDate) {
         WebElement input = waitForElementVisible(locator);
-        String script = loadJavascriptResource();
+        String script = loadScript(SET_DATE_INPUT_JS);
         ((JavascriptExecutor) driver).executeScript(script, input, isoDate);
-    }
-
-    private String loadJavascriptResource() {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(Navbar.SET_DATE_INPUT_JS)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + Navbar.SET_DATE_INPUT_JS);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + Navbar.SET_DATE_INPUT_JS, e);
-        }
     }
 }

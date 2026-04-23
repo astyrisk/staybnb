@@ -6,9 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class OtherProfilePage extends BasePage {
@@ -69,7 +66,7 @@ public class OtherProfilePage extends BasePage {
         driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(OTHER_USER_PROFILE_API_JS_RESOURCE);
+        String script = loadScript(OTHER_USER_PROFILE_API_JS_RESOURCE);
         Object response = js.executeAsyncScript(script, AppConstants.SLUG, userId);
         return (String) response;
     }
@@ -102,17 +99,6 @@ public class OtherProfilePage extends BasePage {
             return elements.stream().anyMatch(WebElement::isDisplayed);
         } catch (Exception e) {
             return false;
-        }
-    }
-
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
         }
     }
 }

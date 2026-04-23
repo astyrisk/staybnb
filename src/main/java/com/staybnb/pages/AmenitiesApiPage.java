@@ -4,10 +4,6 @@ import com.staybnb.config.AppConstants;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 public class AmenitiesApiPage extends BasePage {
     private static final String GET_AMENITIES_API_JS_RESOURCE = "com/staybnb/scripts/getAmenitiesApi.js";
     private static final String GET_AMENITIES_STATUS_API_JS_RESOURCE = "com/staybnb/scripts/getAmenitiesStatusApi.js";
@@ -19,7 +15,7 @@ public class AmenitiesApiPage extends BasePage {
     public long getAmenitiesStatusViaApi() {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(GET_AMENITIES_STATUS_API_JS_RESOURCE);
+        String script = loadScript(GET_AMENITIES_STATUS_API_JS_RESOURCE);
         Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
@@ -31,7 +27,7 @@ public class AmenitiesApiPage extends BasePage {
     public boolean amenitiesResponseHasRequiredFieldsViaApi() {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(GET_AMENITIES_API_JS_RESOURCE);
+        String script = loadScript(GET_AMENITIES_API_JS_RESOURCE);
         Object response = js.executeAsyncScript(script, AppConstants.SLUG);
         if (response instanceof Boolean b) {
             return b;
@@ -40,14 +36,4 @@ public class AmenitiesApiPage extends BasePage {
                 (response == null ? "null" : response.getClass().getName()));
     }
 
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
-        }
-    }
 }

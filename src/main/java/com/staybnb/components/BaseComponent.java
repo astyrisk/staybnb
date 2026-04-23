@@ -7,6 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 
@@ -61,6 +64,17 @@ public abstract class BaseComponent {
             driver.switchTo().alert().accept();
         } catch (Exception ignored) {
             // no browser confirmation dialog present
+        }
+    }
+
+    protected String loadScript(String resourcePath) {
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
+            }
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
         }
     }
 }

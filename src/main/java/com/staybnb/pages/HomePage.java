@@ -5,9 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import com.staybnb.config.AppConstants;
@@ -82,7 +79,7 @@ public class HomePage extends BasePage {
 
     public String getActiveCategoryName() {
         WebElement chip = waitForElementVisible(activeCategoryChip);
-        String script = loadJavascriptResource(GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE);
+        String script = loadScript(GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE);
         Object result = ((JavascriptExecutor) driver).executeScript(script, chip);
         return Optional.ofNullable(result).map(Object::toString).orElse("").trim();
     }
@@ -155,17 +152,6 @@ public class HomePage extends BasePage {
         // keeps JS out of tests
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
         waitForElementsPresent(propertyCards);
-    }
-
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
-        }
     }
 
     private void waitForHomeToLoad() {

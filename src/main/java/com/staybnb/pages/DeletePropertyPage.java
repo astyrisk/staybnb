@@ -10,9 +10,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,7 +84,7 @@ public class DeletePropertyPage extends BasePage {
     public long deletePropertyStatusViaApi(String propertyId) {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(DELETE_PROPERTY_STATUS_API_JS_RESOURCE);
+        String script = loadScript(DELETE_PROPERTY_STATUS_API_JS_RESOURCE);
         Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG, propertyId);
         if (responseStatus instanceof Number n) {
             return n.longValue();
@@ -99,7 +96,7 @@ public class DeletePropertyPage extends BasePage {
     public String createPropertyViaApi(String payloadJson) {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(CREATE_PROPERTY_API_JS_RESOURCE);
+        String script = loadScript(CREATE_PROPERTY_API_JS_RESOURCE);
         Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJsonToObject(js, payloadJson));
         return (String) response;
     }
@@ -151,16 +148,5 @@ public class DeletePropertyPage extends BasePage {
 
     private Object payloadJsonToObject(JavascriptExecutor js, String payloadJson) {
         return js.executeScript("return JSON.parse(arguments[0]);", payloadJson);
-    }
-
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
-        }
     }
 }

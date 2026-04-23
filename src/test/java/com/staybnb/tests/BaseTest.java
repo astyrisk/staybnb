@@ -3,28 +3,23 @@ package com.staybnb.tests;
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.DriverFactory;
 import com.staybnb.config.TestConfig;
+import com.staybnb.extensions.ScreenshotOnFailureExtension;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.RegisterPage;
-import io.qameta.allure.Allure;
 import io.qameta.allure.junit5.AllureJunit5;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.util.UUID;
 
-@ExtendWith(AllureJunit5.class)
+@ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class})
 public class BaseTest {
     private static final Logger log = LogManager.getLogger(BaseTest.class);
     protected WebDriver driver;
@@ -83,27 +78,4 @@ public class BaseTest {
         loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
     }
 
-    @RegisterExtension
-    AfterTestExecutionCallback screenshotCallback = context -> {
-        if (context.getExecutionException().isPresent()) {
-            attachScreenshotToAllure(context.getDisplayName());
-        }
-    };
-
-    private void attachScreenshotToAllure(String testName) {
-        if (driver instanceof TakesScreenshot ts) {
-            try {
-                byte[] screenshotBytes = ts.getScreenshotAs(OutputType.BYTES);
-                Allure.addAttachment(
-                        testName + " - Failure Screenshot",
-                        "image/png",
-                        new ByteArrayInputStream(screenshotBytes),
-                        ".png"
-                );
-                log.info("Screenshot attached to Allure report for: {}", testName);
-            } catch (Exception e) {
-                log.error("Error during screenshot attachment: {}", e.getMessage());
-            }
-        }
-    }
 }

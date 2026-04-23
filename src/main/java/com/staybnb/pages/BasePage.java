@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public abstract class BasePage extends BaseComponent {
     private final Navbar navbar;
@@ -37,15 +36,6 @@ public abstract class BasePage extends BaseComponent {
 
     protected String getText(By locator) {
         return driver.findElement(locator).getText();
-    }
-
-    public void acceptConfirmationIfPresent() {
-        try {
-            wait.until(ExpectedConditions.alertIsPresent());
-            driver.switchTo().alert().accept();
-        } catch (Exception ignored) {
-            // no browser confirmation dialog present
-        }
     }
 
     public Navbar navbar() {

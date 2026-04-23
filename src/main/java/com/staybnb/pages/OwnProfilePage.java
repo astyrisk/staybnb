@@ -6,10 +6,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import com.staybnb.config.AppConstants;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 public class OwnProfilePage extends BasePage {
     private static final String PAGE_URL = AppConstants.PROFILE_URL;
     private static final String AUTH_ME_API_JS_RESOURCE = "com/staybnb/scripts/getAuthMeApi.js";
@@ -86,7 +82,7 @@ public class OwnProfilePage extends BasePage {
         driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(AUTH_ME_API_JS_RESOURCE);
+        String script = loadScript(AUTH_ME_API_JS_RESOURCE);
         Object response = js.executeAsyncScript(script, AppConstants.SLUG);
         return (String) response;
     }
@@ -95,7 +91,7 @@ public class OwnProfilePage extends BasePage {
         driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(AUTH_ME_STATUS_API_JS_RESOURCE);
+        String script = loadScript(AUTH_ME_STATUS_API_JS_RESOURCE);
         Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
@@ -107,7 +103,7 @@ public class OwnProfilePage extends BasePage {
     public String becomeHostViaApi(String payloadJson) {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(BECOME_HOST_API_JS_RESOURCE);
+        String script = loadScript(BECOME_HOST_API_JS_RESOURCE);
         Object response = js.executeAsyncScript(script, AppConstants.SLUG, payloadJson);
         return (String) response;
     }
@@ -116,7 +112,7 @@ public class OwnProfilePage extends BasePage {
         driver.get(AppConstants.HOME_URL);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(BECOME_HOST_STATUS_API_JS_RESOURCE);
+        String script = loadScript(BECOME_HOST_STATUS_API_JS_RESOURCE);
         Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
@@ -131,16 +127,5 @@ public class OwnProfilePage extends BasePage {
                 d.findElements(profileName).size() > 0 ||
                 d.findElements(profileMeta).size() > 0
         );
-    }
-
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
-        }
     }
 }

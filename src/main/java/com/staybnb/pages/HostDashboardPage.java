@@ -7,9 +7,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class HostDashboardPage extends BasePage {
@@ -137,7 +134,7 @@ public class HostDashboardPage extends BasePage {
     public String getHostingPropertiesViaApi() {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(HOSTING_PROPERTIES_API_JS_RESOURCE);
+        String script = loadScript(HOSTING_PROPERTIES_API_JS_RESOURCE);
         Object response = js.executeAsyncScript(script, AppConstants.SLUG);
         return (String) response;
     }
@@ -145,7 +142,7 @@ public class HostDashboardPage extends BasePage {
     public long getHostingPropertiesStatusViaApi() {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(HOSTING_PROPERTIES_STATUS_API_JS_RESOURCE);
+        String script = loadScript(HOSTING_PROPERTIES_STATUS_API_JS_RESOURCE);
         Object responseStatus = js.executeAsyncScript(script, AppConstants.SLUG);
         if (responseStatus instanceof Number n) {
             return n.longValue();
@@ -160,16 +157,5 @@ public class HostDashboardPage extends BasePage {
                 !d.findElements(emptyStateMessage).isEmpty() ||
                 !d.findElements(propertyCard).isEmpty()
         );
-    }
-
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
-        }
     }
 }

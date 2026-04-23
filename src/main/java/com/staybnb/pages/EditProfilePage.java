@@ -8,10 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import com.staybnb.config.AppConstants;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 public class EditProfilePage extends BasePage {
     private static final String PAGE_URL = AppConstants.EDIT_PROFILE_URL;
     private static final String UPDATE_PROFILE_API_JS_RESOURCE = "com/staybnb/scripts/updateMyProfileApi.js";
@@ -129,27 +125,16 @@ public class EditProfilePage extends BasePage {
     public String updateMyProfileViaApi(String updatePayloadJson) {
         driver.get(AppConstants.HOME_URL);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = loadJavascriptResource(UPDATE_PROFILE_API_JS_RESOURCE);
+        String script = loadScript(UPDATE_PROFILE_API_JS_RESOURCE);
         Object response = js.executeAsyncScript(script, AppConstants.SLUG, updatePayloadJson);
         return (String) response;
     }
 
     private void waitForEditProfileToLoad() {
         wait.until(d ->
-                d.findElements(firstNameField).size() > 0 ||
+                !d.findElements(firstNameField).isEmpty() ||
                 d.getPageSource().contains("401") ||
                 d.getPageSource().contains("Unauthorized")
         );
-    }
-
-    private String loadJavascriptResource(String resourcePath) {
-        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
-            if (stream == null) {
-                throw new IllegalStateException("Missing JS resource on classpath: " + resourcePath);
-            }
-            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read JS resource on classpath: " + resourcePath, e);
-        }
     }
 }
