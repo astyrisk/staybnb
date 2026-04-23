@@ -1,4 +1,4 @@
-package com.staybnb.tests.api;
+package com.staybnb.tests.api.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.HostDashboardPage;

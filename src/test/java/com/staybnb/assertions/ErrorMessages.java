@@ -589,6 +589,44 @@ public final class ErrorMessages {
     public static final String WISHLIST_REMOVE_NON_WISHLISTED_PROPERTY_SHOULD_RETURN_404 =
             "Removing a property that is not in the wishlist should return HTTP 404.";
 
+    // --- Auth UI validation (Story 1 & 2) ---
+    public static final String PASSWORD_TOO_SHORT =
+            "A password shorter than 8 characters should show an inline validation error.";
+    public static final String PASSWORDS_DO_NOT_MATCH =
+            "Mismatched password and confirm password should show an inline validation error.";
+    public static final String REGISTER_PAGE_SHOULD_NAVIGATE_TO_LOGIN =
+            "Clicking the 'Log in' link on the register page should navigate to the login page.";
+    public static final String LOGIN_PAGE_SHOULD_NAVIGATE_TO_REGISTER =
+            "Clicking the 'Register' link on the login page should navigate to the register page.";
+
+    // --- Register API (Story 1) ---
+    public static final String REGISTER_API_SHOULD_RETURN_201_FOR_VALID_PAYLOAD =
+            "Register API should return 201 for a valid payload.";
+    public static final String REGISTER_API_SHOULD_RETURN_409_FOR_EXISTING_EMAIL =
+            "Register API should return 409 when the email already exists in the tenant.";
+    public static final String REGISTER_API_SHOULD_RETURN_400_FOR_MISSING_FIELDS =
+            "Register API should return 400 when required fields are missing.";
+    public static final String REGISTER_API_RESPONSE_SHOULD_CONTAIN_TOKEN =
+            "Register API response should contain a token string.";
+
+    // --- Login API (Story 2) ---
+    public static final String LOGIN_API_SHOULD_RETURN_200_FOR_VALID_CREDENTIALS =
+            "Login API should return 200 for valid credentials.";
+    public static final String LOGIN_API_SHOULD_RETURN_401_FOR_INVALID_CREDENTIALS =
+            "Login API should return 401 for invalid credentials.";
+    public static final String LOGIN_API_SHOULD_RETURN_400_FOR_MISSING_FIELDS =
+            "Login API should return 400 when required fields are missing.";
+    public static final String LOGIN_API_RESPONSE_SHOULD_CONTAIN_TOKEN =
+            "Login API response should contain a token string.";
+
+    // --- Logout API (Story 3) ---
+    public static final String LOGOUT_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =
+            "Logout API should return 401 when the caller is not authenticated.";
+    public static final String LOGOUT_API_SHOULD_RETURN_200_WHEN_LOGGED_IN =
+            "Logout API should return 200 when the user is authenticated.";
+    public static final String LOGOUT_API_UNAUTHENTICATED_ENDPOINT_RETURNS_401 =
+            "Accessing an authenticated endpoint without a token after logout should return 401.";
+
     // --- Property Amenities (Story 13) messages ---
     public static final String AMENITIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON =
             "GET /api/t/{slug}/amenities should return a non-empty list where each item includes id, name, and icon fields.";

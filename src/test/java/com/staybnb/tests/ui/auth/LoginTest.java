@@ -57,4 +57,15 @@ public class LoginTest extends BaseTest {
                 loginPage.isInlineErrorDisplayed(ErrorMessages.REQUIRED)
         );
     }
+
+    @Test
+    @DisplayName("Login page has a 'Register' link that navigates to the register page")
+    public void testLoginPageHasRegisterLink() {
+        loginPage.clickRegisterLink();
+
+        assertTrue(
+                isUrlContains(AppConstants.REGISTER_URL),
+                ErrorMessages.LOGIN_PAGE_SHOULD_NAVIGATE_TO_REGISTER
+        );
+    }
 }

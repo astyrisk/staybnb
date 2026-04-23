@@ -1,4 +1,4 @@
-package com.staybnb.tests.api;
+package com.staybnb.tests.api.property;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseApiTest;
@@ -10,18 +10,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic("Properties")
-@Feature("Amenities API")
+@Feature("Categories API")
 @Tag("api")
-public class AmenitiesApiTest extends BaseApiTest {
+public class CategoriesApiTest extends BaseApiTest {
 
     @Test
-    @DisplayName("Amenities API returns list with id, name, and icon fields")
-    public void testAmenitiesApiReturnsListWithIdNameAndIcon() {
-        String body = unauthedRequest().get("/amenities").asString();
+    @DisplayName("Categories API returns list with id, name, and icon fields")
+    public void testCategoriesApiReturnsListWithIdNameAndIcon() {
+        String body = unauthedRequest().get("/categories").asString();
 
         assertTrue(
                 body.contains("\"id\"") && body.contains("\"name\"") && body.contains("\"icon\""),
-                ErrorMessages.AMENITIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON
+                ErrorMessages.CATEGORIES_API_SHOULD_RETURN_LIST_WITH_ID_NAME_ICON
         );
     }
 }

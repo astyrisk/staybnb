@@ -66,6 +66,24 @@ public class RegisterPage extends AuthPage {
         navbar().clickRegisterAndWaitForRedirect();
     }
 
+    public void submitRegistrationWithShortPassword(String fName, String lName, String email) {
+        enterFirstName(fName);
+        enterLastName(lName);
+        enterEmail(email);
+        enterPassword("short12"); // 7 chars — below the 8-character minimum
+        enterConfirmPassword("short12");
+        clickRegister();
+    }
+
+    public void submitRegistrationWithMismatchedPasswords(String fName, String lName, String email, String pass) {
+        enterFirstName(fName);
+        enterLastName(lName);
+        enterEmail(email);
+        enterPassword(pass);
+        enterConfirmPassword(pass + "DIFF");
+        clickRegister();
+    }
+
     public void registerAndWaitForUrl(String fName, String lName, String email, String pass, String expectedUrl) {
         submitRegistration(fName, lName, email, pass);
         waitForUrlToBe(expectedUrl);

@@ -70,4 +70,46 @@ public class RegisterTest extends BaseTest {
                 registerPage.isInlineErrorDisplayed(ErrorMessages.REQUIRED)
         );
     }
+
+    @Test
+    @DisplayName("Registration with a password shorter than 8 characters shows inline validation error")
+    public void testRegistrationWithShortPassword() {
+        registerPage.submitRegistrationWithShortPassword(
+                TestConfig.TEST_FIRST_NAME,
+                TestConfig.TEST_LAST_NAME,
+                "shortpass_" + System.currentTimeMillis() + "@gmail.com"
+        );
+
+        assertTrue(
+                registerPage.isInlineErrorDisplayed("8"),
+                ErrorMessages.PASSWORD_TOO_SHORT
+        );
+    }
+
+    @Test
+    @DisplayName("Registration with mismatched passwords shows inline validation error")
+    public void testRegistrationWithMismatchedPasswords() {
+        registerPage.submitRegistrationWithMismatchedPasswords(
+                TestConfig.TEST_FIRST_NAME,
+                TestConfig.TEST_LAST_NAME,
+                "mismatch_" + System.currentTimeMillis() + "@gmail.com",
+                TestConfig.TEST_PASSWORD
+        );
+
+        assertTrue(
+                registerPage.isInlineErrorDisplayed("match"),
+                ErrorMessages.PASSWORDS_DO_NOT_MATCH
+        );
+    }
+
+    @Test
+    @DisplayName("Register page has a 'Log in' link that navigates to the login page")
+    public void testRegisterPageHasLoginLink() {
+        registerPage.clickLoginLink();
+
+        assertTrue(
+                isUrlContains(AppConstants.LOGIN_URL),
+                ErrorMessages.REGISTER_PAGE_SHOULD_NAVIGATE_TO_LOGIN
+        );
+    }
 }
