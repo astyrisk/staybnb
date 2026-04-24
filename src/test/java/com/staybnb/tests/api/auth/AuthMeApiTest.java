@@ -1,7 +1,6 @@
 package com.staybnb.tests.api.auth;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
@@ -20,9 +19,8 @@ public class AuthMeApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         ownProfilePage = new OwnProfilePage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     @Test

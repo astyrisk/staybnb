@@ -17,12 +17,16 @@ public class LoginPage extends AuthPage {
     public void login(String email, String password) {
         enterEmail(email);
         enterPassword(password);
-        clickPrimarySubmit();
+        clickSubmit();
     }
 
     public void loginAndExpectSuccess(String email, String password) {
         login(email, password);
         waitForUrlToBe(AppConstants.HOME_URL);
+    }
+
+    public void navigateViaNavbar() {
+        navbar().clickLoginAndWaitForRedirect();
     }
 
     public void clickRegisterLink() {

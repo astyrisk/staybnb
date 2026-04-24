@@ -3,7 +3,6 @@ package com.staybnb.tests.api.hosting;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
 import com.staybnb.pages.PublishPropertyPage;
 import com.staybnb.tests.BaseApiTest;
@@ -27,9 +26,8 @@ public class PublishPropertyApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         publishPropertyPage = new PublishPropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private String createPropertyAndReturnId(String uniqueTitle) {
@@ -54,8 +52,8 @@ public class PublishPropertyApiTest extends BaseApiTest {
     @Test
     @DisplayName("Publish property API returns 403 for a non-owner user")
     public void testPublishPropertyApiReturns403ForNonOwner() {
-        new LogoutPage(driver).logoutAndWaitForTokenCleared();
-        registerNewUserAndLandOnHome("testpublishproperty");
+        new LogoutPage(driver).logout();
+        registerNewUser();
         long status = publishPropertyPage.updatePublishPropertyStatusViaApi(TestDataConstants.PublishProperty.OWNED_PROPERTY_ID, true);
 
         assertEquals(

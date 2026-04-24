@@ -11,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
-import java.util.UUID;
-
 @ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class})
 public class BaseTest {
     protected WebDriver driver;
@@ -22,28 +20,24 @@ public class BaseTest {
         driver = DriverFactory.createDriver();
     }
 
-    protected String registerNewUserAndLandOnHome(String emailPrefix) {
+    protected void registerNewUser() {
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.navigateViaNavbar();
-        String uniqueEmail = emailPrefix + "_" + UUID.randomUUID().toString().replace("-", "") + "@gmail.com";
+
+        String uniqueEmail = "registerTestUser_" + System.currentTimeMillis() + "@gmail.com";
+
         registerPage.registerAndWaitForUrl(
-                TestConfig.TEST_FIRST_NAME,
-                TestConfig.TEST_LAST_NAME,
-                uniqueEmail,
-                TestConfig.TEST_PASSWORD,
-                AppConstants.HOME_URL
+            TestConfig.TEST_FIRST_NAME,
+            TestConfig.TEST_LAST_NAME,
+            uniqueEmail,
+            TestConfig.TEST_PASSWORD,
+            AppConstants.HOME_URL
         );
-        return uniqueEmail;
     }
 
-    protected void loginAsTestUserAndLandOnHome(LoginPage loginPage) {
-        loginAsUserAndLandOnHome(loginPage);
-    }
-
-    protected void loginAsUserAndLandOnHome(LoginPage loginPage) {
-        loginPage.navbar().clickLogoAndWaitForHome();
-        loginPage.navbar().clickLoginAndWaitForRedirect();
+    protected void loginAsUser() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.navigateViaNavbar();
         loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
     }
-
 }

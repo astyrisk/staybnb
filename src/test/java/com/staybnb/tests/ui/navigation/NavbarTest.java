@@ -3,7 +3,6 @@ package com.staybnb.tests.ui.navigation;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.TestDataConstants;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -23,17 +22,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Navbar")
 @Tag("regression")
 public class NavbarTest extends BaseTest {
-    private LoginPage loginPage;
     private PropertyDetailsPage propertyDetailsPage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
         propertyDetailsPage = new PropertyDetailsPage(driver);
     }
 
     private void loginAndNavigateToPropertyDetails() {
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         propertyDetailsPage.navigateTo(TestDataConstants.DEFAULT_PROPERTY_ID);
     }
 

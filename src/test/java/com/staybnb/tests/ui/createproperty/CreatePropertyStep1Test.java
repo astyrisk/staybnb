@@ -67,7 +67,7 @@ public class CreatePropertyStep1Test extends CreatePropertyBaseTest {
     @Test
     @DisplayName("Non-host access to the create property page is blocked with 403")
     public void testNonHostAccessToCreatePropertyIsBlockedWith403() {
-        registerNewUserAndLandOnHome("testcreate");
+        registerNewUser();
         createPropertyPage.navigateTo();
 
         assertTrue(

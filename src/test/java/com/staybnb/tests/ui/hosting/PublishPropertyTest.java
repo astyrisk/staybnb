@@ -2,7 +2,6 @@ package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.PropertyPayloads;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PublishPropertyPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -21,9 +20,8 @@ public class PublishPropertyTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         publishPropertyPage = new PublishPropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private String createPropertyAndReturnId(String uniqueTitle) {
@@ -52,7 +50,7 @@ public class PublishPropertyTest extends BaseTest {
         String uniqueTitle = "Automation Draft Hidden " + System.currentTimeMillis();
         String propertyId = createPropertyAndReturnId(uniqueTitle);
         publishPropertyPage.updatePublishPropertyStatusViaApi(propertyId, false);
-        publishPropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
+        publishPropertyPage.logoutAndGoHome();
         publishPropertyPage.navigateToPropertyListing();
 
         assertFalse(
@@ -81,7 +79,7 @@ public class PublishPropertyTest extends BaseTest {
         String uniqueTitle = "Automation Published Visible " + System.currentTimeMillis();
         String propertyId = createPropertyAndReturnId(uniqueTitle);
         publishPropertyPage.updatePublishPropertyStatusViaApi(propertyId, true);
-        publishPropertyPage.navbar().clickLogoutAndWaitForRedirectToHome();
+        publishPropertyPage.logoutAndGoHome();
         publishPropertyPage.navigateToPropertyListing();
 
         assertTrue(

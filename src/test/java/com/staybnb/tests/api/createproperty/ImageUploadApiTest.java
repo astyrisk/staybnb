@@ -2,7 +2,6 @@ package com.staybnb.tests.api.createproperty;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.ImageUploadPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -31,9 +30,8 @@ public class ImageUploadApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         imageUploadPage = new ImageUploadPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private static Stream<UploadCase> provideSupportedUploadCases() {

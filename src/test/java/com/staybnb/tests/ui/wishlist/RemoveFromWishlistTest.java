@@ -1,7 +1,6 @@
 package com.staybnb.tests.ui.wishlist;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.pages.WishlistPage;
@@ -26,12 +25,11 @@ public class RemoveFromWishlistTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         propertyListingPage = new PropertyListingPage(driver);
         propertyDetailsPage = new PropertyDetailsPage(driver);
         wishlistPage = new WishlistPage(driver);
 
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         wishlistPage.clearWishlistViaApi();
     }
 

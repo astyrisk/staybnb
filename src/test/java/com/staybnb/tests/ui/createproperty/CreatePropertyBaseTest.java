@@ -2,7 +2,6 @@ package com.staybnb.tests.ui.createproperty;
 
 import com.staybnb.data.MediaPaths;
 import com.staybnb.pages.CreatePropertyPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -11,9 +10,8 @@ abstract class CreatePropertyBaseTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         createPropertyPage = new CreatePropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     protected void loadCreatePage() {

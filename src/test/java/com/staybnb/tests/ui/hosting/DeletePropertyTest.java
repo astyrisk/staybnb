@@ -4,7 +4,6 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -27,9 +26,8 @@ public class DeletePropertyTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         deletePropertyPage = new DeletePropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private void createPropertyAndReturnId(String uniqueTitle) {

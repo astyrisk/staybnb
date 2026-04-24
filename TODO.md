@@ -11,16 +11,3 @@
 
 ---------------------------------
 
-isUrlContains
-waitForUrlToBe
-waitForUrlContains
-
-how should we implement navbar, as it's independenant component (not page). 
-
-components differs from pages as they are commonly used in different pages. 
-
-
-
-
-
-

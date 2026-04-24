@@ -16,7 +16,6 @@ public final class Locators {
         public static final By PRIMARY_SUBMIT_BUTTON = By.cssSelector("button[type='submit'].btn-primary");
 
         public static final By INLINE_ERROR_MESSAGES = By.cssSelector(".error, .field-error, .auth-error");
-        public static final By GLOBAL_ERROR_MESSAGE = By.cssSelector(".alert, .alert-danger, .toast-message, .auth-error");
     }
 
     public static final class Login {

@@ -56,14 +56,6 @@ public class Navbar extends BaseComponent {
         waitForUrlToBe(AppConstants.HOME_URL);
     }
 
-    public void clickLogin() {
-        waitForElementClickable(Locators.Navbar.LOGIN_LINK).click();
-    }
-
-    public void clickRegister() {
-        waitForElementClickable(Locators.Navbar.REGISTER_LINK).click();
-    }
-
     public void openUserMenu() {
         waitForElementClickable(Locators.Navbar.USER_MENU_BUTTON).click();
     }
@@ -120,7 +112,7 @@ public class Navbar extends BaseComponent {
     }
 
     public void clickRegisterAndWaitForRedirect() {
-        clickRegister();
+        waitForElementClickable(Locators.Navbar.REGISTER_LINK).click();
         waitForUrlToBe(AppConstants.REGISTER_URL);
     }
 

@@ -23,7 +23,7 @@ public class LoginTest extends BaseTest {
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
-        loginPage.navbar().clickLoginAndWaitForRedirect();
+        loginPage.navigateViaNavbar();
     }
 
     @Test
@@ -51,7 +51,7 @@ public class LoginTest extends BaseTest {
     @Test
     @DisplayName("Login with blank fields shows inline validation error")
     public void testLoginWithBlankFields() {
-        loginPage.clickPrimarySubmit();
+        loginPage.clickSubmit();
         String inlineError = loginPage.getInlineErrorMessageText();
 
         assertTrue(

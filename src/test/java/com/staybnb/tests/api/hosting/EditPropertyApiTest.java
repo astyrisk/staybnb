@@ -4,7 +4,6 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.EditPropertyPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
@@ -27,9 +26,8 @@ public class EditPropertyApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         editPropertyPage = new EditPropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private long updateEditablePropertyStatus() {
@@ -52,8 +50,8 @@ public class EditPropertyApiTest extends BaseApiTest {
     @Test
     @DisplayName("Edit property API returns 403 for a non-owner user")
     public void testEditPropertyApiReturns403ForNonOwner() {
-        new LogoutPage(driver).logoutAndWaitForTokenCleared();
-        registerNewUserAndLandOnHome("testeditproperty");
+        new LogoutPage(driver).logout();
+        registerNewUser();
 
         assertEquals(
                 403L,

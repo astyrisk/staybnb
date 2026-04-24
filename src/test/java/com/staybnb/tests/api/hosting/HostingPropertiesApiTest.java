@@ -2,7 +2,6 @@ package com.staybnb.tests.api.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.HostDashboardPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
@@ -21,9 +20,8 @@ public class HostingPropertiesApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         hostDashboardPage = new HostDashboardPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     @Test
@@ -49,8 +47,8 @@ public class HostingPropertiesApiTest extends BaseApiTest {
     @Test
     @DisplayName("Hosting properties API returns 403 for a non-host user")
     public void testHostingPropertiesApiReturns403ForNonHost() {
-        new LogoutPage(driver).logoutAndWaitForTokenCleared();
-        registerNewUserAndLandOnHome("testhosting");
+        new LogoutPage(driver).logout();
+        registerNewUser();
         long status = hostDashboardPage.getHostingPropertiesStatusViaApi();
 
         assertEquals(

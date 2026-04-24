@@ -11,6 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("Authentication")
@@ -28,77 +34,10 @@ public class RegisterTest extends BaseTest {
     @Test
     @DisplayName("Successful registration redirects to home page")
     public void testSuccessfulRegistration() {
-        String uniqueEmail = "testuser_" + System.currentTimeMillis() + "@gmail.com";
-
-        registerPage.registerAndWaitForUrl(
-                TestConfig.TEST_FIRST_NAME,
-                TestConfig.TEST_LAST_NAME,
-                uniqueEmail,
-                TestConfig.TEST_PASSWORD,
-                AppConstants.HOME_URL
-        );
+        registerNewUser();
 
         assertTrue(
-                registerPage.urlContains(AppConstants.HOME_URL)
-        );
-    }
-
-    @Test
-    @DisplayName("Registration with an already registered email shows error")
-    public void testRegistrationWithExistingEmail() {
-        registerPage.submitRegistration(
-                TestConfig.TEST_FIRST_NAME,
-                TestConfig.TEST_LAST_NAME,
-                TestConfig.TEST_USER_EMAIL,
-                TestConfig.TEST_PASSWORD
-        );
-
-        String error = registerPage.getGlobalErrorMessageText();
-
-        assertTrue(
-                error.toLowerCase().contains("exists") || error.toLowerCase().contains("already"),
-                ErrorMessages.EXPECTED_EMAIL_ALREADY_EXISTS
-        );
-    }
-
-    @Test
-    @DisplayName("Blank registration fields shows inline validation error")
-    public void testRegistrationBlankFields() {
-        registerPage.clickRegister();
-
-        assertTrue(
-                registerPage.isInlineErrorDisplayed(ErrorMessages.REQUIRED)
-        );
-    }
-
-    @Test
-    @DisplayName("Registration with a password shorter than 8 characters shows inline validation error")
-    public void testRegistrationWithShortPassword() {
-        registerPage.submitRegistrationWithShortPassword(
-                TestConfig.TEST_FIRST_NAME,
-                TestConfig.TEST_LAST_NAME,
-                "shortpass_" + System.currentTimeMillis() + "@gmail.com"
-        );
-
-        assertTrue(
-                registerPage.isInlineErrorDisplayed("8"),
-                ErrorMessages.PASSWORD_TOO_SHORT
-        );
-    }
-
-    @Test
-    @DisplayName("Registration with mismatched passwords shows inline validation error")
-    public void testRegistrationWithMismatchedPasswords() {
-        registerPage.submitRegistrationWithMismatchedPasswords(
-                TestConfig.TEST_FIRST_NAME,
-                TestConfig.TEST_LAST_NAME,
-                "mismatch_" + System.currentTimeMillis() + "@gmail.com",
-                TestConfig.TEST_PASSWORD
-        );
-
-        assertTrue(
-                registerPage.isInlineErrorDisplayed("match"),
-                ErrorMessages.PASSWORDS_DO_NOT_MATCH
+                registerPage.urlIs(AppConstants.HOME_URL)
         );
     }
 
@@ -108,8 +47,33 @@ public class RegisterTest extends BaseTest {
         registerPage.clickLoginLink();
 
         assertTrue(
-                registerPage.urlContains(AppConstants.LOGIN_URL),
+                registerPage.urlIs(AppConstants.LOGIN_URL),
                 ErrorMessages.REGISTER_PAGE_SHOULD_NAVIGATE_TO_LOGIN
+        );
+    }
+
+    @ParameterizedTest(name = "[{index}]- {5}")
+    @MethodSource("registrationValidationCases")
+    public void testRegistrationValidation(String firstName, String lastName, String email, String password, String confirmPassword, String expectedError) {
+        registerPage.fillAndSubmitRegistration(firstName, lastName, email, password, confirmPassword);
+
+        String inlineError = registerPage.getInlineErrorMessageText();
+        assertTrue(
+                inlineError.toLowerCase().contains(expectedError.toLowerCase()),
+                ErrorMessages.EXPECTED_INLINE_VALIDATION_ERROR
+        );
+    }
+
+    private static Stream<Arguments> registrationValidationCases() {
+        long ts = System.currentTimeMillis();
+        return Stream.of(
+                Arguments.of("",                         TestConfig.TEST_LAST_NAME,  TestConfig.TEST_USER_EMAIL,              TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.FIRST_NAME_REQUIRED),
+                Arguments.of(TestConfig.TEST_FIRST_NAME, "",                         TestConfig.TEST_USER_EMAIL,              TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.LAST_NAME_REQUIRED),
+                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  "",                                      TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.EMAIL_REQUIRED),
+                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  TestConfig.TEST_USER_EMAIL,              "",                           "",                                 ErrorMessages.PASSWORD_REQUIRED),
+                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  TestConfig.TEST_USER_EMAIL,              TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.EMAIL_ALREADY_REGISTERED),
+                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  "short_"    + ts       + "@gmail.com",   "short12",                    "short12",                          ErrorMessages.PASSWORD_MINIMUM_LENGTH),
+                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  "mismatch_" + (ts + 1) + "@gmail.com",   TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD + "DIFF",  ErrorMessages.PASSWORDS_MUST_MATCH)
         );
     }
 }

@@ -4,7 +4,6 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.CreatePropertyPage;
 import com.staybnb.pages.HomePage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -83,9 +82,8 @@ public class PropertyCategoriesTest extends BaseTest {
     @Test
     @DisplayName("Create property category dropdown is populated with options")
     public void testCreatePropertyCategoryDropdownIsPopulated() {
-        LoginPage loginPage = new LoginPage(driver);
         CreatePropertyPage createPropertyPage = new CreatePropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         createPropertyPage.navigateTo();
 
         assertTrue(

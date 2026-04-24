@@ -4,17 +4,19 @@ import com.staybnb.locators.Locators;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AuthPage extends BasePage {
     protected AuthPage(WebDriver driver) {
         super(driver);
     }
 
-    protected abstract String getPageUrl();
+    public void enterFirstName(String firstName) {
+        type(Locators.Register.FIRST_NAME_FIELD, firstName);
+    }
 
-    public void navigateTo() {
-        super.navigateTo(getPageUrl());
+    public void enterLastName(String lastName) {
+        type(Locators.Register.LAST_NAME_FIELD, lastName);
     }
 
     public void enterEmail(String email) {
@@ -25,21 +27,19 @@ public abstract class AuthPage extends BasePage {
         type(Locators.Auth.PASSWORD_FIELD, password);
     }
 
-    public void clickPrimarySubmit() {
+    public void enterConfirmPassword(String confirmPassword) {
+        type(Locators.Register.CONFIRM_PASSWORD_FIELD, confirmPassword);
+    }
+
+    public void clickSubmit() {
         click(Locators.Auth.PRIMARY_SUBMIT_BUTTON);
     }
 
-    public boolean isInlineErrorDisplayed(String expectedErrorText) {
-        List<WebElement> errors = driver.findElements(Locators.Auth.INLINE_ERROR_MESSAGES);
-        String expectedLower = expectedErrorText.toLowerCase();
-        return errors.stream().anyMatch(e -> e.getText().toLowerCase().contains(expectedLower));
-    }
-
-    public String getGlobalErrorMessageText() {
-        return waitForElementVisible(Locators.Auth.GLOBAL_ERROR_MESSAGE).getText();
-    }
-
     public String getInlineErrorMessageText() {
-        return waitForElementVisible(Locators.Auth.INLINE_ERROR_MESSAGES).getText();
+        waitForElementVisible(Locators.Auth.INLINE_ERROR_MESSAGES);
+        return driver.findElements(Locators.Auth.INLINE_ERROR_MESSAGES)
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.joining(" "));
     }
 }

@@ -28,10 +28,10 @@ public class BecomeHostTest extends BaseTest {
     @Test
     @DisplayName("Navbar shows 'Become a Host' link for a non-host user")
     public void testNavbarShowsBecomeHostForNonHostUser() {
-        registerNewUserAndLandOnHome("testhost");
+        registerNewUser();
 
         assertTrue(
-            ownProfilePage.navbar().isBecomeAHostDisplayed(),
+            ownProfilePage.isNavbarBecomeAHostVisible(),
             ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_BE_VISIBLE_FOR_GUEST_USER
         );
     }
@@ -39,18 +39,18 @@ public class BecomeHostTest extends BaseTest {
     @Test
     @DisplayName("Navbar does not show 'My Properties' for a non-host user")
     public void testNavbarDoesNotShowMyPropertiesForNonHostUser() {
-        registerNewUserAndLandOnHome("testhost");
+        registerNewUser();
 
         assertFalse(
-            ownProfilePage.navbar().isHostDashboardDisplayed(),
+            ownProfilePage.isNavbarHostDashboardVisible(),
             ErrorMessages.NAVBAR_HOST_DASHBOARD_SHOULD_NOT_BE_VISIBLE_FOR_NON_HOST_USER
         );
     }
 
     private void becomeHostAsNewUser() {
-        registerNewUserAndLandOnHome("testhost");
-        ownProfilePage.navbar().clickBecomeAHost();
-        ownProfilePage.navbar().clickLogoAndWaitForHome();
+        registerNewUser();
+        ownProfilePage.clickNavbarBecomeAHost();
+        ownProfilePage.goHomeViaLogo();
     }
 
     // fails: 'My properties' doesn't exist
@@ -60,7 +60,7 @@ public class BecomeHostTest extends BaseTest {
         becomeHostAsNewUser();
 
         assertTrue(
-            ownProfilePage.navbar().isHostDashboardDisplayed(),
+            ownProfilePage.isNavbarHostDashboardVisible(),
             ErrorMessages.NAVBAR_HOST_DASHBOARD_SHOULD_BE_VISIBLE_FOR_HOST_USER
         );
     }
@@ -71,7 +71,7 @@ public class BecomeHostTest extends BaseTest {
         becomeHostAsNewUser();
 
         assertFalse(
-            ownProfilePage.navbar().isBecomeAHostDisplayed(),
+            ownProfilePage.isNavbarBecomeAHostVisible(),
             ErrorMessages.NAVBAR_BECOME_HOST_SHOULD_NOT_BE_VISIBLE_FOR_HOST_USER
         );
     }
@@ -91,7 +91,7 @@ public class BecomeHostTest extends BaseTest {
     @Test
     @DisplayName("Profile page shows 'Become a Host' button for non-host user")
     public void testProfileShowsBecomeHostButtonForNonHostUser() {
-        registerNewUserAndLandOnHome("testhost");
+        registerNewUser();
         ownProfilePage.navigateViaNavbar();
 
         assertTrue(
@@ -103,8 +103,8 @@ public class BecomeHostTest extends BaseTest {
     @Test
     @DisplayName("Become host redirect from navbar")
     public void testBecomeHostRedirectsToHostingFromNavbar() {
-        registerNewUserAndLandOnHome("testhost");
-        ownProfilePage.navbar().clickBecomeAHost();
+        registerNewUser();
+        ownProfilePage.clickNavbarBecomeAHost();
 
         assertTrue(
             ownProfilePage.urlContains(AppConstants.HOSTING_URL),
@@ -116,7 +116,7 @@ public class BecomeHostTest extends BaseTest {
     @Test
     @DisplayName("Become host redirect from profile page")
     public void testBecomeHostRedirectsToHostingFromProfilePage() {
-        registerNewUserAndLandOnHome("testhost");
+        registerNewUser();
         ownProfilePage.navigateViaNavbar();
         ownProfilePage.clickBecomeHost();
 

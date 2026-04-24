@@ -76,6 +76,15 @@ public abstract class SeleniumBase {
         wait.until(ExpectedConditions.urlToBe(url));
     }
 
+    public boolean urlIs(String text) {
+        try {
+            waitForUrlToBe(text);
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
     public void acceptConfirmationIfPresent() {
         try {
             wait.until(ExpectedConditions.alertIsPresent());

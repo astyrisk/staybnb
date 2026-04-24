@@ -3,7 +3,6 @@ package com.staybnb.tests.ui.hosting;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.EditPropertyPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -28,9 +27,8 @@ public class EditPropertyTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         editPropertyPage = new EditPropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private void openEditPage() {

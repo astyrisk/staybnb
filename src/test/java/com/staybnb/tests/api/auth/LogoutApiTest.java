@@ -1,7 +1,6 @@
 package com.staybnb.tests.api.auth;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -20,8 +19,7 @@ public class LogoutApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     @Test
@@ -32,7 +30,11 @@ public class LogoutApiTest extends BaseApiTest {
                 .post("/auth/logout")
                 .statusCode();
 
-        assertEquals(401L, status, ErrorMessages.LOGOUT_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN);
+        assertEquals(
+                401L,
+                status,
+                ErrorMessages.LOGOUT_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN
+        );
     }
 
     @Test
@@ -43,7 +45,11 @@ public class LogoutApiTest extends BaseApiTest {
                 .post("/auth/logout")
                 .statusCode();
 
-        assertEquals(200L, status, ErrorMessages.LOGOUT_API_SHOULD_RETURN_200_WHEN_LOGGED_IN);
+        assertEquals(
+                200L,
+                status,
+                ErrorMessages.LOGOUT_API_SHOULD_RETURN_200_WHEN_LOGGED_IN
+        );
     }
 
     @Test
@@ -53,6 +59,10 @@ public class LogoutApiTest extends BaseApiTest {
 
         long status = unauthedRequest().get("/auth/me").statusCode();
 
-        assertEquals(401L, status, ErrorMessages.LOGOUT_API_UNAUTHENTICATED_ENDPOINT_RETURNS_401);
+        assertEquals(
+                401L,
+                status,
+                ErrorMessages.LOGOUT_API_UNAUTHENTICATED_ENDPOINT_RETURNS_401
+        );
     }
 }

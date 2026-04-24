@@ -1,6 +1,5 @@
 package com.staybnb.tests.ui.profile;
 
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.assertions.ErrorMessages;
@@ -21,9 +20,8 @@ public class OtherProfileTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         otherProfilePage = new OtherProfilePage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private void navigateToUser101() {

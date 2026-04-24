@@ -2,7 +2,6 @@ package com.staybnb.tests.api.profile;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OtherProfilePage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
@@ -26,9 +25,8 @@ public class OtherUserApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         otherProfilePage = new OtherProfilePage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     @Test
@@ -36,7 +34,10 @@ public class OtherUserApiTest extends BaseApiTest {
     public void testApiViewOtherUserResponseNotNull() {
         String jsonResponse = otherProfilePage.getOtherUserApiResponse(TestDataConstants.OTHER_USER_ID_1);
 
-        assertNotNull(jsonResponse, ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL);
+        assertNotNull(
+                jsonResponse,
+                ErrorMessages.API_RESPONSE_SHOULD_NOT_BE_NULL
+        );
     }
 
     @ParameterizedTest(name = "API response contains field: {0}")

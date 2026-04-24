@@ -2,7 +2,6 @@ package com.staybnb.tests.ui.wishlist;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.WishlistPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -19,12 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature("View Wishlist Page")
 @Tag("regression")
 public class ViewWishlistTest extends BaseTest {
-    private LoginPage loginPage;
     private WishlistPage wishlistPage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
         wishlistPage = new WishlistPage(driver);
     }
 
@@ -86,7 +83,7 @@ public class ViewWishlistTest extends BaseTest {
     // RemoveFromWishlistTest#testClickHeartOnWishlistPageRemovesCard
 
     private void loginAndClearWishlist() {
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         wishlistPage.clearWishlistViaApi();
     }
 }

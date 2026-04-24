@@ -10,8 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("Authentication")
@@ -20,10 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RegisterApiTest extends BaseApiTest {
 
     private String buildValidPayload() {
-        String uniqueEmail = "api_reg_" + UUID.randomUUID().toString().replace("-", "") + "@gmail.com";
+        String uniqueEmail = "registerTestUser_" + System.currentTimeMillis() + "@gmail.com";
+
         return String.format(
                 "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"email\":\"%s\",\"password\":\"%s\"}",
-                TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME, uniqueEmail, TestConfig.TEST_PASSWORD
+                TestConfig.TEST_FIRST_NAME,
+                TestConfig.TEST_LAST_NAME,
+                uniqueEmail,
+                TestConfig.TEST_PASSWORD
         );
     }
 
@@ -44,7 +46,11 @@ public class RegisterApiTest extends BaseApiTest {
                 .post("/auth/register")
                 .statusCode();
 
-        assertEquals(201L, status, ErrorMessages.REGISTER_API_SHOULD_RETURN_201_FOR_VALID_PAYLOAD);
+        assertEquals(
+                201L,
+                status,
+                ErrorMessages.REGISTER_API_SHOULD_RETURN_201_FOR_VALID_PAYLOAD
+        );
     }
 
     @Test
@@ -62,7 +68,11 @@ public class RegisterApiTest extends BaseApiTest {
                 .post("/auth/register")
                 .statusCode();
 
-        assertEquals(409L, status, ErrorMessages.REGISTER_API_SHOULD_RETURN_409_FOR_EXISTING_EMAIL);
+        assertEquals(
+                409L,
+                status,
+                ErrorMessages.REGISTER_API_SHOULD_RETURN_409_FOR_EXISTING_EMAIL
+        );
     }
 
     @Test
@@ -74,7 +84,11 @@ public class RegisterApiTest extends BaseApiTest {
                 .post("/auth/register")
                 .statusCode();
 
-        assertEquals(400L, status, ErrorMessages.REGISTER_API_SHOULD_RETURN_400_FOR_MISSING_FIELDS);
+        assertEquals(
+                400L,
+                status,
+                ErrorMessages.REGISTER_API_SHOULD_RETURN_400_FOR_MISSING_FIELDS
+        );
     }
 
     @Test
@@ -82,7 +96,10 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsToken() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"token\""), ErrorMessages.REGISTER_API_RESPONSE_SHOULD_CONTAIN_TOKEN);
+        assertTrue(
+                response.contains("\"token\""),
+                ErrorMessages.REGISTER_API_RESPONSE_SHOULD_CONTAIN_TOKEN
+        );
     }
 
     @Test
@@ -90,7 +107,10 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsId() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"id\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_ID);
+        assertTrue(
+                response.contains("\"id\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_ID
+        );
     }
 
     @Test
@@ -98,7 +118,10 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsEmail() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"email\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_EMAIL);
+        assertTrue(
+                response.contains("\"email\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_EMAIL
+        );
     }
 
     @Test
@@ -106,7 +129,10 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsFirstName() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"firstName\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_FIRST_NAME);
+        assertTrue(
+                response.contains("\"firstName\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_FIRST_NAME
+        );
     }
 
     @Test
@@ -114,7 +140,10 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsLastName() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"lastName\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_LAST_NAME);
+        assertTrue(
+                response.contains("\"lastName\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_LAST_NAME
+        );
     }
 
     @Test
@@ -122,7 +151,10 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsIsHost() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"isHost\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_IS_HOST);
+        assertTrue(
+                response.contains("\"isHost\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_IS_HOST
+        );
     }
 
     @Test
@@ -130,7 +162,10 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsAvatarUrl() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"avatarUrl\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_AVATAR_URL);
+        assertTrue(
+                response.contains("\"avatarUrl\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_AVATAR_URL
+        );
     }
 
     @Test
@@ -138,6 +173,9 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiResponseContainsCreatedAt() {
         String response = getRegisterResponse();
 
-        assertTrue(response.contains("\"createdAt\""), ErrorMessages.RESPONSE_SHOULD_CONTAIN_CREATED_AT);
+        assertTrue(
+                response.contains("\"createdAt\""),
+                ErrorMessages.RESPONSE_SHOULD_CONTAIN_CREATED_AT
+        );
     }
 }

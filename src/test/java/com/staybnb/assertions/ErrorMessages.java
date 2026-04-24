@@ -12,8 +12,6 @@ public final class ErrorMessages {
             "Auth token should be present in localStorage.";
     public static final String EXPECTED_INVALID_CREDENTIALS_OR_UNAUTHORIZED =
             "Expected an 'invalid credentials' or 'unauthorized' error message.";
-    public static final String EXPECTED_EMAIL_ALREADY_EXISTS =
-            "Expected 'email already exists' error message.";
     public static final String SHOULD_BE_REDIRECTED_TO_HOMEPAGE_AFTER_LOGOUT =
             "Should be redirected to homepage after logout.";
     public static final String SHOULD_NAVIGATE_TO_EDIT_PROFILE_PAGE =
@@ -22,8 +20,6 @@ public final class ErrorMessages {
             "API response should not be null.";
 
     // UI validation / inline error texts
-    public static final String REQUIRED =
-            "required";
     public static final String FIRST_NAME_REQUIRED =
             "First name is required";
     public static final String LAST_NAME_REQUIRED =
@@ -590,12 +586,20 @@ public final class ErrorMessages {
             "Removing a property that is not in the wishlist should return HTTP 404.";
 
     // --- Auth UI validation (Story 1 & 2) ---
-    public static final String PASSWORD_TOO_SHORT =
-            "A password shorter than 8 characters should show an inline validation error.";
-    public static final String PASSWORDS_DO_NOT_MATCH =
-            "Mismatched password and confirm password should show an inline validation error.";
     public static final String REGISTER_PAGE_SHOULD_NAVIGATE_TO_LOGIN =
             "Clicking the 'Log in' link on the register page should navigate to the login page.";
+    public static final String EMAIL_REQUIRED =
+            "Email is required";
+    public static final String PASSWORD_REQUIRED =
+            "Password is required";
+    public static final String PASSWORD_MINIMUM_LENGTH =
+            "Password must be at least 8 characters";
+    public static final String PASSWORDS_MUST_MATCH =
+            "Passwords do not match";
+    public static final String EMAIL_ALREADY_REGISTERED =
+            "Email already registered";
+    public static final String EXPECTED_INLINE_VALIDATION_ERROR =
+            "Expected inline validation error.";
     public static final String LOGIN_PAGE_SHOULD_NAVIGATE_TO_REGISTER =
             "Clicking the 'Register' link on the login page should navigate to the register page.";
 

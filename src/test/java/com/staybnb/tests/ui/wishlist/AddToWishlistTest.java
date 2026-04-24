@@ -2,7 +2,6 @@ package com.staybnb.tests.ui.wishlist;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.pages.WishlistPage;
@@ -21,14 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature("Add Property to Wishlist")
 @Tag("regression")
 public class AddToWishlistTest extends BaseTest {
-    private LoginPage loginPage;
     private PropertyListingPage propertyListingPage;
     private PropertyDetailsPage propertyDetailsPage;
     private WishlistPage wishlistPage;
 
     @BeforeEach
     public void setup() {
-        loginPage = new LoginPage(driver);
         propertyListingPage = new PropertyListingPage(driver);
         propertyDetailsPage = new PropertyDetailsPage(driver);
         wishlistPage = new WishlistPage(driver);
@@ -80,7 +77,7 @@ public class AddToWishlistTest extends BaseTest {
     @Test
     @DisplayName("Property already in wishlist shows filled heart on detail page")
     public void testPropertyAlreadyInWishlistShowsFilledHeart() {
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         String propertyId = wishlistPage.getFirstPropertyIdViaApi();
         wishlistPage.addToWishlistViaApi(propertyId);
         propertyDetailsPage.navigateTo(propertyId);
@@ -94,7 +91,7 @@ public class AddToWishlistTest extends BaseTest {
     @Test
     @DisplayName("Adding a non-existent property to wishlist returns 404")
     public void testAddNonExistentPropertyReturns404() {
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         long status = wishlistPage.addToWishlistViaApi(TestDataConstants.NON_EXISTENT_PROPERTY_ID);
         assertEquals(
                 404L,
@@ -104,7 +101,7 @@ public class AddToWishlistTest extends BaseTest {
     }
 
     private void loginAndClearWishlist() {
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         wishlistPage.clearWishlistViaApi();
     }
 }

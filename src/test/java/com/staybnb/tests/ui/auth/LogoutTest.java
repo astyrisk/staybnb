@@ -24,16 +24,16 @@ public class LogoutTest extends BaseTest {
     public void setup() {
         loginPage = new LoginPage(driver);
         logoutPage = new LogoutPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     @Test
     @DisplayName("Logout redirects to homepage")
     public void testLogoutRedirectionToHomepage() {
-        logoutPage.logoutAndWaitForRedirectToHome();
+        logoutPage.logout();
 
         assertTrue(
-                logoutPage.urlContains(AppConstants.HOME_URL),
+                logoutPage.urlIs(AppConstants.HOME_URL),
                 ErrorMessages.SHOULD_BE_REDIRECTED_TO_HOMEPAGE_AFTER_LOGOUT
         );
     }
@@ -52,7 +52,7 @@ public class LogoutTest extends BaseTest {
     @Test
     @DisplayName("JWT token is removed from localStorage after logout")
     public void testTokenRemovedAfterLogout() {
-        logoutPage.logoutAndWaitForTokenCleared();
+        logoutPage.logout();
         String jwt = loginPage.getStaybnbToken();
 
         assertNull(

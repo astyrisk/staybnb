@@ -1,7 +1,6 @@
 package com.staybnb.tests.ui.profile;
 
 import com.staybnb.pages.EditProfilePage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
@@ -30,10 +29,9 @@ public class EditProfileTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         ownProfilePage = new OwnProfilePage(driver);
         editProfilePage = new EditProfilePage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private void performEditProfileUpdate() {
@@ -130,7 +128,7 @@ public class EditProfileTest extends BaseTest {
     @Test
     @DisplayName("Accessing edit profile while logged out shows 401 error")
     public void testEditProfileUnauthorizedAccess() {
-        editProfilePage.navbar().clickLogoutAndWaitForRedirectToHome();
+        editProfilePage.logoutAndGoHome();
         editProfilePage.navigateTo();
 
         assertTrue(

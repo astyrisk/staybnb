@@ -2,7 +2,6 @@ package com.staybnb.tests.ui.profile;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.TestDataConstants;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.OwnProfilePage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
@@ -26,9 +25,8 @@ public class OwnProfileTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         ownProfilePage = new OwnProfilePage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
         ownProfilePage.navigateViaNavbar();
     }
 

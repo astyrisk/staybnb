@@ -42,7 +42,7 @@ public class BecomeHostApiTest extends BaseApiTest {
     @Test
     @DisplayName("Become host API response is not null")
     public void testBecomeHostApiResponseNotNull() {
-        registerNewUserAndLandOnHome("testhost");
+        registerNewUser();
         String jsonResponse = ownProfilePage.becomeHostViaApi("{\"isHost\":true}");
 
         assertNotNull(
@@ -54,7 +54,7 @@ public class BecomeHostApiTest extends BaseApiTest {
     @Test
     @DisplayName("Become host API response reflects isHost true")
     public void testBecomeHostApiResponseReflectsIsHostTrue() {
-        registerNewUserAndLandOnHome("testhost");
+        registerNewUser();
         String jsonResponse = ownProfilePage.becomeHostViaApi("{\"isHost\":true}");
 
         assertTrue(

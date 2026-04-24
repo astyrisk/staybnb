@@ -2,7 +2,6 @@ package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.pages.HostDashboardPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -26,9 +25,8 @@ public class HostDashboardTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         hostDashboardPage = new HostDashboardPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private WebElement getFirstPropertyCardForExistingHost() {
@@ -109,9 +107,9 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("Host dashboard shows empty state for a host with no properties")
     public void testHostDashboardEmptyStateVisibleForHostWithNoProperties() {
-        hostDashboardPage.navbar().clickLogoutAndWaitForRedirectToHome();
-        registerNewUserAndLandOnHome("testhosting");
-        hostDashboardPage.navbar().clickBecomeAHost();
+        hostDashboardPage.logoutAndGoHome();
+        registerNewUser();
+        hostDashboardPage.clickNavbarBecomeAHost();
         hostDashboardPage.navigateViaNavbar();
 
         assertTrue(

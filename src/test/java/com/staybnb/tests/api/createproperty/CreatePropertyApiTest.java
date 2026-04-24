@@ -3,7 +3,6 @@ package com.staybnb.tests.api.createproperty;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.CreatePropertyPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
@@ -22,9 +21,8 @@ public class CreatePropertyApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         createPropertyPage = new CreatePropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     @Test
@@ -64,8 +62,8 @@ public class CreatePropertyApiTest extends BaseApiTest {
     @Test
     @DisplayName("Create property API returns 403 for a non-host user")
     public void testCreatePropertyApiReturns403ForNonHost() {
-        new LogoutPage(driver).logoutAndWaitForTokenCleared();
-        registerNewUserAndLandOnHome("testcreateproperty");
+        new LogoutPage(driver).logout();
+        registerNewUser();
         long status = createPropertyPage.createPropertyStatusViaApi(PropertyPayloads.validCreatePropertyPayloadJson());
 
         assertEquals(

@@ -4,7 +4,6 @@ import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.data.PropertyPayloads;
 import com.staybnb.pages.DeletePropertyPage;
-import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.LogoutPage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
@@ -26,9 +25,8 @@ public class DeletePropertyApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        LoginPage loginPage = new LoginPage(driver);
         deletePropertyPage = new DeletePropertyPage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     private String createPropertyAndReturnId(String uniqueTitle) {
@@ -52,8 +50,8 @@ public class DeletePropertyApiTest extends BaseApiTest {
     @Test
     @DisplayName("Delete property API returns 403 for a non-owner user")
     public void testDeletePropertyApiReturns403ForNonOwner() {
-        new LogoutPage(driver).logoutAndWaitForTokenCleared();
-        registerNewUserAndLandOnHome("testdeleteproperty");
+        new LogoutPage(driver).logout();
+        registerNewUser();
         long status = deletePropertyPage.deletePropertyStatusViaApi(TestDataConstants.DeleteProperty.EDITABLE_PROPERTY_ID);
 
         assertEquals(

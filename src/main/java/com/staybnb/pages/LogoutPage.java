@@ -9,10 +9,6 @@ public class LogoutPage extends BasePage {
         super(driver);
     }
 
-    public void navigateTo() {
-        super.navigateTo(AppConstants.HOME_URL);
-    }
-
     public void openUserMenu() {
         waitForElementClickable(Locators.Logout.USER_MENU_BUTTON).click();
     }
@@ -24,15 +20,7 @@ public class LogoutPage extends BasePage {
     public void logout() {
         openUserMenu();
         clickLogout();
-    }
-
-    public void logoutAndWaitForRedirectToHome() {
-        logout();
-        waitForUrlToBe(AppConstants.HOME_URL);
-    }
-
-    public void logoutAndWaitForTokenCleared() {
-        logout();
         wait.until(d -> getStaybnbToken() == null);
+        waitForUrlToBe(AppConstants.HOME_URL);
     }
 }

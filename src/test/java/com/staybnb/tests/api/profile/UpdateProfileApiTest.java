@@ -28,7 +28,7 @@ public class UpdateProfileApiTest extends BaseApiTest {
     public void setup() {
         loginPage = new LoginPage(driver);
         editProfilePage = new EditProfilePage(driver);
-        loginAsTestUserAndLandOnHome(loginPage);
+        loginAsUser();
     }
 
     @AfterEach
