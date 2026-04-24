@@ -18,11 +18,6 @@ public class RegisterPage extends AuthPage {
         clickSubmit();
     }
 
-    @Override
-    protected String getPageUrl() {
-        return AppConstants.REGISTER_URL;
-    }
-
     public void clickLoginLink() {
         click(Locators.Register.LOGIN_LINK);
     }

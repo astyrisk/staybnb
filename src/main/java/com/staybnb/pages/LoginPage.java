@@ -9,11 +9,6 @@ public class LoginPage extends AuthPage {
         super(driver);
     }
 
-    @Override
-    protected String getPageUrl() {
-        return AppConstants.LOGIN_URL;
-    }
-
     public void login(String email, String password) {
         enterEmail(email);
         enterPassword(password);
