@@ -54,9 +54,9 @@ public class AddToWishlistTest extends BaseTest {
         String propertyId = wishlistPage.getFirstPropertyIdViaApi();
         propertyDetailsPage.navigateTo(propertyId);
         propertyDetailsPage.clickWishlistButton();
-        propertyDetailsPage.waitForWishlistFavorited();
+        propertyDetailsPage.waitForFavorite();
         assertTrue(
-                propertyDetailsPage.isWishlistFavorited(),
+                propertyDetailsPage.isFavorite(),
                 ErrorMessages.WISHLIST_HEART_SHOULD_BECOME_FILLED_ON_DETAIL
         );
     }
@@ -82,7 +82,7 @@ public class AddToWishlistTest extends BaseTest {
         wishlistPage.addToWishlistViaApi(propertyId);
         propertyDetailsPage.navigateTo(propertyId);
         assertTrue(
-                propertyDetailsPage.isWishlistFavorited(),
+                propertyDetailsPage.isFavorite(),
                 ErrorMessages.WISHLIST_ALREADY_IN_WISHLIST_HEART_SHOULD_REMAIN_FILLED
         );
     }

@@ -46,14 +46,6 @@ public class PropertyDetailsPage extends BasePage {
         return waitForElementVisible(Locators.PropertyDetails.DETAIL_DESCRIPTION).getText();
     }
 
-    public boolean isShowMoreButtonDisplayed() {
-        return isDisplayed(Locators.PropertyDetails.SHOW_MORE_BUTTON);
-    }
-
-    public void clickShowMore() {
-        click(Locators.PropertyDetails.SHOW_MORE_BUTTON);
-    }
-
     public boolean isHostAvatarDisplayed() {
         return isDisplayed(Locators.PropertyDetails.HOST_AVATAR);
     }
@@ -95,30 +87,6 @@ public class PropertyDetailsPage extends BasePage {
         }
     }
 
-    public String getErrorMessage() {
-        try {
-            return getText(Locators.PropertyDetails.AUTH_ERROR);
-        } catch (NoSuchElementException e) {
-            return "";
-        }
-    }
-
-    public List<WebElement> getGalleryImages() {
-        return waitForElementsPresent(Locators.PropertyDetails.GALLERY_IMAGES);
-    }
-
-    public void clickShowAllPhotos() {
-        click(Locators.PropertyDetails.SHOW_ALL_PHOTOS_BUTTON);
-    }
-
-    public boolean isGalleryModalDisplayed() {
-        return isDisplayed(Locators.PropertyDetails.GALLERY_MODAL);
-    }
-
-    public boolean isGalleryCarouselDisplayed() {
-        return isDisplayed(Locators.PropertyDetails.GALLERY_CAROUSEL);
-    }
-
     public List<String> getSpecTexts() {
         return getSpecs().stream()
                 .map(WebElement::getText)
@@ -150,15 +118,19 @@ public class PropertyDetailsPage extends BasePage {
         });
     }
 
+    public List<WebElement> getGalleryImages() {
+        return waitForElementsPresent(Locators.PropertyDetails.GALLERY_IMAGES);
+    }
+
     public void clickWishlistButton() {
         waitForElementClickable(Locators.PropertyDetails.DETAIL_WISHLIST_BTN).click();
     }
 
-    public boolean isWishlistFavorited() {
+    public boolean isFavorite() {
         return !driver.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty();
     }
 
-    public void waitForWishlistFavorited() {
+    public void waitForFavorite() {
         wait.until(d -> !d.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty());
     }
 
@@ -168,8 +140,8 @@ public class PropertyDetailsPage extends BasePage {
 
     private void waitForDetailsToLoad() {
         wait.until(d ->
-                d.findElements(Locators.PropertyDetails.DETAIL_TITLE).size() > 0 ||
-                d.findElements(Locators.PropertyDetails.AUTH_ERROR).size() > 0
+                !d.findElements(Locators.PropertyDetails.DETAIL_TITLE).isEmpty() ||
+                        !d.findElements(Locators.PropertyDetails.AUTH_ERROR).isEmpty()
         );
     }
 }

@@ -60,7 +60,7 @@ public class RemoveFromWishlistTest extends BaseTest {
         propertyDetailsPage.clickWishlistButton();
         propertyDetailsPage.waitForWishlistUnfavorited();
         assertFalse(
-                propertyDetailsPage.isWishlistFavorited(),
+                propertyDetailsPage.isFavorite(),
                 ErrorMessages.WISHLIST_HEART_SHOULD_BECOME_OUTLINE_ON_DETAIL
         );
     }

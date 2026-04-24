@@ -1,7 +1,6 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import com.staybnb.config.AppConstants;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends AuthPage {
