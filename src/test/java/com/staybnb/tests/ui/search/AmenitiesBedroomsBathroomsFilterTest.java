@@ -161,22 +161,22 @@ public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
         assertAll(
             () ->
                 assertTrue(
-                    isUrlContains("amenities="),
+                    propertyListingPage.urlContains("amenities="),
                     ErrorMessages.COMBINED_AMENITY_BEDROOM_BATHROOM_PRICE_FILTER_URL_SHOULD_CONTAIN_ALL_PARAMS
                 ),
             () ->
                 assertTrue(
-                    isUrlContains("minBedrooms="),
+                    propertyListingPage.urlContains("minBedrooms="),
                     ErrorMessages.COMBINED_AMENITY_BEDROOM_BATHROOM_PRICE_FILTER_URL_SHOULD_CONTAIN_ALL_PARAMS
                 ),
             () ->
                 assertTrue(
-                    isUrlContains("minBathrooms="),
+                    propertyListingPage.urlContains("minBathrooms="),
                     ErrorMessages.COMBINED_AMENITY_BEDROOM_BATHROOM_PRICE_FILTER_URL_SHOULD_CONTAIN_ALL_PARAMS
                 ),
             () ->
                 assertTrue(
-                    isUrlContains("minPrice="),
+                    propertyListingPage.urlContains("minPrice="),
                     ErrorMessages.COMBINED_AMENITY_BEDROOM_BATHROOM_PRICE_FILTER_URL_SHOULD_CONTAIN_ALL_PARAMS
                 )
         );

@@ -15,20 +15,7 @@ import java.util.stream.Collectors;
 import com.staybnb.config.AppConstants;
 
 public class PropertyListingPage extends BasePage {
-    private final String PAGE_URL = AppConstants.PROPERTY_LISTING_URL;
-
-    private final By propertyGrid = Locators.PropertyListing.PROPERTY_GRID;
-    private final By propertyCard = Locators.PropertyListing.PROPERTY_CARD;
-    private final By cardImage = Locators.PropertyListing.CARD_IMAGE;
-    private final By cardTitle = Locators.PropertyListing.CARD_TITLE;
-    private final By cardLocation = Locators.PropertyListing.CARD_LOCATION;
-    private final By cardPrice = Locators.PropertyListing.CARD_PRICE;
-
-    private final By searchInput = Locators.PropertyListing.SEARCH_INPUT;
-    private final By filterButtons = Locators.PropertyListing.FILTER_BUTTONS;
-    private final By sortSelect = Locators.PropertyListing.SORT_SELECT;
-    private final By emptyState = Locators.PropertyListing.EMPTY_STATE;
-    private final By propertiesCount = Locators.PropertyListing.PROPERTIES_COUNT;
+    private static final String PAGE_URL = AppConstants.PROPERTY_LISTING_URL;
 
     public PropertyListingPage(WebDriver driver) {
         super(driver);
@@ -40,23 +27,24 @@ public class PropertyListingPage extends BasePage {
     }
 
     public List<WebElement> getPropertyCards() {
-        return waitForElementsPresent(propertyCard);
+        return waitForElementsPresent(Locators.PropertyListing.PROPERTY_CARD);
     }
 
     public boolean hasImage(WebElement card) {
-        return !card.findElements(cardImage).isEmpty() && card.findElement(cardImage).isDisplayed();
+        return !card.findElements(Locators.PropertyListing.CARD_IMAGE).isEmpty()
+                && card.findElement(Locators.PropertyListing.CARD_IMAGE).isDisplayed();
     }
 
     public String getTitle(WebElement card) {
-        return card.findElement(cardTitle).getText();
+        return card.findElement(Locators.PropertyListing.CARD_TITLE).getText();
     }
 
     public String getLocation(WebElement card) {
-        return card.findElement(cardLocation).getText();
+        return card.findElement(Locators.PropertyListing.CARD_LOCATION).getText();
     }
 
     public String getPrice(WebElement card) {
-        return card.findElement(cardPrice).getText();
+        return card.findElement(Locators.PropertyListing.CARD_PRICE).getText();
     }
 
     public void clickPropertyCard(WebElement card) {
@@ -64,7 +52,7 @@ public class PropertyListingPage extends BasePage {
     }
 
     public int getGridColumnCount() {
-        WebElement grid = driver.findElement(propertyGrid);
+        WebElement grid = driver.findElement(Locators.PropertyListing.PROPERTY_GRID);
         String gridTemplate = grid.getCssValue("grid-template-columns");
         if (gridTemplate == null || gridTemplate.isEmpty() || gridTemplate.equals("none")) return 1;
         return gridTemplate.split(" ").length;
@@ -75,11 +63,11 @@ public class PropertyListingPage extends BasePage {
     }
 
     public boolean hasSearchOrFilters() {
-        return !driver.findElements(searchInput).isEmpty() || 
-               !driver.findElements(filterButtons).isEmpty() || 
-               !driver.findElements(sortSelect).isEmpty();
+        return !driver.findElements(Locators.PropertyListing.SEARCH_INPUT).isEmpty()
+                || !driver.findElements(Locators.PropertyListing.FILTER_BUTTONS).isEmpty()
+                || !driver.findElements(Locators.PropertyListing.SORT_SELECT).isEmpty();
     }
-    
+
     public String getCardHref(WebElement card) {
         return card.getAttribute("href");
     }
@@ -126,11 +114,11 @@ public class PropertyListingPage extends BasePage {
     }
 
     public boolean isEmptyStateDisplayed() {
-        return isDisplayed(emptyState);
+        return isDisplayed(Locators.PropertyListing.EMPTY_STATE);
     }
 
     public int getPropertiesCount() {
-        String text = waitForElementVisible(propertiesCount).getText();
+        String text = waitForElementVisible(Locators.PropertyListing.PROPERTIES_COUNT).getText();
         return Integer.parseInt(text.split(" ")[0]);
     }
 
@@ -203,7 +191,7 @@ public class PropertyListingPage extends BasePage {
 
     public void waitForCountToChangeTo(int previousCount) {
         wait.until(d -> {
-            String text = d.findElement(propertiesCount).getText();
+            String text = d.findElement(Locators.PropertyListing.PROPERTIES_COUNT).getText();
             return Integer.parseInt(text.split(" ")[0]) != previousCount;
         });
     }
@@ -247,7 +235,7 @@ public class PropertyListingPage extends BasePage {
     }
 
     public List<String> getSortOptionTexts() {
-        WebElement selectEl = waitForElementVisible(sortSelect);
+        WebElement selectEl = waitForElementVisible(Locators.PropertyListing.SORT_SELECT);
         return new Select(selectEl).getOptions().stream()
                 .map(WebElement::getText)
                 .filter(t -> !t.isBlank())
@@ -255,7 +243,7 @@ public class PropertyListingPage extends BasePage {
     }
 
     public void selectSortOption(String value) {
-        new Select(waitForElementVisible(sortSelect)).selectByValue(value);
+        new Select(waitForElementVisible(Locators.PropertyListing.SORT_SELECT)).selectByValue(value);
     }
 
     public void waitForSortToApply() {
@@ -323,7 +311,7 @@ public class PropertyListingPage extends BasePage {
     }
 
     public String getFirstCardTitle() {
-        return getPropertyCards().get(0).findElement(cardTitle).getText();
+        return getPropertyCards().get(0).findElement(Locators.PropertyListing.CARD_TITLE).getText();
     }
 
     public void clickFavoriteOnFirstCard() {
@@ -333,14 +321,14 @@ public class PropertyListingPage extends BasePage {
     }
 
     public boolean isFirstCardFavorited() {
-        List<WebElement> cards = driver.findElements(propertyCard);
+        List<WebElement> cards = driver.findElements(Locators.PropertyListing.PROPERTY_CARD);
         if (cards.isEmpty()) return false;
         return !cards.get(0).findElements(Locators.PropertyListing.CARD_FAVORITE_FAVORITED_BTN).isEmpty();
     }
 
     public void waitForFirstCardFavorited() {
         wait.until(d -> {
-            List<WebElement> cards = d.findElements(propertyCard);
+            List<WebElement> cards = d.findElements(Locators.PropertyListing.PROPERTY_CARD);
             return !cards.isEmpty() &&
                     !cards.get(0).findElements(Locators.PropertyListing.CARD_FAVORITE_FAVORITED_BTN).isEmpty();
         });
@@ -348,7 +336,7 @@ public class PropertyListingPage extends BasePage {
 
     public void waitForFirstCardUnfavorited() {
         wait.until(d -> {
-            List<WebElement> cards = d.findElements(propertyCard);
+            List<WebElement> cards = d.findElements(Locators.PropertyListing.PROPERTY_CARD);
             return !cards.isEmpty() &&
                     cards.get(0).findElements(Locators.PropertyListing.CARD_FAVORITE_FAVORITED_BTN).isEmpty();
         });
@@ -405,6 +393,6 @@ public class PropertyListingPage extends BasePage {
 
     private void waitForGridToLoad() {
         waitForSearchResults();
-        waitForElementsPresent(propertyCard);
+        waitForElementsPresent(Locators.PropertyListing.PROPERTY_CARD);
     }
 }

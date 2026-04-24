@@ -76,7 +76,7 @@ public class SearchByDatesAndGuestsTest extends BaseTest {
         propertyListingPage.navbar().searchWithGuests(TestDataConstants.Search.GUEST_COUNT);
 
         assertTrue(
-                isUrlContains("guests=" + TestDataConstants.Search.GUEST_COUNT),
+                propertyListingPage.urlContains("guests=" + TestDataConstants.Search.GUEST_COUNT),
                 ErrorMessages.SEARCH_SHOULD_NAVIGATE_TO_GUEST_FILTERED_URL
         );
     }
@@ -88,9 +88,9 @@ public class SearchByDatesAndGuestsTest extends BaseTest {
         propertyListingPage.navbar().searchWithDates(checkIn, checkOut);
 
         assertAll(
-                () -> assertTrue(isUrlContains("checkIn="),
+                () -> assertTrue(propertyListingPage.urlContains("checkIn="),
                         "URL should contain checkIn param"),
-                () -> assertTrue(isUrlContains("checkOut="),
+                () -> assertTrue(propertyListingPage.urlContains("checkOut="),
                         "URL should contain checkOut param")
         );
     }

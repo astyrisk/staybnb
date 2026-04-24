@@ -1,8 +1,8 @@
 package com.staybnb.pages;
 
-import com.staybnb.components.BaseComponent;
 import com.staybnb.components.Navbar;
 import com.staybnb.config.AppConstants;
+import com.staybnb.core.SeleniumBase;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
 import org.openqa.selenium.By;
@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-public abstract class BasePage extends BaseComponent {
+public abstract class BasePage extends SeleniumBase {
     private final Navbar navbar;
 
     public BasePage(WebDriver driver) {

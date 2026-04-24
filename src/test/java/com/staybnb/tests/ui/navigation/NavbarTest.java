@@ -74,7 +74,7 @@ public class NavbarTest extends BaseTest {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().clickWishlistsAndWaitForRedirect();
 
-        assertTrue(isUrlContains(AppConstants.WISHLIST_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_WISHLISTS_PAGE);
+        assertTrue(propertyDetailsPage.urlContains(AppConstants.WISHLIST_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_WISHLISTS_PAGE);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class NavbarTest extends BaseTest {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().clickProfileAndWaitForRedirect();
 
-        assertTrue(isUrlContains(AppConstants.PROFILE_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_PROFILE_PAGE);
+        assertTrue(propertyDetailsPage.urlContains(AppConstants.PROFILE_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_PROFILE_PAGE);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class NavbarTest extends BaseTest {
         loginAndNavigateToPropertyDetails();
         propertyDetailsPage.navbar().clickLogoutAndWaitForRedirectToHome();
 
-        assertTrue(isUrlContains(AppConstants.HOME_URL), ErrorMessages.NAVBAR_SHOULD_REDIRECT_TO_HOME_AFTER_LOGOUT);
+        assertTrue(propertyDetailsPage.urlContains(AppConstants.HOME_URL), ErrorMessages.NAVBAR_SHOULD_REDIRECT_TO_HOME_AFTER_LOGOUT);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class NavbarTest extends BaseTest {
         propertyDetailsPage.navigateTo(TestDataConstants.DEFAULT_PROPERTY_ID);
         propertyDetailsPage.navbar().clickLoginAndWaitForRedirect();
 
-        assertTrue(isUrlContains(AppConstants.LOGIN_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_LOGIN_PAGE);
+        assertTrue(propertyDetailsPage.urlContains(AppConstants.LOGIN_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_LOGIN_PAGE);
     }
 
     @Test
@@ -161,7 +161,7 @@ public class NavbarTest extends BaseTest {
         propertyDetailsPage.navigateTo(TestDataConstants.DEFAULT_PROPERTY_ID);
         propertyDetailsPage.navbar().clickRegisterAndWaitForRedirect();
 
-        assertTrue(isUrlContains(AppConstants.REGISTER_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_REGISTER_PAGE);
+        assertTrue(propertyDetailsPage.urlContains(AppConstants.REGISTER_URL), ErrorMessages.NAVBAR_SHOULD_NAVIGATE_TO_REGISTER_PAGE);
     }
 
     @Test

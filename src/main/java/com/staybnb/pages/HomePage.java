@@ -12,24 +12,7 @@ import java.util.Optional;
 import com.staybnb.config.AppConstants;
 
 public class HomePage extends BasePage {
-    private final String PAGE_URL = AppConstants.HOME_URL;
-
-    //TODO remove duplication
-    private By heroSection = Locators.Home.HERO_SECTION;
-    private By heroHeadline = Locators.Home.HERO_HEADLINE;
-    private By categoryBar = Locators.Home.CATEGORY_BAR;
-    private By categoryChips = Locators.Home.CATEGORY_CHIPS;
-    private By activeCategoryChip = Locators.Home.ACTIVE_CATEGORY_CHIP;
-    private By categoryIcons = Locators.Home.CATEGORY_ICONS;
-    private By propertiesCount = Locators.Home.PROPERTIES_COUNT;
-    private By propertyGrid = Locators.Home.PROPERTY_GRID;
-    private By propertyCards = Locators.Home.PROPERTY_CARDS;
-
-    private By cardImage = Locators.Home.CARD_IMAGE;
-    private By cardTitle = Locators.Home.CARD_TITLE;
-    private By cardLocation = Locators.Home.CARD_LOCATION;
-    private By cardPrice = Locators.Home.CARD_PRICE;
-
+    private static final String PAGE_URL = AppConstants.HOME_URL;
     private static final String GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE = "com/staybnb/scripts/getElementDirectText.js";
 
     public HomePage(WebDriver driver) {
@@ -42,19 +25,19 @@ public class HomePage extends BasePage {
     }
 
     public boolean isHeroSectionDisplayed() {
-        return isDisplayed(heroSection);
+        return isDisplayed(Locators.Home.HERO_SECTION);
     }
 
     public String getHeroHeadlineText() {
-        return waitForElementVisible(heroHeadline).getText();
+        return waitForElementVisible(Locators.Home.HERO_HEADLINE).getText();
     }
 
     public String getHeroBackgroundImage() {
-        return waitForElementVisible(heroSection).getCssValue("background-image");
+        return waitForElementVisible(Locators.Home.HERO_SECTION).getCssValue("background-image");
     }
 
     public boolean isCategoryBarDisplayed() {
-        return isDisplayed(categoryBar);
+        return isDisplayed(Locators.Home.CATEGORY_BAR);
     }
 
     public boolean hasCategoryChipNamed(String categoryName) {
@@ -72,23 +55,22 @@ public class HomePage extends BasePage {
             throw new IllegalArgumentException("Category name must not be blank");
         }
         By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][text()[normalize-space()='" + expected + "']]");
-
         waitForElementClickable(chip).click();
     }
 
     public String getActiveCategoryName() {
-        WebElement chip = waitForElementVisible(activeCategoryChip);
+        WebElement chip = waitForElementVisible(Locators.Home.ACTIVE_CATEGORY_CHIP);
         String script = loadScript(GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE);
         Object result = ((JavascriptExecutor) driver).executeScript(script, chip);
         return Optional.ofNullable(result).map(Object::toString).orElse("").trim();
     }
 
     public List<WebElement> getCategoryIcons() {
-        return waitForElementsPresent(categoryIcons);
+        return waitForElementsPresent(Locators.Home.CATEGORY_ICONS);
     }
 
     public boolean isCategoryBarHorizontallyScrollable() {
-        WebElement bar = waitForElementVisible(categoryBar);
+        WebElement bar = waitForElementVisible(Locators.Home.CATEGORY_BAR);
         Object result = ((JavascriptExecutor) driver).executeScript(
                 "var el=arguments[0];" +
                         "var style=window.getComputedStyle(el);" +
@@ -107,7 +89,7 @@ public class HomePage extends BasePage {
     }
 
     public String getPropertiesCountText() {
-        return waitForElementVisible(propertiesCount).getText().trim();
+        return waitForElementVisible(Locators.Home.PROPERTIES_COUNT).getText().trim();
     }
 
     public void waitForPropertiesCountToContain(String expectedText) {
@@ -116,23 +98,23 @@ public class HomePage extends BasePage {
     }
 
     public List<WebElement> getPropertyCards() {
-        return waitForElementsPresent(propertyCards);
+        return waitForElementsPresent(Locators.Home.PROPERTY_CARDS);
     }
 
     public boolean isCardDetailsComplete(WebElement card) {
         try {
-            boolean hasImage = card.findElement(cardImage).isDisplayed();
-            boolean hasTitle = !card.findElement(cardTitle).getText().isEmpty();
-            boolean hasLocation = !card.findElement(cardLocation).getText().isEmpty();
-            boolean hasPrice = card.findElement(cardPrice).getText().contains("/ night");
-            return hasImage && hasTitle && hasLocation && hasPrice ;
+            boolean hasImage = card.findElement(Locators.Home.CARD_IMAGE).isDisplayed();
+            boolean hasTitle = !card.findElement(Locators.Home.CARD_TITLE).getText().isEmpty();
+            boolean hasLocation = !card.findElement(Locators.Home.CARD_LOCATION).getText().isEmpty();
+            boolean hasPrice = card.findElement(Locators.Home.CARD_PRICE).getText().contains("/ night");
+            return hasImage && hasTitle && hasLocation && hasPrice;
         } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
 
     public int getGridColumnCount() {
-        WebElement grid = driver.findElement(propertyGrid);
+        WebElement grid = driver.findElement(Locators.Home.PROPERTY_GRID);
         String gridTemplate = grid.getCssValue("grid-template-columns");
         if (gridTemplate == null || gridTemplate.isEmpty()) return 0;
         return gridTemplate.split(" ").length;
@@ -143,14 +125,14 @@ public class HomePage extends BasePage {
     }
 
     public void scrollFeaturedPropertiesIntoView() {
-        // keeps JS out of tests
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
-        waitForElementsPresent(propertyCards);
+        waitForElementsPresent(Locators.Home.PROPERTY_CARDS);
     }
 
     private void waitForHomeToLoad() {
         wait.until(d ->
-                !d.findElements(heroSection).isEmpty() || !d.findElements(propertyGrid).isEmpty()
+                !d.findElements(Locators.Home.HERO_SECTION).isEmpty()
+                || !d.findElements(Locators.Home.PROPERTY_GRID).isEmpty()
         );
     }
 }

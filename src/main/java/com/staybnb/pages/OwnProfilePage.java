@@ -2,19 +2,11 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import io.restassured.http.ContentType;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import com.staybnb.config.AppConstants;
 
 public class OwnProfilePage extends BasePage {
     private static final String PAGE_URL = AppConstants.PROFILE_URL;
-
-    //TODO remove redundancy, duplication
-    private By profileAvatar = Locators.OwnProfile.PROFILE_AVATAR;
-    private By profileName = Locators.OwnProfile.PROFILE_NAME;
-    private By profileMeta = Locators.OwnProfile.PROFILE_META;
-    private By editProfileButton = Locators.OwnProfile.EDIT_PROFILE_BUTTON;
-    private By becomeHostButton = Locators.OwnProfile.BECOME_HOST_BUTTON;
 
     public OwnProfilePage(WebDriver driver) {
         super(driver);
@@ -31,15 +23,15 @@ public class OwnProfilePage extends BasePage {
     }
 
     public boolean isAvatarDisplayed() {
-        return isDisplayed(profileAvatar);
+        return isDisplayed(Locators.OwnProfile.PROFILE_AVATAR);
     }
 
     public String getFullName() {
-        return waitForElementVisible(profileName).getText();
+        return waitForElementVisible(Locators.OwnProfile.PROFILE_NAME).getText();
     }
 
     public String getProfileMeta() {
-        return waitForElementVisible(profileMeta).getText();
+        return waitForElementVisible(Locators.OwnProfile.PROFILE_META).getText();
     }
 
     public String getBio() {
@@ -55,19 +47,19 @@ public class OwnProfilePage extends BasePage {
     }
 
     public void clickEditProfile() {
-        click(editProfileButton);
+        click(Locators.OwnProfile.EDIT_PROFILE_BUTTON);
     }
 
     public boolean isEditProfileButtonVisible() {
-        return isDisplayed(editProfileButton);
+        return isDisplayed(Locators.OwnProfile.EDIT_PROFILE_BUTTON);
     }
 
     public boolean isBecomeHostButtonVisible() {
-        return isDisplayed(becomeHostButton);
+        return isDisplayed(Locators.OwnProfile.BECOME_HOST_BUTTON);
     }
 
     public void clickBecomeHost() {
-        click(becomeHostButton);
+        click(Locators.OwnProfile.BECOME_HOST_BUTTON);
     }
 
     public String getAuthMeApiResponse() {
@@ -84,9 +76,9 @@ public class OwnProfilePage extends BasePage {
 
     private void waitForProfileToLoad() {
         wait.until(d ->
-                !d.findElements(profileAvatar).isEmpty() ||
-                !d.findElements(profileName).isEmpty()   ||
-                !d.findElements(profileMeta).isEmpty()
+                !d.findElements(Locators.OwnProfile.PROFILE_AVATAR).isEmpty() ||
+                !d.findElements(Locators.OwnProfile.PROFILE_NAME).isEmpty()   ||
+                !d.findElements(Locators.OwnProfile.PROFILE_META).isEmpty()
         );
     }
 }

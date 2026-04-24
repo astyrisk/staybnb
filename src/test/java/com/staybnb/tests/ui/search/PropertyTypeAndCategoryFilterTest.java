@@ -84,9 +84,9 @@ public class PropertyTypeAndCategoryFilterTest extends BaseTest {
         propertyListingPage.waitForPropertyTypeFilterToApply();
 
         assertAll(
-                () -> assertTrue(isUrlContains("categoryId="),
+                () -> assertTrue(propertyListingPage.urlContains("categoryId="),
                         ErrorMessages.COMBINED_FILTER_SHOULD_CONTAIN_CATEGORY_PARAM),
-                () -> assertTrue(isUrlContains("propertyType="),
+                () -> assertTrue(propertyListingPage.urlContains("propertyType="),
                         ErrorMessages.COMBINED_FILTER_SHOULD_CONTAIN_TYPE_PARAM)
         );
     }

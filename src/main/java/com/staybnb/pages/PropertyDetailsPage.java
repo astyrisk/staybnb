@@ -11,28 +11,7 @@ import java.util.stream.Collectors;
 import com.staybnb.config.AppConstants;
 
 public class PropertyDetailsPage extends BasePage {
-    private final String BASE_URL = AppConstants.PROPERTY_DETAILS_BASE_URL;
-
-    private By detailTitle = Locators.PropertyDetails.DETAIL_TITLE;
-    private By detailLocation = Locators.PropertyDetails.DETAIL_LOCATION;
-    private By detailType = Locators.PropertyDetails.DETAIL_TYPE;
-    private By detailSpecs = Locators.PropertyDetails.DETAIL_SPECS;
-    private By detailDescription = Locators.PropertyDetails.DETAIL_DESCRIPTION;
-    private By showMoreBtn = Locators.PropertyDetails.SHOW_MORE_BUTTON;
-    private By hostAvatar = Locators.PropertyDetails.HOST_AVATAR;
-    private By hostName = Locators.PropertyDetails.HOST_NAME;
-    private By hostSince = Locators.PropertyDetails.HOST_SINCE;
-    private By amenityItems = Locators.PropertyDetails.AMENITY_ITEMS;
-    private By showAllAmenitiesBtn = Locators.PropertyDetails.SHOW_ALL_AMENITIES_BUTTON;
-    private By priceAmount = Locators.PropertyDetails.PRICE_AMOUNT;
-    private By authError = Locators.PropertyDetails.AUTH_ERROR;
-    private By bookingWidget = Locators.PropertyDetails.BOOKING_WIDGET;
-    private By reviewsSection = Locators.PropertyDetails.REVIEWS_SECTION;
-
-    private By galleryImages = Locators.PropertyDetails.GALLERY_IMAGES;
-    private By showAllPhotosBtn = Locators.PropertyDetails.SHOW_ALL_PHOTOS_BUTTON;
-    private By galleryModal = Locators.PropertyDetails.GALLERY_MODAL;
-    private By galleryCarousel = Locators.PropertyDetails.GALLERY_CAROUSEL;
+    private static final String BASE_URL = AppConstants.PROPERTY_DETAILS_BASE_URL;
 
     public PropertyDetailsPage(WebDriver driver) {
         super(driver);
@@ -44,72 +23,72 @@ public class PropertyDetailsPage extends BasePage {
     }
 
     public String getTitle() {
-        return waitForElementVisible(detailTitle).getText();
+        return waitForElementVisible(Locators.PropertyDetails.DETAIL_TITLE).getText();
     }
 
     public String getLocation() {
-        return waitForElementVisible(detailLocation).getText();
+        return waitForElementVisible(Locators.PropertyDetails.DETAIL_LOCATION).getText();
     }
 
     public String getType() {
         try {
-            return getText(detailType);
+            return getText(Locators.PropertyDetails.DETAIL_TYPE);
         } catch (NoSuchElementException e) {
             return "";
         }
     }
 
     public List<WebElement> getSpecs() {
-        return waitForElementsPresent(detailSpecs);
+        return waitForElementsPresent(Locators.PropertyDetails.DETAIL_SPECS);
     }
 
     public String getDescription() {
-        return waitForElementVisible(detailDescription).getText();
+        return waitForElementVisible(Locators.PropertyDetails.DETAIL_DESCRIPTION).getText();
     }
 
     public boolean isShowMoreButtonDisplayed() {
-        return isDisplayed(showMoreBtn);
+        return isDisplayed(Locators.PropertyDetails.SHOW_MORE_BUTTON);
     }
 
     public void clickShowMore() {
-        click(showMoreBtn);
+        click(Locators.PropertyDetails.SHOW_MORE_BUTTON);
     }
 
     public boolean isHostAvatarDisplayed() {
-        return isDisplayed(hostAvatar);
+        return isDisplayed(Locators.PropertyDetails.HOST_AVATAR);
     }
 
     public String getHostName() {
-        return waitForElementVisible(hostName).getText();
+        return waitForElementVisible(Locators.PropertyDetails.HOST_NAME).getText();
     }
 
     public String getHostSince() {
-        return waitForElementVisible(hostSince).getText();
+        return waitForElementVisible(Locators.PropertyDetails.HOST_SINCE).getText();
     }
 
     public List<WebElement> getAmenities() {
-        return waitForElementsPresent(amenityItems);
+        return waitForElementsPresent(Locators.PropertyDetails.AMENITY_ITEMS);
     }
 
     public boolean isShowAllAmenitiesButtonDisplayed() {
-        return isDisplayed(showAllAmenitiesBtn);
+        return isDisplayed(Locators.PropertyDetails.SHOW_ALL_AMENITIES_BUTTON);
     }
 
     public String getPrice() {
-        return waitForElementVisible(priceAmount).getText();
+        return waitForElementVisible(Locators.PropertyDetails.PRICE_AMOUNT).getText();
     }
 
     public boolean isBookingWidgetPresent() {
-        return !driver.findElements(bookingWidget).isEmpty();
+        return !driver.findElements(Locators.PropertyDetails.BOOKING_WIDGET).isEmpty();
     }
 
     public boolean isReviewsSectionPresent() {
-        return !driver.findElements(reviewsSection).isEmpty();
+        return !driver.findElements(Locators.PropertyDetails.REVIEWS_SECTION).isEmpty();
     }
 
     public boolean isPropertyNotFoundDisplayed() {
         try {
-            WebElement error = waitForElementVisible(authError);
+            WebElement error = waitForElementVisible(Locators.PropertyDetails.AUTH_ERROR);
             return error.getText().toLowerCase().contains("property not found");
         } catch (TimeoutException e) {
             return false;
@@ -118,26 +97,26 @@ public class PropertyDetailsPage extends BasePage {
 
     public String getErrorMessage() {
         try {
-            return getText(authError);
+            return getText(Locators.PropertyDetails.AUTH_ERROR);
         } catch (NoSuchElementException e) {
             return "";
         }
     }
 
     public List<WebElement> getGalleryImages() {
-        return waitForElementsPresent(galleryImages);
+        return waitForElementsPresent(Locators.PropertyDetails.GALLERY_IMAGES);
     }
 
     public void clickShowAllPhotos() {
-        click(showAllPhotosBtn);
+        click(Locators.PropertyDetails.SHOW_ALL_PHOTOS_BUTTON);
     }
 
     public boolean isGalleryModalDisplayed() {
-        return isDisplayed(galleryModal);
+        return isDisplayed(Locators.PropertyDetails.GALLERY_MODAL);
     }
 
     public boolean isGalleryCarouselDisplayed() {
-        return isDisplayed(galleryCarousel);
+        return isDisplayed(Locators.PropertyDetails.GALLERY_CAROUSEL);
     }
 
     public List<String> getSpecTexts() {
@@ -153,7 +132,7 @@ public class PropertyDetailsPage extends BasePage {
     }
 
     public int getDisplayedAmenityCount() {
-        return driver.findElements(amenityItems).size();
+        return driver.findElements(Locators.PropertyDetails.AMENITY_ITEMS).size();
     }
 
     public boolean isAmenitiesSectionPresent() {
@@ -161,7 +140,7 @@ public class PropertyDetailsPage extends BasePage {
     }
 
     public boolean amenitiesHaveIconAndLabel() {
-        List<WebElement> items = driver.findElements(amenityItems);
+        List<WebElement> items = driver.findElements(Locators.PropertyDetails.AMENITY_ITEMS);
         if (items.isEmpty()) return false;
         return items.stream().allMatch(item -> {
             List<WebElement> spans = item.findElements(By.tagName("span"));
@@ -189,8 +168,8 @@ public class PropertyDetailsPage extends BasePage {
 
     private void waitForDetailsToLoad() {
         wait.until(d ->
-                d.findElements(detailTitle).size() > 0 ||
-                d.findElements(authError).size() > 0
+                d.findElements(Locators.PropertyDetails.DETAIL_TITLE).size() > 0 ||
+                d.findElements(Locators.PropertyDetails.AUTH_ERROR).size() > 0
         );
     }
 }

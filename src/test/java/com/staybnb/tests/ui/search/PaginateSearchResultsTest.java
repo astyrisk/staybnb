@@ -45,7 +45,7 @@ public class PaginateSearchResultsTest extends BaseTest {
         propertyListingPage.clickNextPage();
         propertyListingPage.waitForPageInUrl(2);
         assertTrue(
-                isUrlContains("page=2"),
+                propertyListingPage.urlContains("page=2"),
                 ErrorMessages.PAGINATION_CLICKING_NEXT_SHOULD_LOAD_NEXT_PAGE
         );
     }
@@ -58,7 +58,7 @@ public class PaginateSearchResultsTest extends BaseTest {
         propertyListingPage.clickPreviousPage();
         propertyListingPage.waitForPageParamRemoved();
         assertFalse(
-                isUrlContains("page=2"),
+                propertyListingPage.urlContains("page=2"),
                 ErrorMessages.PAGINATION_CLICKING_PREVIOUS_SHOULD_LOAD_PREVIOUS_PAGE
         );
     }
@@ -80,7 +80,7 @@ public class PaginateSearchResultsTest extends BaseTest {
     public void testPageNumberReflectedInUrl() {
         propertyListingPage.navigateToPage(2);
         assertTrue(
-                isUrlContains("page=2"),
+                propertyListingPage.urlContains("page=2"),
                 ErrorMessages.PAGINATION_URL_SHOULD_REFLECT_CURRENT_PAGE
         );
     }
@@ -114,7 +114,7 @@ public class PaginateSearchResultsTest extends BaseTest {
         propertyListingPage.selectSortOption(TestDataConstants.SortFilter.SORT_PRICE_ASC);
         propertyListingPage.waitForSortToApply();
         assertFalse(
-                isUrlContains("page=2"),
+                propertyListingPage.urlContains("page=2"),
                 ErrorMessages.PAGINATION_SHOULD_RESET_TO_PAGE_1_ON_FILTER_CHANGE
         );
     }

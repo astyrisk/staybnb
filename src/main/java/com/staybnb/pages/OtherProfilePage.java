@@ -11,15 +11,6 @@ import java.util.List;
 public class OtherProfilePage extends BasePage {
     private static final String OTHER_PROFILE_BASE_URL = AppConstants.OTHER_PROFILE_BASE_URL;
 
-    //TODO remove duplication, redundancy
-    private By profileAvatar = Locators.OtherProfile.PROFILE_AVATAR;
-    private By profileName = Locators.OtherProfile.PROFILE_NAME;
-    private By profileMeta = Locators.OtherProfile.PROFILE_META;
-    private By bioText = Locators.OtherProfile.BIO_TEXT;
-    private By phoneSection = Locators.OtherProfile.PHONE_SECTION;
-    private By emailSection = Locators.OtherProfile.EMAIL_SECTION;
-    private By errorMessage = Locators.OtherProfile.ERROR_MESSAGE;
-
     public OtherProfilePage(WebDriver driver) {
         super(driver);
     }
@@ -30,31 +21,31 @@ public class OtherProfilePage extends BasePage {
     }
 
     public boolean isAvatarDisplayed() {
-        return isDisplayed(profileAvatar);
+        return isDisplayed(Locators.OtherProfile.PROFILE_AVATAR);
     }
 
     public String getAvatarText() {
-        return waitForElementVisible(profileAvatar).getText();
+        return waitForElementVisible(Locators.OtherProfile.PROFILE_AVATAR).getText();
     }
 
     public String getProfileName() {
-        return waitForElementVisible(profileName).getText();
+        return waitForElementVisible(Locators.OtherProfile.PROFILE_NAME).getText();
     }
 
     public String getProfileMeta() {
-        return waitForElementVisible(profileMeta).getText();
+        return waitForElementVisible(Locators.OtherProfile.PROFILE_META).getText();
     }
 
     public String getBio() {
-        return waitForElementVisible(bioText).getText();
+        return waitForElementVisible(Locators.OtherProfile.BIO_TEXT).getText();
     }
 
     public boolean isPhoneSectionVisible() {
-        return isElementVisible(phoneSection);
+        return isElementVisible(Locators.OtherProfile.PHONE_SECTION);
     }
 
     public boolean isEmailSectionVisible() {
-        return isElementVisible(emailSection);
+        return isElementVisible(Locators.OtherProfile.EMAIL_SECTION);
     }
 
     public boolean is404Displayed() {
@@ -74,17 +65,17 @@ public class OtherProfilePage extends BasePage {
     }
 
     private boolean hasAnyProfileIndicator(WebDriver d) {
-        return !d.findElements(profileAvatar).isEmpty()
-                || !d.findElements(profileName).isEmpty()
-                || !d.findElements(profileMeta).isEmpty()
-                || !d.findElements(bioText).isEmpty()
+        return !d.findElements(Locators.OtherProfile.PROFILE_AVATAR).isEmpty()
+                || !d.findElements(Locators.OtherProfile.PROFILE_NAME).isEmpty()
+                || !d.findElements(Locators.OtherProfile.PROFILE_META).isEmpty()
+                || !d.findElements(Locators.OtherProfile.BIO_TEXT).isEmpty()
                 || isErrorPagePresent(d);
     }
 
     private boolean isErrorPagePresent(WebDriver d) {
         return d.getPageSource().contains("404")
                 || d.getPageSource().contains("User not found")
-                || !d.findElements(errorMessage).isEmpty();
+                || !d.findElements(Locators.OtherProfile.ERROR_MESSAGE).isEmpty();
     }
 
     private boolean isElementVisible(By locator) {

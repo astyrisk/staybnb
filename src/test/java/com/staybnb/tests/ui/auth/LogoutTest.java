@@ -33,7 +33,7 @@ public class LogoutTest extends BaseTest {
         logoutPage.logoutAndWaitForRedirectToHome();
 
         assertTrue(
-                isUrlContains(AppConstants.HOME_URL),
+                logoutPage.urlContains(AppConstants.HOME_URL),
                 ErrorMessages.SHOULD_BE_REDIRECTED_TO_HOMEPAGE_AFTER_LOGOUT
         );
     }

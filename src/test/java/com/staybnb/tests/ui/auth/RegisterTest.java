@@ -39,7 +39,7 @@ public class RegisterTest extends BaseTest {
         );
 
         assertTrue(
-                isUrlContains(AppConstants.HOME_URL)
+                registerPage.urlContains(AppConstants.HOME_URL)
         );
     }
 
@@ -108,7 +108,7 @@ public class RegisterTest extends BaseTest {
         registerPage.clickLoginLink();
 
         assertTrue(
-                isUrlContains(AppConstants.LOGIN_URL),
+                registerPage.urlContains(AppConstants.LOGIN_URL),
                 ErrorMessages.REGISTER_PAGE_SHOULD_NAVIGATE_TO_LOGIN
         );
     }

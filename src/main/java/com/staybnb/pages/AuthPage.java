@@ -1,20 +1,12 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
 public abstract class AuthPage extends BasePage {
-    protected final By emailField = Locators.Auth.EMAIL_FIELD;
-    protected final By passwordField = Locators.Auth.PASSWORD_FIELD;
-    protected final By primarySubmitButton = Locators.Auth.PRIMARY_SUBMIT_BUTTON;
-
-    protected final By inlineErrorMessages = Locators.Auth.INLINE_ERROR_MESSAGES;
-    protected final By globalErrorMessage = Locators.Auth.GLOBAL_ERROR_MESSAGE;
-
     protected AuthPage(WebDriver driver) {
         super(driver);
     }
@@ -26,24 +18,28 @@ public abstract class AuthPage extends BasePage {
     }
 
     public void enterEmail(String email) {
-        type(emailField, email);
+        type(Locators.Auth.EMAIL_FIELD, email);
     }
 
     public void enterPassword(String password) {
-        type(passwordField, password);
+        type(Locators.Auth.PASSWORD_FIELD, password);
     }
 
-    protected void clickPrimarySubmit() {
-        click(primarySubmitButton);
+    public void clickPrimarySubmit() {
+        click(Locators.Auth.PRIMARY_SUBMIT_BUTTON);
     }
 
     public boolean isInlineErrorDisplayed(String expectedErrorText) {
-        List<WebElement> errors = driver.findElements(inlineErrorMessages);
+        List<WebElement> errors = driver.findElements(Locators.Auth.INLINE_ERROR_MESSAGES);
         String expectedLower = expectedErrorText.toLowerCase();
         return errors.stream().anyMatch(e -> e.getText().toLowerCase().contains(expectedLower));
     }
 
     public String getGlobalErrorMessageText() {
-        return waitForElementVisible(globalErrorMessage).getText();
+        return waitForElementVisible(Locators.Auth.GLOBAL_ERROR_MESSAGE).getText();
+    }
+
+    public String getInlineErrorMessageText() {
+        return waitForElementVisible(Locators.Auth.INLINE_ERROR_MESSAGES).getText();
     }
 }

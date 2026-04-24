@@ -21,90 +21,51 @@ import java.util.Optional;
 public class CreatePropertyPage extends BasePage {
     private static final String PAGE_URL = AppConstants.HOSTING_CREATE_URL;
 
-    //TODO remove redundancy, duplications
-    private final By container = Locators.CreateProperty.CONTAINER;
-    private final By progressText = Locators.CreateProperty.PROGRESS_TEXT;
-    private final By nextButton = Locators.CreateProperty.NEXT_BUTTON;
-    private final By backButton = Locators.CreateProperty.BACK_BUTTON;
-    private final By fieldErrors = Locators.CreateProperty.FIELD_ERRORS;
-
-    private final By step1PropertyTypeSelect = Locators.CreateProperty.STEP_1_PROPERTY_TYPE_SELECT;
-    private final By step1CategorySelect = Locators.CreateProperty.STEP_1_CATEGORY_SELECT;
-    private final By step1TitleInput = Locators.CreateProperty.STEP_1_TITLE_INPUT;
-    private final By step1DescriptionTextarea = Locators.CreateProperty.STEP_1_DESCRIPTION_TEXTAREA;
-
-    private final By step2CountryInput = Locators.CreateProperty.STEP_2_COUNTRY_INPUT;
-    private final By step2CityInput = Locators.CreateProperty.STEP_2_CITY_INPUT;
-    private final By step2AddressInput = Locators.CreateProperty.STEP_2_ADDRESS_INPUT;
-
-    private final By step3MaxGuestsInput = Locators.CreateProperty.STEP_3_MAX_GUESTS_INPUT;
-    private final By step3BedroomsInput = Locators.CreateProperty.STEP_3_BEDROOMS_INPUT;
-    private final By step3BedsInput = Locators.CreateProperty.STEP_3_BEDS_INPUT;
-    private final By step3BathroomsInput = Locators.CreateProperty.STEP_3_BATHROOMS_INPUT;
-    private final By step4AmenitiesTitle = Locators.CreateProperty.STEP_4_AMENITIES_TITLE;
-    private final By step4AmenitiesGrid = Locators.CreateProperty.STEP_4_AMENITIES_GRID;
-    private final By step4AmenityCheckboxes = Locators.CreateProperty.STEP_4_AMENITY_CHECKBOXES;
-    private final By step4AmenityItems = Locators.CreateProperty.STEP_4_AMENITY_ITEMS;
-    private final By step4GroupHeaders = Locators.CreateProperty.STEP_4_GROUP_HEADERS;
-    private final By step5PhotosTitle = Locators.CreateProperty.STEP_5_PHOTOS_TITLE;
-    private final By step5UploadDropzone = Locators.CreateProperty.STEP_5_UPLOAD_DROPZONE;
-    private final By step5UploadFileInput = Locators.CreateProperty.STEP_5_UPLOAD_FILE_INPUT;
-    private final By step5UploadText = Locators.CreateProperty.STEP_5_UPLOAD_TEXT;
-    private final By step5ImagePreviews = Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS;
-    private final By step5ImageMoveUpButtons = Locators.CreateProperty.STEP_5_IMAGE_MOVE_UP_BUTTONS;
-    private final By step5ImageMoveDownButtons = Locators.CreateProperty.STEP_5_IMAGE_MOVE_DOWN_BUTTONS;
-    private final By step5ImageDeleteButtons = Locators.CreateProperty.STEP_5_IMAGE_DELETE_BUTTONS;
-    private final By step6PricingTitle = Locators.CreateProperty.STEP_6_PRICING_TITLE;
-    private final By step6PriceInput = Locators.CreateProperty.STEP_6_PRICE_INPUT;
-    private final By step7ReviewTitle = Locators.CreateProperty.STEP_7_REVIEW_TITLE;
-    private final By step7ReviewSections = Locators.CreateProperty.STEP_7_REVIEW_SECTIONS;
-    private final By step7CreatePropertyButton = Locators.CreateProperty.STEP_7_CREATE_PROPERTY_BUTTON;
-
     public CreatePropertyPage(WebDriver driver) {
         super(driver);
     }
 
     public void navigateTo() {
         super.navigateTo(PAGE_URL);
-        waitForElementVisible(container);
+        waitForElementVisible(Locators.CreateProperty.CONTAINER);
     }
 
     public boolean isStep1BasicsLoaded() {
-        waitForElementVisible(step1PropertyTypeSelect);
-        return isDisplayed(step1CategorySelect)
-                && isDisplayed(step1TitleInput)
-                && isDisplayed(step1DescriptionTextarea);
+        waitForElementVisible(Locators.CreateProperty.STEP_1_PROPERTY_TYPE_SELECT);
+        return isDisplayed(Locators.CreateProperty.STEP_1_CATEGORY_SELECT)
+                && isDisplayed(Locators.CreateProperty.STEP_1_TITLE_INPUT)
+                && isDisplayed(Locators.CreateProperty.STEP_1_DESCRIPTION_TEXTAREA);
     }
 
     public boolean isStep2LocationLoaded() {
-        waitForElementVisible(step2CountryInput);
-        return isDisplayed(step2CityInput)
-                && isDisplayed(step2AddressInput);
+        waitForElementVisible(Locators.CreateProperty.STEP_2_COUNTRY_INPUT);
+        return isDisplayed(Locators.CreateProperty.STEP_2_CITY_INPUT)
+                && isDisplayed(Locators.CreateProperty.STEP_2_ADDRESS_INPUT);
     }
 
     public boolean isStep3DetailsLoaded() {
-        waitForElementVisible(step3MaxGuestsInput);
-        return isDisplayed(step3BedroomsInput)
-                && isDisplayed(step3BedsInput)
-                && isDisplayed(step3BathroomsInput);
+        waitForElementVisible(Locators.CreateProperty.STEP_3_MAX_GUESTS_INPUT);
+        return isDisplayed(Locators.CreateProperty.STEP_3_BEDROOMS_INPUT)
+                && isDisplayed(Locators.CreateProperty.STEP_3_BEDS_INPUT)
+                && isDisplayed(Locators.CreateProperty.STEP_3_BATHROOMS_INPUT);
     }
 
     public boolean isStep4AmenitiesLoaded() {
-        waitForElementVisible(step4AmenitiesTitle);
-        return isDisplayed(step4AmenitiesGrid)
-                && !waitForElementsPresent(step4AmenityCheckboxes).isEmpty();
+        waitForElementVisible(Locators.CreateProperty.STEP_4_AMENITIES_TITLE);
+        return isDisplayed(Locators.CreateProperty.STEP_4_AMENITIES_GRID)
+                && !waitForElementsPresent(Locators.CreateProperty.STEP_4_AMENITY_CHECKBOXES).isEmpty();
     }
 
     public boolean isStep5PhotosLoaded() {
-        waitForElementVisible(step5PhotosTitle);
+        waitForElementVisible(Locators.CreateProperty.STEP_5_PHOTOS_TITLE);
         return true;
     }
 
     public boolean step5HasUploadAreaSupportingDropOrBrowse() {
-        String dropzoneText = waitForElementVisible(step5UploadDropzone).getText().toLowerCase();
-        String uploadText = waitForElementVisible(step5UploadText).getText().toLowerCase();
+        String dropzoneText = waitForElementVisible(Locators.CreateProperty.STEP_5_UPLOAD_DROPZONE).getText().toLowerCase();
+        String uploadText = waitForElementVisible(Locators.CreateProperty.STEP_5_UPLOAD_TEXT).getText().toLowerCase();
 
-        WebElement input = waitForElementsPresent(step5UploadFileInput).get(0);
+        WebElement input = waitForElementsPresent(Locators.CreateProperty.STEP_5_UPLOAD_FILE_INPUT).get(0);
         String accepts = input.getAttribute("accept");
 
         return accepts != null
@@ -114,7 +75,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public String getProgressText() {
-        return waitForElementVisible(progressText).getText().trim();
+        return waitForElementVisible(Locators.CreateProperty.PROGRESS_TEXT).getText().trim();
     }
 
     public int getCurrentStep() {
@@ -128,56 +89,57 @@ public class CreatePropertyPage extends BasePage {
 
     public void clickNext() {
         int currentStep = getCurrentStep();
-        waitForElementClickable(nextButton).click();
-        wait.until(d -> getCurrentStep() > currentStep || !d.findElements(fieldErrors).isEmpty());
+        waitForElementClickable(Locators.CreateProperty.NEXT_BUTTON).click();
+        wait.until(d -> getCurrentStep() > currentStep
+                || !d.findElements(Locators.CreateProperty.FIELD_ERRORS).isEmpty());
     }
 
     public void clickBack() {
         int currentStep = getCurrentStep();
-        waitForElementClickable(backButton).click();
+        waitForElementClickable(Locators.CreateProperty.BACK_BUTTON).click();
         wait.until(d -> getCurrentStep() < currentStep);
     }
 
     public void selectPropertyTypeByVisibleText(String text) {
-        new Select(waitForElementVisible(step1PropertyTypeSelect)).selectByVisibleText(text);
+        new Select(waitForElementVisible(Locators.CreateProperty.STEP_1_PROPERTY_TYPE_SELECT)).selectByVisibleText(text);
     }
 
     public void selectCategoryByIndex(int index) {
-        wait.until(d -> new Select(waitForElementVisible(step1CategorySelect)).getOptions().size() > index);
-        new Select(driver.findElement(step1CategorySelect)).selectByIndex(index);
+        wait.until(d -> new Select(waitForElementVisible(Locators.CreateProperty.STEP_1_CATEGORY_SELECT)).getOptions().size() > index);
+        new Select(driver.findElement(Locators.CreateProperty.STEP_1_CATEGORY_SELECT)).selectByIndex(index);
     }
 
     public int getCategoryDropdownOptionCount() {
-        wait.until(d -> new Select(waitForElementVisible(step1CategorySelect)).getOptions().size() > 1);
-        return new Select(driver.findElement(step1CategorySelect)).getOptions().size();
+        wait.until(d -> new Select(waitForElementVisible(Locators.CreateProperty.STEP_1_CATEGORY_SELECT)).getOptions().size() > 1);
+        return new Select(driver.findElement(Locators.CreateProperty.STEP_1_CATEGORY_SELECT)).getOptions().size();
     }
 
     public void enterTitle(String title) {
-        type(step1TitleInput, title);
+        type(Locators.CreateProperty.STEP_1_TITLE_INPUT, title);
     }
 
     public void clearTitle() {
-        type(step1TitleInput, "");
+        type(Locators.CreateProperty.STEP_1_TITLE_INPUT, "");
     }
 
     public void enterDescription(String description) {
-        type(step1DescriptionTextarea, description);
+        type(Locators.CreateProperty.STEP_1_DESCRIPTION_TEXTAREA, description);
     }
 
     public void clearDescription() {
-        type(step1DescriptionTextarea, "");
+        type(Locators.CreateProperty.STEP_1_DESCRIPTION_TEXTAREA, "");
     }
 
     public void clearCountry() {
-        type(step2CountryInput, "");
+        type(Locators.CreateProperty.STEP_2_COUNTRY_INPUT, "");
     }
 
     public void enterCountry(String country) {
-        type(step2CountryInput, country);
+        type(Locators.CreateProperty.STEP_2_COUNTRY_INPUT, country);
     }
 
     public void clearCity() {
-        type(step2CityInput, "");
+        type(Locators.CreateProperty.STEP_2_CITY_INPUT, "");
     }
 
     public void clearStep2RequiredField(String fieldName) {
@@ -189,11 +151,11 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void enterCity(String city) {
-        type(step2CityInput, city);
+        type(Locators.CreateProperty.STEP_2_CITY_INPUT, city);
     }
 
     public void enterAddress(String address) {
-        type(step2AddressInput, address);
+        type(Locators.CreateProperty.STEP_2_ADDRESS_INPUT, address);
     }
 
     public void fillValidStep1() {
@@ -210,7 +172,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void uploadImagesFromProjectPath(String... relativePaths) {
-        WebElement fileInput = driver.findElement(step5UploadFileInput);
+        WebElement fileInput = driver.findElement(Locators.CreateProperty.STEP_5_UPLOAD_FILE_INPUT);
         ((JavascriptExecutor) driver).executeScript("arguments[0].style.display='block';", fileInput);
         String joinedAbsolutePaths = Arrays.stream(relativePaths)
                 .map(path -> new File(System.getProperty("user.dir"), path).getAbsolutePath())
@@ -220,25 +182,25 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean hasAtLeastNImagePreviews(int minimumCount) {
-        wait.until(d -> d.findElements(step5ImagePreviews).size() >= minimumCount);
+        wait.until(d -> d.findElements(Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS).size() >= minimumCount);
         return true;
     }
 
     public int getUploadedImagePreviewCount() {
-        waitForElementVisible(step5UploadDropzone);
-        return driver.findElements(step5ImagePreviews).size();
+        waitForElementVisible(Locators.CreateProperty.STEP_5_UPLOAD_DROPZONE);
+        return driver.findElements(Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS).size();
     }
 
     public boolean uploadedImagesShowSortHandleAndDelete() {
-        waitForElementsPresent(step5ImagePreviews);
-        return !driver.findElements(step5ImageMoveUpButtons).isEmpty()
-                && !driver.findElements(step5ImageMoveDownButtons).isEmpty()
-                && !driver.findElements(step5ImageDeleteButtons).isEmpty();
+        waitForElementsPresent(Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS);
+        return !driver.findElements(Locators.CreateProperty.STEP_5_IMAGE_MOVE_UP_BUTTONS).isEmpty()
+                && !driver.findElements(Locators.CreateProperty.STEP_5_IMAGE_MOVE_DOWN_BUTTONS).isEmpty()
+                && !driver.findElements(Locators.CreateProperty.STEP_5_IMAGE_DELETE_BUTTONS).isEmpty();
     }
 
     private List<WebElement> getStep5PreviewItems() {
-        waitForElementVisible(step5UploadDropzone);
-        return driver.findElements(step5ImagePreviews);
+        waitForElementVisible(Locators.CreateProperty.STEP_5_UPLOAD_DROPZONE);
+        return driver.findElements(Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS);
     }
 
     private String previewSignature(WebElement previewItem) {
@@ -263,7 +225,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void moveImageDownAt(int index) {
-        List<WebElement> buttons = waitForElementsPresent(step5ImageMoveDownButtons);
+        List<WebElement> buttons = waitForElementsPresent(Locators.CreateProperty.STEP_5_IMAGE_MOVE_DOWN_BUTTONS);
         if (index < 0 || index >= buttons.size()) {
             throw new IllegalArgumentException("Invalid move-down index: " + index + " (count=" + buttons.size() + ")");
         }
@@ -271,7 +233,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void moveImageUpAt(int index) {
-        List<WebElement> buttons = waitForElementsPresent(step5ImageMoveUpButtons);
+        List<WebElement> buttons = waitForElementsPresent(Locators.CreateProperty.STEP_5_IMAGE_MOVE_UP_BUTTONS);
         if (index < 0 || index >= buttons.size()) {
             throw new IllegalArgumentException("Invalid move-up index: " + index + " (count=" + buttons.size() + ")");
         }
@@ -279,7 +241,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void deleteImageAt(int index) {
-        List<WebElement> buttons = waitForElementsPresent(step5ImageDeleteButtons);
+        List<WebElement> buttons = waitForElementsPresent(Locators.CreateProperty.STEP_5_IMAGE_DELETE_BUTTONS);
         if (index < 0 || index >= buttons.size()) {
             throw new IllegalArgumentException("Invalid delete index: " + index + " (count=" + buttons.size() + ")");
         }
@@ -288,7 +250,7 @@ public class CreatePropertyPage extends BasePage {
 
     public void waitForFirstPreviewSignatureToBe(String expectedSignature) {
         wait.until(d -> {
-            List<WebElement> items = d.findElements(step5ImagePreviews);
+            List<WebElement> items = d.findElements(Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS);
             if (items.isEmpty()) {
                 return expectedSignature == null || expectedSignature.isBlank();
             }
@@ -297,7 +259,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void waitForPreviewCountToBe(int expectedCount) {
-        wait.until(d -> d.findElements(step5ImagePreviews).size() == expectedCount);
+        wait.until(d -> d.findElements(Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS).size() == expectedCount);
     }
 
     public boolean primaryBadgeIsOnPreviewIndex(int index) {
@@ -317,7 +279,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean firstUploadedImageIsMarkedPrimaryOrCover() {
-        List<WebElement> previewItems = waitForElementsPresent(step5ImagePreviews);
+        List<WebElement> previewItems = waitForElementsPresent(Locators.CreateProperty.STEP_5_IMAGE_PREVIEWS);
         if (previewItems.isEmpty()) {
             return false;
         }
@@ -341,8 +303,8 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean isStep6PricingLoaded() {
-        waitForElementVisible(step6PricingTitle);
-        return isDisplayed(step6PriceInput);
+        waitForElementVisible(Locators.CreateProperty.STEP_6_PRICING_TITLE);
+        return isDisplayed(Locators.CreateProperty.STEP_6_PRICE_INPUT);
     }
 
     public boolean step6PriceInputUsesUsdLabel() {
@@ -353,7 +315,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void enterPricePerNight(String price) {
-        type(step6PriceInput, price);
+        type(Locators.CreateProperty.STEP_6_PRICE_INPUT, price);
     }
 
     public boolean hasPriceGreaterThanZeroValidationMessage() {
@@ -363,13 +325,13 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public boolean isStep7ReviewLoaded() {
-        waitForElementVisible(step7ReviewTitle);
-        return !waitForElementsPresent(step7ReviewSections).isEmpty()
-                && isDisplayed(step7CreatePropertyButton);
+        waitForElementVisible(Locators.CreateProperty.STEP_7_REVIEW_TITLE);
+        return !waitForElementsPresent(Locators.CreateProperty.STEP_7_REVIEW_SECTIONS).isEmpty()
+                && isDisplayed(Locators.CreateProperty.STEP_7_CREATE_PROPERTY_BUTTON);
     }
 
     public boolean reviewContainsAllStep1ToStep6Sections() {
-        waitForElementVisible(step7ReviewTitle);
+        waitForElementVisible(Locators.CreateProperty.STEP_7_REVIEW_TITLE);
         String page = driver.getPageSource().toLowerCase();
         return page.contains("type:")
                 && page.contains("category:")
@@ -387,7 +349,7 @@ public class CreatePropertyPage extends BasePage {
     }
 
     public void clickCreateProperty() {
-        waitForElementClickable(step7CreatePropertyButton).click();
+        waitForElementClickable(Locators.CreateProperty.STEP_7_CREATE_PROPERTY_BUTTON).click();
     }
 
     public boolean hasCreatePropertySuccessAlert() {
@@ -403,56 +365,56 @@ public class CreatePropertyPage extends BasePage {
 
     public boolean hasInlineErrorContaining(String expectedText) {
         String expectedLower = expectedText.toLowerCase();
-        wait.until(d -> !d.findElements(fieldErrors).isEmpty());
-        return driver.findElements(fieldErrors).stream()
+        wait.until(d -> !d.findElements(Locators.CreateProperty.FIELD_ERRORS).isEmpty());
+        return driver.findElements(Locators.CreateProperty.FIELD_ERRORS).stream()
                 .anyMatch(el -> el.getText().toLowerCase().contains(expectedLower));
     }
 
     public boolean isStep1TitleValuePreserved(String expected) {
-        return waitForElementVisible(step1TitleInput).getAttribute("value").equals(expected);
+        return waitForElementVisible(Locators.CreateProperty.STEP_1_TITLE_INPUT).getAttribute("value").equals(expected);
     }
 
     public boolean isStep1DescriptionValuePreserved(String expected) {
-        return waitForElementVisible(step1DescriptionTextarea).getAttribute("value").equals(expected);
+        return waitForElementVisible(Locators.CreateProperty.STEP_1_DESCRIPTION_TEXTAREA).getAttribute("value").equals(expected);
     }
 
     public boolean isStep2CityValuePreserved(String expected) {
-        return waitForElementVisible(step2CityInput).getAttribute("value").equals(expected);
+        return waitForElementVisible(Locators.CreateProperty.STEP_2_CITY_INPUT).getAttribute("value").equals(expected);
     }
 
     public boolean isStep2CountryValuePreserved(String expected) {
-        return waitForElementVisible(step2CountryInput).getAttribute("value").equals(expected);
+        return waitForElementVisible(Locators.CreateProperty.STEP_2_COUNTRY_INPUT).getAttribute("value").equals(expected);
     }
 
     public boolean maxGuestsMinIsOne() {
-        return "1".equals(waitForElementVisible(step3MaxGuestsInput).getAttribute("min"));
+        return "1".equals(waitForElementVisible(Locators.CreateProperty.STEP_3_MAX_GUESTS_INPUT).getAttribute("min"));
     }
 
     public boolean bedroomsMinIsZero() {
-        return "0".equals(waitForElementVisible(step3BedroomsInput).getAttribute("min"));
+        return "0".equals(waitForElementVisible(Locators.CreateProperty.STEP_3_BEDROOMS_INPUT).getAttribute("min"));
     }
 
     public boolean bedsMinIsOne() {
-        return "1".equals(waitForElementVisible(step3BedsInput).getAttribute("min"));
+        return "1".equals(waitForElementVisible(Locators.CreateProperty.STEP_3_BEDS_INPUT).getAttribute("min"));
     }
 
     public boolean bathroomsMinIsZero() {
-        return "0".equals(waitForElementVisible(step3BathroomsInput).getAttribute("min"));
+        return "0".equals(waitForElementVisible(Locators.CreateProperty.STEP_3_BATHROOMS_INPUT).getAttribute("min"));
     }
 
     public boolean bathroomsStepIsHalfIncrement() {
-        return "0.5".equals(waitForElementVisible(step3BathroomsInput).getAttribute("step"));
+        return "0.5".equals(waitForElementVisible(Locators.CreateProperty.STEP_3_BATHROOMS_INPUT).getAttribute("step"));
     }
 
     public boolean hasAmenityGroupNamed(String groupName) {
         String expected = groupName.toLowerCase();
-        List<WebElement> groups = driver.findElements(step4GroupHeaders);
+        List<WebElement> groups = driver.findElements(Locators.CreateProperty.STEP_4_GROUP_HEADERS);
         return groups.stream().anyMatch(el -> el.getText().trim().toLowerCase().contains(expected));
     }
 
     public boolean hasAmenityItemContaining(String text) {
         String expected = text.toLowerCase();
-        List<WebElement> items = driver.findElements(step4AmenityItems);
+        List<WebElement> items = driver.findElements(Locators.CreateProperty.STEP_4_AMENITY_ITEMS);
         return items.stream().anyMatch(el -> el.getText().toLowerCase().contains(expected));
     }
 

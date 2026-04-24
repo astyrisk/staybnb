@@ -12,16 +12,6 @@ import com.staybnb.config.AppConstants;
 public class EditProfilePage extends BasePage {
     private static final String PAGE_URL = AppConstants.EDIT_PROFILE_URL;
 
-    //TODO remove duplication, redundancy
-    private By firstNameField = Locators.EditProfile.FIRST_NAME_FIELD;
-    private By lastNameField = Locators.EditProfile.LAST_NAME_FIELD;
-    private By phoneField = Locators.EditProfile.PHONE_FIELD;
-    private By bioField = Locators.EditProfile.BIO_FIELD;
-    private By avatarUrlField = Locators.EditProfile.AVATAR_URL_FIELD;
-    private By saveChangesButton = Locators.EditProfile.SAVE_CHANGES_BUTTON;
-    private By cancelButton = Locators.EditProfile.CANCEL_BUTTON;
-    private By validationError = Locators.EditProfile.VALIDATION_ERROR;
-
     public EditProfilePage(WebDriver driver) {
         super(driver);
     }
@@ -32,23 +22,23 @@ public class EditProfilePage extends BasePage {
     }
 
     public void enterFirstName(String firstName) {
-        type(firstNameField, firstName);
+        type(Locators.EditProfile.FIRST_NAME_FIELD, firstName);
     }
 
     public void enterLastName(String lastName) {
-        type(lastNameField, lastName);
+        type(Locators.EditProfile.LAST_NAME_FIELD, lastName);
     }
 
     public void enterPhone(String phone) {
-        type(phoneField, phone);
+        type(Locators.EditProfile.PHONE_FIELD, phone);
     }
 
     public void enterBio(String bio) {
-        type(bioField, bio);
+        type(Locators.EditProfile.BIO_FIELD, bio);
     }
 
     public void enterAvatarUrl(String avatarUrl) {
-        type(avatarUrlField, avatarUrl);
+        type(Locators.EditProfile.AVATAR_URL_FIELD, avatarUrl);
     }
 
     public void updateProfile(String firstName, String lastName, String phone, String bio, String avatarUrl) {
@@ -92,15 +82,15 @@ public class EditProfilePage extends BasePage {
     }
 
     public void clickSaveChanges() {
-        waitForElementClickable(saveChangesButton).click();
+        waitForElementClickable(Locators.EditProfile.SAVE_CHANGES_BUTTON).click();
     }
 
     public void clickCancel() {
-        waitForElementClickable(cancelButton).click();
+        waitForElementClickable(Locators.EditProfile.CANCEL_BUTTON).click();
     }
 
     public boolean isValidationErrorDisplayed() {
-        return isDisplayed(validationError);
+        return isDisplayed(Locators.EditProfile.VALIDATION_ERROR);
     }
 
     public String getFieldError(String fieldId) {
@@ -116,7 +106,7 @@ public class EditProfilePage extends BasePage {
     }
 
     public String getFirstNameValue() {
-        return waitForElementVisible(firstNameField).getAttribute("value");
+        return waitForElementVisible(Locators.EditProfile.FIRST_NAME_FIELD).getAttribute("value");
     }
 
     public String updateMyProfileViaApi(String updatePayloadJson) {
@@ -129,7 +119,7 @@ public class EditProfilePage extends BasePage {
 
     private void waitForEditProfileToLoad() {
         wait.until(d ->
-                !d.findElements(firstNameField).isEmpty() ||
+                !d.findElements(Locators.EditProfile.FIRST_NAME_FIELD).isEmpty() ||
                 d.getPageSource().contains("401") ||
                 d.getPageSource().contains("Unauthorized")
         );

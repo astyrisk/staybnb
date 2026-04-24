@@ -1,23 +1,16 @@
 package com.staybnb.tests;
 
 import com.staybnb.config.AppConstants;
-import com.staybnb.config.WaitConstants;
 import com.staybnb.config.DriverFactory;
 import com.staybnb.config.TestConfig;
 import com.staybnb.extensions.ScreenshotOnFailureExtension;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.RegisterPage;
 import io.qameta.allure.junit5.AllureJunit5;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.UUID;
 
 @ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class})
@@ -27,23 +20,6 @@ public class BaseTest {
     @BeforeEach
     public void commonSetup() {
         driver = DriverFactory.createDriver();
-    }
-
-    protected WebDriverWait getWait() {
-        return new WebDriverWait(driver, Duration.ofSeconds(WaitConstants.MEDIUM_WAIT));
-    }
-
-    protected void waitForUrlContains(String text) {
-        getWait().until(ExpectedConditions.urlContains(text));
-    }
-
-    protected boolean isUrlContains(String text) {
-        try {
-            waitForUrlContains(text);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     protected String registerNewUserAndLandOnHome(String emailPrefix) {
@@ -65,7 +41,7 @@ public class BaseTest {
     }
 
     protected void loginAsUserAndLandOnHome(LoginPage loginPage) {
-        driver.get(AppConstants.HOME_URL);
+        loginPage.navbar().clickLogoAndWaitForHome();
         loginPage.navbar().clickLoginAndWaitForRedirect();
         loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
     }

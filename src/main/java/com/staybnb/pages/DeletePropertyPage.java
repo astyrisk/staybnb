@@ -14,16 +14,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DeletePropertyPage extends BasePage {
-
-    private final By editPageDeleteButton = Locators.DeleteProperty.EDIT_PAGE_DELETE_BUTTON;
-    private final By dashboardDeleteButtons = Locators.DeleteProperty.DASHBOARD_DELETE_BUTTONS;
-    private final By confirmButton = Locators.DeleteProperty.CONFIRM_BUTTON;
-    private final By cancelButton = Locators.DeleteProperty.CANCEL_BUTTON;
-    private final By dashboardPropertyTitle = Locators.DeleteProperty.DASHBOARD_PROPERTY_TITLE;
 
     public DeletePropertyPage(WebDriver driver) {
         super(driver);
@@ -38,13 +30,13 @@ public class DeletePropertyPage extends BasePage {
     }
 
     public void clickDeleteOnEditPage() {
-        waitForElementClickable(editPageDeleteButton).click();
+        waitForElementClickable(Locators.DeleteProperty.EDIT_PAGE_DELETE_BUTTON).click();
     }
 
     public void clickDeleteOnDashboardForTitle(String propertyTitle) {
         List<WebElement> cards = driver.findElements(By.cssSelector(".host-dashboard-card"));
         for (WebElement card : cards) {
-            String cardTitle = card.findElement(dashboardPropertyTitle).getText().trim();
+            String cardTitle = card.findElement(Locators.DeleteProperty.DASHBOARD_PROPERTY_TITLE).getText().trim();
             if (cardTitle.equals(propertyTitle)) {
                 card.findElement(Locators.HostDashboard.CARD_DELETE_BUTTON).click();
                 return;
@@ -54,7 +46,7 @@ public class DeletePropertyPage extends BasePage {
     }
 
     public void clickFirstDashboardDelete() {
-        waitForElementClickable(dashboardDeleteButtons).click();
+        waitForElementClickable(Locators.DeleteProperty.DASHBOARD_DELETE_BUTTONS).click();
     }
 
     public boolean hasDeleteConfirmationMessage(String expectedMessage) {
@@ -64,20 +56,20 @@ public class DeletePropertyPage extends BasePage {
 
     public void confirmDeletion() {
         if (!tryAcceptAlert()) {
-            waitForElementClickable(confirmButton).click();
+            waitForElementClickable(Locators.DeleteProperty.CONFIRM_BUTTON).click();
         }
     }
 
     public void cancelDeletion() {
         if (!tryDismissAlert()) {
-            waitForElementClickable(cancelButton).click();
+            waitForElementClickable(Locators.DeleteProperty.CANCEL_BUTTON).click();
         }
     }
 
     public boolean isPropertyListedOnDashboard(String propertyTitle) {
         navigateToHostingDashboard();
         wait.until(d -> !d.findElements(By.cssSelector(".host-dashboard-grid, .host-dashboard-empty")).isEmpty());
-        return driver.findElements(dashboardPropertyTitle)
+        return driver.findElements(Locators.DeleteProperty.DASHBOARD_PROPERTY_TITLE)
                 .stream()
                 .anyMatch(el -> propertyTitle.equals(el.getText().trim()));
     }
@@ -135,5 +127,4 @@ public class DeletePropertyPage extends BasePage {
             return "";
         }
     }
-
 }

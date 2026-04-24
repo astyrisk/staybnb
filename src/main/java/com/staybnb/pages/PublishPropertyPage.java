@@ -11,12 +11,6 @@ import java.util.regex.Pattern;
 
 public class PublishPropertyPage extends BasePage {
 
-    //TODO Redundant, repeated
-    private final By dashboardCard = Locators.HostDashboard.PROPERTY_CARD;
-    private final By dashboardTitle = Locators.HostDashboard.CARD_TITLE;
-    private final By dashboardStatus = Locators.HostDashboard.CARD_STATUS;
-    private final By dashboardPublishToggle = Locators.HostDashboard.CARD_PUBLISH_TOGGLE;
-
     public PublishPropertyPage(WebDriver driver) {
         super(driver);
     }
@@ -33,18 +27,18 @@ public class PublishPropertyPage extends BasePage {
 
     public void clickPublishToggleOnDashboardForTitle(String propertyTitle) {
         WebElement card = findDashboardCardByTitle(propertyTitle);
-        card.findElement(dashboardPublishToggle).click();
+        card.findElement(Locators.HostDashboard.CARD_PUBLISH_TOGGLE).click();
     }
 
     public boolean isPropertyDraftOnDashboard(String propertyTitle) {
         WebElement card = findDashboardCardByTitle(propertyTitle);
-        String statusText = card.findElement(dashboardStatus).getText().trim();
+        String statusText = card.findElement(Locators.HostDashboard.CARD_STATUS).getText().trim();
         return statusText.equalsIgnoreCase("Draft");
     }
 
     public boolean isPropertyPublishedOnDashboard(String propertyTitle) {
         WebElement card = findDashboardCardByTitle(propertyTitle);
-        String statusText = card.findElement(dashboardStatus).getText().trim();
+        String statusText = card.findElement(Locators.HostDashboard.CARD_STATUS).getText().trim();
         return statusText.equalsIgnoreCase("Published");
     }
 
@@ -89,9 +83,9 @@ public class PublishPropertyPage extends BasePage {
 
     private WebElement findDashboardCardByTitle(String propertyTitle) {
         waitForDashboardCardsToLoad();
-        List<WebElement> cards = driver.findElements(dashboardCard);
+        List<WebElement> cards = driver.findElements(Locators.HostDashboard.PROPERTY_CARD);
         for (WebElement card : cards) {
-            String cardTitle = card.findElement(dashboardTitle).getText().trim();
+            String cardTitle = card.findElement(Locators.HostDashboard.CARD_TITLE).getText().trim();
             if (cardTitle.equals(propertyTitle)) {
                 return card;
             }
@@ -100,7 +94,8 @@ public class PublishPropertyPage extends BasePage {
     }
 
     private void waitForDashboardCardsToLoad() {
-        wait.until(d -> !d.findElements(dashboardCard).isEmpty() || !d.findElements(By.className("host-dashboard-empty")).isEmpty());
+        wait.until(d -> !d.findElements(Locators.HostDashboard.PROPERTY_CARD).isEmpty()
+                || !d.findElements(By.className("host-dashboard-empty")).isEmpty());
     }
 
     public boolean isPublishSuccessfulResponse(String response) {

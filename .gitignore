@@ -25,3 +25,4 @@ allure-report/
 # macOS
 .DS_Store
 TODO.md
+*.swp

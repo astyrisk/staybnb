@@ -54,7 +54,7 @@ public class CreatePropertyStep7Test extends CreatePropertyBaseTest {
         createPropertyPage.clickCreateProperty();
 
         assertTrue(
-                isUrlContains("/hosting"),
+                createPropertyPage.urlContains("/hosting"),
                 ErrorMessages.CREATE_PROPERTY_STEP7_SUBMIT_SHOULD_REDIRECT_TO_HOST_DASHBOARD
         );
     }

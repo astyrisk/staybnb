@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.lang.management.ManagementFactory;
 import java.time.Duration;
 
 public final class DriverFactory {
@@ -33,6 +34,7 @@ public final class DriverFactory {
             driver.manage().window().maximize();
         }
         driverThread.set(driver);
+        driver.get(AppConstants.HOME_URL);
         log.debug("ChromeDriver created for thread [{}]", Thread.currentThread().getName());
         return driver;
     }
@@ -54,9 +56,17 @@ public final class DriverFactory {
     }
 
     private static boolean isHeadlessMode() {
-        return "true".equals(System.getenv("GITHUB_ACTIONS"))
-                || System.getenv("JENKINS_URL") != null
-                || "true".equalsIgnoreCase(System.getProperty("headless"))
-                || "true".equalsIgnoreCase(ConfigProperties.get("headless", "false"));
+        String explicitProp = System.getProperty("headless");
+        if (explicitProp != null) return "true".equalsIgnoreCase(explicitProp);
+
+        String explicitConfig = ConfigProperties.get("headless", null);
+        if (explicitConfig != null) return "true".equalsIgnoreCase(explicitConfig);
+
+        return !isDebuggerAttached();
+    }
+
+    private static boolean isDebuggerAttached() {
+        return ManagementFactory.getRuntimeMXBean().getInputArguments().stream()
+                .anyMatch(arg -> arg.toLowerCase().startsWith("-agentlib:jdwp") || arg.startsWith("-Xrunjdwp"));
     }
 }

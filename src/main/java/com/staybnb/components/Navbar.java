@@ -12,32 +12,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
 public class Navbar extends BaseComponent {
-    private final By navbarLogo = Locators.Navbar.NAVBAR_LOGO;
-    private final By userMenuButton = Locators.Navbar.USER_MENU_BUTTON;
-    private final By userAvatar = Locators.Navbar.USER_AVATAR;
-    private final By hamburgerMenu = Locators.Navbar.HAMBURGER_MENU;
-
-    private final By loginLink = Locators.Navbar.LOGIN_LINK;
-    private final By registerLink = Locators.Navbar.REGISTER_LINK;
-
-    private final By becomeAHost = Locators.Navbar.BECOME_A_HOST;
-    private final By hostDashboard = Locators.Navbar.HOST_DASHBOARD;
-
-    private final By dropdownMenu = Locators.Navbar.DROPDOWN_MENU;
-    private final By profileLink = Locators.Navbar.PROFILE_LINK;
-    private final By wishlistsLink = Locators.Navbar.WISHLISTS_LINK;
-    private final By logoutButton = Locators.Navbar.LOGOUT_BUTTON;
-
-    private final By compactSearchBtn = Locators.SearchBar.COMPACT_SEARCH_BTN;
-    private final By expandedSearchForm = Locators.SearchBar.EXPANDED_FORM;
-    private final By destinationInput = Locators.SearchBar.DESTINATION_INPUT;
-    private final By searchSubmitBtn = Locators.SearchBar.SEARCH_SUBMIT_BTN;
-    private final By checkInInput = Locators.SearchBar.CHECK_IN_INPUT;
-    private final By checkOutInput = Locators.SearchBar.CHECK_OUT_INPUT;
-    private final By guestsDisplay = Locators.SearchBar.GUESTS_DISPLAY;
-    private final By guestsIncrementBtn = Locators.SearchBar.GUESTS_INCREMENT_BTN;
-    private final By guestsDecrementBtn = Locators.SearchBar.GUESTS_DECREMENT_BTN;
-
     private static final String SET_DATE_INPUT_JS = "com/staybnb/scripts/setDateInput.js";
 
     public Navbar(WebDriver driver) {
@@ -45,89 +19,94 @@ public class Navbar extends BaseComponent {
     }
 
     public boolean isLogoDisplayed() {
-        return isDisplayed(navbarLogo);
+        return isDisplayed(Locators.Navbar.NAVBAR_LOGO);
     }
 
     public boolean isUserAvatarDisplayed() {
-        return isDisplayed(userAvatar);
+        return isDisplayed(Locators.Navbar.USER_AVATAR);
     }
 
     public boolean isLoginLinkDisplayed() {
-        return isDisplayed(loginLink);
+        return isDisplayed(Locators.Navbar.LOGIN_LINK);
     }
 
     public boolean isRegisterLinkDisplayed() {
-        return isDisplayed(registerLink);
+        return isDisplayed(Locators.Navbar.REGISTER_LINK);
     }
 
     public boolean isBecomeAHostDisplayed() {
-        return isDisplayed(becomeAHost);
+        return isDisplayed(Locators.Navbar.BECOME_A_HOST);
     }
 
     public boolean isHostDashboardDisplayed() {
-        return isDisplayed(hostDashboard);
+        return isDisplayed(Locators.Navbar.HOST_DASHBOARD);
     }
 
     public void clickBecomeAHost() {
-        waitForElementClickable(becomeAHost).click();
+        waitForElementClickable(Locators.Navbar.BECOME_A_HOST).click();
     }
 
     public void clickHostDashboard() {
         openUserMenu();
-        waitForElementClickable(hostDashboard).click();
+        waitForElementClickable(Locators.Navbar.HOST_DASHBOARD).click();
+    }
+
+    public void clickLogoAndWaitForHome() {
+        waitForElementClickable(Locators.Navbar.NAVBAR_LOGO).click();
+        waitForUrlToBe(AppConstants.HOME_URL);
     }
 
     public void clickLogin() {
-        waitForElementClickable(loginLink).click();
+        waitForElementClickable(Locators.Navbar.LOGIN_LINK).click();
     }
 
     public void clickRegister() {
-        waitForElementClickable(registerLink).click();
+        waitForElementClickable(Locators.Navbar.REGISTER_LINK).click();
     }
 
     public void openUserMenu() {
-        waitForElementClickable(userMenuButton).click();
+        waitForElementClickable(Locators.Navbar.USER_MENU_BUTTON).click();
     }
 
     public boolean isDropdownDisplayed() {
-        return isDisplayed(dropdownMenu);
+        return isDisplayed(Locators.Navbar.DROPDOWN_MENU);
     }
 
     public boolean isProfileLinkDisplayed() {
-        return isDisplayed(profileLink);
+        return isDisplayed(Locators.Navbar.PROFILE_LINK);
     }
 
     public boolean isWishlistsLinkDisplayed() {
-        return isDisplayed(wishlistsLink);
+        return isDisplayed(Locators.Navbar.WISHLISTS_LINK);
     }
 
     public boolean isLogoutButtonDisplayed() {
-        return isDisplayed(logoutButton);
+        return isDisplayed(Locators.Navbar.LOGOUT_BUTTON);
     }
 
     public void clickProfile() {
         openUserMenu();
-        waitForElementClickable(profileLink).click();
+        waitForElementClickable(Locators.Navbar.PROFILE_LINK).click();
     }
 
     public void clickWishlists() {
         openUserMenu();
-        waitForElementClickable(wishlistsLink).click();
+        waitForElementClickable(Locators.Navbar.WISHLISTS_LINK).click();
     }
 
     public void clickWishlistsAndWaitForRedirect() {
         clickWishlists();
-        waitForUrlContains(AppConstants.WISHLIST_URL);
+        waitForUrlToBe(AppConstants.WISHLIST_URL);
     }
 
     public void clickLogout() {
         openUserMenu();
-        waitForElementClickable(logoutButton).click();
+        waitForElementClickable(Locators.Navbar.LOGOUT_BUTTON).click();
     }
 
     public void clickProfileAndWaitForRedirect() {
         clickProfile();
-        waitForUrlContains(AppConstants.PROFILE_URL);
+        waitForUrlToBe(AppConstants.PROFILE_URL);
     }
 
     public void clickLogoutAndWaitForRedirectToHome() {
@@ -136,17 +115,17 @@ public class Navbar extends BaseComponent {
     }
 
     public void clickLoginAndWaitForRedirect() {
-        clickLogin();
-        waitForUrlContains(AppConstants.LOGIN_URL);
+        waitForElementClickable(Locators.Navbar.LOGIN_LINK).click();
+        waitForUrlToBe(AppConstants.LOGIN_URL);
     }
 
     public void clickRegisterAndWaitForRedirect() {
         clickRegister();
-        waitForUrlContains(AppConstants.REGISTER_URL);
+        waitForUrlToBe(AppConstants.REGISTER_URL);
     }
 
     public boolean isHamburgerMenuDisplayed() {
-        return isDisplayed(hamburgerMenu);
+        return isDisplayed(Locators.Navbar.HAMBURGER_MENU);
     }
 
     public boolean isAuthenticatedNavbarCheckMet(String checkName) {
@@ -178,25 +157,25 @@ public class Navbar extends BaseComponent {
     }
 
     public void clickCompactSearchBar() {
-        waitForElementClickable(compactSearchBtn).click();
+        waitForElementClickable(Locators.SearchBar.COMPACT_SEARCH_BTN).click();
     }
 
     public boolean isSearchFormExpanded() {
-        return isDisplayed(expandedSearchForm);
+        return isDisplayed(Locators.SearchBar.EXPANDED_FORM);
     }
 
     public boolean isCompactSearchBarDisplayed() {
-        return isDisplayed(compactSearchBtn);
+        return isDisplayed(Locators.SearchBar.COMPACT_SEARCH_BTN);
     }
 
     public void enterDestination(String city) {
-        WebElement input = waitForElementVisible(destinationInput);
+        WebElement input = waitForElementVisible(Locators.SearchBar.DESTINATION_INPUT);
         input.clear();
         input.sendKeys(city);
     }
 
     public void clickSearch() {
-        waitForElementClickable(searchSubmitBtn).click();
+        waitForElementClickable(Locators.SearchBar.SEARCH_SUBMIT_BTN).click();
     }
 
     public void searchForCity(String city) {
@@ -207,38 +186,38 @@ public class Navbar extends BaseComponent {
     }
 
     public void setCheckInDate(String isoDate) {
-        setDateInput(checkInInput, isoDate);
+        setDateInput(Locators.SearchBar.CHECK_IN_INPUT, isoDate);
     }
 
     public void setCheckOutDate(String isoDate) {
-        setDateInput(checkOutInput, isoDate);
+        setDateInput(Locators.SearchBar.CHECK_OUT_INPUT, isoDate);
     }
 
     public String getCheckInMinAttribute() {
-        return waitForElementVisible(checkInInput).getAttribute("min");
+        return waitForElementVisible(Locators.SearchBar.CHECK_IN_INPUT).getAttribute("min");
     }
 
     public String getCheckOutMinAttribute() {
-        return waitForElementVisible(checkOutInput).getAttribute("min");
+        return waitForElementVisible(Locators.SearchBar.CHECK_OUT_INPUT).getAttribute("min");
     }
 
     public void waitForCheckOutMinToBe(String expectedMin) {
-        wait.until(ExpectedConditions.attributeToBe(checkOutInput, "min", expectedMin));
+        wait.until(ExpectedConditions.attributeToBe(Locators.SearchBar.CHECK_OUT_INPUT, "min", expectedMin));
     }
 
     public int getGuestsCount() {
-        return Integer.parseInt(waitForElementVisible(guestsDisplay).getText());
+        return Integer.parseInt(waitForElementVisible(Locators.SearchBar.GUESTS_DISPLAY).getText());
     }
 
     public void incrementGuests(int times) {
         for (int i = 0; i < times; i++) {
-            waitForElementClickable(guestsIncrementBtn).click();
+            waitForElementClickable(Locators.SearchBar.GUESTS_INCREMENT_BTN).click();
         }
     }
 
     public void decrementGuests(int times) {
         for (int i = 0; i < times; i++) {
-            waitForElementClickable(guestsDecrementBtn).click();
+            waitForElementClickable(Locators.SearchBar.GUESTS_DECREMENT_BTN).click();
         }
     }
 

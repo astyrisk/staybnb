@@ -94,7 +94,7 @@ public class OwnProfileTest extends BaseTest {
         ownProfilePage.clickEditProfile();
 
         assertTrue(
-                isUrlContains(AppConstants.EDIT_PROFILE_URL),
+                ownProfilePage.urlContains(AppConstants.EDIT_PROFILE_URL),
                 ErrorMessages.SHOULD_NAVIGATE_TO_EDIT_PROFILE_PAGE
         );
     }

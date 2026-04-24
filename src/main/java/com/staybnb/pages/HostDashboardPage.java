@@ -2,7 +2,6 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import com.staybnb.config.AppConstants;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -10,12 +9,6 @@ import java.util.List;
 
 public class HostDashboardPage extends BasePage {
     private static final String PAGE_URL = AppConstants.HOSTING_URL;
-
-    private final By container = Locators.HostDashboard.CONTAINER;
-    private final By summarySubtitle = Locators.HostDashboard.SUMMARY_SUBTITLE;
-    private final By createNewPropertyButton = Locators.HostDashboard.CREATE_NEW_PROPERTY_BUTTON;
-    private final By propertyCard = Locators.HostDashboard.PROPERTY_CARD;
-    private final By emptyStateMessage = Locators.HostDashboard.EMPTY_STATE_MESSAGE;
 
     public HostDashboardPage(WebDriver driver) {
         super(driver);
@@ -28,24 +21,24 @@ public class HostDashboardPage extends BasePage {
 
     public void navigateViaNavbar() {
         navbar().clickHostDashboard();
-        waitForUrlContains(PAGE_URL);
+        waitForUrlToBe(PAGE_URL);
         waitForDashboardToLoad();
     }
 
     public String getSummarySubtitle() {
-        return waitForElementVisible(summarySubtitle).getText();
+        return waitForElementVisible(Locators.HostDashboard.SUMMARY_SUBTITLE).getText();
     }
 
     public boolean isCreateNewPropertyButtonVisible() {
-        return isDisplayed(createNewPropertyButton);
+        return isDisplayed(Locators.HostDashboard.CREATE_NEW_PROPERTY_BUTTON);
     }
 
     public String getCreateNewPropertyHref() {
-        return waitForElementVisible(createNewPropertyButton).getAttribute("href");
+        return waitForElementVisible(Locators.HostDashboard.CREATE_NEW_PROPERTY_BUTTON).getAttribute("href");
     }
 
     public List<WebElement> getPropertyCards() {
-        return waitForElementsPresent(propertyCard);
+        return waitForElementsPresent(Locators.HostDashboard.PROPERTY_CARD);
     }
 
     public boolean hasThumbnail(WebElement card) {
@@ -121,7 +114,7 @@ public class HostDashboardPage extends BasePage {
     }
 
     public boolean isEmptyStateVisible() {
-        return isDisplayed(emptyStateMessage);
+        return isDisplayed(Locators.HostDashboard.EMPTY_STATE_MESSAGE);
     }
 
     public String getHostingPropertiesViaApi() {
@@ -134,9 +127,9 @@ public class HostDashboardPage extends BasePage {
 
     private void waitForDashboardToLoad() {
         wait.until(d ->
-                !d.findElements(container).isEmpty() ||
-                !d.findElements(emptyStateMessage).isEmpty() ||
-                !d.findElements(propertyCard).isEmpty()
+                !d.findElements(Locators.HostDashboard.CONTAINER).isEmpty() ||
+                !d.findElements(Locators.HostDashboard.EMPTY_STATE_MESSAGE).isEmpty() ||
+                !d.findElements(Locators.HostDashboard.PROPERTY_CARD).isEmpty()
         );
     }
 }

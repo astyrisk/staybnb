@@ -54,7 +54,7 @@ public class SortSearchResultsTest extends BaseTest {
         propertyListingPage.navigateToWithSort(TestDataConstants.SortFilter.SORT_PRICE_ASC);
         propertyListingPage.selectSortOption(TestDataConstants.SortFilter.SORT_NEWEST);
         propertyListingPage.waitForSortParamRemoved();
-        assertFalse(isUrlContains("sort="), ErrorMessages.SORT_BY_NEWEST_SHOULD_RESET_URL);
+        assertFalse(propertyListingPage.urlContains("sort="), ErrorMessages.SORT_BY_NEWEST_SHOULD_RESET_URL);
     }
 
     // AC3: price ASC - first page of results is ordered by price ascending (non-decreasing)
@@ -97,8 +97,8 @@ public class SortSearchResultsTest extends BaseTest {
         propertyListingPage.selectSortOption(TestDataConstants.SortFilter.SORT_PRICE_ASC);
         propertyListingPage.waitForSortToApply();
         assertAll(
-                () -> assertTrue(isUrlContains("sort="), ErrorMessages.SORT_AND_FILTER_URL_SHOULD_CONTAIN_SORT_PARAM),
-                () -> assertTrue(isUrlContains("minPrice="), ErrorMessages.SORT_AND_FILTER_URL_SHOULD_CONTAIN_FILTER_PARAM)
+                () -> assertTrue(propertyListingPage.urlContains("sort="), ErrorMessages.SORT_AND_FILTER_URL_SHOULD_CONTAIN_SORT_PARAM),
+                () -> assertTrue(propertyListingPage.urlContains("minPrice="), ErrorMessages.SORT_AND_FILTER_URL_SHOULD_CONTAIN_FILTER_PARAM)
         );
     }
 

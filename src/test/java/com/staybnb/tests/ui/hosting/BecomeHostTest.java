@@ -50,7 +50,7 @@ public class BecomeHostTest extends BaseTest {
     private void becomeHostAsNewUser() {
         registerNewUserAndLandOnHome("testhost");
         ownProfilePage.navbar().clickBecomeAHost();
-        driver.get(AppConstants.HOME_URL);
+        ownProfilePage.navbar().clickLogoAndWaitForHome();
     }
 
     // fails: 'My properties' doesn't exist
@@ -83,7 +83,7 @@ public class BecomeHostTest extends BaseTest {
     //        ownProfilePage.navbar().clickMyProperties();
     //
     //        assertTrue(
-    //                isUrlContains(AppConstants.HOSTING_URL),
+    //                ownProfilePage.urlContains(AppConstants.HOSTING_URL),
     //                ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE
     //        );
     //    }
@@ -107,7 +107,7 @@ public class BecomeHostTest extends BaseTest {
         ownProfilePage.navbar().clickBecomeAHost();
 
         assertTrue(
-            isUrlContains(AppConstants.HOSTING_URL),
+            ownProfilePage.urlContains(AppConstants.HOSTING_URL),
             ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE
         );
     }
@@ -121,7 +121,7 @@ public class BecomeHostTest extends BaseTest {
         ownProfilePage.clickBecomeHost();
 
         assertTrue(
-            isUrlContains(AppConstants.HOSTING_URL),
+            ownProfilePage.urlContains(AppConstants.HOSTING_URL),
             ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE
         );
     }

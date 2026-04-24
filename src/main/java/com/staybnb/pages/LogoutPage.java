@@ -1,14 +1,10 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import com.staybnb.config.AppConstants;
 
 public class LogoutPage extends BasePage {
-    private final By userMenuButton = Locators.Logout.USER_MENU_BUTTON;
-    private final By logoutButton = Locators.Logout.LOGOUT_BUTTON;
-
     public LogoutPage(WebDriver driver) {
         super(driver);
     }
@@ -18,11 +14,11 @@ public class LogoutPage extends BasePage {
     }
 
     public void openUserMenu() {
-        waitForElementClickable(userMenuButton).click();
+        waitForElementClickable(Locators.Logout.USER_MENU_BUTTON).click();
     }
 
     public void clickLogout() {
-        waitForElementClickable(logoutButton).click();
+        waitForElementClickable(Locators.Logout.LOGOUT_BUTTON).click();
     }
 
     public void logout() {

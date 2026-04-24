@@ -71,7 +71,7 @@ public class AddToWishlistTest extends BaseTest {
         propertyListingPage.navigateTo();
         propertyListingPage.clickFavoriteOnFirstCard();
         assertTrue(
-                isUrlContains("/login"),
+                propertyListingPage.urlContains("/login"),
                 ErrorMessages.WISHLIST_UNAUTHENTICATED_CLICK_SHOULD_REDIRECT_TO_LOGIN
         );
     }

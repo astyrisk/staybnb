@@ -23,27 +23,27 @@ public class LoginTest extends BaseTest {
     @BeforeEach
     public void setup() {
         loginPage = new LoginPage(driver);
-        loginPage.navigateViaNavbar();
+        loginPage.navbar().clickLoginAndWaitForRedirect();
     }
 
     @Test
     @DisplayName("Successful login redirects to home page")
     public void testSuccessfulLoginRedirection() {
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginPage.login(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
 
         assertTrue(
-                isUrlContains(AppConstants.HOME_URL)
+                loginPage.urlContains(AppConstants.HOME_URL)
         );
     }
 
     @Test
     @DisplayName("Login with invalid credentials shows error message")
     public void testLoginWithInvalidCredentials() {
-        loginPage.login("wrong@email.com", "wrongpassword");
-        String error = loginPage.getGlobalErrorMessageText();
+        loginPage.login("wrong@email.com", "wrong_password");
+        String inlineError = loginPage.getInlineErrorMessageText();
 
         assertTrue(
-                error.toLowerCase().contains("invalid") || error.toLowerCase().contains("incorrect"),
+                inlineError.toLowerCase().contains("invalid email or password"),
                 ErrorMessages.EXPECTED_INVALID_CREDENTIALS_OR_UNAUTHORIZED
         );
     }
@@ -51,10 +51,12 @@ public class LoginTest extends BaseTest {
     @Test
     @DisplayName("Login with blank fields shows inline validation error")
     public void testLoginWithBlankFields() {
-        loginPage.clickLoginButton();
+        loginPage.clickPrimarySubmit();
+        String inlineError = loginPage.getInlineErrorMessageText();
 
         assertTrue(
-                loginPage.isInlineErrorDisplayed(ErrorMessages.REQUIRED)
+                inlineError.toLowerCase().contains("email and password are required"),
+                ErrorMessages.EXPECTED_INVALID_CREDENTIALS_OR_UNAUTHORIZED
         );
     }
 
@@ -64,7 +66,7 @@ public class LoginTest extends BaseTest {
         loginPage.clickRegisterLink();
 
         assertTrue(
-                isUrlContains(AppConstants.REGISTER_URL),
+                loginPage.urlContains(AppConstants.REGISTER_URL),
                 ErrorMessages.LOGIN_PAGE_SHOULD_NAVIGATE_TO_REGISTER
         );
     }

@@ -2,15 +2,9 @@ package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
 import com.staybnb.config.AppConstants;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends AuthPage {
-    private By firstNameField = Locators.Register.FIRST_NAME_FIELD;
-    private By lastNameField = Locators.Register.LAST_NAME_FIELD;
-    private By confirmPasswordField = Locators.Register.CONFIRM_PASSWORD_FIELD;
-    private By loginLink = Locators.Register.LOGIN_LINK;
-
     public RegisterPage(WebDriver driver) {
         super(driver);
     }
@@ -21,23 +15,15 @@ public class RegisterPage extends AuthPage {
     }
 
     public void enterFirstName(String firstName) {
-        type(firstNameField, firstName);
+        type(Locators.Register.FIRST_NAME_FIELD, firstName);
     }
 
     public void enterLastName(String lastName) {
-        type(lastNameField, lastName);
-    }
-
-    public void enterEmail(String email) {
-        type(emailField, email);
-    }
-
-    public void enterPassword(String password) {
-        type(passwordField, password);
+        type(Locators.Register.LAST_NAME_FIELD, lastName);
     }
 
     public void enterConfirmPassword(String confirmPassword) {
-        type(confirmPasswordField, confirmPassword);
+        type(Locators.Register.CONFIRM_PASSWORD_FIELD, confirmPassword);
     }
 
     public void clickRegister() {
@@ -45,7 +31,7 @@ public class RegisterPage extends AuthPage {
     }
 
     public void clickLoginLink() {
-        click(loginLink);
+        click(Locators.Register.LOGIN_LINK);
     }
 
     public void fillCompleteRegistration(String fName, String lName, String email, String pass) {
@@ -62,7 +48,6 @@ public class RegisterPage extends AuthPage {
     }
 
     public void navigateViaNavbar() {
-        navigateTo(AppConstants.HOME_URL);
         navbar().clickRegisterAndWaitForRedirect();
     }
 

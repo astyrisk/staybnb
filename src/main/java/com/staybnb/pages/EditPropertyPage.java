@@ -14,20 +14,6 @@ import java.util.List;
 
 public class EditPropertyPage extends BasePage {
 
-    private final By container = Locators.EditProperty.CONTAINER;
-    private final By headerTitle = Locators.EditProperty.HEADER_TITLE;
-    private final By deletePropertyButton = Locators.EditProperty.DELETE_PROPERTY_BUTTON;
-    private final By sectionHeaders = Locators.EditProperty.SECTION_HEADERS;
-    private final By saveChangesButton = Locators.EditProperty.SAVE_CHANGES_BUTTON;
-    private final By fieldErrors = Locators.EditProperty.FIELD_ERRORS;
-    private final By titleInput = Locators.EditProperty.TITLE_INPUT;
-    private final By descriptionTextarea = Locators.EditProperty.DESCRIPTION_TEXTAREA;
-    private final By countryInput = Locators.EditProperty.COUNTRY_INPUT;
-    private final By cityInput = Locators.EditProperty.CITY_INPUT;
-    private final By priceInput = Locators.EditProperty.PRICE_INPUT;
-    private final By propertyTypeSelect = Locators.EditProperty.PROPERTY_TYPE_SELECT;
-    private final By categorySelect = Locators.EditProperty.CATEGORY_SELECT;
-
     public EditPropertyPage(WebDriver driver) {
         super(driver);
     }
@@ -37,11 +23,13 @@ public class EditPropertyPage extends BasePage {
     }
 
     public boolean isEditPageLoaded() {
-        return isDisplayed(container) && isDisplayed(headerTitle) && isDisplayed(saveChangesButton);
+        return isDisplayed(Locators.EditProperty.CONTAINER)
+                && isDisplayed(Locators.EditProperty.HEADER_TITLE)
+                && isDisplayed(Locators.EditProperty.SAVE_CHANGES_BUTTON);
     }
 
     public void waitForSectionsToBeVisible() {
-        wait.until(d -> d.findElements(sectionHeaders).size() >= 6);
+        wait.until(d -> d.findElements(Locators.EditProperty.SECTION_HEADERS).size() >= 6);
     }
 
     public boolean hasAllMainSectionsVisible() {
@@ -62,28 +50,28 @@ public class EditPropertyPage extends BasePage {
     }
 
     public boolean hasPrePopulatedCoreFields() {
-        return !waitForElementVisible(titleInput).getAttribute("value").trim().isEmpty()
-                && !waitForElementVisible(descriptionTextarea).getAttribute("value").trim().isEmpty()
-                && !waitForElementVisible(countryInput).getAttribute("value").trim().isEmpty()
-                && !waitForElementVisible(cityInput).getAttribute("value").trim().isEmpty()
-                && !waitForElementVisible(priceInput).getAttribute("value").trim().isEmpty()
-                && !waitForElementVisible(propertyTypeSelect).getAttribute("value").trim().isEmpty()
-                && !waitForElementVisible(categorySelect).getAttribute("value").trim().isEmpty();
+        return !waitForElementVisible(Locators.EditProperty.TITLE_INPUT).getAttribute("value").trim().isEmpty()
+                && !waitForElementVisible(Locators.EditProperty.DESCRIPTION_TEXTAREA).getAttribute("value").trim().isEmpty()
+                && !waitForElementVisible(Locators.EditProperty.COUNTRY_INPUT).getAttribute("value").trim().isEmpty()
+                && !waitForElementVisible(Locators.EditProperty.CITY_INPUT).getAttribute("value").trim().isEmpty()
+                && !waitForElementVisible(Locators.EditProperty.PRICE_INPUT).getAttribute("value").trim().isEmpty()
+                && !waitForElementVisible(Locators.EditProperty.PROPERTY_TYPE_SELECT).getAttribute("value").trim().isEmpty()
+                && !waitForElementVisible(Locators.EditProperty.CATEGORY_SELECT).getAttribute("value").trim().isEmpty();
     }
 
     public boolean hasSectionHeader(String expectedHeader) {
         String expected = expectedHeader.toLowerCase();
-        List<WebElement> headers = driver.findElements(sectionHeaders);
+        List<WebElement> headers = driver.findElements(Locators.EditProperty.SECTION_HEADERS);
         return headers.stream().anyMatch(h -> h.getText().trim().toLowerCase().contains(expected));
     }
 
     public void clearRequiredField(String fieldName) {
         By locator = switch (fieldName) {
-            case "title" -> titleInput;
-            case "description" -> descriptionTextarea;
-            case "city" -> cityInput;
-            case "country" -> countryInput;
-            case "price" -> priceInput;
+            case "title" -> Locators.EditProperty.TITLE_INPUT;
+            case "description" -> Locators.EditProperty.DESCRIPTION_TEXTAREA;
+            case "city" -> Locators.EditProperty.CITY_INPUT;
+            case "country" -> Locators.EditProperty.COUNTRY_INPUT;
+            case "price" -> Locators.EditProperty.PRICE_INPUT;
             default -> throw new IllegalArgumentException("Unsupported required field: " + fieldName);
         };
 
@@ -93,11 +81,11 @@ public class EditPropertyPage extends BasePage {
     }
 
     public void clickSaveChanges() {
-        waitForElementClickable(saveChangesButton).click();
+        waitForElementClickable(Locators.EditProperty.SAVE_CHANGES_BUTTON).click();
     }
 
     public void clickSaveChangesAndDismissAlert() {
-        waitForElementClickable(saveChangesButton).click();
+        waitForElementClickable(Locators.EditProperty.SAVE_CHANGES_BUTTON).click();
         try {
             wait.until(ExpectedConditions.alertIsPresent()).accept();
         } catch (TimeoutException ignored) {
@@ -106,12 +94,12 @@ public class EditPropertyPage extends BasePage {
 
     public boolean hasInlineErrorContaining(String expectedText) {
         String expected = expectedText.toLowerCase();
-        List<WebElement> errors = driver.findElements(fieldErrors);
+        List<WebElement> errors = driver.findElements(Locators.EditProperty.FIELD_ERRORS);
         return errors.stream().anyMatch(el -> el.getText().toLowerCase().contains(expected));
     }
 
     public boolean isDeletePropertyButtonVisible() {
-        return isDisplayed(deletePropertyButton);
+        return isDisplayed(Locators.EditProperty.DELETE_PROPERTY_BUTTON);
     }
 
     public boolean isAmenitiesGridDisplayed() {

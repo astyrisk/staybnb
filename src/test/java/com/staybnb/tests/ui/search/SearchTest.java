@@ -47,7 +47,7 @@ public class SearchTest extends BaseTest {
         propertyListingPage.navbar().searchForCity(TestDataConstants.Search.KNOWN_CITY);
 
         assertTrue(
-                isUrlContains("city=" + TestDataConstants.Search.KNOWN_CITY),
+                propertyListingPage.urlContains("city=" + TestDataConstants.Search.KNOWN_CITY),
                 ErrorMessages.SEARCH_SHOULD_NAVIGATE_TO_CITY_FILTERED_URL
         );
     }
