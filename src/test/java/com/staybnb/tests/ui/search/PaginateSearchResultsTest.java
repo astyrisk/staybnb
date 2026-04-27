@@ -42,8 +42,7 @@ public class PaginateSearchResultsTest extends BaseTest {
     @Test
     @DisplayName("Clicking 'Next' navigates to the next page of results")
     public void testClickingNextLoadsNextPage() {
-        propertyListingPage.clickNextPage();
-        propertyListingPage.waitForPageInUrl(2);
+        propertyListingPage.clickNextPage().waitForPageInUrl(2);
         assertTrue(
                 propertyListingPage.urlContains("page=2"),
                 ErrorMessages.PAGINATION_CLICKING_NEXT_SHOULD_LOAD_NEXT_PAGE
@@ -55,8 +54,7 @@ public class PaginateSearchResultsTest extends BaseTest {
     @DisplayName("Clicking 'Previous' on page 2 navigates back to page 1")
     public void testClickingPreviousOnPage2LoadsPreviousPage() {
         propertyListingPage.navigateToPage(2);
-        propertyListingPage.clickPreviousPage();
-        propertyListingPage.waitForPageParamRemoved();
+        propertyListingPage.clickPreviousPage().waitForPageParamRemoved();
         assertFalse(
                 propertyListingPage.urlContains("page=2"),
                 ErrorMessages.PAGINATION_CLICKING_PREVIOUS_SHOULD_LOAD_PREVIOUS_PAGE

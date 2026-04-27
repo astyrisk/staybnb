@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,20 +31,18 @@ public class HostDashboardTest extends BaseTest {
     }
 
     private WebElement getFirstPropertyCardForExistingHost() {
-        hostDashboardPage.navigateViaNavbar();
-        if (hostDashboardPage.getPropertyCards().isEmpty()) {
+        List<WebElement> cards = hostDashboardPage.navigateViaNavbar().getPropertyCards();
+        if (cards.isEmpty()) {
             throw new IllegalStateException("Host account has no properties to validate dashboard cards.");
         }
-        return hostDashboardPage.getPropertyCards().getFirst();
+        return cards.getFirst();
     }
 
     @Test
     @DisplayName("Host dashboard shows property cards for a host with properties")
     public void testHostDashboardShowsPropertyCardsForHostWithProperties() {
-        hostDashboardPage.navigateViaNavbar();
-
         assertFalse(
-                hostDashboardPage.getPropertyCards().isEmpty(),
+                hostDashboardPage.navigateViaNavbar().getPropertyCards().isEmpty(),
                 ErrorMessages.HOST_DASHBOARD_SHOULD_DISPLAY_PROPERTY_CARDS_FOR_HOST_WITH_PROPERTIES
         );
     }
@@ -62,8 +61,7 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("Host dashboard summary shows total properties count")
     public void testHostDashboardShowsSummaryCount() {
-        hostDashboardPage.navigateViaNavbar();
-        String subtitle = hostDashboardPage.getSummarySubtitle().toLowerCase();
+        String subtitle = hostDashboardPage.navigateViaNavbar().getSummarySubtitle().toLowerCase();
 
         assertTrue(
                 subtitle.matches(".*\\d+\\s+properties?.*"),
@@ -74,10 +72,8 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("Host dashboard shows 'Create New Property' button")
     public void testHostDashboardShowsCreateNewPropertyButton() {
-        hostDashboardPage.navigateViaNavbar();
-
         assertTrue(
-                hostDashboardPage.isCreateNewPropertyButtonVisible(),
+                hostDashboardPage.navigateViaNavbar().isCreateNewPropertyButtonVisible(),
                 ErrorMessages.HOST_DASHBOARD_SHOULD_DISPLAY_CREATE_NEW_PROPERTY_BUTTON
         );
     }
@@ -85,10 +81,8 @@ public class HostDashboardTest extends BaseTest {
     @Test
     @DisplayName("'Create New Property' button links to the create property page")
     public void testHostDashboardCreateNewPropertyButtonLinksToCreatePage() {
-        hostDashboardPage.navigateViaNavbar();
-
         assertTrue(
-                hostDashboardPage.getCreateNewPropertyHref().endsWith("/hosting/create"),
+                hostDashboardPage.navigateViaNavbar().getCreateNewPropertyHref().endsWith("/hosting/create"),
                 ErrorMessages.HOST_DASHBOARD_CREATE_NEW_PROPERTY_LINK_SHOULD_POINT_TO_CREATE_PAGE
         );
     }
@@ -110,10 +104,9 @@ public class HostDashboardTest extends BaseTest {
         hostDashboardPage.logoutAndGoHome();
         registerNewUser();
         hostDashboardPage.clickNavbarBecomeAHost();
-        hostDashboardPage.navigateViaNavbar();
 
         assertTrue(
-                hostDashboardPage.isEmptyStateVisible(),
+                hostDashboardPage.navigateViaNavbar().isEmptyStateVisible(),
                 ErrorMessages.HOST_DASHBOARD_EMPTY_STATE_SHOULD_BE_VISIBLE_FOR_HOST_WITH_NO_PROPERTIES
         );
     }

@@ -18,10 +18,11 @@ public class HostDashboardPage extends BasePage {
         waitForDashboardToLoad();
     }
 
-    public void navigateViaNavbar() {
+    public HostDashboardPage navigateViaNavbar() {
         navbar().clickHostDashboard();
         waitForUrlToBe(AppConstants.HOSTING_URL);
         waitForDashboardToLoad();
+        return this;
     }
 
     public String getSummarySubtitle() {

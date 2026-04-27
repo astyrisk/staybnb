@@ -47,8 +47,9 @@ public class PropertyListingPage extends BasePage {
         return card.findElement(Locators.PropertyListing.CARD_PRICE).getText();
     }
 
-    public void clickPropertyCard(WebElement card) {
+    public PropertyDetailsPage clickPropertyCard(WebElement card) {
         card.click();
+        return new PropertyDetailsPage(driver);
     }
 
     public int getGridColumnCount() {
@@ -264,12 +265,14 @@ public class PropertyListingPage extends BasePage {
         return waitForElementVisible(Locators.PropertyListing.PAGINATION_INFO).getText();
     }
 
-    public void clickNextPage() {
+    public PropertyListingPage clickNextPage() {
         waitForElementClickable(Locators.PropertyListing.PAGINATION_NEXT_BTN).click();
+        return this;
     }
 
-    public void clickPreviousPage() {
+    public PropertyListingPage clickPreviousPage() {
         waitForElementClickable(Locators.PropertyListing.PAGINATION_PREV_BTN).click();
+        return this;
     }
 
     public boolean isPreviousButtonDisabled() {
@@ -293,17 +296,19 @@ public class PropertyListingPage extends BasePage {
         wait.until(d -> !d.getCurrentUrl().contains("page="));
     }
 
-    public void clickFavoriteOnFirstCard() {
+    public PropertyListingPage clickFavoriteOnFirstCard() {
         List<WebElement> cards = getPropertyCards();
         WebElement btn = cards.getFirst().findElement(Locators.PropertyListing.CARD_FAVORITE_BTN);
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        return this;
     }
 
-    public void clickFavoriteOnCardById(String propertyId) {
+    public PropertyListingPage clickFavoriteOnCardById(String propertyId) {
         By cardLocator = By.cssSelector("a.property-card[href*='/properties/" + propertyId + "']");
         WebElement card = waitForElementVisible(cardLocator);
         WebElement btn = card.findElement(Locators.PropertyListing.CARD_FAVORITE_BTN);
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        return this;
     }
 
     public boolean isCardFavoritedById(String propertyId) {
@@ -335,8 +340,9 @@ public class PropertyListingPage extends BasePage {
         return isDisplayed(Locators.FilterSidebar.MOBILE_FILTER_BTN);
     }
 
-    public void clickMobileFilterButton() {
+    public PropertyListingPage clickMobileFilterButton() {
         waitForElementClickable(Locators.FilterSidebar.MOBILE_FILTER_BTN).click();
+        return this;
     }
 
     public boolean isMobileFilterModalDisplayed() {

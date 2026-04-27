@@ -3,6 +3,7 @@ package com.staybnb.tests.ui.auth;
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.TestConfig;
 import com.staybnb.pages.LoginPage;
+import com.staybnb.pages.RegisterPage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
 
@@ -63,10 +64,10 @@ public class LoginTest extends BaseTest {
     @Test
     @DisplayName("Login page has a 'Register' link that navigates to the register page")
     public void testLoginPageHasRegisterLink() {
-        loginPage.clickRegisterLink();
+        RegisterPage registerPage = loginPage.clickRegisterLink();
 
         assertTrue(
-                loginPage.urlContains(AppConstants.REGISTER_URL),
+                registerPage.urlContains(AppConstants.REGISTER_URL),
                 ErrorMessages.LOGIN_PAGE_SHOULD_NAVIGATE_TO_REGISTER
         );
     }

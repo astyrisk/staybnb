@@ -52,16 +52,19 @@ public abstract class BasePage extends SeleniumBase {
         return driver.findElement(locator).getText();
     }
 
-    public void logoutAndGoHome() {
+    public HomePage logoutAndGoHome() {
         navbar().clickLogoutAndWaitForRedirectToHome();
+        return new HomePage(driver);
     }
 
-    public void goHomeViaLogo() {
+    public HomePage goHomeViaLogo() {
         navbar().clickLogoAndWaitForHome();
+        return new HomePage(driver);
     }
 
-    public void clickNavbarBecomeAHost() {
+    public CreatePropertyPage clickNavbarBecomeAHost() {
         navbar().clickBecomeAHost();
+        return new CreatePropertyPage(driver);
     }
 
     public boolean isNavbarBecomeAHostVisible() {

@@ -2,6 +2,7 @@ package com.staybnb.tests.ui.profile;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.TestDataConstants;
+import com.staybnb.pages.EditProfilePage;
 import com.staybnb.pages.ProfilePage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
@@ -100,10 +101,10 @@ public class OwnProfileTest extends BaseTest {
     @Test
     @DisplayName("Clicking Edit Profile button navigates to edit profile page")
     public void testOwnProfileEditProfileButtonNavigation() {
-        ownProfilePage.clickEditProfile();
+        EditProfilePage editProfilePage = ownProfilePage.clickEditProfile();
 
         assertTrue(
-                ownProfilePage.urlContains(AppConstants.EDIT_PROFILE_URL),
+                editProfilePage.urlContains(AppConstants.EDIT_PROFILE_URL),
                 ErrorMessages.SHOULD_NAVIGATE_TO_EDIT_PROFILE_PAGE
         );
     }

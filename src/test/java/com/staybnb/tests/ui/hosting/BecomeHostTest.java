@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.AppConstants;
+import com.staybnb.pages.CreatePropertyPage;
 import com.staybnb.pages.ProfilePage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -49,8 +50,7 @@ public class BecomeHostTest extends BaseTest {
 
     private void becomeHostAsNewUser() {
         registerNewUser();
-        ownProfilePage.clickNavbarBecomeAHost();
-        ownProfilePage.goHomeViaLogo();
+        ownProfilePage.clickNavbarBecomeAHost().goHomeViaLogo();
     }
 
     // fails: 'My properties' doesn't exist
@@ -117,11 +117,10 @@ public class BecomeHostTest extends BaseTest {
     @DisplayName("Become host redirect from profile page")
     public void testBecomeHostRedirectsToHostingFromProfilePage() {
         registerNewUser();
-        ownProfilePage.navigateViaNavbar();
-        ownProfilePage.clickBecomeHost();
+        CreatePropertyPage createPage = ownProfilePage.navigateViaNavbar().clickBecomeHost();
 
         assertTrue(
-            ownProfilePage.urlContains(AppConstants.HOSTING_URL),
+            createPage.urlContains(AppConstants.HOSTING_URL),
             ErrorMessages.SHOULD_NAVIGATE_TO_HOSTING_PAGE
         );
     }

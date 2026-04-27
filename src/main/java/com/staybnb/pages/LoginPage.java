@@ -15,16 +15,19 @@ public class LoginPage extends AuthPage {
         clickSubmit();
     }
 
-    public void loginAndExpectSuccess(String email, String password) {
+    public HomePage loginAndExpectSuccess(String email, String password) {
         login(email, password);
         waitForUrlToBe(AppConstants.HOME_URL);
+        return new HomePage(driver);
     }
 
-    public void navigateViaNavbar() {
+    public LoginPage navigateViaNavbar() {
         navbar().clickLoginAndWaitForRedirect();
+        return this;
     }
 
-    public void clickRegisterLink() {
+    public RegisterPage clickRegisterLink() {
         click(Locators.Login.REGISTER_LINK);
+        return new RegisterPage(driver);
     }
 }

@@ -17,12 +17,14 @@ public class RegisterPage extends AuthPage {
         clickSubmit();
     }
 
-    public void clickLoginLink() {
+    public LoginPage clickLoginLink() {
         click(Locators.Register.LOGIN_LINK);
+        return new LoginPage(driver);
     }
 
-    public void navigateViaNavbar() {
+    public RegisterPage navigateViaNavbar() {
         navbar().clickRegisterAndWaitForRedirect();
+        return this;
     }
 
     public void registerAndWaitForUrl(String fName, String lName, String email, String pass, String expectedUrl) {

@@ -22,9 +22,10 @@ public class ProfilePage extends BasePage {
         waitForProfileToLoad();
     }
 
-    public void navigateViaNavbar() {
+    public ProfilePage navigateViaNavbar() {
         navbar().clickProfileAndWaitForRedirect();
         waitForProfileToLoad();
+        return this;
     }
 
     // ── Avatar ────────────────────────────────────────────────────────────────
@@ -81,8 +82,9 @@ public class ProfilePage extends BasePage {
 
     // ── Own Profile Actions ───────────────────────────────────────────────────
 
-    public void clickEditProfile() {
+    public EditProfilePage clickEditProfile() {
         click(Locators.OwnProfile.EDIT_PROFILE_BUTTON);
+        return new EditProfilePage(driver);
     }
 
     public boolean isEditProfileButtonVisible() {
@@ -93,8 +95,9 @@ public class ProfilePage extends BasePage {
         return isDisplayed(Locators.OwnProfile.BECOME_HOST_BUTTON);
     }
 
-    public void clickBecomeHost() {
+    public CreatePropertyPage clickBecomeHost() {
         click(Locators.OwnProfile.BECOME_HOST_BUTTON);
+        return new CreatePropertyPage(driver);
     }
 
     // ── Error States ──────────────────────────────────────────────────────────

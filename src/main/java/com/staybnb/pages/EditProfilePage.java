@@ -58,8 +58,9 @@ public class EditProfilePage extends BasePage {
         waitForElementClickable(Locators.EditProfile.SAVE_CHANGES_BUTTON).click();
     }
 
-    public void clickCancel() {
+    public ProfilePage clickCancel() {
         waitForElementClickable(Locators.EditProfile.CANCEL_BUTTON).click();
+        return new ProfilePage(driver);
     }
 
     public String getFieldError(String fieldId) {
@@ -76,6 +77,14 @@ public class EditProfilePage extends BasePage {
 
     public String getFirstNameValue() {
         return waitForElementVisible(Locators.EditProfile.FIRST_NAME_FIELD).getAttribute("value");
+    }
+
+    public String updateMyProfileViaApi(String payload) {
+        return apiRequest()
+                .contentType("application/json")
+                .body(payload)
+                .put("/users/me")
+                .asString();
     }
 
     public void updateMyProfileViaScript(String firstName, String lastName, String phone, String bio, String avatarUrl) {
