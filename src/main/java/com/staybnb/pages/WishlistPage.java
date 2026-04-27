@@ -37,7 +37,7 @@ public class WishlistPage extends BasePage {
         wait.until(d -> d.findElements(Locators.Wishlist.PROPERTY_CARDS).size() < countBefore);
     }
 
-    public long addToWishlistViaApi(String propertyId) {
+    public int addToWishlistViaApi(String propertyId) {
         return apiRequest()
                 .contentType(ContentType.JSON)
                 .body("{\"propertyId\":" + propertyId + "}")
@@ -45,7 +45,7 @@ public class WishlistPage extends BasePage {
                 .statusCode();
     }
 
-    public long removeFromWishlistViaApi(String propertyId) {
+    public int removeFromWishlistViaApi(String propertyId) {
         return apiRequest()
                 .delete("/wishlists/" + propertyId)
                 .statusCode();

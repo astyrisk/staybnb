@@ -92,7 +92,7 @@ public class AddToWishlistTest extends BaseTest {
     @DisplayName("Adding a non-existent property to wishlist returns 404")
     public void testAddNonExistentPropertyReturns404() {
         loginAsUser();
-        long status = wishlistPage.addToWishlistViaApi(TestDataConstants.NON_EXISTENT_PROPERTY_ID);
+        int status = wishlistPage.addToWishlistViaApi(TestDataConstants.NON_EXISTENT_PROPERTY_ID);
         assertEquals(
                 404L,
                 status,

@@ -1,7 +1,5 @@
 package com.staybnb.config;
 
-import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil;
-
 public final class TestDataConstants {
     private TestDataConstants() {}
 
@@ -14,14 +12,10 @@ public final class TestDataConstants {
     // Property with 0 amenities (Story 14 AC5).
     public static final String PROPERTY_WITH_NO_AMENITIES_ID  = TestConfig.PROPERTY_NO_AMENITIES_ID;
 
-    // ── User IDs ──────────────────────────────────────────────────────────────
-    public static final String OTHER_USER_ID_1 = TestConfig.OTHER_USER_ID_1;
-
     // ── Other Profile (user 3005) ─────────────────────────────────────────────
     public static final class OtherProfile {
         public static final String USER_ID     = TestConfig.OTHER_USER_ID_1;
         public static final String NAME        = "Jon E.";
-        public static final String META        = "Guest · Member since April 2026";
         public static final String BIO         = "Adventure seeker and foodie.";
         public static final String AVATAR_SRC  = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFLA5gZ352Mtmj5OMlzW9FEIVV5n3dDbSgeg&s";
     }

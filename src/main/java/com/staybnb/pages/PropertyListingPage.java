@@ -256,7 +256,7 @@ public class PropertyListingPage extends BasePage {
     public double getCardRating(WebElement card) {
         List<WebElement> ratingEls = card.findElements(Locators.PropertyListing.CARD_RATING);
         if (ratingEls.isEmpty()) return -1.0;
-        Matcher m = Pattern.compile("(\\d+\\.\\d+)").matcher(ratingEls.get(0).getText());
+        Matcher m = Pattern.compile("(\\d+\\.\\d+)").matcher(ratingEls.getFirst().getText());
         return m.find() ? Double.parseDouble(m.group(1)) : -1.0;
     }
 
@@ -295,7 +295,7 @@ public class PropertyListingPage extends BasePage {
 
     public void clickFavoriteOnFirstCard() {
         List<WebElement> cards = getPropertyCards();
-        WebElement btn = cards.get(0).findElement(Locators.PropertyListing.CARD_FAVORITE_BTN);
+        WebElement btn = cards.getFirst().findElement(Locators.PropertyListing.CARD_FAVORITE_BTN);
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
     }
 
@@ -310,7 +310,7 @@ public class PropertyListingPage extends BasePage {
         By cardLocator = By.cssSelector("a.property-card[href*='/properties/" + propertyId + "']");
         List<WebElement> cards = driver.findElements(cardLocator);
         if (cards.isEmpty()) return false;
-        return !cards.get(0).findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
+        return !cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
     }
 
     public void waitForCardFavoritedById(String propertyId) {
@@ -318,7 +318,7 @@ public class PropertyListingPage extends BasePage {
         wait.until(d -> {
             List<WebElement> cards = d.findElements(cardLocator);
             return !cards.isEmpty() &&
-                    !cards.get(0).findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
+                    !cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
         });
     }
 
@@ -327,7 +327,7 @@ public class PropertyListingPage extends BasePage {
         wait.until(d -> {
             List<WebElement> cards = d.findElements(cardLocator);
             return !cards.isEmpty() &&
-                    cards.get(0).findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
+                    cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
         });
     }
 

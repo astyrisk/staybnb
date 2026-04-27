@@ -144,12 +144,8 @@ public final class ErrorMessages {
             "First image should be 'Living Room'.";
 
     // --- Own Profile test messages ---
-    public static final String AVATAR_SHOULD_BE_DISPLAYED =
-            "Avatar should be displayed.";
     public static final String AVATAR_URL_SHOULD_MATCH =
             "Avatar URL should match.";
-    public static final String FULL_NAME_SHOULD_MATCH =
-            "Full name should match.";
     public static final String FIRST_NAME_SHOULD_MATCH =
             "First name should match.";
     public static final String LAST_NAME_SHOULD_MATCH =
@@ -162,24 +158,6 @@ public final class ErrorMessages {
             "Phone number should match.";
     public static final String EDIT_PROFILE_BUTTON_SHOULD_BE_VISIBLE =
             "Edit Profile button should be visible.";
-    public static final String RESPONSE_SHOULD_CONTAIN_ID =
-            "Response should contain 'id'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_EMAIL =
-            "Response should contain 'email'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_FIRST_NAME =
-            "Response should contain 'firstName'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_LAST_NAME =
-            "Response should contain 'lastName'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_PHONE =
-            "Response should contain 'phone'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_BIO =
-            "Response should contain 'bio'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_AVATAR_URL =
-            "Response should contain 'avatarUrl'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_IS_HOST =
-            "Response should contain 'isHost'.";
-    public static final String RESPONSE_SHOULD_CONTAIN_CREATED_AT =
-            "Response should contain 'createdAt'.";
     public static final String API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =
             "API should return 401 when not logged in.";
 
@@ -202,8 +180,6 @@ public final class ErrorMessages {
             "Become a Host button should be visible on profile page for non-host.";
 
     // --- Other Profile test messages ---
-    public static final String AVATAR_SHOULD_CONTAIN_USERS_FIRST_INITIAL =
-            "Avatar should contain user's first initial.";
     public static final String PROFILE_NAME_SHOULD_SHOW_FIRST_NAME_AND_LAST_INITIAL =
             "Profile name should show first name and last initial.";
     public static final String META_SHOULD_CONTAIN_USER_ROLE =
@@ -216,8 +192,6 @@ public final class ErrorMessages {
             "Phone number should not be visible on other's profile.";
     public static final String EMAIL_SHOULD_NOT_BE_VISIBLE_ON_OTHERS_PROFILE =
             "Email should not be visible on other's profile.";
-    public static final String PROFILE_NAME_SHOULD_ONLY_SHOW_FIRST_NAME_AND_LAST_INITIAL =
-            "Profile name should only show first name and last initial.";
     public static final String PAGE_SHOULD_INDICATE_404_FOR_NON_EXISTENT_USER =
             "Page should indicate a 404 error for non-existent user.";
     public static final String RESPONSE_SHOULD_CONTAIN_EXPECTED_FIELD =
@@ -583,11 +557,11 @@ public final class ErrorMessages {
 
     // --- View Wishlist Page (Story F3.5-S3) messages ---
     public static final String WISHLIST_PAGE_SHOULD_DISPLAY_PROPERTY_CARDS =
-            "Wishlist page should display property cards for an authenticated user with favorited properties.";
+            "Wishlist page should display property cards for an authenticated user with favorite properties.";
     public static final String WISHLIST_PAGE_CARDS_SHOULD_SHOW_FILLED_HEARTS =
             "All property cards on the wishlist page should show filled heart icons.";
     public static final String WISHLIST_PAGE_EMPTY_STATE_SHOULD_BE_VISIBLE =
-            "Wishlist page should show an empty state when the user has no favorited properties.";
+            "Wishlist page should show an empty state when the user has no favorite properties.";
     public static final String WISHLIST_PAGE_EMPTY_STATE_TEXT_SHOULD_MATCH =
             "Wishlist page empty state should display the expected message text.";
     public static final String WISHLIST_PAGE_UNAUTHENTICATED_SHOULD_SHOW_LOGIN_PROMPT =
@@ -630,8 +604,6 @@ public final class ErrorMessages {
             "Register API should return 409 when the email already exists in the tenant.";
     public static final String REGISTER_API_SHOULD_RETURN_400_FOR_MISSING_FIELDS =
             "Register API should return 400 when required fields are missing.";
-    public static final String REGISTER_API_RESPONSE_SHOULD_CONTAIN_TOKEN =
-            "Register API response should contain a token string.";
 
     // --- Login API (Story 2) ---
     public static final String LOGIN_API_SHOULD_RETURN_200_FOR_VALID_CREDENTIALS =
@@ -640,8 +612,6 @@ public final class ErrorMessages {
             "Login API should return 401 for invalid credentials.";
     public static final String LOGIN_API_SHOULD_RETURN_400_FOR_MISSING_FIELDS =
             "Login API should return 400 when required fields are missing.";
-    public static final String LOGIN_API_RESPONSE_SHOULD_CONTAIN_TOKEN =
-            "Login API response should contain a token string.";
 
     // --- Logout API (Story 3) ---
     public static final String LOGOUT_API_SHOULD_RETURN_401_WHEN_NOT_LOGGED_IN =

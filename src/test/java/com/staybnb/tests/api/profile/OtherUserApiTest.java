@@ -2,7 +2,6 @@ package com.staybnb.tests.api.profile;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestConfig;
-import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.ProfilePage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;

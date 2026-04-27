@@ -88,7 +88,7 @@ public class RemoveFromWishlistTest extends BaseTest {
     @DisplayName("Removing a property not in the wishlist returns 404")
     public void testRemoveNonWishlistedPropertyReturns404() {
         String propertyId = wishlistPage.getFirstPropertyIdViaApi();
-        long status = wishlistPage.removeFromWishlistViaApi(propertyId);
+        int status = wishlistPage.removeFromWishlistViaApi(propertyId);
         assertEquals(
                 404L,
                 status,

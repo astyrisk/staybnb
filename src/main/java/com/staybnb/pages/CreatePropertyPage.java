@@ -64,7 +64,7 @@ public class CreatePropertyPage extends BasePage {
         String dropzoneText = waitForElementVisible(Locators.CreateProperty.STEP_5_UPLOAD_DROPZONE).getText().toLowerCase();
         String uploadText = waitForElementVisible(Locators.CreateProperty.STEP_5_UPLOAD_TEXT).getText().toLowerCase();
 
-        WebElement input = waitForElementsPresent(Locators.CreateProperty.STEP_5_UPLOAD_FILE_INPUT).get(0);
+        WebElement input = waitForElementsPresent(Locators.CreateProperty.STEP_5_UPLOAD_FILE_INPUT).getFirst();
         String accepts = input.getAttribute("accept");
 
         return accepts != null
@@ -253,7 +253,7 @@ public class CreatePropertyPage extends BasePage {
             if (items.isEmpty()) {
                 return expectedSignature == null || expectedSignature.isBlank();
             }
-            return previewSignature(items.get(0)).equals(expectedSignature);
+            return previewSignature(items.getFirst()).equals(expectedSignature);
         });
     }
 
@@ -283,7 +283,7 @@ public class CreatePropertyPage extends BasePage {
             return false;
         }
 
-        WebElement firstItem = previewItems.get(0);
+        WebElement firstItem = previewItems.getFirst();
         String firstItemText = firstItem.getText().toLowerCase();
         if (firstItemText.contains("primary") || firstItemText.contains("cover")) {
             return true;
@@ -341,10 +341,6 @@ public class CreatePropertyPage extends BasePage {
                 && page.contains("amenities")
                 && page.contains("images")
                 && page.contains("pricing");
-    }
-
-    public boolean reviewShowsDraftNote() {
-        return driver.getPageSource().toLowerCase().contains("draft");
     }
 
     public void clickCreateProperty() {
@@ -409,12 +405,6 @@ public class CreatePropertyPage extends BasePage {
         String expected = groupName.toLowerCase();
         List<WebElement> groups = driver.findElements(Locators.CreateProperty.STEP_4_GROUP_HEADERS);
         return groups.stream().anyMatch(el -> el.getText().trim().toLowerCase().contains(expected));
-    }
-
-    public boolean hasAmenityItemContaining(String text) {
-        String expected = text.toLowerCase();
-        List<WebElement> items = driver.findElements(Locators.CreateProperty.STEP_4_AMENITY_ITEMS);
-        return items.stream().anyMatch(el -> el.getText().toLowerCase().contains(expected));
     }
 
     public void toggleAmenityByLabelContaining(String labelText) {
