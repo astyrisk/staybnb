@@ -3,6 +3,7 @@ package com.staybnb.tests;
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.DriverFactory;
 import com.staybnb.config.TestConfig;
+import com.staybnb.extensions.RetryExtension;
 import com.staybnb.extensions.ScreenshotOnFailureExtension;
 import com.staybnb.pages.LoginPage;
 import com.staybnb.pages.RegisterPage;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 
-@ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class})
+@ExtendWith({AllureJunit5.class, ScreenshotOnFailureExtension.class, RetryExtension.class})
 public class BaseTest {
     protected WebDriver driver;
 
