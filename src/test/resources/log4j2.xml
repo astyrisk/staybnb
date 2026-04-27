@@ -2,7 +2,8 @@
 <Configuration status="ERROR">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-5level %logger{36} - %msg%n"/>
+            <PatternLayout disableAnsi="false"
+                pattern="%style{%d{HH:mm:ss.SSS}}{dim} %highlight{%-5level}{FATAL=red blink bold, ERROR=red bold, WARN=yellow bold, INFO=bright_green bold, DEBUG=bright_cyan bold, TRACE=white} %style{[%t]}{dim} %style{%logger{1.1.*36}}{cyan} %style{›}{dim} %msg%n%style{%throwable}{red}"/>
         </Console>
         <RollingFile name="FileAppender"
                      fileName="target/logs/staybnb-tests.log"
