@@ -1,5 +1,7 @@
 package com.staybnb.config;
 
+import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil;
+
 public final class TestDataConstants {
     private TestDataConstants() {}
 
@@ -14,23 +16,34 @@ public final class TestDataConstants {
 
     // ── User IDs ──────────────────────────────────────────────────────────────
     public static final String OTHER_USER_ID_1 = TestConfig.OTHER_USER_ID_1;
-    public static final String OTHER_USER_ID_2 = TestConfig.OTHER_USER_ID_2;
+
+    // ── Other Profile (user 3005) ─────────────────────────────────────────────
+    public static final class OtherProfile {
+        public static final String USER_ID     = TestConfig.OTHER_USER_ID_1;
+        public static final String NAME        = "Jon E.";
+        public static final String META        = "Guest · Member since April 2026";
+        public static final String BIO         = "Adventure seeker and foodie.";
+        public static final String AVATAR_SRC  = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFLA5gZ352Mtmj5OMlzW9FEIVV5n3dDbSgeg&s";
+    }
 
     // ── Own Profile ───────────────────────────────────────────────────────────
     public static final class OwnProfile {
-        public static final String FULL_NAME = "HekoUpdated NekoUpdated";
-        public static final String PHONE     = "+201556638077";
+        public static final String FIRST_NAME = "Heiko";
+        public static final String LAST_NAME  = "Neko";
+        public static final String PHONE      = "+201556638077";
+        public static final String BIO        = "Default bio";
+        public static final String AVATAR_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCHo3CkaH0oRY3MvrEN0xgn-x_Lsn3Lm3lVQ&s";
     }
 
     // ── Edit Profile ──────────────────────────────────────────────────────────
     public static final class EditProfile {
-        public static final String NEW_FIRST_NAME = "HekoUpdated";
+        public static final String NEW_FIRST_NAME = "HeikoUpdated";
         public static final String NEW_LAST_NAME  = "NekoUpdated";
         public static final String NEW_PHONE      = "+201556638077";
         public static final String NEW_BIO        = "Updated bio for testing persistence.";
-        public static final String NEW_AVATAR_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCHo3CkaH0oRY3MvrEN0xgn-x_Lsn3Lm3lVQ&s";
+        public static final String NEW_AVATAR_URL = "https://www.shutterstock.com/image-photo/beautiful-golden-retriever-cute-puppy-600nw-2526542701.jpg";
 
-        public static final String API_FIRST_NAME = "HekoAPI";
+        public static final String API_FIRST_NAME = "HeikoAPI";
         public static final String API_LAST_NAME  = "NekoAPI";
         public static final String API_PHONE      = "+1234567890";
         public static final String API_BIO        = "API Bio";

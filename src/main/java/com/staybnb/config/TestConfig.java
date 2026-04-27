@@ -8,18 +8,15 @@ import java.util.List;
 public class TestConfig {
     private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
-    public static final String BASE_URL        = findProperty("TEST_BASE_URL");
-    public static final String TEST_USER_EMAIL = findProperty("TEST_USER_EMAIL");
-    public static final String TEST_PASSWORD   = findProperty("TEST_PASSWORD");
-    public static final String TEST_FIRST_NAME = findProperty("TEST_FIRST_NAME");
-    public static final String TEST_LAST_NAME  = findProperty("TEST_LAST_NAME");
-
-    // Environment-specific property and user IDs — override in .env to avoid recompile on env reset
-    public static final String DEFAULT_PROPERTY_ID       = getProperty("TEST_DEFAULT_PROPERTY_ID", "227");
-    public static final String PROPERTY_FEW_AMENITIES_ID = getProperty("TEST_PROPERTY_FEW_AMENITIES_ID", "1088");
-    public static final String PROPERTY_NO_AMENITIES_ID  = getProperty("TEST_PROPERTY_NO_AMENITIES_ID", "1087");
-    public static final String OTHER_USER_ID_1           = getProperty("TEST_OTHER_USER_ID_1", "2657");
-    public static final String OTHER_USER_ID_2           = getProperty("TEST_OTHER_USER_ID_2", "2658");
+    public static final String BASE_URL                  = findProperty("TEST_BASE_URL"                 );
+    public static final String TEST_USER_EMAIL           = findProperty("TEST_USER_EMAIL"               );
+    public static final String TEST_PASSWORD             = findProperty("TEST_PASSWORD"                 );
+    public static final String TEST_FIRST_NAME           = findProperty("TEST_FIRST_NAME"               );
+    public static final String TEST_LAST_NAME            = findProperty("TEST_LAST_NAME"                );
+    public static final String DEFAULT_PROPERTY_ID       = findProperty("TEST_DEFAULT_PROPERTY_ID"      );
+    public static final String PROPERTY_FEW_AMENITIES_ID = findProperty("TEST_PROPERTY_FEW_AMENITIES_ID");
+    public static final String PROPERTY_NO_AMENITIES_ID  = findProperty("TEST_PROPERTY_NO_AMENITIES_ID" );
+    public static final String OTHER_USER_ID_1           = findProperty("TEST_OTHER_USER_ID_1"          );
 
     static {
         validate();
@@ -49,10 +46,5 @@ public class TestConfig {
         v = System.getenv(key);
         if (v != null && !v.isBlank()) return v;
         return null;
-    }
-
-    private static String getProperty(String key, String defaultValue) {
-        String v = findProperty(key);
-        return v != null ? v : defaultValue;
     }
 }

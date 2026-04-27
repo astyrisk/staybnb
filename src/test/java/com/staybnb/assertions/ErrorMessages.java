@@ -25,6 +25,20 @@ public final class ErrorMessages {
     public static final String LAST_NAME_REQUIRED =
             "Last name is required";
 
+    // --- Edit Profile test messages ---
+    public static final String FULL_NAME_SHOULD_BE_UPDATED =
+            "Full name should be updated.";
+    public static final String PHONE_SHOULD_BE_UPDATED =
+            "Phone should be updated.";
+    public static final String BIO_SHOULD_BE_UPDATED =
+            "Bio should be updated.";
+    public static final String VALIDATION_ERROR_MESSAGE_SHOULD_MATCH =
+            "Validation error message should match.";
+    public static final String CHANGES_SHOULD_NOT_BE_SAVED_AFTER_CANCELLATION =
+            "Changes should not be saved after cancellation.";
+    public static final String EDIT_PROFILE_SHOULD_SHOW_401_WHEN_LOGGED_OUT =
+            "401 error should be displayed when accessing edit profile while not logged in.";
+
     // --- Home test messages ---
     public static final String HOME_HERO_SECTION_SHOULD_BE_VISIBLE =
             "Hero section should be visible.";
@@ -132,8 +146,14 @@ public final class ErrorMessages {
     // --- Own Profile test messages ---
     public static final String AVATAR_SHOULD_BE_DISPLAYED =
             "Avatar should be displayed.";
+    public static final String AVATAR_URL_SHOULD_MATCH =
+            "Avatar URL should match.";
     public static final String FULL_NAME_SHOULD_MATCH =
             "Full name should match.";
+    public static final String FIRST_NAME_SHOULD_MATCH =
+            "First name should match.";
+    public static final String LAST_NAME_SHOULD_MATCH =
+            "Last name should match.";
     public static final String PROFILE_META_SHOULD_CONTAIN_MEMBER_SINCE =
             "Profile meta should contain 'Member since'.";
     public static final String BIO_SHOULD_NOT_BE_EMPTY =

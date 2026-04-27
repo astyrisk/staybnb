@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.AppConstants;
-import com.staybnb.pages.OwnProfilePage;
+import com.staybnb.pages.ProfilePage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -18,11 +18,11 @@ import org.junit.jupiter.api.Test;
 @Tag("regression")
 public class BecomeHostTest extends BaseTest {
 
-    private OwnProfilePage ownProfilePage;
+    private ProfilePage ownProfilePage;
 
     @BeforeEach
     public void setup() {
-        ownProfilePage = new OwnProfilePage(driver);
+        ownProfilePage = new ProfilePage(driver);
     }
 
     @Test

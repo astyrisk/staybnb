@@ -1,7 +1,7 @@
 package com.staybnb.tests.api.auth;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.pages.OwnProfilePage;
+import com.staybnb.pages.ProfilePage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -18,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Auth Me API")
 @Tag("api")
 public class AuthMeApiTest extends BaseApiTest {
-    private OwnProfilePage ownProfilePage;
+    private ProfilePage ownProfilePage;
 
     @BeforeEach
     public void setup() {
-        ownProfilePage = new OwnProfilePage(driver);
+        ownProfilePage = new ProfilePage(driver);
         loginAsUser();
     }
 

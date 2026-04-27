@@ -1,21 +1,18 @@
 package com.staybnb.tests.ui.profile;
 
 import com.staybnb.pages.EditProfilePage;
-import com.staybnb.pages.OwnProfilePage;
+import com.staybnb.pages.ProfilePage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,93 +21,98 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("regression")
 @ResourceLock("test-user-profile")
 public class EditProfileTest extends BaseTest {
-    private OwnProfilePage ownProfilePage;
+    private ProfilePage ownProfilePage;
     private EditProfilePage editProfilePage;
 
     @BeforeEach
     public void setup() {
-        ownProfilePage = new OwnProfilePage(driver);
+        ownProfilePage = new ProfilePage(driver);
         editProfilePage = new EditProfilePage(driver);
         loginAsUser();
     }
 
+    @AfterEach
+    public void restoreProfile() {
+        editProfilePage.updateMyProfileViaScript(
+                TestDataConstants.OwnProfile.FIRST_NAME,
+                TestDataConstants.OwnProfile.LAST_NAME,
+                TestDataConstants.OwnProfile.PHONE,
+                TestDataConstants.OwnProfile.BIO,
+                TestDataConstants.OwnProfile.AVATAR_URL
+        );
+    }
+
     private void performEditProfileUpdate() {
-        editProfilePage.updateProfile(TestDataConstants.EditProfile.NEW_FIRST_NAME, TestDataConstants.EditProfile.NEW_LAST_NAME, TestDataConstants.EditProfile.NEW_PHONE, TestDataConstants.EditProfile.NEW_BIO, TestDataConstants.EditProfile.NEW_AVATAR_URL);
+        editProfilePage.updateProfile(
+                TestDataConstants.EditProfile.NEW_FIRST_NAME,
+                TestDataConstants.EditProfile.NEW_LAST_NAME,
+                TestDataConstants.EditProfile.NEW_PHONE,
+                TestDataConstants.EditProfile.NEW_BIO,
+                TestDataConstants.EditProfile.NEW_AVATAR_URL
+        );
         ownProfilePage.navigateViaNavbar();
-    }
+        ownProfilePage.waitForFullNameToBe(TestDataConstants.EditProfile.NEW_FIRST_NAME + " " + TestDataConstants.EditProfile.NEW_LAST_NAME);
 
-    @ParameterizedTest(name = "Edit profile persistence: {0}")
-    @MethodSource("provideEditProfilePersistenceCases")
-    public void testEditProfilePersistence(String checkName) {
-        performEditProfileUpdate(
-        );
-
-        switch (checkName) {
-            case "full name" -> assertEquals(
-                    TestDataConstants.EditProfile.NEW_FIRST_NAME + " " + TestDataConstants.EditProfile.NEW_LAST_NAME,
-                    ownProfilePage.getFullName(),
-                    "Full name should be updated."
-            );
-            case "phone" -> assertEquals(
-                    TestDataConstants.EditProfile.NEW_PHONE,
-                    ownProfilePage.getPhone(),
-                    "Phone should be updated."
-            );
-            case "bio" -> assertEquals(
-                    TestDataConstants.EditProfile.NEW_BIO,
-                    ownProfilePage.getBio(),
-                    "Bio should be updated."
-            );
-            default -> throw new IllegalArgumentException("Unsupported case: " + checkName);
-        }
     }
 
     @Test
-    @DisplayName("Submitting with empty first name shows validation error")
-    public void testEditProfileValidationErrorFirstNameRequired() {
-        editProfilePage.submitWithEmptyFirstName();
+    @DisplayName("Edit profile persists updated full name")
+    public void testEditProfilePersistsFullName() {
+        performEditProfileUpdate();
 
-        assertTrue(
-                editProfilePage.isValidationErrorDisplayed(),
-                "Validation error should be displayed for empty first name."
+        assertEquals(
+                TestDataConstants.EditProfile.NEW_FIRST_NAME + " " + TestDataConstants.EditProfile.NEW_LAST_NAME,
+                ownProfilePage.getFullName(),
+                ErrorMessages.FULL_NAME_SHOULD_BE_UPDATED
         );
     }
 
     @Test
-    @DisplayName("Submitting with empty last name shows validation error")
-    public void testEditProfileValidationErrorLastNameRequired() {
-        editProfilePage.submitWithEmptyLastName("heko");
+    @DisplayName("Edit profile persists updated phone")
+    public void testEditProfilePersistsPhone() {
+        performEditProfileUpdate();
 
-        assertTrue(
-                editProfilePage.isValidationErrorDisplayed(),
-                "Validation error should be displayed for empty last name."
+        assertEquals(
+                TestDataConstants.EditProfile.NEW_PHONE,
+                ownProfilePage.getPhone(),
+                ErrorMessages.PHONE_SHOULD_BE_UPDATED
         );
     }
 
-    @ParameterizedTest(name = "Validation message for required {0}")
-    @MethodSource("provideRequiredFieldValidationCases")
-    public void testEditProfileValidationErrorMessages(String fieldName) {
-        switch (fieldName) {
-            case "firstName" -> {
-                editProfilePage.submitWithEmptyFirstName();
+    @Test
+    @DisplayName("Edit profile persists updated bio")
+    public void testEditProfilePersistsBio() {
+        performEditProfileUpdate();
 
-                assertEquals(
-                        ErrorMessages.FIRST_NAME_REQUIRED,
-                        editProfilePage.getFieldError("firstName"),
-                        "Error message should match."
-                );
-            }
-            case "lastName" -> {
-                editProfilePage.submitWithEmptyLastName("heko");
+        assertEquals(
+                TestDataConstants.EditProfile.NEW_BIO,
+                ownProfilePage.getBio(),
+                ErrorMessages.BIO_SHOULD_BE_UPDATED
+        );
+    }
 
-                assertEquals(
-                        ErrorMessages.LAST_NAME_REQUIRED,
-                        editProfilePage.getFieldError("lastName"),
-                        "Error message should match."
-                );
-            }
-            default -> throw new IllegalArgumentException("Unsupported field: " + fieldName);
-        }
+    @Test
+    @DisplayName("Validation message shown when first name is empty")
+    public void testEditProfileValidationErrorMessageFirstName() {
+        editProfilePage.submitWithEmptyField("firstName");
+
+        assertEquals(
+                ErrorMessages.FIRST_NAME_REQUIRED,
+                editProfilePage.getFieldError("firstName"),
+                ErrorMessages.VALIDATION_ERROR_MESSAGE_SHOULD_MATCH
+        );
+    }
+
+    @Test
+    @DisplayName("Validation message shown when last name is empty")
+    public void testEditProfileValidationErrorMessageLastName() {
+        editProfilePage.submitWithEmptyField("lastName");
+
+        assertEquals(
+                ErrorMessages.LAST_NAME_REQUIRED,
+                editProfilePage.getFieldError("lastName"),
+                ErrorMessages.VALIDATION_ERROR_MESSAGE_SHOULD_MATCH
+        );
     }
 
     @Test
@@ -121,10 +123,11 @@ public class EditProfileTest extends BaseTest {
         assertEquals(
                 originalFirstName,
                 editProfilePage.getFirstNameValue(),
-                "Changes should not be saved after cancellation."
+                ErrorMessages.CHANGES_SHOULD_NOT_BE_SAVED_AFTER_CANCELLATION
         );
     }
 
+    // fails
     @Test
     @DisplayName("Accessing edit profile while logged out shows 401 error")
     public void testEditProfileUnauthorizedAccess() {
@@ -133,22 +136,8 @@ public class EditProfileTest extends BaseTest {
 
         assertTrue(
                 editProfilePage.is401Displayed(),
-                "401 error should be displayed when accessing edit profile while not logged in."
+                ErrorMessages.EDIT_PROFILE_SHOULD_SHOW_401_WHEN_LOGGED_OUT
         );
     }
 
-    private static Stream<String> provideEditProfilePersistenceCases() {
-        return Stream.of(
-                "full name",
-                "phone",
-                "bio"
-        );
-    }
-
-    private static Stream<String> provideRequiredFieldValidationCases() {
-        return Stream.of(
-                "firstName",
-                "lastName"
-        );
-    }
 }

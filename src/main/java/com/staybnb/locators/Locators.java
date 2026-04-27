@@ -235,6 +235,10 @@ public final class Locators {
         public static final By SAVE_CHANGES_BUTTON = By.xpath("//button[text()='Save Changes']");
         public static final By CANCEL_BUTTON = By.xpath("//button[text()='Cancel']");
         public static final By VALIDATION_ERROR = By.cssSelector(".error, .field-error, .auth-error");
+
+        public static By fieldError(String fieldId) {
+            return By.xpath("//input[@id='" + fieldId + "']/following-sibling::span[@class='field-error']");
+        }
     }
 
     public static final class Logout {

@@ -1,44 +1,24 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
-import io.restassured.http.ContentType;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.staybnb.config.AppConstants;
 
 public class EditProfilePage extends BasePage {
-    private static final String PAGE_URL = AppConstants.EDIT_PROFILE_URL;
 
     public EditProfilePage(WebDriver driver) {
         super(driver);
     }
 
     public void navigateTo() {
-        super.navigateTo(PAGE_URL);
-        waitForEditProfileToLoad();
-    }
-
-    public void enterFirstName(String firstName) {
-        type(Locators.EditProfile.FIRST_NAME_FIELD, firstName);
-    }
-
-    public void enterLastName(String lastName) {
-        type(Locators.EditProfile.LAST_NAME_FIELD, lastName);
-    }
-
-    public void enterPhone(String phone) {
-        type(Locators.EditProfile.PHONE_FIELD, phone);
-    }
-
-    public void enterBio(String bio) {
-        type(Locators.EditProfile.BIO_FIELD, bio);
-    }
-
-    public void enterAvatarUrl(String avatarUrl) {
-        type(Locators.EditProfile.AVATAR_URL_FIELD, avatarUrl);
+        super.navigateTo(AppConstants.EDIT_PROFILE_URL);
+        wait.until(ExpectedConditions.presenceOfElementLocated(Locators.EditProfile.FIRST_NAME_FIELD));
     }
 
     public void updateProfile(String firstName, String lastName, String phone, String bio, String avatarUrl) {
@@ -52,16 +32,9 @@ public class EditProfilePage extends BasePage {
         waitForUrlContains("/profile");
     }
 
-    public void submitWithEmptyFirstName() {
+    public void submitWithEmptyField(String field) {
         navigateTo();
-        clearField("firstName");
-        clickSaveChanges();
-    }
-
-    public void submitWithEmptyLastName(String firstName) {
-        navigateTo();
-        enterFirstName(firstName);
-        clearField("lastName");
+        clearField(field);
         clickSaveChanges();
     }
 
@@ -89,39 +62,51 @@ public class EditProfilePage extends BasePage {
         waitForElementClickable(Locators.EditProfile.CANCEL_BUTTON).click();
     }
 
-    public boolean isValidationErrorDisplayed() {
-        return isDisplayed(Locators.EditProfile.VALIDATION_ERROR);
-    }
-
     public String getFieldError(String fieldId) {
         try {
-            return driver.findElement(By.xpath("//input[@id='" + fieldId + "']/following-sibling::span[@class='field-error']")).getText();
+            return driver.findElement(Locators.EditProfile.fieldError(fieldId)).getText();
         } catch (NoSuchElementException e) {
             return "";
         }
     }
 
     public boolean is401Displayed() {
-        return driver.getPageSource().contains("401") || driver.getPageSource().contains("Unauthorized");
+        return driver.getPageSource().contains("401");
     }
 
     public String getFirstNameValue() {
         return waitForElementVisible(Locators.EditProfile.FIRST_NAME_FIELD).getAttribute("value");
     }
 
-    public String updateMyProfileViaApi(String updatePayloadJson) {
-        return apiRequest()
-                .contentType(ContentType.JSON)
-                .body(updatePayloadJson)
-                .put("/users/me")
-                .asString();
+    public void updateMyProfileViaScript(String firstName, String lastName, String phone, String bio, String avatarUrl) {
+        String payload = String.format(
+                "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"phone\":\"%s\",\"bio\":\"%s\",\"avatarUrl\":\"%s\"}",
+                firstName, lastName, phone, bio, avatarUrl);
+        ((JavascriptExecutor) driver).executeAsyncScript(
+                loadScript("com/staybnb/scripts/updateMyProfileApi.js"),
+                AppConstants.SLUG,
+                payload);
     }
 
-    private void waitForEditProfileToLoad() {
-        wait.until(d ->
-                !d.findElements(Locators.EditProfile.FIRST_NAME_FIELD).isEmpty() ||
-                d.getPageSource().contains("401") ||
-                d.getPageSource().contains("Unauthorized")
-        );
+    // ── Private ───────────────────────────────────────────────────────────────
+
+    private void enterFirstName(String firstName) {
+        type(Locators.EditProfile.FIRST_NAME_FIELD, firstName);
+    }
+
+    private void enterLastName(String lastName) {
+        type(Locators.EditProfile.LAST_NAME_FIELD, lastName);
+    }
+
+    private void enterPhone(String phone) {
+        type(Locators.EditProfile.PHONE_FIELD, phone);
+    }
+
+    private void enterBio(String bio) {
+        type(Locators.EditProfile.BIO_FIELD, bio);
+    }
+
+    private void enterAvatarUrl(String avatarUrl) {
+        type(Locators.EditProfile.AVATAR_URL_FIELD, avatarUrl);
     }
 }

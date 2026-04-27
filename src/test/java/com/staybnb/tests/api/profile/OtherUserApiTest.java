@@ -1,8 +1,9 @@
 package com.staybnb.tests.api.profile;
 
 import com.staybnb.assertions.ErrorMessages;
+import com.staybnb.config.TestConfig;
 import com.staybnb.config.TestDataConstants;
-import com.staybnb.pages.OtherProfilePage;
+import com.staybnb.pages.ProfilePage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -21,18 +22,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Other User Profile API")
 @Tag("api")
 public class OtherUserApiTest extends BaseApiTest {
-    private OtherProfilePage otherProfilePage;
+    private ProfilePage otherProfilePage;
 
     @BeforeEach
     public void setup() {
-        otherProfilePage = new OtherProfilePage(driver);
+        otherProfilePage = new ProfilePage(driver);
         loginAsUser();
     }
 
     @Test
     @DisplayName("View other user API response is not null")
     public void testApiViewOtherUserResponseNotNull() {
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(TestDataConstants.OTHER_USER_ID_1);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(TestConfig.OTHER_USER_ID_1);
 
         assertNotNull(
                 jsonResponse,
@@ -43,7 +44,7 @@ public class OtherUserApiTest extends BaseApiTest {
     @ParameterizedTest(name = "API response contains field: {0}")
     @MethodSource("provideExpectedApiFields")
     public void testApiViewOtherUserContainsField(String field) {
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(TestDataConstants.OTHER_USER_ID_1);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(TestConfig.OTHER_USER_ID_1);
 
         assertTrue(
                 jsonResponse.contains("\"" + field + "\""),
@@ -54,7 +55,7 @@ public class OtherUserApiTest extends BaseApiTest {
     @ParameterizedTest(name = "API response excludes field: {0}")
     @MethodSource("provideExcludedApiFields")
     public void testApiViewOtherUserDoesNotContainField(String field) {
-        String jsonResponse = otherProfilePage.getOtherUserApiResponse(TestDataConstants.OTHER_USER_ID_1);
+        String jsonResponse = otherProfilePage.getOtherUserApiResponse(TestConfig.OTHER_USER_ID_1);
 
         assertFalse(
                 jsonResponse.contains("\"" + field + "\""),

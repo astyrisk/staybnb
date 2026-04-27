@@ -1,7 +1,7 @@
 package com.staybnb.tests.api.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
-import com.staybnb.pages.OwnProfilePage;
+import com.staybnb.pages.ProfilePage;
 import com.staybnb.tests.BaseApiTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -16,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("Become a Host API")
 @Tag("api")
 public class BecomeHostApiTest extends BaseApiTest {
-    private OwnProfilePage ownProfilePage;
+    private ProfilePage ownProfilePage;
 
     @BeforeEach
     public void setup() {
-        ownProfilePage = new OwnProfilePage(driver);
+        ownProfilePage = new ProfilePage(driver);
     }
 
     @Test

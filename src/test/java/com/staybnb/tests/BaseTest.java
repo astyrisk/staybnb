@@ -35,9 +35,11 @@ public class BaseTest {
         );
     }
 
-    protected void loginAsUser() {
+    protected LoginPage loginAsUser() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateViaNavbar();
         loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+
+        return loginPage;
     }
 }

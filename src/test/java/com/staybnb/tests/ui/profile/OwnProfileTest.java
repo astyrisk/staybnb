@@ -2,7 +2,7 @@ package com.staybnb.tests.ui.profile;
 
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.TestDataConstants;
-import com.staybnb.pages.OwnProfilePage;
+import com.staybnb.pages.ProfilePage;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -21,31 +21,42 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("regression")
 @ResourceLock(value = "test-user-profile", mode = ResourceAccessMode.READ)
 public class OwnProfileTest extends BaseTest {
-    private OwnProfilePage ownProfilePage;
+    private ProfilePage ownProfilePage;
 
     @BeforeEach
     public void setup() {
-        ownProfilePage = new OwnProfilePage(driver);
+        ownProfilePage = new ProfilePage(driver);
         loginAsUser();
         ownProfilePage.navigateViaNavbar();
     }
 
     @Test
-    @DisplayName("Own profile displays avatar")
+    @DisplayName("Own profile displays correct avatar")
     public void testOwnProfileAvatarDisplayed() {
-        assertTrue(
-                ownProfilePage.isAvatarDisplayed(),
-                ErrorMessages.AVATAR_SHOULD_BE_DISPLAYED
+        assertEquals(
+                TestDataConstants.OwnProfile.AVATAR_URL,
+                ownProfilePage.getAvatarSrc(),
+                ErrorMessages.AVATAR_URL_SHOULD_MATCH
         );
     }
 
     @Test
-    @DisplayName("Own profile shows correct full name")
-    public void testOwnProfileFullName() {
+    @DisplayName("Own profile shows correct first name")
+    public void testOwnProfileFirstName() {
         assertEquals(
-                TestDataConstants.OwnProfile.FULL_NAME,
-                ownProfilePage.getFullName(),
-                ErrorMessages.FULL_NAME_SHOULD_MATCH
+                TestDataConstants.OwnProfile.FIRST_NAME,
+                ownProfilePage.getFirstName(),
+                ErrorMessages.FIRST_NAME_SHOULD_MATCH
+        );
+    }
+
+    @Test
+    @DisplayName("Own profile shows correct last name")
+    public void testOwnProfileLastName() {
+        assertEquals(
+                TestDataConstants.OwnProfile.LAST_NAME,
+                ownProfilePage.getLastName(),
+                ErrorMessages.LAST_NAME_SHOULD_MATCH
         );
     }
 
