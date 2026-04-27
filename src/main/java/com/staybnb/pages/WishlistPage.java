@@ -79,7 +79,7 @@ public class WishlistPage extends BasePage {
 
     public boolean areAllCardsShowingFilledHeart() {
         List<WebElement> cards = driver.findElements(Locators.Wishlist.PROPERTY_CARDS);
-        List<WebElement> favoriteBtns = driver.findElements(Locators.Wishlist.CARD_FAVORITED_BTN);
+        List<WebElement> favoriteBtns = driver.findElements(Locators.Wishlist.CARD_FAV_BTN);
         return !cards.isEmpty() && cards.size() == favoriteBtns.size();
     }
 

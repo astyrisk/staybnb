@@ -11,14 +11,13 @@ import java.util.stream.Collectors;
 import com.staybnb.config.AppConstants;
 
 public class PropertyDetailsPage extends BasePage {
-    private static final String BASE_URL = AppConstants.PROPERTY_DETAILS_BASE_URL;
 
     public PropertyDetailsPage(WebDriver driver) {
         super(driver);
     }
 
     public void navigateTo(String propertyId) {
-        super.navigateTo(BASE_URL + propertyId);
+        super.navigateTo(AppConstants.PROPERTY_DETAILS_BASE_URL + propertyId);
         waitForDetailsToLoad();
     }
 
@@ -127,15 +126,15 @@ public class PropertyDetailsPage extends BasePage {
     }
 
     public boolean isFavorite() {
-        return !driver.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty();
+        return !driver.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAV_BTN).isEmpty();
     }
 
     public void waitForFavorite() {
-        wait.until(d -> !d.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty());
+        wait.until(d -> !d.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAV_BTN).isEmpty());
     }
 
     public void waitForWishlistUnfavorited() {
-        wait.until(d -> d.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAVORITED_BTN).isEmpty());
+        wait.until(d -> d.findElements(Locators.PropertyDetails.DETAIL_WISHLIST_FAV_BTN).isEmpty());
     }
 
     private void waitForDetailsToLoad() {

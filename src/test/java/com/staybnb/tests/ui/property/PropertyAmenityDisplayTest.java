@@ -37,6 +37,7 @@ public class PropertyAmenityDisplayTest extends BaseTest {
         );
     }
 
+    //fails
     @Test
     @DisplayName("'Show All Amenities' button appears for properties with more than 8 amenities")
     public void testShowAllAmenitiesButtonAppearsForPropertyWithMoreThanEightAmenities() {

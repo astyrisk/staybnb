@@ -19,14 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class CreatePropertyPage extends BasePage {
-    private static final String PAGE_URL = AppConstants.HOSTING_CREATE_URL;
 
     public CreatePropertyPage(WebDriver driver) {
         super(driver);
     }
 
     public void navigateTo() {
-        super.navigateTo(PAGE_URL);
+        super.navigateTo(AppConstants.HOSTING_CREATE_URL);
         waitForElementVisible(Locators.CreateProperty.CONTAINER);
     }
 

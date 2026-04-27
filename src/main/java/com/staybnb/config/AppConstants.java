@@ -13,9 +13,9 @@ public final class AppConstants {
         API_BASE_URL = BASE_URL.substring(0, BASE_URL.indexOf("/t/")) + "/api/t/" + SLUG;
     }
 
+    public static final String HOME_URL                  = BASE_URL;
     public static final String LOGIN_URL                 = BASE_URL + "/login";
     public static final String REGISTER_URL              = BASE_URL + "/register";
-    public static final String HOME_URL                  = BASE_URL;
     public static final String PROFILE_URL               = BASE_URL + "/profile";
     public static final String EDIT_PROFILE_URL          = BASE_URL + "/profile/edit";
     public static final String HOSTING_URL               = BASE_URL + "/hosting";

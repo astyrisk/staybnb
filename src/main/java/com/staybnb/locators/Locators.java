@@ -61,7 +61,6 @@ public final class Locators {
         public static final By HERO_SECTION = By.className("home-hero");
         public static final By HERO_HEADLINE = By.cssSelector(".home-hero-content h1");
         public static final By CATEGORY_BAR = By.className("categories-bar");
-        public static final By CATEGORY_CHIPS = By.cssSelector(".categories-bar .category-chip");
         public static final By ACTIVE_CATEGORY_CHIP = By.cssSelector(".categories-bar .category-chip.active");
         public static final By CATEGORY_ICONS = By.className("category-icon");
         public static final By PROPERTIES_COUNT = By.className("properties-count");
@@ -104,7 +103,6 @@ public final class Locators {
         public static final By CARD_PRICE = By.className("property-card-price");
         public static final By CARD_PRICE_AMOUNT = By.cssSelector(".property-card-price strong");
         public static final By CARD_RATING = By.className("property-card-rating");
-        public static final By PROPERTY_LIST_CONTROLS = By.className("property-list-controls");
         public static final By EMPTY_STATE = By.className("empty-state");
         public static final By PROPERTIES_COUNT = By.className("properties-count");
 
@@ -117,10 +115,9 @@ public final class Locators {
                 "//div[contains(@class,'pagination-controls')]//button[normalize-space()='Previous']");
         public static final By PAGINATION_NEXT_BTN = By.xpath(
                 "//div[contains(@class,'pagination-controls')]//button[normalize-space()='Next']");
-        public static final By PAGINATION_ACTIVE_PAGE = By.cssSelector(".pagination-controls button.btn-primary");
 
         public static final By CARD_FAVORITE_BTN = By.cssSelector("button.property-card-favorite");
-        public static final By CARD_FAVORITE_FAVORITED_BTN = By.cssSelector("button.property-card-favorite.favorited");
+        public static final By CARD_FAVORITE_FAV_BTN = By.cssSelector("button.property-card-favorite.favorited");
     }
 
     public static final class FilterSidebar {
@@ -146,7 +143,6 @@ public final class Locators {
         public static final By BATHROOMS_INPUT = By.xpath(
                 "//div[contains(@class,'filter-section')][.//h4[text()='Bathrooms']]//input");
         public static final By MOBILE_FILTER_BTN = By.cssSelector("button.mobile-filter-btn");
-        public static final By ACTIVE_FILTERS_TEXT = By.cssSelector(".active-filters span");
         public static final By MOBILE_FILTER_MODAL = By.cssSelector(
                 ".filter-sidebar-container.mobile-visible, .filter-modal-overlay, .filter-modal");
 
@@ -166,7 +162,6 @@ public final class Locators {
         public static final By DETAIL_TYPE = By.className("detail-category");
         public static final By DETAIL_SPECS = By.cssSelector(".detail-main .detail-specs span");
         public static final By DETAIL_DESCRIPTION = By.className("detail-description");
-        public static final By SHOW_MORE_BUTTON = By.className("detail-description-toggle");
         public static final By HOST_AVATAR = By.className("detail-host-avatar");
         public static final By HOST_NAME = By.className("detail-host-name");
         public static final By HOST_SINCE = By.className("detail-host-since");
@@ -179,22 +174,18 @@ public final class Locators {
         public static final By REVIEWS_SECTION = By.className("detail-reviews");
 
         public static final By GALLERY_IMAGES = By.cssSelector(".detail-gallery img");
-        public static final By SHOW_ALL_PHOTOS_BUTTON = By.className("show-all-photos-btn");
-        public static final By GALLERY_MODAL = By.className("gallery-modal");
-        public static final By GALLERY_CAROUSEL = By.className("detail-gallery-carousel");
 
         public static final By DETAIL_WISHLIST_BTN = By.cssSelector("button.detail-wishlist-btn");
-        public static final By DETAIL_WISHLIST_FAVORITED_BTN = By.cssSelector("button.detail-wishlist-btn.favorited");
+        public static final By DETAIL_WISHLIST_FAV_BTN = By.cssSelector("button.detail-wishlist-btn.favorited");
     }
 
     public static final class Wishlist {
         private Wishlist() {}
 
         public static final By PAGE_TITLE        = By.xpath("//h1[normalize-space()='My Wishlists']");
-        public static final By PROPERTIES_COUNT  = By.className("properties-count");
         public static final By PROPERTY_CARDS    = By.className("property-card");
         public static final By CARD_FAVORITE_BTN = By.cssSelector("button.property-card-favorite");
-        public static final By CARD_FAVORITED_BTN = By.cssSelector("button.property-card-favorite.favorited");
+        public static final By CARD_FAV_BTN = By.cssSelector("button.property-card-favorite.favorited");
         public static final By EMPTY_STATE        = By.className("empty-state");
     }
 
@@ -215,10 +206,6 @@ public final class Locators {
     public static final class OtherProfile {
         private OtherProfile() {}
 
-        public static final By PROFILE_AVATAR = By.className("profile-avatar");
-        public static final By PROFILE_NAME = By.className("profile-name");
-        public static final By PROFILE_META = By.className("profile-meta");
-        public static final By BIO_TEXT = By.xpath("//div[@class='profile-section']/p");
         public static final By PHONE_SECTION = By.xpath("//h2[text()='Phone']");
         public static final By EMAIL_SECTION = By.xpath("//h2[text()='Email']");
         public static final By ERROR_MESSAGE = By.xpath("//div[contains(@class, 'error')]|//h1[contains(text(), '404')]|//*[contains(text(), 'User not found')]");
@@ -234,7 +221,6 @@ public final class Locators {
         public static final By AVATAR_URL_FIELD = By.id("avatarUrl");
         public static final By SAVE_CHANGES_BUTTON = By.xpath("//button[text()='Save Changes']");
         public static final By CANCEL_BUTTON = By.xpath("//button[text()='Cancel']");
-        public static final By VALIDATION_ERROR = By.cssSelector(".error, .field-error, .auth-error");
 
         public static By fieldError(String fieldId) {
             return By.xpath("//input[@id='" + fieldId + "']/following-sibling::span[@class='field-error']");
@@ -356,8 +342,6 @@ public final class Locators {
                 By.cssSelector(".create-property-review-section");
         public static final By STEP_7_CREATE_PROPERTY_BUTTON =
                 By.xpath("//button[contains(@class,'create-property-btn') and contains(@class,'primary') and (normalize-space()='Create Property' or normalize-space()='Create Listing')]");
-        public static final By STEP_7_SUCCESS_MESSAGE =
-                By.cssSelector(".alert, .alert-success, .toast-success, .create-property-success");
 
         public static final By FIELD_ERRORS = By.cssSelector(".create-property-error, .error, .field-error, .auth-error");
     }

@@ -8,20 +8,19 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class HostDashboardPage extends BasePage {
-    private static final String PAGE_URL = AppConstants.HOSTING_URL;
 
     public HostDashboardPage(WebDriver driver) {
         super(driver);
     }
 
     public void navigateTo() {
-        super.navigateTo(PAGE_URL);
+        super.navigateTo(AppConstants.HOSTING_URL);
         waitForDashboardToLoad();
     }
 
     public void navigateViaNavbar() {
         navbar().clickHostDashboard();
-        waitForUrlToBe(PAGE_URL);
+        waitForUrlToBe(AppConstants.HOSTING_URL);
         waitForDashboardToLoad();
     }
 

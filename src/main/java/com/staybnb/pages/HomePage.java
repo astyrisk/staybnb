@@ -12,7 +12,6 @@ import java.util.Optional;
 import com.staybnb.config.AppConstants;
 
 public class HomePage extends BasePage {
-    private static final String PAGE_URL = AppConstants.HOME_URL;
     private static final String GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE = "com/staybnb/scripts/getElementDirectText.js";
 
     public HomePage(WebDriver driver) {
@@ -20,7 +19,7 @@ public class HomePage extends BasePage {
     }
 
     public void navigateTo() {
-        super.navigateTo(PAGE_URL);
+        super.navigateTo(AppConstants.HOME_URL);
         waitForHomeToLoad();
     }
 
