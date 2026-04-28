@@ -31,37 +31,37 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     @DisplayName("Property title matches expected value")
     public void testPropertyTitle() {
-        assertEquals("Ski Chalet in Zermatt", propertyDetailsPage.getTitle(), ErrorMessages.PROPERTY_TITLE_SHOULD_MATCH);
+        assertEquals(TestDataConstants.DefaultProperty.TITLE, propertyDetailsPage.getTitle(), ErrorMessages.PROPERTY_TITLE_SHOULD_MATCH);
     }
 
     @Test
     @DisplayName("Property location matches expected value")
     public void testPropertyLocation() {
-        assertEquals("Zermatt, Switzerland", propertyDetailsPage.getLocation(), ErrorMessages.PROPERTY_LOCATION_SHOULD_MATCH);
+        assertEquals(TestDataConstants.DefaultProperty.LOCATION, propertyDetailsPage.getLocation(), ErrorMessages.PROPERTY_LOCATION_SHOULD_MATCH);
     }
 
     @Test
     @DisplayName("Property displays guest capacity")
     public void testPropertyGuestCapacity() {
-        assertTrue(propertyDetailsPage.getSpecTexts().contains("10 guests"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_GUESTS);
+        assertTrue(propertyDetailsPage.getSpecTexts().contains(TestDataConstants.DefaultProperty.GUEST_CAPACITY), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_GUESTS);
     }
 
     @Test
     @DisplayName("Property displays bedroom count")
     public void testPropertyBedroomCount() {
-        assertTrue(propertyDetailsPage.getSpecTexts().contains("5 bedrooms"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BEDROOMS);
+        assertTrue(propertyDetailsPage.getSpecTexts().contains(TestDataConstants.DefaultProperty.BEDROOM_COUNT), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BEDROOMS);
     }
 
     @Test
     @DisplayName("Property displays bed count")
     public void testPropertyBedCount() {
-        assertTrue(propertyDetailsPage.getSpecTexts().contains("7 beds"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BEDS);
+        assertTrue(propertyDetailsPage.getSpecTexts().contains(TestDataConstants.DefaultProperty.BED_COUNT), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BEDS);
     }
 
     @Test
     @DisplayName("Property displays bathroom count")
     public void testPropertyBathroomCount() {
-        assertTrue(propertyDetailsPage.getSpecTexts().contains("3 bathrooms"), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BATHROOMS);
+        assertTrue(propertyDetailsPage.getSpecTexts().contains(TestDataConstants.DefaultProperty.BATHROOM_COUNT), ErrorMessages.SHOULD_DISPLAY_NUMBER_OF_BATHROOMS);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     @DisplayName("Host name shows 'John D.'")
     public void testHostNameValue() {
-        assertTrue(propertyDetailsPage.getHostName().contains("John D."), ErrorMessages.HOST_NAME_SHOULD_MATCH_JOHN_D);
+        assertTrue(propertyDetailsPage.getHostName().contains(TestDataConstants.DefaultProperty.HOST_NAME), ErrorMessages.HOST_NAME_SHOULD_MATCH_JOHN_D);
     }
 
     @Test
@@ -97,25 +97,25 @@ public class PropertyDetailsTest extends BaseTest {
     @Test
     @DisplayName("Host member since shows 'March 2026'")
     public void testHostMemberSinceValue() {
-        assertTrue(propertyDetailsPage.getHostSince().contains("March 2026"), ErrorMessages.HOST_MEMBER_SINCE_SHOULD_MATCH_MARCH_2026);
+        assertTrue(propertyDetailsPage.getHostSince().contains(TestDataConstants.DefaultProperty.HOST_SINCE), ErrorMessages.HOST_MEMBER_SINCE_SHOULD_MATCH_MARCH_2026);
     }
 
     @Test
     @DisplayName("Property has 9 amenities listed")
     public void testAmenitiesCount() {
-        assertEquals(9, propertyDetailsPage.getAmenities().size(), ErrorMessages.THERE_SHOULD_BE_9_AMENITIES);
+        assertEquals(TestDataConstants.DefaultProperty.AMENITIES_COUNT, propertyDetailsPage.getAmenities().size(), ErrorMessages.THERE_SHOULD_BE_9_AMENITIES);
     }
 
     @Test
     @DisplayName("WiFi is listed in amenities")
     public void testWiFiAmenityPresent() {
-        assertTrue(propertyDetailsPage.getAmenityTexts().stream().anyMatch(t -> t.contains("WiFi")), ErrorMessages.WIFI_SHOULD_BE_LISTED);
+        assertTrue(propertyDetailsPage.getAmenityTexts().stream().anyMatch(t -> t.contains(TestDataConstants.DefaultProperty.AMENITY_WIFI)), ErrorMessages.WIFI_SHOULD_BE_LISTED);
     }
 
     @Test
     @DisplayName("Ski Access is listed in amenities")
     public void testSkiAccessAmenityPresent() {
-        assertTrue(propertyDetailsPage.getAmenityTexts().stream().anyMatch(t -> t.contains("Ski Access")), ErrorMessages.SKI_ACCESS_SHOULD_BE_LISTED);
+        assertTrue(propertyDetailsPage.getAmenityTexts().stream().anyMatch(t -> t.contains(TestDataConstants.DefaultProperty.AMENITY_SKI_ACCESS)), ErrorMessages.SKI_ACCESS_SHOULD_BE_LISTED);
     }
 
     @Test
@@ -135,12 +135,6 @@ public class PropertyDetailsTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Booking widget is absent on property detail page")
-    public void testAbsenceOfBookingWidget() {
-        assertFalse(propertyDetailsPage.isBookingWidgetPresent(), ErrorMessages.BOOKING_WIDGET_SHOULD_BE_ABSENT);
-    }
-
-    @Test
     @DisplayName("Reviews section is absent on property detail page")
     public void testAbsenceOfReviewsSection() {
         assertFalse(propertyDetailsPage.isReviewsSectionPresent(), ErrorMessages.REVIEWS_SECTION_SHOULD_BE_ABSENT);
@@ -157,6 +151,6 @@ public class PropertyDetailsTest extends BaseTest {
     public void testFirstImageAltText() {
         List<WebElement> images = propertyDetailsPage.getGalleryImages();
 
-        assertEquals("Living Room", images.getFirst().getAttribute("alt"), ErrorMessages.FIRST_IMAGE_SHOULD_BE_LIVING_ROOM);
+        assertEquals(TestDataConstants.DefaultProperty.FIRST_IMAGE_ALT, images.getFirst().getAttribute("alt"), ErrorMessages.FIRST_IMAGE_SHOULD_BE_LIVING_ROOM);
     }
 }

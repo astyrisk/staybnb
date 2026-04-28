@@ -69,10 +69,6 @@ public class PropertyDetailsPage extends BasePage {
         return waitForElementVisible(Locators.PropertyDetails.PRICE_AMOUNT).getText();
     }
 
-    public boolean isBookingWidgetPresent() {
-        return !driver.findElements(Locators.PropertyDetails.BOOKING_WIDGET).isEmpty();
-    }
-
     public boolean isReviewsSectionPresent() {
         return !driver.findElements(Locators.PropertyDetails.REVIEWS_SECTION).isEmpty();
     }

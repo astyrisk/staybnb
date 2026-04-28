@@ -53,7 +53,7 @@ public class PropertyCategoriesTest extends BaseTest {
         );
     }
 
-    // fails on automation-abdelbary
+    // fails on third sprint
     @Test
     @DisplayName("Selecting a category chip marks it as active")
     public void testSelectingCategoryMarksChipAsActive() {

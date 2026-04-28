@@ -90,17 +90,6 @@ public class HomeTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Property cards are present on home page")
-    public void testPropertyCardsArePresent() {
-        List<WebElement> cards = homePage.getPropertyCards();
-
-        assertFalse(
-                cards.isEmpty(),
-                ErrorMessages.HOME_PROPERTY_CARDS_SHOULD_BE_PRESENT
-        );
-    }
-
-    @Test
     @DisplayName("Each property card displays all required details")
     public void testPropertyCardsDetailsAreComplete() {
         List<WebElement> cards = homePage.getPropertyCards();

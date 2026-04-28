@@ -1,6 +1,7 @@
 package com.staybnb.pages;
 
 import com.staybnb.locators.Locators;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -30,7 +31,7 @@ public class PropertyListingPage extends BasePage {
         return waitForElementsPresent(Locators.PropertyListing.PROPERTY_CARD);
     }
 
-    public boolean hasImage(WebElement card) {
+    public boolean hasImage(@NonNull WebElement card) {
         return !card.findElements(Locators.PropertyListing.CARD_IMAGE).isEmpty()
                 && card.findElement(Locators.PropertyListing.CARD_IMAGE).isDisplayed();
     }

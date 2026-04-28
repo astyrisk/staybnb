@@ -168,7 +168,7 @@ public final class Locators {
         public static final By AMENITIES_SECTION = By.className("detail-amenities");
         public static final By AMENITY_ITEMS = By.className("detail-amenity");
         public static final By SHOW_ALL_AMENITIES_BUTTON = By.className("detail-amenities-show-all");
-        public static final By PRICE_AMOUNT = By.className("detail-price-amount");
+        public static final By PRICE_AMOUNT = By.className("booking-widget__price");
         public static final By AUTH_ERROR = By.className("auth-error");
         public static final By BOOKING_WIDGET = By.className("detail-booking-widget");
         public static final By REVIEWS_SECTION = By.className("detail-reviews");

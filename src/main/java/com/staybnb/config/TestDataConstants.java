@@ -43,6 +43,22 @@ public final class TestDataConstants {
         public static final String API_BIO        = "API Bio";
     }
 
+    // ── Default Property (ID from TestConfig.DEFAULT_PROPERTY_ID) ────────────
+    public static final class DefaultProperty {
+        public static final String TITLE              = "Ski Chalet in Zermatt";
+        public static final String LOCATION           = "Zermatt, Switzerland";
+        public static final String GUEST_CAPACITY     = "10 guests";
+        public static final String BEDROOM_COUNT      = "5 bedrooms";
+        public static final String BED_COUNT          = "7 beds";
+        public static final String BATHROOM_COUNT     = "3 bathrooms";
+        public static final String HOST_NAME          = "John D.";
+        public static final String HOST_SINCE         = "March 2026";
+        public static final int    AMENITIES_COUNT    = 9;
+        public static final String AMENITY_WIFI       = "WiFi";
+        public static final String AMENITY_SKI_ACCESS = "Ski Access";
+        public static final String FIRST_IMAGE_ALT   = "Living Room";
+    }
+
     // ── Edit Property ─────────────────────────────────────────────────────────
     public static final class EditProperty {
         public static final String EDITABLE_PROPERTY_ID = PROPERTY_WITH_FEW_AMENITIES_ID;

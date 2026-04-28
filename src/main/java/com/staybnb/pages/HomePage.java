@@ -7,12 +7,15 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import java.util.List;
-import java.util.Optional;
 import com.staybnb.config.AppConstants;
 
+import java.util.List;
+import java.util.Optional;
+
 public class HomePage extends BasePage {
-    private static final String GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE = "com/staybnb/scripts/getElementDirectText.js";
+    private static final String GET_ELEMENT_DIRECT_TEXT_JS  = "com/staybnb/scripts/getElementDirectText.js";
+    private static final String IS_CATEGORY_BAR_SCROLLABLE_JS = "com/staybnb/scripts/isCategoryBarScrollable.js";
+    private static final String SCROLL_BY_Y500_JS           = "com/staybnb/scripts/scrollByY500.js";
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -40,26 +43,20 @@ public class HomePage extends BasePage {
     }
 
     public boolean hasCategoryChipNamed(String categoryName) {
-        String expected = categoryName == null ? "" : categoryName.trim();
-        if (expected.isEmpty()) {
-            return false;
-        }
-        By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][text()[normalize-space()='" + expected + "']]");
-        return !driver.findElements(chip).isEmpty();
+        String name = normalizeCategory(categoryName);
+        if (name.isEmpty()) return false;
+        return !driver.findElements(categoryChipLocator(name)).isEmpty();
     }
 
     public void clickCategoryByName(String categoryName) {
-        String expected = categoryName == null ? "" : categoryName.trim();
-        if (expected.isEmpty()) {
-            throw new IllegalArgumentException("Category name must not be blank");
-        }
-        By chip = By.xpath("//div[contains(@class,'categories-bar')]//button[contains(@class,'category-chip')][text()[normalize-space()='" + expected + "']]");
-        waitForElementClickable(chip).click();
+        String name = normalizeCategory(categoryName);
+        if (name.isEmpty()) throw new IllegalArgumentException("Category name must not be blank");
+        waitForElementClickable(categoryChipLocator(name)).click();
     }
 
     public String getActiveCategoryName() {
         WebElement chip = waitForElementVisible(Locators.Home.ACTIVE_CATEGORY_CHIP);
-        String script = loadScript(GET_ELEMENT_DIRECT_TEXT_JS_RESOURCE);
+        String script = loadScript(GET_ELEMENT_DIRECT_TEXT_JS);
         Object result = ((JavascriptExecutor) driver).executeScript(script, chip);
         return Optional.ofNullable(result).map(Object::toString).orElse("").trim();
     }
@@ -70,21 +67,8 @@ public class HomePage extends BasePage {
 
     public boolean isCategoryBarHorizontallyScrollable() {
         WebElement bar = waitForElementVisible(Locators.Home.CATEGORY_BAR);
-        Object result = ((JavascriptExecutor) driver).executeScript(
-                "var el=arguments[0];" +
-                        "var style=window.getComputedStyle(el);" +
-                        "var overflowX=style ? style.overflowX : '';" +
-                        "return { scrollable: (el.scrollWidth>el.clientWidth), overflowX: overflowX };",
-                bar
-        );
-        if (result instanceof java.util.Map<?, ?> map) {
-            Object scrollable = map.get("scrollable");
-            Object overflowX = map.get("overflowX");
-            boolean canScroll = Boolean.TRUE.equals(scrollable);
-            String ox = overflowX == null ? "" : overflowX.toString().toLowerCase();
-            return canScroll && (ox.contains("auto") || ox.contains("scroll"));
-        }
-        return false;
+        String script = loadScript(IS_CATEGORY_BAR_SCROLLABLE_JS);
+        return Boolean.TRUE.equals(((JavascriptExecutor) driver).executeScript(script, bar));
     }
 
     public String getPropertiesCountText() {
@@ -102,10 +86,10 @@ public class HomePage extends BasePage {
 
     public boolean isCardDetailsComplete(WebElement card) {
         try {
-            boolean hasImage = card.findElement(Locators.Home.CARD_IMAGE).isDisplayed();
-            boolean hasTitle = !card.findElement(Locators.Home.CARD_TITLE).getText().isEmpty();
+            boolean hasImage    = card.findElement(Locators.Home.CARD_IMAGE).isDisplayed();
+            boolean hasTitle    = !card.findElement(Locators.Home.CARD_TITLE).getText().isEmpty();
             boolean hasLocation = !card.findElement(Locators.Home.CARD_LOCATION).getText().isEmpty();
-            boolean hasPrice = card.findElement(Locators.Home.CARD_PRICE).getText().contains("/ night");
+            boolean hasPrice    = card.findElement(Locators.Home.CARD_PRICE).getText().contains("/ night");
             return hasImage && hasTitle && hasLocation && hasPrice;
         } catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
@@ -124,8 +108,19 @@ public class HomePage extends BasePage {
     }
 
     public void scrollFeaturedPropertiesIntoView() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500)");
+        ((JavascriptExecutor) driver).executeScript(loadScript(SCROLL_BY_Y500_JS));
         waitForElementsPresent(Locators.Home.PROPERTY_CARDS);
+    }
+
+    private static String normalizeCategory(String categoryName) {
+        return categoryName == null ? "" : categoryName.trim();
+    }
+
+    private static By categoryChipLocator(String name) {
+        return By.xpath(
+                "//div[contains(@class,'categories-bar')]" +
+                "//button[contains(@class,'category-chip')][text()[normalize-space()='" + name + "']]"
+        );
     }
 
     private void waitForHomeToLoad() {
