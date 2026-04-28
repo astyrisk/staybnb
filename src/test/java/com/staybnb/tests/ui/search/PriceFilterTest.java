@@ -66,11 +66,9 @@ public class PriceFilterTest extends BaseTest {
         );
 
         assertTrue(
-                propertyListingPage.getPropertyCards().stream().allMatch(card -> {
-                    int price = propertyListingPage.getPriceAmount(card);
-                    return price >= TestDataConstants.PriceFilter.KNOWN_MIN_PRICE
-                            && price <= TestDataConstants.PriceFilter.KNOWN_MAX_PRICE;
-                }),
+                propertyListingPage.getCards().stream().allMatch(card ->
+                        card.getPriceAmount() >= TestDataConstants.PriceFilter.KNOWN_MIN_PRICE
+                        && card.getPriceAmount() <= TestDataConstants.PriceFilter.KNOWN_MAX_PRICE),
                 ErrorMessages.PRICE_FILTER_ALL_RESULTS_SHOULD_BE_IN_RANGE
         );
     }

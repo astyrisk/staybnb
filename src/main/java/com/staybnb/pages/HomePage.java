@@ -1,24 +1,29 @@
 package com.staybnb.pages;
 
+import com.staybnb.components.PropertyCard;
+import com.staybnb.components.PropertyGrid;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import com.staybnb.config.AppConstants;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class HomePage extends BasePage {
     private static final String GET_ELEMENT_DIRECT_TEXT_JS  = "com/staybnb/scripts/getElementDirectText.js";
     private static final String IS_CATEGORY_BAR_SCROLLABLE_JS = "com/staybnb/scripts/isCategoryBarScrollable.js";
     private static final String SCROLL_BY_Y500_JS           = "com/staybnb/scripts/scrollByY500.js";
 
+    private final PropertyGrid propertyGrid;
+
     public HomePage(WebDriver driver) {
         super(driver);
+        this.propertyGrid = new PropertyGrid(driver);
     }
 
     public void navigateTo() {
@@ -80,31 +85,26 @@ public class HomePage extends BasePage {
         wait.until(d -> getPropertiesCountText().contains(expected));
     }
 
-    public List<WebElement> getPropertyCards() {
-        return waitForElementsPresent(Locators.Home.PROPERTY_CARDS);
+    public List<PropertyCard> getCards() {
+        return waitForElementsPresent(Locators.Home.PROPERTY_CARDS).stream()
+                .map(el -> new PropertyCard(driver, el))
+                .collect(Collectors.toList());
     }
 
-    public boolean isCardDetailsComplete(WebElement card) {
-        try {
-            boolean hasImage    = card.findElement(Locators.Home.CARD_IMAGE).isDisplayed();
-            boolean hasTitle    = !card.findElement(Locators.Home.CARD_TITLE).getText().isEmpty();
-            boolean hasLocation = !card.findElement(Locators.Home.CARD_LOCATION).getText().isEmpty();
-            boolean hasPrice    = card.findElement(Locators.Home.CARD_PRICE).getText().contains("/ night");
-            return hasImage && hasTitle && hasLocation && hasPrice;
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
-            return false;
-        }
+    public PropertyCard getFirstCard() {
+        return new PropertyCard(driver, waitForElementsPresent(Locators.Home.PROPERTY_CARDS).getFirst());
     }
 
     public int getGridColumnCount() {
-        WebElement grid = driver.findElement(Locators.Home.PROPERTY_GRID);
-        String gridTemplate = grid.getCssValue("grid-template-columns");
-        if (gridTemplate == null || gridTemplate.isEmpty()) return 0;
-        return gridTemplate.split(" ").length;
+        return propertyGrid.getColumnCount();
     }
 
     public void waitForGridColumns(int expectedCount) {
-        wait.until(driver -> getGridColumnCount() == expectedCount);
+        propertyGrid.waitForColumns(expectedCount);
+    }
+
+    public void setWindowSize(int width, int height) {
+        driver.manage().window().setSize(new Dimension(width, height));
     }
 
     public void scrollFeaturedPropertiesIntoView() {

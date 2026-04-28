@@ -75,6 +75,10 @@ public abstract class BasePage extends SeleniumBase {
         return navbar().isHostDashboardDisplayed();
     }
 
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+
     public Navbar navbar() {
         return navbar;
     }

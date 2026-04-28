@@ -1,8 +1,11 @@
 package com.staybnb.pages;
 
+import com.staybnb.components.PropertyCard;
+import com.staybnb.components.PropertyGrid;
 import com.staybnb.locators.Locators;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,92 +13,116 @@ import org.openqa.selenium.support.ui.Select;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import com.staybnb.config.AppConstants;
 
 public class PropertyListingPage extends BasePage {
-    private static final String PAGE_URL = AppConstants.PROPERTY_LISTING_URL;
+    private final PropertyGrid propertyGrid;
 
     public PropertyListingPage(WebDriver driver) {
         super(driver);
+        this.propertyGrid = new PropertyGrid(driver);
     }
 
-    public void navigateTo() {
+    // ── Navigation ────────────────────────────────────────────────────────────
+
+    public PropertyListingPage navigateTo() {
         super.navigateTo(AppConstants.PROPERTY_LISTING_URL);
         waitForGridToLoad();
+        return this;
     }
 
-    public List<WebElement> getPropertyCards() {
-        return waitForElementsPresent(Locators.PropertyListing.PROPERTY_CARD);
+    public PropertyListingPage navigateToWithCity(String city) {
+        return navigateWithQuery("city=" + URLEncoder.encode(city, StandardCharsets.UTF_8));
     }
 
-    public boolean hasImage(@NonNull WebElement card) {
-        return !card.findElements(Locators.PropertyListing.CARD_IMAGE).isEmpty()
-                && card.findElement(Locators.PropertyListing.CARD_IMAGE).isDisplayed();
+    public PropertyListingPage navigateToWithDates(String checkIn, String checkOut) {
+        return navigateWithQuery("checkIn=" + checkIn + "&checkOut=" + checkOut);
     }
 
-    public String getTitle(WebElement card) {
-        return card.findElement(Locators.PropertyListing.CARD_TITLE).getText();
+    public PropertyListingPage navigateToWithGuests(int guests) {
+        return navigateWithQuery("guests=" + guests);
     }
 
-    public String getLocation(WebElement card) {
-        return card.findElement(Locators.PropertyListing.CARD_LOCATION).getText();
+    public PropertyListingPage navigateToWithPriceRange(int min, int max) {
+        return navigateWithQuery("minPrice=" + min + "&maxPrice=" + max);
     }
 
-    public String getPrice(WebElement card) {
-        return card.findElement(Locators.PropertyListing.CARD_PRICE).getText();
+    public PropertyListingPage navigateToWithPropertyType(String type) {
+        return navigateWithQuery("propertyType=" + type);
     }
 
-    public PropertyDetailsPage clickPropertyCard(WebElement card) {
-        card.click();
-        return new PropertyDetailsPage(driver);
+    public PropertyListingPage navigateToWithCategory(String categoryId) {
+        return navigateWithQuery("categoryId=" + categoryId);
     }
+
+    public PropertyListingPage navigateToWithAmenity(String amenityId) {
+        return navigateWithQuery("amenities=" + amenityId);
+    }
+
+    public PropertyListingPage navigateToWithBedrooms(int count) {
+        return navigateWithQuery("minBedrooms=" + count);
+    }
+
+    public PropertyListingPage navigateToWithBathrooms(int count) {
+        return navigateWithQuery("minBathrooms=" + count);
+    }
+
+    public PropertyListingPage navigateToWithCombinedAmenityBedroomBathroomPriceFilters(
+            String amenityId, int bedrooms, int bathrooms, int minPrice, int maxPrice) {
+        return navigateWithQuery(
+                "amenities=" + amenityId
+                + "&minBedrooms=" + bedrooms
+                + "&minBathrooms=" + bathrooms
+                + "&minPrice=" + minPrice
+                + "&maxPrice=" + maxPrice);
+    }
+
+    public PropertyListingPage navigateToWithSort(String sortValue) {
+        return navigateWithQuery("sort=" + sortValue);
+    }
+
+    public PropertyListingPage navigateToPage(int page) {
+        return navigateWithQuery("page=" + page);
+    }
+
+    // ── Cards ─────────────────────────────────────────────────────────────────
+
+    public List<PropertyCard> getCards() {
+        return waitForElementsPresent(Locators.PropertyListing.PROPERTY_CARD).stream()
+                .map(el -> new PropertyCard(driver, el))
+                .collect(Collectors.toList());
+    }
+
+    public PropertyCard getFirstCard() {
+        return new PropertyCard(driver, waitForElementsPresent(Locators.PropertyListing.PROPERTY_CARD).getFirst());
+    }
+
+    public PropertyListingPage clickFavoriteOnFirstCard() {
+        getFirstCard().clickFavorite();
+        return this;
+    }
+
+    public PropertyListingPage clickFavoriteOnCardById(String propertyId) {
+        WebElement card = waitForElementVisible(cardByIdLocator(propertyId));
+        js().executeScript("arguments[0].click();", card.findElement(Locators.PropertyListing.CARD_FAVORITE_BTN));
+        return this;
+    }
+
+    // ── Grid ──────────────────────────────────────────────────────────────────
 
     public int getGridColumnCount() {
-        WebElement grid = driver.findElement(Locators.PropertyListing.PROPERTY_GRID);
-        String gridTemplate = grid.getCssValue("grid-template-columns");
-        if (gridTemplate == null || gridTemplate.isEmpty() || gridTemplate.equals("none")) return 1;
-        return gridTemplate.split(" ").length;
+        return propertyGrid.getColumnCount();
     }
 
-    public void waitForGridColumns(int expectedCount) {
-        wait.until(driver -> getGridColumnCount() == expectedCount);
+    public PropertyListingPage setWindowSize(int width, int height) {
+        driver.manage().window().setSize(new Dimension(width, height));
+        return this;
     }
 
-    public boolean hasSearchOrFilters() {
-        return !driver.findElements(Locators.PropertyListing.SEARCH_INPUT).isEmpty()
-                || !driver.findElements(Locators.PropertyListing.FILTER_BUTTONS).isEmpty()
-                || !driver.findElements(Locators.PropertyListing.SORT_SELECT).isEmpty();
-    }
+    // ── Filters ───────────────────────────────────────────────────────────────
 
-    public String getCardHref(WebElement card) {
-        return card.getAttribute("href");
-    }
-
-    public void navigateToWithCity(String city) {
-        String encoded = URLEncoder.encode(city, StandardCharsets.UTF_8);
-        super.navigateTo(PAGE_URL + "?city=" + encoded);
-        waitForSearchResults();
-    }
-
-    public void navigateToWithDates(String checkIn, String checkOut) {
-        super.navigateTo(PAGE_URL + "?checkIn=" + checkIn + "&checkOut=" + checkOut);
-        waitForSearchResults();
-    }
-
-    public void navigateToWithGuests(int guests) {
-        super.navigateTo(PAGE_URL + "?guests=" + guests);
-        waitForSearchResults();
-    }
-
-    public void navigateToWithPriceRange(int min, int max) {
-        super.navigateTo(PAGE_URL + "?minPrice=" + min + "&maxPrice=" + max);
-        waitForSearchResults();
-    }
-
-    public void setPriceRange(int min, int max) {
+    public PropertyListingPage setPriceRange(int min, int max) {
         WebElement minInput = waitForElementVisible(Locators.FilterSidebar.PRICE_MIN_INPUT);
         minInput.clear();
         minInput.sendKeys(String.valueOf(min));
@@ -104,167 +131,58 @@ public class PropertyListingPage extends BasePage {
         maxInput.clear();
         maxInput.sendKeys(String.valueOf(max));
         maxInput.sendKeys(Keys.TAB);
+        return this;
     }
 
-    public void waitForPriceFilterToApply() {
-        waitForUrlContains("minPrice=");
-    }
-
-    public int getPriceAmount(WebElement card) {
-        String text = card.findElement(Locators.PropertyListing.CARD_PRICE_AMOUNT).getText();
-        return Integer.parseInt(text.replaceAll("[^0-9]", ""));
-    }
-
-    public boolean isEmptyStateDisplayed() {
-        return isDisplayed(Locators.PropertyListing.EMPTY_STATE);
-    }
-
-    public int getPropertiesCount() {
-        String text = waitForElementVisible(Locators.PropertyListing.PROPERTIES_COUNT).getText();
-        return Integer.parseInt(text.split(" ")[0]);
-    }
-
-    public void navigateToWithPropertyType(String type) {
-        super.navigateTo(PAGE_URL + "?propertyType=" + type);
-        waitForSearchResults();
-    }
-
-    public void navigateToWithCategory(String categoryId) {
-        super.navigateTo(PAGE_URL + "?categoryId=" + categoryId);
-        waitForSearchResults();
-    }
-
-    public void selectPropertyType(String value) {
+    public PropertyListingPage selectPropertyType(String value) {
         waitForElementClickable(Locators.FilterSidebar.propertyTypeRadio(value)).click();
+        return this;
     }
 
-    public void selectCategory(String categoryId) {
-        WebElement selectEl = waitForElementVisible(Locators.FilterSidebar.CATEGORY_SELECT);
-        new Select(selectEl).selectByValue(categoryId);
+    public PropertyListingPage selectCategory(String categoryId) {
+        new Select(waitForElementVisible(Locators.FilterSidebar.CATEGORY_SELECT)).selectByValue(categoryId);
+        return this;
     }
 
-    public void waitForPropertyTypeFilterToApply() {
-        waitForUrlContains("propertyType=");
-    }
-
-    public void waitForCategoryFilterToApply() {
-        waitForUrlContains("categoryId=");
-    }
-
-    public void clearAllFilters() {
-        waitForElementClickable(Locators.FilterSidebar.CLEAR_ALL_FILTERS_BTN).click();
-    }
-
-    public void waitForFiltersCleared() {
-        wait.until(d -> {
-            String url = d.getCurrentUrl();
-            return !url.contains("propertyType=") && !url.contains("categoryId=");
-        });
-    }
-
-    public void waitForSearchResults() {
-        wait.until(d ->
-                !d.findElements(Locators.PropertyListing.PROPERTY_GRID).isEmpty() ||
-                !d.findElements(Locators.PropertyListing.EMPTY_STATE).isEmpty()
-        );
-    }
-
-    public void checkAmenityByName(String name) {
-        WebElement label = waitForElementVisible(Locators.FilterSidebar.amenityCheckbox(name));
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", label);
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", label);
-    }
-
-    public void setMinBedrooms(int count) {
-        WebElement input = waitForElementVisible(Locators.FilterSidebar.BEDROOMS_INPUT);
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", input);
-        input.click();
-        input.sendKeys(Keys.chord(Keys.CONTROL, "a"), String.valueOf(count));
-        input.sendKeys(Keys.TAB);
-    }
-
-    public void setMinBathrooms(int count) {
-        WebElement input = waitForElementVisible(Locators.FilterSidebar.BATHROOMS_INPUT);
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", input);
-        input.click();
-        input.sendKeys(Keys.chord(Keys.CONTROL, "a"), String.valueOf(count));
-        input.sendKeys(Keys.TAB);
-    }
-
-    public void waitForCountToChangeTo(int previousCount) {
-        wait.until(d -> {
-            String text = d.findElement(Locators.PropertyListing.PROPERTIES_COUNT).getText();
-            return Integer.parseInt(text.split(" ")[0]) != previousCount;
-        });
-    }
-
-    public void navigateToWithAmenity(String amenityId) {
-        super.navigateTo(PAGE_URL + "?amenities=" + amenityId);
-        waitForSearchResults();
-    }
-
-    public void navigateToWithBedrooms(int count) {
-        super.navigateTo(PAGE_URL + "?minBedrooms=" + count);
-        waitForSearchResults();
-    }
-
-    public void navigateToWithBathrooms(int count) {
-        super.navigateTo(PAGE_URL + "?minBathrooms=" + count);
-        waitForSearchResults();
-    }
-
-    public void navigateToWithCombinedAmenityBedroomBathroomPriceFilters(
-            String amenityId, int bedrooms, int bathrooms, int minPrice, int maxPrice) {
-        super.navigateTo(PAGE_URL
-                + "?amenities=" + amenityId
-                + "&minBedrooms=" + bedrooms
-                + "&minBathrooms=" + bathrooms
-                + "&minPrice=" + minPrice
-                + "&maxPrice=" + maxPrice);
-        waitForSearchResults();
-    }
-
-    public List<String> getSortOptionTexts() {
-        WebElement selectEl = waitForElementVisible(Locators.PropertyListing.SORT_SELECT);
-        return new Select(selectEl).getOptions().stream()
-                .map(WebElement::getText)
-                .filter(t -> !t.isBlank())
-                .collect(Collectors.toList());
-    }
-
-    public void selectSortOption(String value) {
+    public PropertyListingPage selectSortOption(String value) {
         new Select(waitForElementVisible(Locators.PropertyListing.SORT_SELECT)).selectByValue(value);
+        return this;
     }
 
-    public void waitForSortToApply() {
-        waitForUrlContains("sort=");
+    public PropertyListingPage checkAmenityByName(String name) {
+        jsScrollAndClick(waitForElementVisible(Locators.FilterSidebar.amenityCheckbox(name)));
+        return this;
     }
 
-    public void waitForSortParamRemoved() {
-        wait.until(d -> !d.getCurrentUrl().contains("sort="));
+    public PropertyListingPage setMinBedrooms(int count) {
+        WebElement input = waitForElementVisible(Locators.FilterSidebar.BEDROOMS_INPUT);
+        js().executeScript("arguments[0].scrollIntoView({block:'center'});", input);
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"), String.valueOf(count));
+        input.sendKeys(Keys.TAB);
+        return this;
     }
 
-    public void navigateToWithSort(String sortValue) {
-        super.navigateTo(PAGE_URL + "?sort=" + sortValue);
-        waitForSearchResults();
+    public PropertyListingPage setMinBathrooms(int count) {
+        WebElement input = waitForElementVisible(Locators.FilterSidebar.BATHROOMS_INPUT);
+        js().executeScript("arguments[0].scrollIntoView({block:'center'});", input);
+        input.click();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a"), String.valueOf(count));
+        input.sendKeys(Keys.TAB);
+        return this;
     }
 
-    public List<Integer> getVisibleCardPrices() {
-        return getPropertyCards().stream()
-                .map(this::getPriceAmount)
-                .collect(Collectors.toList());
+    public PropertyListingPage clearAllFilters() {
+        waitForElementClickable(Locators.FilterSidebar.CLEAR_ALL_FILTERS_BTN).click();
+        return this;
     }
 
-    public double getCardRating(WebElement card) {
-        List<WebElement> ratingEls = card.findElements(Locators.PropertyListing.CARD_RATING);
-        if (ratingEls.isEmpty()) return -1.0;
-        Matcher m = Pattern.compile("(\\d+\\.\\d+)").matcher(ratingEls.getFirst().getText());
-        return m.find() ? Double.parseDouble(m.group(1)) : -1.0;
+    public PropertyListingPage clickMobileFilterButton() {
+        waitForElementClickable(Locators.FilterSidebar.MOBILE_FILTER_BTN).click();
+        return this;
     }
 
-    public String getPaginationInfoText() {
-        return waitForElementVisible(Locators.PropertyListing.PAGINATION_INFO).getText();
-    }
+    // ── Pagination ────────────────────────────────────────────────────────────
 
     public PropertyListingPage clickNextPage() {
         waitForElementClickable(Locators.PropertyListing.PAGINATION_NEXT_BTN).click();
@@ -276,6 +194,18 @@ public class PropertyListingPage extends BasePage {
         return this;
     }
 
+    // ── Queries / state ───────────────────────────────────────────────────────
+
+    public boolean hasSearchOrFilters() {
+        return !driver.findElements(Locators.PropertyListing.SEARCH_INPUT).isEmpty()
+                || !driver.findElements(Locators.PropertyListing.FILTER_BUTTONS).isEmpty()
+                || !driver.findElements(Locators.PropertyListing.SORT_SELECT).isEmpty();
+    }
+
+    public boolean isEmptyStateDisplayed() {
+        return isDisplayed(Locators.PropertyListing.EMPTY_STATE);
+    }
+
     public boolean isPreviousButtonDisabled() {
         return waitForElementVisible(Locators.PropertyListing.PAGINATION_PREV_BTN).getAttribute("disabled") != null;
     }
@@ -284,70 +214,139 @@ public class PropertyListingPage extends BasePage {
         return waitForElementVisible(Locators.PropertyListing.PAGINATION_NEXT_BTN).getAttribute("disabled") != null;
     }
 
-    public void navigateToPage(int page) {
-        super.navigateTo(PAGE_URL + "?page=" + page);
-        waitForSearchResults();
-    }
-
-    public void waitForPageInUrl(int page) {
-        waitForUrlContains("page=" + page);
-    }
-
-    public void waitForPageParamRemoved() {
-        wait.until(d -> !d.getCurrentUrl().contains("page="));
-    }
-
-    public PropertyListingPage clickFavoriteOnFirstCard() {
-        List<WebElement> cards = getPropertyCards();
-        WebElement btn = cards.getFirst().findElement(Locators.PropertyListing.CARD_FAVORITE_BTN);
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
-        return this;
-    }
-
-    public PropertyListingPage clickFavoriteOnCardById(String propertyId) {
-        By cardLocator = By.cssSelector("a.property-card[href*='/properties/" + propertyId + "']");
-        WebElement card = waitForElementVisible(cardLocator);
-        WebElement btn = card.findElement(Locators.PropertyListing.CARD_FAVORITE_BTN);
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
-        return this;
-    }
-
-    public boolean isCardFavoritedById(String propertyId) {
-        By cardLocator = By.cssSelector("a.property-card[href*='/properties/" + propertyId + "']");
-        List<WebElement> cards = driver.findElements(cardLocator);
-        if (cards.isEmpty()) return false;
-        return !cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
-    }
-
-    public void waitForCardFavoritedById(String propertyId) {
-        By cardLocator = By.cssSelector("a.property-card[href*='/properties/" + propertyId + "']");
-        wait.until(d -> {
-            List<WebElement> cards = d.findElements(cardLocator);
-            return !cards.isEmpty() &&
-                    !cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
-        });
-    }
-
-    public void waitForCardUnfavoritedById(String propertyId) {
-        By cardLocator = By.cssSelector("a.property-card[href*='/properties/" + propertyId + "']");
-        wait.until(d -> {
-            List<WebElement> cards = d.findElements(cardLocator);
-            return !cards.isEmpty() &&
-                    cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
-        });
-    }
-
     public boolean isMobileFilterButtonDisplayed() {
         return isDisplayed(Locators.FilterSidebar.MOBILE_FILTER_BTN);
     }
 
-    public PropertyListingPage clickMobileFilterButton() {
-        waitForElementClickable(Locators.FilterSidebar.MOBILE_FILTER_BTN).click();
+    public boolean isMobileFilterModalDisplayed() {
+        return isDisplayed(Locators.FilterSidebar.MOBILE_FILTER_MODAL);
+    }
+
+    public boolean isCardFavoritedById(String propertyId) {
+        List<WebElement> cards = driver.findElements(cardByIdLocator(propertyId));
+        if (cards.isEmpty()) return false;
+        return !cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
+    }
+
+    public int getPropertiesCount() {
+        return Integer.parseInt(waitForElementVisible(Locators.PropertyListing.PROPERTIES_COUNT).getText().split(" ")[0]);
+    }
+
+    public String getPaginationInfoText() {
+        return waitForElementVisible(Locators.PropertyListing.PAGINATION_INFO).getText();
+    }
+
+    public List<String> getSortOptionTexts() {
+        return new Select(waitForElementVisible(Locators.PropertyListing.SORT_SELECT)).getOptions().stream()
+                .map(WebElement::getText)
+                .filter(t -> !t.isBlank())
+                .collect(Collectors.toList());
+    }
+
+    public List<Integer> getVisibleCardPrices() {
+        return getCards().stream()
+                .map(PropertyCard::getPriceAmount)
+                .collect(Collectors.toList());
+    }
+
+    // ── Waits ─────────────────────────────────────────────────────────────────
+
+    public PropertyListingPage waitForSearchResults() {
+        wait.until(d ->
+                !d.findElements(Locators.PropertyListing.PROPERTY_GRID).isEmpty() ||
+                !d.findElements(Locators.PropertyListing.EMPTY_STATE).isEmpty()
+        );
         return this;
     }
 
-    public boolean isMobileFilterModalDisplayed() {
-        return isDisplayed(Locators.FilterSidebar.MOBILE_FILTER_MODAL);
+    public PropertyListingPage waitForGridColumns(int expectedCount) {
+        propertyGrid.waitForColumns(expectedCount);
+        return this;
+    }
+
+    public PropertyListingPage waitForPriceFilterToApply() {
+        waitForUrlContains("minPrice=");
+        return this;
+    }
+
+    public PropertyListingPage waitForPropertyTypeFilterToApply() {
+        waitForUrlContains("propertyType=");
+        return this;
+    }
+
+    public PropertyListingPage waitForCategoryFilterToApply() {
+        waitForUrlContains("categoryId=");
+        return this;
+    }
+
+    public PropertyListingPage waitForFiltersCleared() {
+        wait.until(d -> !d.getCurrentUrl().contains("propertyType=") && !d.getCurrentUrl().contains("categoryId="));
+        return this;
+    }
+
+    public PropertyListingPage waitForSortToApply() {
+        waitForUrlContains("sort=");
+        return this;
+    }
+
+    public PropertyListingPage waitForSortParamRemoved() {
+        wait.until(d -> !d.getCurrentUrl().contains("sort="));
+        return this;
+    }
+
+    public PropertyListingPage waitForPageInUrl(int page) {
+        waitForUrlContains("page=" + page);
+        return this;
+    }
+
+    public PropertyListingPage waitForPageParamRemoved() {
+        wait.until(d -> !d.getCurrentUrl().contains("page="));
+        return this;
+    }
+
+    public PropertyListingPage waitForCountToChangeTo(int previousCount) {
+        wait.until(d -> Integer.parseInt(
+                d.findElement(Locators.PropertyListing.PROPERTIES_COUNT).getText().split(" ")[0]) != previousCount);
+        return this;
+    }
+
+    public PropertyListingPage waitForCardFavoritedById(String propertyId) {
+        By locator = cardByIdLocator(propertyId);
+        wait.until(d -> {
+            List<WebElement> cards = d.findElements(locator);
+            return !cards.isEmpty() && !cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
+        });
+        return this;
+    }
+
+    public PropertyListingPage waitForCardUnfavoritedById(String propertyId) {
+        By locator = cardByIdLocator(propertyId);
+        wait.until(d -> {
+            List<WebElement> cards = d.findElements(locator);
+            return !cards.isEmpty() && cards.getFirst().findElements(Locators.PropertyListing.CARD_FAVORITE_FAV_BTN).isEmpty();
+        });
+        return this;
+    }
+
+    // ── Private helpers ───────────────────────────────────────────────────────
+
+    private PropertyListingPage navigateWithQuery(String query) {
+        super.navigateTo(AppConstants.PROPERTY_LISTING_URL + "?" + query);
+        waitForSearchResults();
+        return this;
+    }
+
+    private JavascriptExecutor js() {
+        return (JavascriptExecutor) driver;
+    }
+
+    private void jsScrollAndClick(WebElement element) {
+        js().executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+        js().executeScript("arguments[0].click();", element);
+    }
+
+    private static By cardByIdLocator(String propertyId) {
+        return By.cssSelector("a.property-card[href*='/properties/" + propertyId + "']");
     }
 
     private void waitForGridToLoad() {

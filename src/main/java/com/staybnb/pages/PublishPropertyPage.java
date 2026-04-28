@@ -1,5 +1,6 @@
 package com.staybnb.pages;
 
+import com.staybnb.components.HostDashboardCard;
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import io.restassured.http.ContentType;
@@ -8,6 +9,7 @@ import org.openqa.selenium.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class PublishPropertyPage extends BasePage {
 
@@ -26,20 +28,15 @@ public class PublishPropertyPage extends BasePage {
     }
 
     public void clickPublishToggleOnDashboardForTitle(String propertyTitle) {
-        WebElement card = findDashboardCardByTitle(propertyTitle);
-        card.findElement(Locators.HostDashboard.CARD_PUBLISH_TOGGLE).click();
+        findDashboardCardByTitle(propertyTitle).getRoot().findElement(Locators.HostDashboard.CARD_PUBLISH_TOGGLE).click();
     }
 
     public boolean isPropertyDraftOnDashboard(String propertyTitle) {
-        WebElement card = findDashboardCardByTitle(propertyTitle);
-        String statusText = card.findElement(Locators.HostDashboard.CARD_STATUS).getText().trim();
-        return statusText.equalsIgnoreCase("Draft");
+        return findDashboardCardByTitle(propertyTitle).getStatus().trim().equalsIgnoreCase("Draft");
     }
 
     public boolean isPropertyPublishedOnDashboard(String propertyTitle) {
-        WebElement card = findDashboardCardByTitle(propertyTitle);
-        String statusText = card.findElement(Locators.HostDashboard.CARD_STATUS).getText().trim();
-        return statusText.equalsIgnoreCase("Published");
+        return findDashboardCardByTitle(propertyTitle).getStatus().trim().equalsIgnoreCase("Published");
     }
 
     public boolean isPropertyListedOnCurrentPage(String propertyTitle) {
@@ -81,16 +78,13 @@ public class PublishPropertyPage extends BasePage {
                 .statusCode();
     }
 
-    private WebElement findDashboardCardByTitle(String propertyTitle) {
+    private HostDashboardCard findDashboardCardByTitle(String propertyTitle) {
         waitForDashboardCardsToLoad();
-        List<WebElement> cards = driver.findElements(Locators.HostDashboard.PROPERTY_CARD);
-        for (WebElement card : cards) {
-            String cardTitle = card.findElement(Locators.HostDashboard.CARD_TITLE).getText().trim();
-            if (cardTitle.equals(propertyTitle)) {
-                return card;
-            }
-        }
-        throw new IllegalStateException("Could not find dashboard card with title: " + propertyTitle);
+        return driver.findElements(Locators.HostDashboard.PROPERTY_CARD).stream()
+                .map(el -> new HostDashboardCard(driver, el))
+                .filter(card -> card.getTitle().trim().equals(propertyTitle))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Could not find dashboard card with title: " + propertyTitle));
     }
 
     private void waitForDashboardCardsToLoad() {

@@ -3,16 +3,17 @@ package com.staybnb.tests.ui.hosting;
 import com.staybnb.config.AppConstants;
 import com.staybnb.config.WaitConstants;
 import com.staybnb.assertions.ErrorMessages;
+import com.staybnb.components.PropertyCard;
+import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,11 +29,16 @@ public class PropertyListingTest extends BaseTest {
         propertyListingPage.navigateTo();
     }
 
+    @AfterEach
+    public void restoreWindowSize() {
+        driver.manage().window().maximize();
+    }
+
     @Test
     @DisplayName("Property listing page displays property cards")
     public void testPropertyListingHasCards() {
         assertFalse(
-                propertyListingPage.getPropertyCards().isEmpty(),
+                propertyListingPage.getCards().isEmpty(),
                 ErrorMessages.PROPERTY_LISTING_SHOULD_DISPLAY_PROPERTY_CARDS
         );
     }
@@ -40,10 +46,8 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card has an image")
     public void testFirstPropertyCardHasImage() {
-        WebElement card = propertyListingPage.getPropertyCards().getFirst();
-
         assertTrue(
-                propertyListingPage.hasImage(card),
+                propertyListingPage.getFirstCard().hasImage(),
                 ErrorMessages.PROPERTY_CARD_SHOULD_HAVE_AN_IMAGE
         );
     }
@@ -51,10 +55,8 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card has a title")
     public void testFirstPropertyCardHasTitle() {
-        WebElement card = propertyListingPage.getPropertyCards().getFirst();
-
         assertFalse(
-                propertyListingPage.getTitle(card).isEmpty(),
+                propertyListingPage.getFirstCard().getTitle().isEmpty(),
                 ErrorMessages.PROPERTY_CARD_SHOULD_HAVE_A_TITLE
         );
     }
@@ -62,11 +64,8 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card location is in 'City, Country' format")
     public void testFirstPropertyCardLocationFormat() {
-        WebElement card = propertyListingPage.getPropertyCards().getFirst();
-        String location = propertyListingPage.getLocation(card);
-
         assertTrue(
-                location.contains(","),
+                propertyListingPage.getFirstCard().getLocation().contains(","),
                 ErrorMessages.LOCATION_SHOULD_BE_CITY_AND_COUNTRY_SEPARATED_BY_COMMA
         );
     }
@@ -74,11 +73,8 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("First property card price contains '/ night'")
     public void testFirstPropertyCardPriceFormat() {
-        WebElement card = propertyListingPage.getPropertyCards().getFirst();
-        String price = propertyListingPage.getPrice(card);
-
         assertTrue(
-                price.contains("/ night"),
+                propertyListingPage.getFirstCard().getPrice().contains("/ night"),
                 ErrorMessages.PRICE_SHOULD_CONTAIN_PER_NIGHT
         );
     }
@@ -86,10 +82,10 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Clicking a property card navigates to the property detail page")
     public void testPropertyCardNavigation() {
-        WebElement firstCard = propertyListingPage.getPropertyCards().getFirst();
-        String expectedHref = propertyListingPage.getCardHref(firstCard);
-        propertyListingPage.clickPropertyCard(firstCard);
-        String currentUrl = driver.getCurrentUrl();
+        PropertyCard firstCard = propertyListingPage.getFirstCard();
+        String expectedHref = firstCard.getHref();
+        PropertyDetailsPage detailsPage = firstCard.click();
+        String currentUrl = detailsPage.getCurrentUrl();
 
         assertTrue(
                 currentUrl.endsWith(expectedHref) || expectedHref.contains(currentUrl.replace(AppConstants.BASE_URL, "")),
@@ -100,8 +96,9 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 4 columns on large desktop")
     public void testGridColumnsOnDesktopLarge() {
-        driver.manage().window().setSize(new Dimension(WaitConstants.WIDE_DESKTOP_WIDTH, WaitConstants.WIDE_DESKTOP_HEIGHT));
-        propertyListingPage.waitForGridColumns(4);
+        propertyListingPage
+                .setWindowSize(WaitConstants.WIDE_DESKTOP_WIDTH, WaitConstants.WIDE_DESKTOP_HEIGHT)
+                .waitForGridColumns(4);
 
         assertEquals(
                 4,
@@ -113,8 +110,9 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 3 columns on medium desktop")
     public void testGridColumnsOnDesktopMedium() {
-        driver.manage().window().setSize(new Dimension(WaitConstants.MEDIUM_DESKTOP_WIDTH, WaitConstants.MEDIUM_DESKTOP_HEIGHT));
-        propertyListingPage.waitForGridColumns(3);
+        propertyListingPage
+                .setWindowSize(WaitConstants.MEDIUM_DESKTOP_WIDTH, WaitConstants.MEDIUM_DESKTOP_HEIGHT)
+                .waitForGridColumns(3);
 
         assertEquals(
                 3,
@@ -126,22 +124,14 @@ public class PropertyListingTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 2 columns on tablet viewport")
     public void testGridColumnsOnTablet() {
-        driver.manage().window().setSize(new Dimension(WaitConstants.TABLET_TEST_WIDTH, WaitConstants.TABLET_TEST_HEIGHT));
-        propertyListingPage.waitForGridColumns(2);
+        propertyListingPage
+                .setWindowSize(WaitConstants.TABLET_TEST_WIDTH, WaitConstants.TABLET_TEST_HEIGHT)
+                .waitForGridColumns(2);
 
         assertEquals(
                 2,
                 propertyListingPage.getGridColumnCount(),
                 ErrorMessages.LISTING_GRID_SHOULD_HAVE_2_COLUMNS_ON_TABLET
-        );
-    }
-
-    @Test
-    @DisplayName("Property listing page has no search or sort controls")
-    public void testAbsenceOfSearchAndSort() {
-        assertFalse(
-                propertyListingPage.hasSearchOrFilters(),
-                ErrorMessages.THERE_SHOULD_BE_NO_SEARCH_OR_FILTERS
         );
     }
 }

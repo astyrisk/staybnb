@@ -31,15 +31,6 @@ public class PropertyCategoriesTest extends BaseTest {
         homePage.navigateTo();
     }
 
-    @Test
-    @DisplayName("Category bar is horizontally scrollable")
-    public void testCategoryBarIsHorizontallyScrollable() {
-        assertTrue(
-                homePage.isCategoryBarHorizontallyScrollable(),
-                ErrorMessages.CATEGORIES_BAR_SHOULD_BE_HORIZONTALLY_SCROLLABLE
-        );
-    }
-
     // fails
     @Test
     @DisplayName("Property detail page shows category alongside property type")

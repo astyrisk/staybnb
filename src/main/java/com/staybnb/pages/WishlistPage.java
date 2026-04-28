@@ -1,9 +1,9 @@
 package com.staybnb.pages;
 
+import com.staybnb.components.PropertyCard;
 import com.staybnb.config.AppConstants;
 import com.staybnb.locators.Locators;
 import io.restassured.http.ContentType;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class WishlistPage extends BasePage {
 
@@ -23,14 +24,22 @@ public class WishlistPage extends BasePage {
         waitForPageToLoad();
     }
 
+    public List<PropertyCard> getCards() {
+        return waitForElementsPresent(Locators.Wishlist.PROPERTY_CARDS).stream()
+                .map(el -> new PropertyCard(driver, el))
+                .collect(Collectors.toList());
+    }
+
+    public PropertyCard getFirstCard() {
+        return new PropertyCard(driver, waitForElementsPresent(Locators.Wishlist.PROPERTY_CARDS).getFirst());
+    }
+
     public int getPropertyCardCount() {
         return driver.findElements(Locators.Wishlist.PROPERTY_CARDS).size();
     }
 
     public void clickFavoriteOnFirstCard() {
-        List<WebElement> cards = waitForElementsPresent(Locators.Wishlist.PROPERTY_CARDS);
-        WebElement btn = cards.getFirst().findElement(Locators.Wishlist.CARD_FAVORITE_BTN);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        getFirstCard().clickFavorite();
     }
 
     public void waitForCardCountToDecrease(int countBefore) {
@@ -79,8 +88,8 @@ public class WishlistPage extends BasePage {
 
     public boolean areAllCardsShowingFilledHeart() {
         List<WebElement> cards = driver.findElements(Locators.Wishlist.PROPERTY_CARDS);
-        List<WebElement> favoriteBtns = driver.findElements(Locators.Wishlist.CARD_FAV_BTN);
-        return !cards.isEmpty() && cards.size() == favoriteBtns.size();
+        List<WebElement> filled = driver.findElements(Locators.Wishlist.CARD_FAV_BTN);
+        return !cards.isEmpty() && cards.size() == filled.size();
     }
 
     public boolean isEmptyStateDisplayed() {

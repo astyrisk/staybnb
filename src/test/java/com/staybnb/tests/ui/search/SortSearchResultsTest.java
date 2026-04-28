@@ -1,6 +1,7 @@
 package com.staybnb.tests.ui.search;
 
 import com.staybnb.assertions.ErrorMessages;
+import com.staybnb.components.PropertyCard;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyListingPage;
 import com.staybnb.tests.BaseTest;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -80,9 +80,9 @@ public class SortSearchResultsTest extends BaseTest {
     @DisplayName("Sort by 'Top Rated' places the highest-rated property first")
     public void testSortByTopRatedPlacesHighestRatedFirst() {
         propertyListingPage.navigateToWithSort(TestDataConstants.SortFilter.SORT_RATING_DESC);
-        List<WebElement> cards = propertyListingPage.getPropertyCards();
-        double firstRating = propertyListingPage.getCardRating(cards.get(0));
-        double secondRating = propertyListingPage.getCardRating(cards.get(1));
+        List<PropertyCard> cards = propertyListingPage.getCards();
+        double firstRating = cards.get(0).getRating();
+        double secondRating = cards.get(1).getRating();
         assertTrue(firstRating >= secondRating, ErrorMessages.SORT_BY_RATING_DESC_FIRST_RESULT_SHOULD_HAVE_HIGHEST_RATING);
     }
 

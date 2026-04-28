@@ -1,6 +1,7 @@
 package com.staybnb.tests.ui.hosting;
 
 import com.staybnb.assertions.ErrorMessages;
+import com.staybnb.components.HostDashboardCard;
 import com.staybnb.pages.HostDashboardPage;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
@@ -11,9 +12,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.openqa.selenium.WebElement;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,19 +29,19 @@ public class HostDashboardTest extends BaseTest {
         loginAsUser();
     }
 
-    private WebElement getFirstPropertyCardForExistingHost() {
-        List<WebElement> cards = hostDashboardPage.navigateViaNavbar().getPropertyCards();
-        if (cards.isEmpty()) {
+    private HostDashboardCard getFirstPropertyCardForExistingHost() {
+        HostDashboardPage page = hostDashboardPage.navigateViaNavbar();
+        if (page.getCards().isEmpty()) {
             throw new IllegalStateException("Host account has no properties to validate dashboard cards.");
         }
-        return cards.getFirst();
+        return page.getFirstCard();
     }
 
     @Test
     @DisplayName("Host dashboard shows property cards for a host with properties")
     public void testHostDashboardShowsPropertyCardsForHostWithProperties() {
         assertFalse(
-                hostDashboardPage.navigateViaNavbar().getPropertyCards().isEmpty(),
+                hostDashboardPage.navigateViaNavbar().getCards().isEmpty(),
                 ErrorMessages.HOST_DASHBOARD_SHOULD_DISPLAY_PROPERTY_CARDS_FOR_HOST_WITH_PROPERTIES
         );
     }
@@ -50,10 +49,8 @@ public class HostDashboardTest extends BaseTest {
     @ParameterizedTest(name = "Property card shows {0}")
     @MethodSource("providePropertyCardRequiredDetailsChecks")
     public void testHostDashboardPropertyCardShowsRequiredDetails(String detailName) {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-
         assertTrue(
-                hostDashboardPage.isDetailDisplayed(firstCard, detailName),
+                getFirstPropertyCardForExistingHost().isDetailDisplayed(detailName),
                 ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_REQUIRED_DETAILS
         );
     }
@@ -90,10 +87,8 @@ public class HostDashboardTest extends BaseTest {
     @ParameterizedTest(name = "Property card shows action {0}")
     @MethodSource("providePropertyCardActionChecks")
     public void testHostDashboardPropertyCardShowsActions(String actionName) {
-        WebElement firstCard = getFirstPropertyCardForExistingHost();
-
         assertTrue(
-                hostDashboardPage.hasCardAction(firstCard, actionName),
+                getFirstPropertyCardForExistingHost().hasAction(actionName),
                 ErrorMessages.HOST_DASHBOARD_PROPERTY_CARD_SHOULD_DISPLAY_EDIT_DELETE_AND_PUBLISH_TOGGLE_ACTIONS
         );
     }

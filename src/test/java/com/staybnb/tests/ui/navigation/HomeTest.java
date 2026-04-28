@@ -1,17 +1,19 @@
 package com.staybnb.tests.ui.navigation;
 
+import com.staybnb.components.PropertyCard;
 import com.staybnb.pages.HomePage;
 import com.staybnb.config.WaitConstants;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.tests.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
+
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +27,11 @@ public class HomeTest extends BaseTest {
     public void setup() {
         homePage = new HomePage(driver);
         homePage.navigateTo();
+    }
+
+    @AfterEach
+    public void restoreWindowSize() {
+        driver.manage().window().maximize();
     }
 
     @Test
@@ -80,11 +87,10 @@ public class HomeTest extends BaseTest {
     @DisplayName("Featured properties grid shows between 8 and 12 cards")
     public void testFeaturedPropertiesGridCount() {
         homePage.scrollFeaturedPropertiesIntoView();
-        List<WebElement> cards = homePage.getPropertyCards();
-        int cardCount = cards.size();
+        List<PropertyCard> cards = homePage.getCards();
 
         assertTrue(
-                cardCount >= 8 && cardCount <= 12,
+                cards.size() >= 8 && cards.size() <= 12,
                 ErrorMessages.HOME_GRID_SHOULD_DISPLAY_8_TO_12_FEATURED_CARDS
         );
     }
@@ -92,18 +98,16 @@ public class HomeTest extends BaseTest {
     @Test
     @DisplayName("Each property card displays all required details")
     public void testPropertyCardsDetailsAreComplete() {
-        List<WebElement> cards = homePage.getPropertyCards();
-
         assertTrue(
-            cards.stream().allMatch(card -> homePage.isCardDetailsComplete(card)),
-            ErrorMessages.HOME_EACH_PROPERTY_CARD_SHOULD_DISPLAY_ALL_DETAILS
+                homePage.getCards().stream().allMatch(PropertyCard::isComplete),
+                ErrorMessages.HOME_EACH_PROPERTY_CARD_SHOULD_DISPLAY_ALL_DETAILS
         );
     }
 
     @Test
     @DisplayName("Property grid shows 4 columns on wide desktop")
     public void testGridColumnsDesktopWide() {
-        driver.manage().window().setSize(new Dimension(WaitConstants.WIDE_DESKTOP_WIDTH, WaitConstants.WIDE_DESKTOP_HEIGHT));
+        homePage.setWindowSize(WaitConstants.WIDE_DESKTOP_WIDTH, WaitConstants.WIDE_DESKTOP_HEIGHT);
         homePage.waitForGridColumns(4);
 
         assertEquals(
@@ -116,7 +120,7 @@ public class HomeTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 3 columns on medium desktop")
     public void testGridColumnsDesktopSmall() {
-        driver.manage().window().setSize(new Dimension(WaitConstants.MEDIUM_DESKTOP_WIDTH, WaitConstants.MEDIUM_DESKTOP_HEIGHT));
+        homePage.setWindowSize(WaitConstants.MEDIUM_DESKTOP_WIDTH, WaitConstants.MEDIUM_DESKTOP_HEIGHT);
         homePage.waitForGridColumns(3);
 
         assertEquals(
@@ -129,7 +133,7 @@ public class HomeTest extends BaseTest {
     @Test
     @DisplayName("Property grid shows 2 columns on tablet viewport")
     public void testGridColumnsTablet() {
-        driver.manage().window().setSize(new Dimension(WaitConstants.TABLET_TEST_WIDTH, WaitConstants.TABLET_TEST_HEIGHT));
+        homePage.setWindowSize(WaitConstants.TABLET_TEST_WIDTH, WaitConstants.TABLET_TEST_HEIGHT);
         homePage.waitForGridColumns(2);
 
         assertEquals(

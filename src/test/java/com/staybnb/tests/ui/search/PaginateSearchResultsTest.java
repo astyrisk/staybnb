@@ -31,7 +31,7 @@ public class PaginateSearchResultsTest extends BaseTest {
     @Test
     @DisplayName("First page displays at most 20 property cards")
     public void testFirstPageShowsAtMostTwentyCards() {
-        List<?> cards = propertyListingPage.getPropertyCards();
+        List<?> cards = propertyListingPage.getCards();
         assertTrue(
                 cards.size() <= TestDataConstants.Pagination.PAGE_SIZE,
                 ErrorMessages.PAGINATION_FIRST_PAGE_SHOULD_SHOW_AT_MOST_PAGE_SIZE_CARDS
