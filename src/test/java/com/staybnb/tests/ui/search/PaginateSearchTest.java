@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic("Search")
 @Feature("Paginate Search Results")
 @Tag("regression")
-public class PaginateSearchResultsTest extends BaseTest {
+public class PaginateSearchTest extends BaseTest {
     private PropertyListingPage propertyListingPage;
 
     @BeforeEach
@@ -103,6 +103,7 @@ public class PaginateSearchResultsTest extends BaseTest {
                 ErrorMessages.PAGINATION_NEXT_BUTTON_SHOULD_BE_DISABLED_ON_LAST_PAGE
         );
     }
+
 
     // AC8: changing sort/filter while on page 2 resets pagination to page 1
     @Test

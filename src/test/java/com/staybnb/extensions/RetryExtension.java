@@ -60,7 +60,7 @@ public class RetryExtension implements InvocationInterceptor {
         if (onMethod != null) return onMethod.maxAttempts();
         Retry onClass = context.getRequiredTestClass().getAnnotation(Retry.class);
         if (onClass != null) return onClass.maxAttempts();
-        return 1;
+        return 3;
     }
 
     private void runBeforeEachHierarchy(ExtensionContext context) throws Exception {

@@ -19,7 +19,7 @@ import org.openqa.selenium.Dimension;
 @Epic("Filter")
 @Feature("Filter by Amenities, Bedrooms, and Bathrooms")
 @Tag("regression")
-public class AmenitiesBedroomsBathroomsFilterTest extends BaseTest {
+public class AmenitiesFilterTest extends BaseTest {
 
     private PropertyListingPage propertyListingPage;
     private boolean mobileViewportActive = false;

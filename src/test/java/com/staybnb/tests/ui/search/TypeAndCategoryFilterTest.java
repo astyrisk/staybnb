@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic("Filter")
 @Feature("Filter by Property Type and Category")
 @Tag("regression")
-public class PropertyTypeAndCategoryFilterTest extends BaseTest {
+public class TypeAndCategoryFilterTest extends BaseTest {
     private PropertyListingPage propertyListingPage;
 
     @BeforeEach
