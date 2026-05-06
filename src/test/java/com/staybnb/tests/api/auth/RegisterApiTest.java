@@ -24,10 +24,10 @@ public class RegisterApiTest extends BaseApiTest {
 
         return String.format(
                 "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"email\":\"%s\",\"password\":\"%s\"}",
-                TestConfig.TEST_FIRST_NAME,
-                TestConfig.TEST_LAST_NAME,
+                TestConfig.HOST_TEST_USER_FIRST_NAME,
+                TestConfig.HOST_TEST_USER_LAST_NAME,
                 uniqueEmail,
-                TestConfig.TEST_PASSWORD
+                TestConfig.HOST_TEST_PASSWORD
         );
     }
 
@@ -56,8 +56,8 @@ public class RegisterApiTest extends BaseApiTest {
     public void testRegisterApiReturns409ForExistingEmail() {
         String body = String.format(
                 "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"email\":\"%s\",\"password\":\"%s\"}",
-                TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,
-                TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD
+                TestConfig.HOST_TEST_USER_FIRST_NAME, TestConfig.HOST_TEST_USER_LAST_NAME,
+                TestConfig.HOST_TEST_USER_EMAIL, TestConfig.HOST_TEST_PASSWORD
         );
 
         long status = unauthedRequest()

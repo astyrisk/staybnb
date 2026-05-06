@@ -30,7 +30,7 @@ public class NavbarTest extends BaseTest {
     }
 
     private void loginAndNavigateToPropertyDetails() {
-        loginAsUser();
+        loginAsHostUser();
         propertyDetailsPage.navigateTo(TestConfig.DEFAULT_PROPERTY_ID);
     }
 

@@ -22,7 +22,7 @@ public class OtherProfileTest extends BaseTest {
     @BeforeEach
     public void setup() {
         otherProfilePage = new ProfilePage(driver);
-        loginAsUser();
+        loginAsHostUser();
         otherProfilePage.navigateTo(TestDataConstants.OtherProfile.USER_ID);
     }
 

@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.staybnb.assertions.ErrorMessages;
 import com.staybnb.config.TestConfig;
 import com.staybnb.config.TestDataConstants;
+import com.staybnb.model.Notification;
+import com.staybnb.pages.BookingApiPage;
 import com.staybnb.pages.MyBookingsPage;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.tests.BaseTest;
@@ -15,18 +17,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 @Epic("Properties")
 @Feature("Booking Widget")
 @Tag("regression")
 public class BookingWidgetTest extends BaseTest {
 
+    private static final Logger log = LoggerFactory.getLogger(BookingWidgetTest.class);
     private PropertyDetailsPage propertyDetailsPage;
     private String createdBookingId;
+    private BookingApiPage bookingApiPage;
 
     @BeforeEach
     public void setup() {
         propertyDetailsPage = new PropertyDetailsPage(driver);
+        bookingApiPage = new BookingApiPage(driver);
         propertyDetailsPage.navigateTo(TestConfig.DEFAULT_PROPERTY_ID);
     }
 
@@ -137,7 +146,7 @@ public class BookingWidgetTest extends BaseTest {
     @Test
     @DisplayName("Reserving a valid property booking gets it into the bookings tab")
     public void testReservingValidProperty() {
-        loginAsUser();
+        loginAsHostUser();
         propertyDetailsPage.navigateTo(TestConfig.TO_BOOK_PROPERTY_ID);
         String propertyTitle = propertyDetailsPage.getTitle();
 
@@ -158,5 +167,16 @@ public class BookingWidgetTest extends BaseTest {
             createdBookingId,
             ErrorMessages.BOOKING_SHOULD_APPEAR_IN_BOOKINGS_TAB
         );
+    }
+
+    //TODO test if creating a booking would show a notification for the host in the navbar (NOTIFY_BOOK_PROPERTY_ID,
+
+    @Test
+    @DisplayName("Reserving a valid property sends a notification to the host")
+    public void testReservingValidPropertySendsNotificationToTheHost() {
+        loginAsHostUser();
+        List<Notification> res = bookingApiPage.getAllNotifications();
+
+        System.out.println("hi");
     }
 }

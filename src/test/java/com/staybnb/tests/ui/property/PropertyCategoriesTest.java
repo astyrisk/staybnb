@@ -76,7 +76,7 @@ public class PropertyCategoriesTest extends BaseTest {
     @DisplayName("Create property category dropdown is populated with options")
     public void testCreatePropertyCategoryDropdownIsPopulated() {
         CreatePropertyPage createPropertyPage = new CreatePropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
         createPropertyPage.navigateTo();
 
         assertTrue(

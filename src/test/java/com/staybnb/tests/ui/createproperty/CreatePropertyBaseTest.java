@@ -11,7 +11,7 @@ abstract class CreatePropertyBaseTest extends BaseTest {
     @BeforeEach
     public void setup() {
         createPropertyPage = new CreatePropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     protected void loadCreatePage() {

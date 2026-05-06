@@ -77,7 +77,7 @@ public class AddToWishlistTest extends BaseTest {
     @Test
     @DisplayName("Property already in wishlist shows filled heart on detail page")
     public void testPropertyAlreadyInWishlistShowsFilledHeart() {
-        loginAsUser();
+        loginAsHostUser();
         String propertyId = wishlistPage.getFirstPropertyIdViaApi();
         wishlistPage.addToWishlistViaApi(propertyId);
         propertyDetailsPage.navigateTo(propertyId);
@@ -91,7 +91,7 @@ public class AddToWishlistTest extends BaseTest {
     @Test
     @DisplayName("Adding a non-existent property to wishlist returns 404")
     public void testAddNonExistentPropertyReturns404() {
-        loginAsUser();
+        loginAsHostUser();
         int status = wishlistPage.addToWishlistViaApi(TestDataConstants.NON_EXISTENT_PROPERTY_ID);
         assertEquals(
                 404L,
@@ -101,7 +101,7 @@ public class AddToWishlistTest extends BaseTest {
     }
 
     private void loginAndClearWishlist() {
-        loginAsUser();
+        loginAsHostUser();
         wishlistPage.clearWishlistViaApi();
     }
 }

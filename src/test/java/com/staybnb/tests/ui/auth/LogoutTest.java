@@ -24,7 +24,7 @@ public class LogoutTest extends BaseTest {
     public void setup() {
         loginPage = new LoginPage(driver);
         logoutPage = new LogoutPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     @Test

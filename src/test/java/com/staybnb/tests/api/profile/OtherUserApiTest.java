@@ -26,7 +26,7 @@ public class OtherUserApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         otherProfilePage = new ProfilePage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     @Test

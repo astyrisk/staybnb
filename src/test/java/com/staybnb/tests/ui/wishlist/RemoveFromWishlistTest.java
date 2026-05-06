@@ -29,7 +29,7 @@ public class RemoveFromWishlistTest extends BaseTest {
         propertyDetailsPage = new PropertyDetailsPage(driver);
         wishlistPage = new WishlistPage(driver);
 
-        loginAsUser();
+        loginAsHostUser();
         wishlistPage.clearWishlistViaApi();
     }
 

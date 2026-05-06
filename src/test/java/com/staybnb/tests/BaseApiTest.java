@@ -23,18 +23,31 @@ public abstract class BaseApiTest extends BaseTest {
         return RestAssured.given().baseUri(AppConstants.API_BASE_URL);
     }
 
-    protected RequestSpecification loggedInRequest() {
-        String token = unauthedRequest()
+    protected String loginAndGetToken(String email, String password) {
+        return unauthedRequest()
                 .contentType(ContentType.JSON)
-                .body(String.format("{\"email\":\"%s\",\"password\":\"%s\"}",
-                        TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD))
+                .body(String.format("{\"email\":\"%s\",\"password\":\"%s\"}", email, password))
                 .post("/auth/login")
                 .jsonPath()
                 .getString("token");
+    }
 
+    protected RequestSpecification loggedInRequest() {
         return RestAssured.given()
                 .baseUri(AppConstants.API_BASE_URL)
-                .header("Authorization", "Bearer " + token);
+                .header("Authorization", "Bearer " + loginAndGetToken(TestConfig.HOST_TEST_USER_EMAIL, TestConfig.HOST_TEST_PASSWORD));
+    }
+
+    protected RequestSpecification nonHostLoggedInRequest() {
+        return RestAssured.given()
+                .baseUri(AppConstants.API_BASE_URL)
+                .header("Authorization", "Bearer " + loginAndGetToken(TestConfig.NON_HOST_TEST_USER_EMAIL, TestConfig.NON_HOST_TEST_PASSWORD));
+    }
+
+    protected void injectTokenIntoBrowser(String token) {
+        driver.get(AppConstants.BASE_URL);
+        ((JavascriptExecutor) driver).executeScript(
+                "window.localStorage.setItem('staybnb_token', arguments[0]);", token);
     }
 
     private String getStaybnbToken() {

@@ -26,7 +26,7 @@ public class HostDashboardTest extends BaseTest {
     @BeforeEach
     public void setup() {
         hostDashboardPage = new HostDashboardPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private HostDashboardCard getFirstPropertyCardForExistingHost() {

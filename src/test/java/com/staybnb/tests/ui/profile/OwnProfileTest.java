@@ -27,7 +27,7 @@ public class OwnProfileTest extends BaseTest {
     @BeforeEach
     public void setup() {
         ownProfilePage = new ProfilePage(driver);
-        loginAsUser();
+        loginAsHostUser();
         ownProfilePage.navigateViaNavbar();
     }
 

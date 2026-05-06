@@ -31,7 +31,7 @@ public class ImageUploadApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         imageUploadPage = new ImageUploadPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private static Stream<UploadCase> provideSupportedUploadCases() {

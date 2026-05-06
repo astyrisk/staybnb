@@ -27,7 +27,7 @@ public class DeletePropertyTest extends BaseTest {
     @BeforeEach
     public void setup() {
         deletePropertyPage = new DeletePropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private void createPropertyAndReturnId(String uniqueTitle) {

@@ -68,13 +68,13 @@ public class RegisterTest extends BaseTest {
     private static Stream<Arguments> registrationValidationCases() {
         long ts = System.currentTimeMillis();
         return Stream.of(
-                Arguments.of("",                         TestConfig.TEST_LAST_NAME,  TestConfig.TEST_USER_EMAIL,              TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.FIRST_NAME_REQUIRED),
-                Arguments.of(TestConfig.TEST_FIRST_NAME, "",                         TestConfig.TEST_USER_EMAIL,              TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.LAST_NAME_REQUIRED),
-                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  "",                                      TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.EMAIL_REQUIRED),
-                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  TestConfig.TEST_USER_EMAIL,              "",                           "",                                 ErrorMessages.PASSWORD_REQUIRED),
-                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  TestConfig.TEST_USER_EMAIL,              TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD,           ErrorMessages.EMAIL_ALREADY_REGISTERED),
-                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  "short_"    + ts       + "@gmail.com",   "short12",                    "short12",                          ErrorMessages.PASSWORD_MINIMUM_LENGTH),
-                Arguments.of(TestConfig.TEST_FIRST_NAME, TestConfig.TEST_LAST_NAME,  "mismatch_" + (ts + 1) + "@gmail.com",   TestConfig.TEST_PASSWORD,     TestConfig.TEST_PASSWORD + "DIFF",  ErrorMessages.PASSWORDS_MUST_MATCH)
+                Arguments.of("",                         TestConfig.HOST_TEST_USER_LAST_NAME,  TestConfig.HOST_TEST_USER_EMAIL,              TestConfig.HOST_TEST_PASSWORD,     TestConfig.HOST_TEST_PASSWORD,           ErrorMessages.FIRST_NAME_REQUIRED),
+                Arguments.of(TestConfig.HOST_TEST_USER_FIRST_NAME, "",                         TestConfig.HOST_TEST_USER_EMAIL,              TestConfig.HOST_TEST_PASSWORD,     TestConfig.HOST_TEST_PASSWORD,           ErrorMessages.LAST_NAME_REQUIRED),
+                Arguments.of(TestConfig.HOST_TEST_USER_FIRST_NAME, TestConfig.HOST_TEST_USER_LAST_NAME,  "",                                      TestConfig.HOST_TEST_PASSWORD,     TestConfig.HOST_TEST_PASSWORD,           ErrorMessages.EMAIL_REQUIRED),
+                Arguments.of(TestConfig.HOST_TEST_USER_FIRST_NAME, TestConfig.HOST_TEST_USER_LAST_NAME,  TestConfig.HOST_TEST_USER_EMAIL,              "",                           "",                                 ErrorMessages.PASSWORD_REQUIRED),
+                Arguments.of(TestConfig.HOST_TEST_USER_FIRST_NAME, TestConfig.HOST_TEST_USER_LAST_NAME,  TestConfig.HOST_TEST_USER_EMAIL,              TestConfig.HOST_TEST_PASSWORD,     TestConfig.HOST_TEST_PASSWORD,           ErrorMessages.EMAIL_ALREADY_REGISTERED),
+                Arguments.of(TestConfig.HOST_TEST_USER_FIRST_NAME, TestConfig.HOST_TEST_USER_LAST_NAME,  "short_"    + ts       + "@gmail.com",   "short12",                    "short12",                          ErrorMessages.PASSWORD_MINIMUM_LENGTH),
+                Arguments.of(TestConfig.HOST_TEST_USER_FIRST_NAME, TestConfig.HOST_TEST_USER_LAST_NAME,  "mismatch_" + (ts + 1) + "@gmail.com",   TestConfig.HOST_TEST_PASSWORD,     TestConfig.HOST_TEST_PASSWORD + "DIFF",  ErrorMessages.PASSWORDS_MUST_MATCH)
         );
     }
 }

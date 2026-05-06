@@ -23,7 +23,7 @@ public class AuthMeApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         ownProfilePage = new ProfilePage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     @Test

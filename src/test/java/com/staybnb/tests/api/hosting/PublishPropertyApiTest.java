@@ -27,7 +27,7 @@ public class PublishPropertyApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         publishPropertyPage = new PublishPropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private String createPropertyAndReturnId(String uniqueTitle) {

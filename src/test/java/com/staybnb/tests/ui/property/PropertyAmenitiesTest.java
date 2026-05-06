@@ -27,7 +27,7 @@ public class PropertyAmenitiesTest extends BaseTest {
     @BeforeEach
     public void setup() {
         editPropertyPage = new EditPropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private void openEditPage() {

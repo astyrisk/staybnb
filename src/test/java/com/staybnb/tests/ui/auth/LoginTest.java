@@ -30,7 +30,7 @@ public class LoginTest extends BaseTest {
     @Test
     @DisplayName("Successful login redirects to home page")
     public void testSuccessfulLoginRedirection() {
-        loginPage.login(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginPage.login(TestConfig.HOST_TEST_USER_EMAIL, TestConfig.HOST_TEST_PASSWORD);
 
         assertTrue(
                 loginPage.urlContains(AppConstants.HOME_URL)

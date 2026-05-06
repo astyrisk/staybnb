@@ -5,6 +5,7 @@ import com.staybnb.config.WaitConstants;
 import com.staybnb.locators.Locators;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import java.util.List;
 
 public class Navbar extends BaseComponent {
     private final SearchForm searchForm;
@@ -177,4 +178,14 @@ public class Navbar extends BaseComponent {
     public void searchWithDates(String checkIn, String checkOut) { searchForm.searchWithDates(checkIn, checkOut); }
 
     public void searchWithGuests(int targetGuests) { searchForm.searchWithGuests(targetGuests); }
+
+
+    // ── NOTIFICATION ─────────────────────────────────────────────────
+
+
+
+    public List<String> getAllNotificationRequests() {
+        //TODO implement a function to return all booking requests -UI
+        return List.of();
+    }
 }

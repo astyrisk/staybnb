@@ -28,7 +28,7 @@ public class EditProfileTest extends BaseTest {
     public void setup() {
         ownProfilePage = new ProfilePage(driver);
         editProfilePage = new EditProfilePage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     @AfterEach

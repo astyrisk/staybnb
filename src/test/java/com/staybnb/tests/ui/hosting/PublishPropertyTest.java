@@ -21,7 +21,7 @@ public class PublishPropertyTest extends BaseTest {
     @BeforeEach
     public void setup() {
         publishPropertyPage = new PublishPropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private String createPropertyAndReturnId(String uniqueTitle) {

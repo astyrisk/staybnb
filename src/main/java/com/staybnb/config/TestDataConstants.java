@@ -88,6 +88,16 @@ public final class TestDataConstants {
         public static final int    NUM_GUESTS            = 1;
         public static final String EXPECTED_STATUS       = "PENDING";
         public static final int    EXCEEDS_MAX_GUESTS    = 11;  // > DefaultProperty.MAX_GUESTS (10)
+
+        public static String notifyCheckInDate() {
+            return java.time.LocalDate.now().plusDays(60)
+                    .format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE);
+        }
+
+        public static String notifyCheckOutDate() {
+            return java.time.LocalDate.now().plusDays(65)
+                    .format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE);
+        }
     }
 
     // ── Edit Property ─────────────────────────────────────────────────────────

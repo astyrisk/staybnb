@@ -19,7 +19,7 @@ public class LogoutApiTest extends BaseApiTest {
 
     @BeforeEach
     public void setup() {
-        loginAsUser();
+        loginAsHostUser();
     }
 
     @Test

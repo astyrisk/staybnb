@@ -22,7 +22,7 @@ public class CreatePropertyApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         createPropertyPage = new CreatePropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     @Test

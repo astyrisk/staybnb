@@ -22,7 +22,7 @@ public class LoginApiTest extends BaseApiTest {
     private String buildValidLoginPayload() {
         return String.format(
                 "{\"email\":\"%s\",\"password\":\"%s\"}",
-                TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD
+                TestConfig.HOST_TEST_USER_EMAIL, TestConfig.HOST_TEST_PASSWORD
         );
     }
 

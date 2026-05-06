@@ -21,7 +21,7 @@ public class HostingPropertiesApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         hostDashboardPage = new HostDashboardPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     @Test

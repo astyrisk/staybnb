@@ -26,7 +26,7 @@ public class DeletePropertyApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         deletePropertyPage = new DeletePropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private String createPropertyAndReturnId(String uniqueTitle) {

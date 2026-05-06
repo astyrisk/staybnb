@@ -100,7 +100,7 @@ public class ViewWishlistTest extends BaseTest {
     // RemoveFromWishlistTest#testClickHeartOnWishlistPageRemovesCard
 
     private void loginAndClearWishlist() {
-        loginAsUser();
+        loginAsHostUser();
         wishlistPage.clearWishlistViaApi();
     }
 }

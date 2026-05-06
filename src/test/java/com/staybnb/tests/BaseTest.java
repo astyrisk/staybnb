@@ -28,18 +28,18 @@ public class BaseTest {
         String uniqueEmail = "registerTestUser_" + System.currentTimeMillis() + "@gmail.com";
 
         registerPage.registerAndWaitForUrl(
-            TestConfig.TEST_FIRST_NAME,
-            TestConfig.TEST_LAST_NAME,
+            TestConfig.HOST_TEST_USER_FIRST_NAME,
+            TestConfig.HOST_TEST_USER_LAST_NAME,
             uniqueEmail,
-            TestConfig.TEST_PASSWORD,
+            TestConfig.HOST_TEST_PASSWORD,
             AppConstants.HOME_URL
         );
     }
 
-    protected LoginPage loginAsUser() {
+    protected LoginPage loginAsHostUser() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigateViaNavbar();
-        loginPage.loginAndExpectSuccess(TestConfig.TEST_USER_EMAIL, TestConfig.TEST_PASSWORD);
+        loginPage.loginAndExpectSuccess(TestConfig.HOST_TEST_USER_EMAIL, TestConfig.HOST_TEST_PASSWORD);
 
         return loginPage;
     }

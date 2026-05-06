@@ -456,6 +456,8 @@ public final class ErrorMessages {
             "Booking with dates that overlap an existing reservation should return HTTP 409.";
     public static final String BOOKING_SHOULD_BE_CREATED_WITH_PENDING_STATUS =
             "A valid booking request should return a booking with status PENDING.";
+    public static final String BOOKING_SHOULD_APPEAR_IN_HOST_ACTIVE_NOTIFICATIONS =
+            "New booking should appear in host's active (non-cancelled) notifications list.";
     public static final String AVAILABLE_DATE_SHOULD_BE_SELECTABLE =
             "A date not returned as booked by the availability API should be selectable in the date picker.";
 

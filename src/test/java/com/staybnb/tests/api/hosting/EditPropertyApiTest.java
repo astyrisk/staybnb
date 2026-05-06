@@ -27,7 +27,7 @@ public class EditPropertyApiTest extends BaseApiTest {
     @BeforeEach
     public void setup() {
         editPropertyPage = new EditPropertyPage(driver);
-        loginAsUser();
+        loginAsHostUser();
     }
 
     private long updateEditablePropertyStatus() {
