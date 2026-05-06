@@ -1,6 +1,9 @@
 package com.staybnb.tests.ui.property;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.staybnb.assertions.ErrorMessages;
+import com.staybnb.config.TestConfig;
 import com.staybnb.config.TestDataConstants;
 import com.staybnb.pages.PropertyDetailsPage;
 import com.staybnb.tests.BaseTest;
@@ -13,13 +16,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Epic("Properties")
 @Feature("Amenity Display")
 @Tag("regression")
 @ResourceLock(value = "property-1088", mode = ResourceAccessMode.READ)
 public class PropertyAmenityDisplayTest extends BaseTest {
+
     private PropertyDetailsPage propertyDetailsPage;
 
     @BeforeEach
@@ -30,42 +32,50 @@ public class PropertyAmenityDisplayTest extends BaseTest {
     @Test
     @DisplayName("Amenity items display both an icon and a label")
     public void testAmenitiesDisplayedWithIconAndLabel() {
-        propertyDetailsPage.navigateTo(TestDataConstants.DEFAULT_PROPERTY_ID);
+        propertyDetailsPage.navigateTo(TestConfig.DEFAULT_PROPERTY_ID);
         assertTrue(
-                propertyDetailsPage.amenitiesHaveIconAndLabel(),
-                ErrorMessages.AMENITY_ITEMS_SHOULD_DISPLAY_ICON_AND_LABEL
+            propertyDetailsPage.amenitiesHaveIconAndLabel(),
+            ErrorMessages.AMENITY_ITEMS_SHOULD_DISPLAY_ICON_AND_LABEL
         );
     }
 
     //fails
     @Test
-    @DisplayName("'Show All Amenities' button appears for properties with more than 8 amenities")
+    @DisplayName(
+        "'Show All Amenities' button appears for properties with more than 8 amenities"
+    )
     public void testShowAllAmenitiesButtonAppearsForPropertyWithMoreThanEightAmenities() {
-        propertyDetailsPage.navigateTo(TestDataConstants.DEFAULT_PROPERTY_ID);
+        propertyDetailsPage.navigateTo(TestConfig.DEFAULT_PROPERTY_ID);
         assertTrue(
-                propertyDetailsPage.isShowAllAmenitiesButtonDisplayed(),
-                ErrorMessages.SHOW_ALL_AMENITIES_BUTTON_SHOULD_APPEAR_FOR_MORE_THAN_EIGHT_AMENITIES
+            propertyDetailsPage.isShowAllAmenitiesButtonDisplayed(),
+            ErrorMessages.SHOW_ALL_AMENITIES_BUTTON_SHOULD_APPEAR_FOR_MORE_THAN_EIGHT_AMENITIES
         );
     }
 
     @Test
-    @DisplayName("All amenities are visible without 'Show All' button for properties with few amenities")
+    @DisplayName(
+        "All amenities are visible without 'Show All' button for properties with few amenities"
+    )
     public void testAllAmenitiesVisibleWithoutShowAllButtonForPropertyWithFewAmenities() {
-        propertyDetailsPage.navigateTo(TestDataConstants.PROPERTY_WITH_FEW_AMENITIES_ID);
+        propertyDetailsPage.navigateTo(
+            TestDataConstants.PROPERTY_WITH_FEW_AMENITIES_ID
+        );
         assertTrue(
-                propertyDetailsPage.getDisplayedAmenityCount() > 0
-                        && !propertyDetailsPage.isShowAllAmenitiesButtonDisplayed(),
-                ErrorMessages.ALL_AMENITIES_SHOULD_BE_VISIBLE_WITHOUT_MODAL_FOR_FEW_AMENITIES
+            propertyDetailsPage.getDisplayedAmenityCount() > 0 &&
+                !propertyDetailsPage.isShowAllAmenitiesButtonDisplayed(),
+            ErrorMessages.ALL_AMENITIES_SHOULD_BE_VISIBLE_WITHOUT_MODAL_FOR_FEW_AMENITIES
         );
     }
 
     @Test
     @DisplayName("Amenities section is hidden for a property with no amenities")
     public void testAmenitiesSectionIsHiddenForPropertyWithNoAmenities() {
-        propertyDetailsPage.navigateTo(TestDataConstants.PROPERTY_WITH_NO_AMENITIES_ID);
+        propertyDetailsPage.navigateTo(
+            TestDataConstants.PROPERTY_WITH_NO_AMENITIES_ID
+        );
         assertFalse(
-                propertyDetailsPage.isAmenitiesSectionPresent(),
-                ErrorMessages.AMENITIES_SECTION_SHOULD_BE_HIDDEN_FOR_PROPERTY_WITH_NO_AMENITIES
+            propertyDetailsPage.isAmenitiesSectionPresent(),
+            ErrorMessages.AMENITIES_SECTION_SHOULD_BE_HIDDEN_FOR_PROPERTY_WITH_NO_AMENITIES
         );
     }
 }

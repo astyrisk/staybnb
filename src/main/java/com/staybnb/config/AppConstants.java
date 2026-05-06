@@ -24,6 +24,7 @@ public final class AppConstants {
     public static final String PROPERTY_DETAILS_BASE_URL = BASE_URL + "/properties/";
     public static final String OTHER_PROFILE_BASE_URL    = BASE_URL + "/users/";
     public static final String WISHLIST_URL              = BASE_URL + "/wishlists";
+    public static final String BOOKINGS_URL              = BASE_URL + "/bookings";
 
     // ─────────────────────────────────────────────────────────────────────────
 

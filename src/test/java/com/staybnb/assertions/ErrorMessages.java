@@ -431,6 +431,34 @@ public final class ErrorMessages {
     public static final String AMENITIES_SECTION_SHOULD_BE_HIDDEN_FOR_PROPERTY_WITH_NO_AMENITIES =
             "The amenities section should be hidden when the property has no amenities.";
 
+    // --- Availability Calendar (Story F4.2) messages ---
+    public static final String BOOKED_DATES_SHOULD_BE_VISUALLY_MARKED =
+            "Dates with existing bookings should be visually grayed out with the 'date-picker-day--booked' class.";
+    public static final String BOOKED_DATES_SHOULD_BE_DISABLED =
+            "All booked dates in the date picker should have the disabled attribute to prevent selection.";
+    public static final String BOOKED_DATE_FROM_API_SHOULD_BE_DISABLED_IN_CALENDAR =
+            "A check-in date returned as booked by the availability API should be disabled in the date picker.";
+    public static final String MONTH_NAVIGATION_SHOULD_UPDATE_CALENDAR =
+            "Clicking the next-month navigation should update the calendar to display a different pair of months.";
+    public static final String FAR_FUTURE_MONTH_SHOULD_HAVE_NO_BOOKED_DATES =
+            "A month far in the future should have no booked dates when there are no existing reservations.";
+    public static final String AVAILABILITY_API_SHOULD_RETURN_200 =
+            "GET /properties/:id/availability?month=YYYY-MM should return HTTP 200.";
+    public static final String AVAILABILITY_API_RESPONSE_SHOULD_CONTAIN_BOOKED_DATES =
+            "Availability API response should contain a 'bookedDates' field listing reserved date ranges.";
+    public static final String AVAILABILITY_API_SHOULD_ACCEPT_MONTH_PARAM =
+            "Availability API should accept the 'month' query parameter in YYYY-MM format and return 200.";
+    public static final String AVAILABILITY_API_SHOULD_RETURN_EMPTY_FOR_FAR_FUTURE =
+            "Availability API should return an empty or minimal booked-dates list for a far-future month with no bookings.";
+    public static final String AVAILABILITY_API_SHOULD_RETURN_EMPTY_FOR_UNBOOKED_PROPERTY =
+            "Availability API should return an empty booked-dates list for a property with no bookings.";
+    public static final String BOOKING_OVERLAPPING_DATES_SHOULD_RETURN_409 =
+            "Booking with dates that overlap an existing reservation should return HTTP 409.";
+    public static final String BOOKING_SHOULD_BE_CREATED_WITH_PENDING_STATUS =
+            "A valid booking request should return a booking with status PENDING.";
+    public static final String AVAILABLE_DATE_SHOULD_BE_SELECTABLE =
+            "A date not returned as booked by the availability API should be selectable in the date picker.";
+
     // --- Filter by Price Range (Story F3.2-S1) messages ---
     public static final String PRICE_FILTER_SHOULD_UPDATE_RESULTS_IN_REAL_TIME =
             "Setting a price range in the filter sidebar should update results in real-time.";
@@ -568,6 +596,54 @@ public final class ErrorMessages {
             "Navigating to the wishlist page while unauthenticated should display a login prompt.";
     public static final String WISHLIST_PAGE_UNAUTHENTICATED_LOGIN_PROMPT_TEXT_SHOULD_MATCH =
             "Unauthenticated wishlist page login prompt should contain the expected message text.";
+
+    // --- Booking Widget (Story F4.1) messages ---
+    public static final String BOOKING_WIDGET_SHOULD_DISPLAY_PRICE_PER_NIGHT =
+            "Booking widget should display the property price per night.";
+    public static final String BOOKING_WIDGET_SHOULD_BE_IN_RIGHT_SIDEBAR_ON_DESKTOP =
+            "Booking widget should appear as a right sidebar panel on desktop.";
+    public static final String BOOKING_WIDGET_SHOULD_BE_STICKY_ON_MOBILE =
+            "Booking widget should appear as a sticky bottom bar on mobile viewport.";
+    public static final String BOOKING_WIDGET_SHOULD_HAVE_CHECK_IN_DATE_PICKER =
+            "Booking widget should display a check-in date picker.";
+    public static final String BOOKING_WIDGET_SHOULD_HAVE_CHECK_OUT_DATE_PICKER =
+            "Booking widget should display a check-out date picker.";
+    public static final String BOOKING_WIDGET_SHOULD_HAVE_GUEST_COUNT_SELECTOR =
+            "Booking widget should display a guest count selector.";
+    public static final String BOOKING_WIDGET_SHOULD_HAVE_RESERVE_BUTTON =
+            "Booking widget should display a Reserve button.";
+    public static final String BOOKING_WIDGET_SHOULD_HAVE_ALL_REQUIRED_CONTROLS =
+            "Booking widget should display check-in picker, check-out picker, guest selector, and Reserve button.";
+    public static final String BOOKING_WIDGET_SHOULD_SHOW_PRICE_BREAKDOWN =
+            "Booking widget should show the price breakdown after valid dates are selected.";
+    public static final String BOOKING_WIDGET_PRICE_BREAKDOWN_FORMAT_SHOULD_MATCH =
+            "Price breakdown should show the calculation as 'X nights × $Y/night'.";
+    public static final String BOOKING_WIDGET_DISCLAIMER_SHOULD_BE_DISPLAYED =
+            "Booking widget should show a 'You won't be charged yet' disclaimer below the Reserve button.";
+
+    // --- Booking Widget Guest Count Validation (Story F4.1 S2) messages ---
+    public static final String GUEST_COUNT_SHOULD_DEFAULT_TO_ONE =
+            "Guest count should default to 1 when the booking widget loads.";
+    public static final String GUEST_INCREMENT_SHOULD_BE_DISABLED_AT_MAX =
+            "Guest increment button should be disabled when the maximum guest count is reached.";
+    public static final String GUEST_INCREMENT_SHOULD_BE_DISABLED_FOR_SINGLE_GUEST_PROPERTY =
+            "Guest increment button should be disabled on load for a property with max_guests=1.";
+
+    // --- My Bookings (Story F4.1) messages ---
+    public static final String BOOKING_SHOULD_APPEAR_IN_BOOKINGS_TAB =
+            "Reserved property booking should appear in the bookings page.";
+
+    // --- Booking Validation (Story F4.3) messages ---
+    public static final String BOOKING_INVALID_DATE_RANGE_SHOULD_RETURN_400 =
+            "Booking with a check-out date that is before or equal to the check-in date should return HTTP 400.";
+    public static final String BOOKING_EXCEEDS_MAX_GUESTS_SHOULD_RETURN_400 =
+            "Booking with a guest count exceeding the property's max_guests should return HTTP 400.";
+    public static final String BOOKING_WITHOUT_AUTH_SHOULD_RETURN_401 =
+            "Booking request without authentication should return HTTP 401.";
+    public static final String BOOKING_MISSING_FIELD_SHOULD_RETURN_400 =
+            "Booking request with a missing required field should return HTTP 400.";
+    public static final String BOOKING_WIDGET_AUTH_ERROR_SHOULD_BE_DISPLAYED =
+            "Booking widget should display an inline error when Reserve is clicked without authentication.";
 
     // --- Remove Property from Wishlist (Story F3.5-S2) messages ---
     public static final String WISHLIST_HEART_SHOULD_BECOME_OUTLINE_ON_CARD =

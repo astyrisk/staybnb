@@ -6,10 +6,8 @@ import com.staybnb.locators.Locators;
 import io.restassured.http.ContentType;
 import org.openqa.selenium.*;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class PublishPropertyPage extends BasePage {
 

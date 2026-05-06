@@ -385,6 +385,44 @@ public final class Locators {
         }
     }
 
+    public static final class BookingWidget {
+        private BookingWidget() {}
+
+        public static final By CONTAINER        = By.className("booking-widget");
+        public static final By CHECK_IN_BTN     = By.xpath("//button[contains(@class,'booking-widget__date-field')][.//span[normalize-space()='Check-in']]");
+        public static final By CHECK_OUT_BTN    = By.xpath("//button[contains(@class,'booking-widget__date-field')][.//span[normalize-space()='Checkout']]");
+        public static final By GUESTS_SECTION   = By.className("booking-widget__guests");
+        public static final By GUESTS_VALUE     = By.className("booking-widget__guests-value");
+        public static final By GUESTS_INCREMENT = By.cssSelector(".booking-widget__guests-controls .booking-widget__guests-btn:last-child");
+        public static final By GUESTS_DECREMENT = By.cssSelector(".booking-widget__guests-controls .booking-widget__guests-btn:first-child");
+        public static final By RESERVE_BTN      = By.className("booking-widget__reserve");
+        public static final By DISCLAIMER       = By.className("booking-widget__disclaimer");
+        public static final By ERROR            = By.className("booking-widget__error");
+        public static final By BREAKDOWN        = By.className("booking-widget__breakdown");
+        public static final By DETAIL_SIDEBAR   = By.className("detail-sidebar");
+
+        public static final By DATE_PICKER_OVERLAY        = By.className("date-picker-overlay");
+        public static final By DATE_PICKER_MODAL          = By.className("date-picker-modal");
+        public static final By DATE_PICKER_CLOSE_BTN      = By.className("date-picker-modal__close");
+        public static final By DATE_PICKER_AVAILABLE_DAYS = By.cssSelector(
+                ".date-picker-day:not(.date-picker-day--disabled):not(.date-picker-day--empty):not(.date-picker-day--booked)");
+        public static final By DATE_PICKER_BOOKED_DAYS    = By.cssSelector(".date-picker-day--booked");
+        public static final By DATE_PICKER_MONTH_TITLES   = By.className("date-picker-month__title");
+        public static final By DATE_PICKER_NEXT_MONTH_BTN = By.cssSelector(
+                ".date-picker-nav-next, .date-picker-next, button[aria-label='Next month'], button[aria-label='Next']");
+        public static final By DATE_PICKER_MONTH_PANEL   = By.className("date-picker-month");
+        public static final By DATE_PICKER_DAY_BUTTONS   = By.cssSelector("button.date-picker-day");
+    }
+
+    public static final class MyBookings {
+        private MyBookings() {}
+
+        public static final By PAGE_TITLE   = By.className("my-bookings__title");
+        public static final By BOOKING_CARD = By.className("booking-card");
+        public static final By CARD_TITLE   = By.className("booking-card__title");
+        public static final By CARD_STATUS  = By.className("booking-card__status");
+    }
+
     public static final class DeleteProperty {
         private DeleteProperty() {}
 

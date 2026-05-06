@@ -1,16 +1,21 @@
 package com.staybnb.config;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public final class TestDataConstants {
     private TestDataConstants() {}
 
     // ── Property IDs ──────────────────────────────────────────────────────────
-    public static final String DEFAULT_PROPERTY_ID            = TestConfig.DEFAULT_PROPERTY_ID;
     public static final String NON_EXISTENT_ID                = "999999";
     public static final String NON_EXISTENT_PROPERTY_ID       = "99999999";
     // Property with 1–8 amenities (Story 14 AC4). Must be published and accessible.
     public static final String PROPERTY_WITH_FEW_AMENITIES_ID = TestConfig.PROPERTY_FEW_AMENITIES_ID;
     // Property with 0 amenities (Story 14 AC5).
     public static final String PROPERTY_WITH_NO_AMENITIES_ID  = TestConfig.PROPERTY_NO_AMENITIES_ID;
+
+    // General
+    public static final DateTimeFormatter MONTH_YEAR_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH);
 
     // ── Other Profile (user 3005) ─────────────────────────────────────────────
     public static final class OtherProfile {
@@ -43,9 +48,13 @@ public final class TestDataConstants {
         public static final String API_BIO        = "API Bio";
     }
 
+    // Property with max_guests=1 (Story F4.1 AC3). Set TEST_PROPERTY_SINGLE_GUEST_ID in .env.
+    public static final String SINGLE_GUEST_PROPERTY_ID = TestConfig.PROPERTY_SINGLE_GUEST_ID;
+
     // ── Default Property (ID from TestConfig.DEFAULT_PROPERTY_ID) ────────────
     public static final class DefaultProperty {
         public static final String TITLE              = "Ski Chalet in Zermatt";
+        public static final int    MAX_GUESTS         = 10;
         public static final String LOCATION           = "Zermatt, Switzerland";
         public static final String GUEST_CAPACITY     = "10 guests";
         public static final String BEDROOM_COUNT      = "5 bedrooms";
@@ -57,6 +66,28 @@ public final class TestDataConstants {
         public static final String AMENITY_WIFI       = "WiFi";
         public static final String AMENITY_SKI_ACCESS = "Ski Access";
         public static final String FIRST_IMAGE_ALT   = "Living Room";
+    }
+
+    // ── Availability Calendar ─────────────────────────────────────────────────
+    public static final class AvailabilityCalendar {
+        // Known confirmed booking range on the one booked property
+        public static final String BOOKED_CHECK_IN       = "2026-05-19";
+        public static final String BOOKED_CHECK_OUT      = "2026-05-22";
+    }
+
+    // ── Booking ───────────────────────────────────────────────────────────────
+    public static final class Booking {
+        public static final String OVERLAPPING_CHECK_IN  = "2026-05-08";
+        public static final String OVERLAPPING_CHECK_OUT = "2026-05-22";
+        // TODO write overlapping Property ID
+
+        public static final String VALID_CHECK_IN        = "2026-05-20";
+        public static final String VALID_CHECK_OUT       = "2026-05-26";
+        // TODO write Valid property ID
+
+        public static final int    NUM_GUESTS            = 1;
+        public static final String EXPECTED_STATUS       = "PENDING";
+        public static final int    EXCEEDS_MAX_GUESTS    = 11;  // > DefaultProperty.MAX_GUESTS (10)
     }
 
     // ── Edit Property ─────────────────────────────────────────────────────────

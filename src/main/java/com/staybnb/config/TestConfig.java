@@ -14,9 +14,13 @@ public class TestConfig {
     public static final String TEST_FIRST_NAME           = findProperty("TEST_FIRST_NAME"               );
     public static final String TEST_LAST_NAME            = findProperty("TEST_LAST_NAME"                );
     public static final String DEFAULT_PROPERTY_ID       = findProperty("TEST_DEFAULT_PROPERTY_ID"      );
+    public static final String ONE_BOOKED_PROPERTY_ID    = findProperty("TEST_ONE_BOOKED_PROPERTY_ID"   );
+    public static final String ZERO_BOOKED_PROPERTY_ID   = findProperty("TEST_ZERO_BOOKED_PROPERTY_ID"  );
+    public static final String TO_BOOK_PROPERTY_ID       = findProperty("TEST_TO_BOOK_PROPERTY_ID"      );
     public static final String PROPERTY_FEW_AMENITIES_ID = findProperty("TEST_PROPERTY_FEW_AMENITIES_ID");
     public static final String PROPERTY_NO_AMENITIES_ID  = findProperty("TEST_PROPERTY_NO_AMENITIES_ID" );
     public static final String OTHER_USER_ID_1           = findProperty("TEST_OTHER_USER_ID_1"          );
+    public static final String PROPERTY_SINGLE_GUEST_ID  = findProperty("TEST_PROPERTY_SINGLE_GUEST_ID" );
 
     static {
         validate();
